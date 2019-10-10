@@ -16,11 +16,34 @@ body {
     margin-left: auto;
     margin-right: auto;
     padding-left: 12.5%;
-    font-family: "CrimsonProS-fs", Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
-    background-color: #fffff8;
-    color: #111;
+    font-family: "HK Grotesk", Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+    /*background-color: #fffff8;
+    color: #111;*/
     max-width: 1400px;
-    counter-reset: sidenote-counter; 
+    counter-reset: sidenote-counter;
+
+    /*font-family: "HK Grotesk", serif;*/
+    /*letter-spacing: 0.01rem;*/
+    font-size: 1.8rem;
+    line-height: 1.65em;
+    color: #3A4145;
+    -webkit-font-feature-settings: 'kern' 1;
+    -moz-font-feature-settings: 'kern' 1;
+    -o-font-feature-settings: 'kern' 1;
+    text-rendering: geometricPrecision;
+    background: #fffff8;
+}
+
+h1, h2, h3,
+h4, h5, h6 {
+    -webkit-font-feature-settings: 'dlig' 1, 'liga' 1, 'lnum' 1, 'kern' 1;
+    -moz-font-feature-settings: 'dlig' 1, 'liga' 1, 'lnum' 1, 'kern' 1;
+    -o-font-feature-settings: 'dlig' 1, 'liga' 1, 'lnum' 1, 'kern' 1;
+    color: #2E2E2E;
+    line-height: 1.15em;
+    margin: 0 0 0.4em 0;
+    text-rendering: geometricPrecision;
+    font-family: "Space Grotesk";
 }
 
 h1 {
@@ -85,7 +108,12 @@ p,
 ol,
 ul {
     font-size: 1.4rem;
-    line-height: 2.15rem; 
+    line-height: 2.15rem;
+    hanging-punctuation: first last;
+
+    -webkit-font-feature-settings: 'liga' 1, 'onum' 1, 'kern' 1, 'salt';
+    -moz-font-feature-settings: 'liga' 1, 'onum' 1, 'kern' 1, 'salt';
+    -o-font-feature-settings: 'liga' 1, 'onum' 1, 'kern' 1, 'salt';
 }
 
 p {
@@ -204,7 +232,7 @@ a:link, .tufte-underline, .hover-tufte-underline:hover {
 
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
     a:link, .tufte-underline, .hover-tufte-underline:hover {
-        background-position-y: 87%, 87%, 87%;
+        /*background-position-y: 87%, 87%, 87%;*/
     }
 }
 
@@ -239,7 +267,6 @@ img {
 
 .sidenote-number:after,
 .sidenote:before {
-    font-family: et-book-roman-old-style;
     position: relative;
     vertical-align: baseline; 
 }

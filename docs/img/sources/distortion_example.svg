@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="137.73779mm"
+   height="143.82497mm"
+   viewBox="0 0 137.73779 143.82497"
+   version="1.1"
+   id="svg8"
+   sodipodi:docname="distortion_example.svg"
+   inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/distortion_example.png"
+   inkscape:export-xdpi="180.53578"
+   inkscape:export-ydpi="180.53578"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)">
+  <defs
+     id="defs2">
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter1143"
+       x="-0.027610574"
+       width="1.0552211"
+       y="-0.15344404"
+       height="1.3068881">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.887082"
+         id="feGaussianBlur1145" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter1266"
+       x="-0.0078083482"
+       width="1.0156167"
+       y="-0.042649217"
+       height="1.0852984">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.42774173"
+         id="feGaussianBlur1268" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.979899"
+     inkscape:cx="241.56423"
+     inkscape:cy="243.17644"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="3200"
+     inkscape:window-height="1736"
+     inkscape:window-x="0"
+     inkscape:window-y="32"
+     inkscape:window-maximized="1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-15.454637,-5.5587358)">
+    <rect
+       style="opacity:0.828;fill:#1a1a1a;fill-opacity:1;stroke:none;stroke-width:1.24166346;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect1357"
+       width="136.842"
+       height="30.067822"
+       x="15.768902"
+       y="31.467716" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot815-1"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter1266)"
+       transform="matrix(0.79576179,0,0,0.79576179,-32.347323,19.899098)"><flowRegion
+         id="flowRegion817-7"><rect
+           id="rect819-9"
+           width="674.28571"
+           height="151.42857"
+           x="62.857143"
+           y="119.66254" /></flowRegion><flowPara
+         id="flowPara821-1"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:32px;font-family:Overpass;-inkscape-font-specification:'Overpass Bold'">ingratitude</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot815"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       transform="matrix(0.79576179,0,0,0.79576179,-33.289652,19.316188)"><flowRegion
+         id="flowRegion817"
+         style="fill:#ffffff"><rect
+           id="rect819"
+           width="674.28571"
+           height="151.42857"
+           x="62.857143"
+           y="119.66254"
+           style="fill:#ffffff" /></flowRegion><flowPara
+         id="flowPara821"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:32px;font-family:Overpass;-inkscape-font-specification:'Overpass Bold';fill:#ffffff">ingratitude</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot815-1-3"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       transform="matrix(0.79576179,0,0,0.79576179,-32.614587,-7.8306743)"><flowRegion
+         id="flowRegion817-7-0"
+         style="fill:none;stroke:#000000;stroke-opacity:1"><rect
+           id="rect819-9-3"
+           width="674.28571"
+           height="151.42857"
+           x="62.857143"
+           y="119.66254"
+           style="fill:none;stroke:#000000;stroke-opacity:1" /></flowRegion><flowPara
+         id="flowPara821-1-3"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:32px;font-family:Overpass;-inkscape-font-specification:'Overpass Bold';fill:none;stroke:#000000;stroke-opacity:1">ingratitude</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot815-1-9"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter1143)"
+       transform="matrix(0.79576179,0,0,0.79576179,-32.614587,-36.562147)"><flowRegion
+         id="flowRegion817-7-2"
+         style="fill:#000000;fill-opacity:1;stroke:none;stroke-opacity:1"><rect
+           id="rect819-9-9"
+           width="674.28571"
+           height="151.42857"
+           x="62.857143"
+           y="119.66254"
+           style="fill:#000000;fill-opacity:1;stroke:none;stroke-opacity:1" /></flowRegion><flowPara
+         id="flowPara821-1-0"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:32px;font-family:Overpass;-inkscape-font-specification:'Overpass Bold';fill:#000000;fill-opacity:1;stroke:none;stroke-opacity:1">ingratitude</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot815-1-3-9"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       transform="matrix(0.79576179,0,0,0.79576179,-32.480957,-99.436748)"><flowRegion
+         id="flowRegion817-7-0-5"
+         style="fill:#000000;fill-opacity:1;stroke:none;stroke-opacity:1"><rect
+           id="rect819-9-3-6"
+           width="674.28571"
+           height="151.42857"
+           x="62.857143"
+           y="119.66254"
+           style="fill:#000000;fill-opacity:1;stroke:none;stroke-opacity:1" /></flowRegion><flowPara
+         id="flowPara821-1-3-1"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:32px;font-family:Overpass;-inkscape-font-specification:'Overpass Bold';fill:#000000;fill-opacity:1;stroke:none;stroke-opacity:1">ingratitude</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot815-1-3-9-1"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#b3b3b3;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       transform="matrix(0.79576179,0,0,0.79576179,-32.480957,-69.101659)"><flowRegion
+         id="flowRegion817-7-0-5-4"
+         style="fill:#b3b3b3;fill-opacity:1;stroke:none;stroke-opacity:1"><rect
+           id="rect819-9-3-6-3"
+           width="674.28571"
+           height="151.42857"
+           x="62.857143"
+           y="119.66254"
+           style="fill:#b3b3b3;fill-opacity:1;stroke:none;stroke-opacity:1" /></flowRegion><flowPara
+         id="flowPara821-1-3-1-7"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:32px;font-family:Overpass;-inkscape-font-specification:'Overpass Bold';fill:#b3b3b3;fill-opacity:1;stroke:none;stroke-opacity:1">ingratitude</flowPara></flowRoot>  </g>
+</svg>
