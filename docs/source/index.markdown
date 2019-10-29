@@ -234,6 +234,11 @@ features](https://doi.org/10.1016/j.visres.2010.08.002).
 
 ## Building a multi-scale letter pair analyzer
 
+<span><input type="checkbox"
+id="mn-soc-multiscale" class="margin-toggle"><label for="mn-abs-multiscale"
+class="margin-toggle"></label> <span
+class="marginnote"> <img src="img/sample_abs_values.png" alt="Some
+absolute outputs at multiple scales">The first stage of our model: local energy magnitudes at multiple scales and orientations.</span></span>
 One of the models that has found some recent popularity is the [second-order contrast](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003079) (SOC) model by Kendrick Kay et al. It's relatively simple and ticks many of the boxes that other filter-rectify-filter models don't,
 and it even appears to predict fMRI responses quite well (bonus points!).
 
