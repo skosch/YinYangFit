@@ -96,7 +96,7 @@ p.subtitle {
 }
 
 article {
-    padding: 5rem 0rem; 
+    padding: 0 0 5rem 0; 
 }
 
 section {
@@ -267,21 +267,26 @@ img {
 
 .sidenote-number:after,
 .sidenote:before {
-    position: relative;
-    vertical-align: baseline; 
+/*    position: relative;*/
+}
+.sidenote:before {
+  vertical-align: super;
+}
+label.margin-toggle {
+  vertical-align: super;
 }
 
 .sidenote-number:after {
     content: counter(sidenote-counter);
     font-size: 1rem;
-    top: -0.5rem;
+    /*top: -0.5rem;*/
     left: 0.1rem; 
 }
 
 .sidenote:before {
     content: counter(sidenote-counter) " ";
     font-size: 1rem;
-    top: -0.5rem; 
+    /*top: -0.5rem;*/ 
 }
 
 blockquote .sidenote,
@@ -383,16 +388,30 @@ label.margin-toggle:not(.sidenote-number) {
         padding-left: 8%;
         padding-right: 8%; 
     }
-    
+
+
+    article > p,
+    article > footer,
+    article > table {
+      width: 100%; 
+    }
+
+    /* 50 + 5 == 55, to be the same width as paragraph */
+    article > ol,
+    article > ul {
+      width: 95%;
+      -webkit-padding-start: 5%; 
+    }
+
     hr,
     section > p,
     section > footer,
     section > table {
-        width: 100%; 
+      width: 100%; 
     }
-    
+
     pre > code {
-        width: 97%; 
+      width: 97%; 
     }
 
     section > ol {
@@ -423,8 +442,29 @@ label.margin-toggle:not(.sidenote-number) {
         width: 100%; 
     }
     
+    label.margin-toggle {
+      background: #dedcdc;
+      padding: 1pt 5pt;
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: 68%;
+      letter-spacing: 1pt;
+      color: #3c3c3c;
+      border-radius: 2pt;
+    }
     label.margin-toggle:not(.sidenote-number) {
-        display: inline; 
+      display: inline; 
+      display: block !important;
+      width: max-content;
+    }
+    label.margin-toggle.sidenote-number {
+
+    }
+    .margin-toggle:checked + label.margin-toggle:not(.sidenote-number):before {
+      content: "Hide image";
+    }
+    .margin-toggle:not(:checked) + label.margin-toggle:not(.sidenote-number):before {
+      content: "Show image";
     }
 
     .sidenote,
@@ -432,8 +472,8 @@ label.margin-toggle:not(.sidenote-number) {
         display: none; 
     }
     
-    .margin-toggle:checked + .sidenote,
-    .margin-toggle:checked + .marginnote {
+    .margin-toggle:checked ~ .sidenote,
+    .margin-toggle:checked ~ .marginnote {
         display: block;
         float: left;
         left: 1rem;
@@ -456,5 +496,6 @@ label.margin-toggle:not(.sidenote-number) {
     img {
         width: 100%;
     } 
+
 }
 

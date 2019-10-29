@@ -170,12 +170,12 @@ stages of our brain's visual processing pipeline.
 
 ## Models of the visual cortex
 
-<label for="mn-simple-cell-sample-rfs"
-class="margin-toggle">⊕</label> <input type="checkbox"
-id="mn-simple-cell-sample-rfs" class="margin-toggle"> <span
+<span><input type="checkbox"
+id="mn-simple-cell-sample-rfs" class="margin-toggle"><label for="mn-simple-cell-sample-rfs"
+class="margin-toggle"></label> <span
 class="marginnote"> <img src="img/simple_cell_sample_rfs.png" alt="Some
 receptive fields">Illustration of some receptive fields of these
-so-called "simple cells" in the primary visual cortex (V1).</span>As
+so-called "simple cells" in the primary visual cortex (V1).</span></span>As
 you are reading these words, image data from your retina flows up your
 optical nerve into your brain, where it gets routed to the visual
 cortex at the back of your head. Each neuron there combines the input
@@ -240,6 +240,13 @@ and it even appears to predict fMRI responses quite well (bonus points!).
 However, it was tested only at a single filter scale, whereas our
 hypothesis incorporates the agreement between feature detectors across
 multiple scales. We will therefore run the SOC model at multiple scales.
+
+Quantifying the agreement between feature detectors across multiple
+scales isn't a new idea. Researchers have written
+papers about this since the 1980s – the key terms are [phase
+congruency](https://en.wikipedia.org/wiki/Phase_congruency) and [local
+energy](https://www.sciencedirect.com/science/article/abs/pii/0167865587
+900134).
 
 (To be continued ...)
 

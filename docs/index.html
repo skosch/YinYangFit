@@ -77,10 +77,10 @@ alt="Heuristics" /></p>
 <p>To test this hypothesis, we need a reasonably accurate software model of the early stages of our brain’s visual processing pipeline.</p>
 <p><a name="modelling_visual_cortex"></a></p>
 <h2 id="models-of-the-visual-cortex">Models of the visual cortex</h2>
-<p><label for="mn-simple-cell-sample-rfs"
-class="margin-toggle">⊕</label> <input type="checkbox"
-id="mn-simple-cell-sample-rfs" class="margin-toggle"> <span class="marginnote"> <img src="img/simple_cell_sample_rfs.png" alt="Some
-receptive fields">Illustration of some receptive fields of these so-called “simple cells” in the primary visual cortex (V1).</span>As you are reading these words, image data from your retina flows up your optical nerve into your brain, where it gets routed to the visual cortex at the back of your head. Each neuron there combines the input from a few neighbouring photoreceptors in your retina. The specific combinations are chosen to allow each neuron to respond to a small, meaningful feature – for instance, a small dark-light edge angled at 45 degrees. Generally, neighbouring neurons correspond to neighbouring locations on the retina, but their receptive fields come in different sizes, orientations, and phases (dark-light sequences).</p>
+<p><span><input type="checkbox"
+id="mn-simple-cell-sample-rfs" class="margin-toggle"><label for="mn-simple-cell-sample-rfs"
+class="margin-toggle"></label> <span class="marginnote"> <img src="img/simple_cell_sample_rfs.png" alt="Some
+receptive fields">Illustration of some receptive fields of these so-called “simple cells” in the primary visual cortex (V1).</span></span>As you are reading these words, image data from your retina flows up your optical nerve into your brain, where it gets routed to the visual cortex at the back of your head. Each neuron there combines the input from a few neighbouring photoreceptors in your retina. The specific combinations are chosen to allow each neuron to respond to a small, meaningful feature – for instance, a small dark-light edge angled at 45 degrees. Generally, neighbouring neurons correspond to neighbouring locations on the retina, but their receptive fields come in different sizes, orientations, and phases (dark-light sequences).</p>
 <p>To model the output from simple cells sharing a particular size, orientation, and phase – let’s call that a <em>channel</em> – we can simply convolve the input image with a kernel corresponding to the receptive field and rectify the result.<label for="sn-gab"
 class="margin-toggle sidenote-number"></label> <input type="checkbox"
 id="sn-gab" class="margin-toggle"> <span class="sidenote"> Popular mathematical functions used to generate such simulated kernels include <a href="https://en.wikipedia.org/wiki/Gabor_filter">Gabor patches</a>, differences/derivatives/Laplacians of Gaussians, and others – they all look like the sample receptive fields above. </span></p>
@@ -93,6 +93,7 @@ id="sn-tdm" class="margin-toggle"> <span class="sidenote">This really means that
 <h2 id="building-a-multi-scale-letter-pair-analyzer">Building a multi-scale letter pair analyzer</h2>
 <p>One of the models that has found some recent popularity is the <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003079">second-order contrast</a> (SOC) model by Kendrick Kay et al. It’s relatively simple and ticks many of the boxes that other filter-rectify-filter models don’t, and it even appears to predict fMRI responses quite well (bonus points!).</p>
 <p>However, it was tested only at a single filter scale, whereas our hypothesis incorporates the agreement between feature detectors across multiple scales. We will therefore run the SOC model at multiple scales.</p>
+<p>Quantifying the agreement between feature detectors across multiple scales isn’t a new idea. Researchers have written papers about this since the 1980s – the key terms are <a href="https://en.wikipedia.org/wiki/Phase_congruency">phase congruency</a> and <a href="https://www.sciencedirect.com/science/article/abs/pii/0167865587%20900134">local energy</a>.</p>
 <p>(To be continued …)</p>
 <h2 id="results">Results</h2>
 <p>(Come back soon!)</p>
