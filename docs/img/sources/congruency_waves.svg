@@ -17,8 +17,8 @@
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="congruency_waves.svg"
    inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/congruency_waves.png"
-   inkscape:export-xdpi="200.01457"
-   inkscape:export-ydpi="200.01457">
+   inkscape:export-xdpi="200.00999"
+   inkscape:export-ydpi="200.00999">
   <defs
      id="defs2" />
   <sodipodi:namedview
@@ -28,9 +28,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8"
-     inkscape:cx="339.42332"
-     inkscape:cy="81.11466"
+     inkscape:zoom="3.959798"
+     inkscape:cx="272.12286"
+     inkscape:cy="47.415696"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -53,7 +53,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -171,5 +171,17 @@
            y="14.211355"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Space Mono';-inkscape-font-specification:'Space Mono';stroke-width:5.23554182px" /></flowRegion><flowPara
          id="flowPara1037-9"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:62.82649994px;font-family:'Space Mono';-inkscape-font-specification:'Space Mono';stroke-width:5.23554182px">line detectors</flowPara></flowRoot>  </g>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:62.82649994px;font-family:'Space Mono';-inkscape-font-specification:'Space Mono';stroke-width:5.23554182px">line detectors</flowPara></flowRoot>    <circle
+       style="opacity:1;fill:#e1544d;fill-opacity:1;stroke:none;stroke-width:0.10845656;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path2123"
+       cx="35.138508"
+       cy="14.726127"
+       r="0.72910655" />
+    <circle
+       style="opacity:1;fill:#e1544d;fill-opacity:1;stroke:none;stroke-width:0.10845656;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path2123-9"
+       cx="106.96719"
+       cy="14.726127"
+       r="0.72910661" />
+  </g>
 </svg>

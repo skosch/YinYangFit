@@ -31,7 +31,7 @@ body {
     -moz-font-feature-settings: 'kern' 1;
     -o-font-feature-settings: 'kern' 1;
     text-rendering: geometricPrecision;
-    background: #fffff8;
+    background: #fffdfb;
 }
 
 h1, h2, h3,
@@ -108,7 +108,7 @@ p,
 ol,
 ul {
     font-size: 1.4rem;
-    line-height: 2.15rem;
+    line-height: 1.86rem;
     hanging-punctuation: first last;
 
     -webkit-font-feature-settings: 'liga' 1, 'onum' 1, 'kern' 1, 'salt';
