@@ -1,0 +1,68 @@
+<html>
+  <head>
+    <title>YinYangFit</title>
+  </head>
+  <body>
+    <h1>YinYangFit</h1>
+    <div style="display: flex;">
+      <div>
+    <p>Letter pair:</p>
+    <input id="txt-preview-pair" value="aa">
+    <p>Input parameters:</p>
+    <textarea id="txt-params" rows="30" cols="60">{
+  "distance": 10,
+  "scale": 10,
+  "gap_weights":
+    [0, 0, 0, 0, 0,
+     10, 0, 0, 0, 0,
+     0, 0, 0, 0, 0, 0, 0],
+  "blur_weights":
+    [100, 100, 100, 100, 100,
+     100, 100, 50, 20, 0,
+     0, 0, 0, 0, 0,
+     0, 0]
+}
+    </textarea><br/>
+    <button id="btn-pair-preview">Pair Preview</button>
+    <button id="btn-sampletext-preview">Sampletext preview</button>
+    </div>
+      <div>
+    <img id="img-preview" src="data:image/png;base64,">
+    </div>
+      </div>
+    <script>
+      document.getElementById("btn-pair-preview").addEventListener("click" , () => {
+          const data = {
+              letterPair: document.getElementById("txt-preview-pair").value,
+              params: document.getElementById("txt-params").value,
+          };
+          fetch("/pair_preview", {
+              method: "POST",
+              body: JSON.stringify(data),
+              headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+              },
+          }).then(res => res.json()).then(data => {
+              document.getElementById("img-preview").src = ("data:image/png;base64," + data.preview_image);
+          });
+      });
+
+      document.getElementById("btn-sampletext-preview").addEventListener("click" , () => {
+          const data = {
+              params: document.getElementById("txt-params").value,
+          };
+          fetch("/text_preview", {
+              method: "POST",
+              body: JSON.stringify(data),
+              headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+              },
+          }).then(res => res.json()).then(data => {
+              document.getElementById("img-preview").src = ("data:image/png;base64," + data.preview_image);
+          });
+      });
+    </script>
+  </body>
+</html>
