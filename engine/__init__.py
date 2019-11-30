@@ -13,8 +13,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import root_scalar
 
-import reikna.cluda as cluda
-api = cluda.ocl_api()
+import pyopencl as cl
+
 
 all_lc_glyphs = "abcdefghijklmnopqrstuvwxyz"
 
@@ -36,21 +36,38 @@ class Engine:
         print("Engine loaded.")
 
     def set_up_gpu_processor_kernel(self):
-        self.thr = api.Thread.create()
-        program = self.thr.compile(
-            """
+        self.ctx = cl.create_some_context(False)      # Create a context with your device
+        #now create a command queue in the context
+        self.queue = cl.CommandQueue(self.ctx)
+        kernel_code = """
             #include <pyopencl-complex.h>
-            KERNEL
-            void complex_abs(GLOBAL_MEM float*dest, GLOBAL_MEM cfloat_t*lg, GLOBAL_MEM cfloat_t*rg, float exponent, float factor) {
-              const SIZE_T i = get_global_id(0);
 
-              dest[i] = (
-                half_powr(factor * cfloat_abs_squared(cfloat_add(lg[i], rg[i])), exponent/2.) -
-                half_powr(factor * cfloat_abs_squared(lg[i]), exponent/2.) -
-                half_powr(factor * cfloat_abs_squared(rg[i]), exponent/2.)
+            __kernel void vpak(__global cfloat_t*lg, __global cfloat_t*rg,
+                             float const exponent, __global float*factor,
+                             __global float*gap_weights, __global float*blur_weights,
+                             __global float*dest,
+                             int const n_sizes, int const n_orientations, int const n_pixels
+              ) {
+
+              int si = get_global_id(0);
+              int oi = get_global_id(1);
+              int yx = get_global_id(2);
+
+              int i = (si * n_orientations * n_pixels) + (oi * n_pixels) + yx;
+
+              float diff = (
+                half_powr(factor[i] * cfloat_abs_squared(cfloat_add(lg[i], rg[i])), exponent/2.) -
+                half_powr(factor[i] * cfloat_abs_squared(lg[i]), exponent/2.) -
+                half_powr(factor[i] * cfloat_abs_squared(rg[i]), exponent/2.)
               );
-            }""")
-        self.complex_abs = program.complex_abs
+
+              dest[i] = diff > 0 ? (1. + gap_weights[i]) * diff : (1. + blur_weights[i]) * diff;
+            }
+        """
+
+        print("Compiling GPU kernel ...")
+        self.vp = cl.Program(self.ctx, kernel_code).build()
+        print("Compiled:", self.vp)
 
     def prerender_convolved_glyphs(self, glyphs):
         for g in glyphs:
@@ -86,25 +103,25 @@ class Engine:
         return f_s
 
     def process_pair(self, sc_lg, sc_rg, params):
-        outim = np.empty_like(sc_lg)
-        t0 = time.time()
-        #f_l = self.process_image(sc_lg, params, outim)
-        #f_r = self.process_image(sc_rg, params, outim)
-        #f_p = self.process_image(sc_lg + sc_rg, params, outim)
 
-        # Input: a complex image
-        sc_lg_dev = self.thr.to_device(sc_lg)
-        sc_rg_dev = self.thr.to_device(sc_rg)
-        exponent = np.float32(params['exponent'])
-        factor = np.float32(params['factor']) # / (params['beta'] ** params['exponent'] + np.abs(sc_input) ** params['exponent'])
-        dest_dev = self.thr.array(sc_lg.shape, dtype=np.float32)
-        N = 4 * sc_lg_dev.shape[0] * sc_lg_dev.shape[1] * sc_lg_dev.shape[2] * sc_lg_dev.shape[3]
-        self.complex_abs(dest_dev, sc_lg_dev, sc_rg_dev, exponent, factor, global_size=N)
-        diffs = dest_dev.get()
+        sc_lg_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=sc_lg.reshape([self.n_sizes, self.n_orientations, self.box_height * self.box_width]))
+        sc_rg_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=sc_rg.reshape([self.n_sizes, self.n_orientations, self.box_height * self.box_width]))
+        factor_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['factor'].reshape([self.n_sizes, self.n_orientations, self.box_height * self.box_width]))
+        gap_weights_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['gap_weights'].reshape([self.n_sizes, self.n_orientations, self.box_height * self.box_width]))
+        blur_weights_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['blur_weights'].reshape([self.n_sizes, self.n_orientations, self.box_height * self.box_width]))
 
-        t1 = time.time()
+        # create output buffer
+        diffs = np.ones((self.n_sizes, self.n_orientations, self.box_height * self.box_width), dtype=np.float32)
+        dest_dev = cl.Buffer(self.ctx, cl.mem_flags.WRITE_ONLY, diffs.nbytes)
 
-        return diffs
+        self.vp.vpak(self.queue, diffs.shape, None, sc_lg_dev, sc_rg_dev, np.float32(params['exponent']), factor_dev, gap_weights_dev, blur_weights_dev, dest_dev,
+                     np.int32(self.n_sizes), np.int32(self.n_orientations), np.int32(self.box_height * self.box_width))
+
+        # Get result back
+        cl.enqueue_copy(self.queue, diffs, dest_dev)
+
+        # Diffs reshape
+        return diffs.reshape((self.n_sizes, self.n_orientations, self.box_height, self.box_width))
 
     def set_params(self, params):
         self.params = params
@@ -112,11 +129,6 @@ class Engine:
     def weight_diffs(self, diffs, params):
         gap_diffs = relu(diffs)
         blur_diffs = relu(-diffs)
-
-        gap_weights = np.array(params['gap_weights'])[:, None, None, None]
-        blur_weights = np.array(params['blur_weights'])[:, None, None, None]
-        gap_weights_sq = np.array(params['gap_weights_sq'])[:, None, None, None]
-        blur_weights_sq = np.array(params['blur_weights_sq'])[:, None, None, None]
 
         return gap_weights * gap_diffs + gap_weights_sq * gap_diffs**2 - blur_weights * blur_diffs - blur_weights_sq * blur_diffs**2
 
@@ -126,8 +138,8 @@ class Engine:
 
     def get_penalty_at_dist(self, dist, lc, rc, params):
         sc_lg, sc_rg, pair_image = self.create_pair_image(lc, rc, int(np.round(dist)))
-        diffs = self.process_pair(sc_lg, sc_rg, params)
-        penalty = self.compute_penalty(diffs, params)
+        penalty = np.sum(self.process_pair(sc_lg, sc_rg, params))
+        #print("Penalty is", penalty)
         return penalty
 
     def simulate_edge_energy(self):
@@ -195,14 +207,18 @@ class Engine:
                 return 0
         except:
             print("Couldn't solve for", lc, rc, ". Values at 0 and b are:")
-            print(self.get_penalty_at_dist(1, lc, rc, pparams))
-            print(self.get_penalty_at_dist(50, lc, rc, pparams))
+            print(self.get_penalty_at_dist(1, lc, rc, params))
+            print(self.get_penalty_at_dist(50, lc, rc, params))
             return 0
 
     def render_sample_text(self, text, params):
         distance_dict = {}
-        params['factor'] = np.array(params['factor'])[:, None, None, None]
+        params['factor'] = np.tile(np.array(params['factor'])[:, None, None, None].astype(np.float32), [1, self.n_orientations, self.box_height, self.box_width])
         params['beta'] = np.array(params['beta'])[:, None, None, None]
+        params['gap_weights'] = np.tile(np.array(params['gap_weights'])[:, None, None, None].astype(np.float32), [1, self.n_orientations, self.box_height, self.box_width])
+        params['blur_weights'] = np.tile(np.array(params['blur_weights'])[:, None, None, None].astype(np.float32), [1, self.n_orientations, self.box_height, self.box_width])
+        params['gap_weights_sq'] = np.array(params['gap_weights_sq'])[:, None, None, None].astype(np.float32)
+        params['blur_weights_sq'] = np.array(params['blur_weights_sq'])[:, None, None, None].astype(np.float32)
         for i in range(len(text) - 1):
             lc = text[i]
             rc = text[i + 1]
