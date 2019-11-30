@@ -14,6 +14,7 @@ import base64
 
 import numpy as np
 
+
 #import argparse
 #parser = argparse.ArgumentParser(description='A letterfitting tool inspired by biology.')
 #parser.add_argument('font_path', type=str, help='Path to the input font file', default="/usr/share/fonts/truetype/liberation/LiberationSerif-Bold.ttf")
@@ -54,6 +55,8 @@ def hello():
 
 @app.route("/pair_preview", methods=["POST"])
 def pair_preview():
+    #e.simulate_edge_energy()
+    #return json.dumps({'ok': True, 'preview_image': ''})
     data = request.get_json()
     parsed_params = json.loads(data['params'])
 
@@ -62,6 +65,7 @@ def pair_preview():
     sc_gl, sc_gr, pair_image = e.create_pair_image(lc, rc, parsed_params["distance"])
     diffs = e.process_pair(sc_gl, sc_gr, parsed_params)
     wdiffs = e.weight_diffs(diffs, parsed_params)
+    print("Total for pair preview", np.sum(wdiffs[:, 0, :, :]))
 
     if parsed_params["scale"] == "all":
         preview_image = convert_to_base64_pairimg(np.sum(wdiffs[:, 0, :, :], (0)), pair_image)

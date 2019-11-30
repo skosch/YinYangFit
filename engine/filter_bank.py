@@ -9,6 +9,7 @@ class FilterBank:
         self.box_width = box_width
         self.n_sizes = n_sizes
         self.n_orientations = n_orientations
+        self.skip_scales = skip_scales
 
         self.filter_bank = np.zeros((n_sizes, n_orientations, box_height, box_width)).astype(np.complex64)
 
@@ -17,9 +18,7 @@ class FilterBank:
             fig, ax = plt.subplots(nrows=n_sizes*2, ncols=n_orientations, gridspec_kw = {'wspace':0, 'hspace':0}, figsize=(box_width * n_orientations / sizediv, box_height * n_sizes * 2 / sizediv))
 
         for s in range(n_sizes):
-            min_sigma = 1.5
-            max_sigma = box_width / 9.
-            sigma = (max_sigma - min_sigma) * (s + skip_scales)**2 / (n_sizes - 1)**2 + min_sigma
+            sigma = self.sigma(s)
             for o in range(n_orientations):
                 single_filter = self.get_filter(sigma, o) / sigma
                 if display_filters:
@@ -33,6 +32,12 @@ class FilterBank:
 
         if display_filters:
                 plt.show()
+
+    def sigma(self, si):
+        min_sigma = 1.5
+        max_sigma = self.box_width / 9.
+        sigma = (max_sigma - min_sigma) * (si + self.skip_scales)**2 / (self.n_sizes - 1)**2 + min_sigma
+        return sigma
 
     def rotated_mgrid(self, oi):
         """Used by __init__ only. Generates a meshgrid and rotate it by RotRad radians."""
@@ -51,8 +56,8 @@ class FilterBank:
 
         # To minimize ringing etc., we create the filter as is, then run it through the DFT.
         s1 = sigma
-        d1_space = -np.exp(-(x**2+y**2)/(2*s1**2))*x/(2*np.pi*s1**4)
-        d1 = np.fft.fft2(d1_space + 1j * np.zeros_like(d1_space)) #, [box_height, box_width])
+        d1_space = -np.exp(-(x**2+y**2)/(2*s1**2))*x/(2*np.pi*s1**4) 
+        d1 = np.fft.fft2(d1_space + 1j * np.zeros_like(d1_space)) #, [box_height, box_width]) 
 
         # Second derivative:
         s2 = sigma
@@ -60,7 +65,7 @@ class FilterBank:
         d2 = sigma**1.5 * np.fft.fft2(d2_space + 1j * np.zeros_like(d2_space)) #, [box_height, box_width])
 
         # Filter is complex(-d2,d1)
-        return 1j * (d2 + 1j * d1) * sigma**2
+        return 1j * (d2 + 1j * d1) * sigma
 
     def convolve(self, input_image):
         """
