@@ -15,6 +15,10 @@ from scipy.optimize import root_scalar
 
 import pyopencl as cl
 
+import os
+script_dir = os.path.dirname(os.path.abspath(__file__))
+kernels_file_path = os.path.join(script_dir, "kernels.cl")
+print("Kernels found at", kernels_file_path)
 
 all_lc_glyphs = "abcdefghijklmnopqrstuvwxyz"
 
@@ -39,34 +43,8 @@ class Engine:
         self.ctx = cl.create_some_context(False)      # Create a context with your device
         #now create a command queue in the context
         self.queue = cl.CommandQueue(self.ctx)
-        kernel_code = """
-            #include <pyopencl-complex.h>
-
-            __kernel void vpak(__global cfloat_t*lg, __global cfloat_t*rg,
-                             float const exponent, __global float*factor,
-                             __global float*gap_weights, __global float*blur_weights,
-                             __global float*dest,
-                             int const n_sizes, int const n_orientations, int const n_pixels
-              ) {
-
-              int si = get_global_id(0);
-              int oi = get_global_id(1);
-              int yx = get_global_id(2);
-
-              int i = (si * n_orientations * n_pixels) + (oi * n_pixels) + yx;
-
-              float diff = (
-                half_powr(factor[i] * cfloat_abs_squared(cfloat_add(lg[i], rg[i])), exponent/2.) -
-                half_powr(factor[i] * cfloat_abs_squared(lg[i]), exponent/2.) -
-                half_powr(factor[i] * cfloat_abs_squared(rg[i]), exponent/2.)
-              );
-
-              dest[i] = diff > 0 ? (1. + gap_weights[i]) * diff : (1. + blur_weights[i]) * diff;
-            }
-        """
-
         print("Compiling GPU kernel ...")
-        self.vp = cl.Program(self.ctx, kernel_code).build()
+        self.vp = cl.Program(self.ctx, open(kernels_file_path).read()).build()
         print("Compiled:", self.vp)
 
     def prerender_convolved_glyphs(self, glyphs):
@@ -98,12 +76,27 @@ class Engine:
 
         return (sc_lg, sc_rg, s_lg + s_rg)
 
+    def create_pair_image_distances(self, lc, rc, distances):
+        # This should just take the pre-convolved images and shift them.
+        total_width_at_minimum_ink_distance = self.single_glyph_widths[lc] + self.single_glyph_widths[rc] - self.f.minimum_ink_distance(lc, rc)
+
+        lshifts = np.ceil(np.array(distances) / 2)
+        rshifts = np.floor(np.array(distances) / 2)
+
+        total_ink_width = self.single_glyph_widths[lc] + self.single_glyph_widths[rc]
+        ink_width_left = np.floor(total_ink_width / 4)
+        ink_width_right = np.ceil(total_ink_width / 4)
+
+        left_translations = (-(np.ceil(total_width_at_minimum_ink_distance/2) + lshifts) - (-ink_width_left)).astype(np.int32)
+        right_translations = ((np.floor(total_width_at_minimum_ink_distance/2) + rshifts) - ink_width_right).astype(np.int32)
+
+        return left_translations, right_translations
+
     def process_image(self, sc_input, params, outim):
 
         return f_s
 
     def process_pair(self, sc_lg, sc_rg, params):
-
         sc_lg_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=sc_lg.reshape([self.n_sizes, self.n_orientations, self.box_height * self.box_width]))
         sc_rg_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=sc_rg.reshape([self.n_sizes, self.n_orientations, self.box_height * self.box_width]))
         factor_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['factor'].reshape([self.n_sizes, self.n_orientations, self.box_height * self.box_width]))
@@ -122,6 +115,57 @@ class Engine:
 
         # Diffs reshape
         return diffs.reshape((self.n_sizes, self.n_orientations, self.box_height, self.box_width))
+
+
+    def estimate_best_distance_parallel(self, lc, rc, params):
+        # TODO: get distances from params
+        distances = np.arange(20).astype(np.int32)
+
+        sc_lg = self.convolved_glyph_images[lc].reshape([self.n_sizes, self.n_orientations, self.box_height * self.box_width])
+        sc_rg = self.convolved_glyph_images[rc].reshape([self.n_sizes, self.n_orientations, self.box_height * self.box_width])
+        shifts_l, shifts_r = self.create_pair_image_distances(lc, rc, distances)
+
+        sc_lg_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=sc_lg)
+        sc_rg_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=sc_rg)
+        shifts_l_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=shifts_l)
+        shifts_r_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=shifts_r)
+        factor_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['factor'])
+        gap_weights_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['gap_weights'])
+        blur_weights_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['blur_weights'])
+
+        # create output buffer
+        diffs = np.ones((self.n_sizes, self.n_orientations, self.box_height * self.box_width * len(distances)), dtype=np.float32)
+        dest_dev = cl.Buffer(self.ctx, cl.mem_flags.WRITE_ONLY, diffs.nbytes)
+
+        self.vp.penalty_parallel(self.queue, diffs.shape, None,
+                                 dest_dev,
+                                 np.int32(self.n_sizes),
+                                 np.int32(self.n_orientations),
+                                 np.int32(self.box_height),
+                                 np.int32(self.box_width),
+                                 np.int32(len(distances)),
+                                 sc_lg_dev,
+                                 sc_rg_dev,
+                                 shifts_l_dev,
+                                 shifts_r_dev,
+                                 factor_dev,
+                                 np.float32(params['exponent']),
+                                 gap_weights_dev,
+                                 blur_weights_dev)
+
+        # Get result back
+        cl.enqueue_copy(self.queue, diffs, dest_dev)
+        diffs = np.reshape(diffs, (self.n_sizes, self.n_orientations, self.box_height, self.box_width, len(distances)))
+
+        # Take the sums at all of the distances
+        dsums = np.sum(diffs, (0, 1, 2, 3))
+
+        # Find the zero crossing
+        zerocrossing = distances[np.argmin(np.abs(dsums))]
+
+        # Diffs reshape
+        return zerocrossing
+
 
     def set_params(self, params):
         self.params = params
@@ -211,18 +255,20 @@ class Engine:
             print(self.get_penalty_at_dist(50, lc, rc, params))
             return 0
 
+
+
     def render_sample_text(self, text, params):
         distance_dict = {}
-        params['factor'] = np.tile(np.array(params['factor'])[:, None, None, None].astype(np.float32), [1, self.n_orientations, self.box_height, self.box_width])
-        params['beta'] = np.array(params['beta'])[:, None, None, None]
-        params['gap_weights'] = np.tile(np.array(params['gap_weights'])[:, None, None, None].astype(np.float32), [1, self.n_orientations, self.box_height, self.box_width])
-        params['blur_weights'] = np.tile(np.array(params['blur_weights'])[:, None, None, None].astype(np.float32), [1, self.n_orientations, self.box_height, self.box_width])
-        params['gap_weights_sq'] = np.array(params['gap_weights_sq'])[:, None, None, None].astype(np.float32)
-        params['blur_weights_sq'] = np.array(params['blur_weights_sq'])[:, None, None, None].astype(np.float32)
+        params['factor'] = np.tile(np.array(params['factor'])[:, None].astype(np.float32), [1, self.n_orientations])
+        params['beta'] = np.array(params['beta'])[:, None]
+        params['gap_weights'] = np.tile(np.array(params['gap_weights'])[:, None].astype(np.float32), [1, self.n_orientations])
+        params['blur_weights'] = np.tile(np.array(params['blur_weights'])[:, None].astype(np.float32), [1, self.n_orientations])
+        params['gap_weights_sq'] = np.array(params['gap_weights_sq'])[:, None].astype(np.float32)
+        params['blur_weights_sq'] = np.array(params['blur_weights_sq'])[:, None].astype(np.float32)
         for i in range(len(text) - 1):
             lc = text[i]
             rc = text[i + 1]
-            distance_dict[(lc, rc)] = self.estimate_best_distance(lc, rc, params) - self.f.minimum_ink_distance(lc, rc)
+            distance_dict[(lc, rc)] = self.estimate_best_distance_parallel(lc, rc, params) - self.f.minimum_ink_distance(lc, rc)
         return self.f.set_string(text, distance_dict)
 
 
