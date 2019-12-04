@@ -7,6 +7,8 @@ import { appActions, IAppState } from "../reducers/AppReducer";
 import { controlsActions, IControlsState } from "../reducers/ControlsReducer";
 import { previewActions, IPreviewState } from "../reducers/PreviewReducer";
 
+import Button from '@material-ui/core/Button';
+
 import "../style/Controls.less";
 
 interface IControlsProps {
@@ -26,8 +28,7 @@ class Controls extends PureComponent<
             rows={30} cols={60}
             value={JSON.stringify(this.props.controls, null, 2)}
           /><br/>
-          <button onClick={this.updateGlyphs}>Update glyphs</button>
-          <button onClick={this.updatePreview}>Sampletext preview</button>
+          <Button color="primary" onClick={this.updatePreview}>Sampletext preview</Button>
         </div>
       );
     }
@@ -38,19 +39,6 @@ class Controls extends PureComponent<
       } catch (e) {
         console.log("Could not update params:", e);
       }
-    }
-
-    private updateGlyphs = () => {
-      fetch("/api/glyph_images", {
-        method: "POST",
-        body: JSON.stringify({
-          chars: this.props.preview.sampleText,
-        }),
-        headers: {
-          'Accept': 'application/octet-stream',
-          'Content-Type': 'application/json'
-        },
-      }).then(res => res.arrayBuffer()).then(this.props.previewActions.updateGlyphImages).catch(e => console.log(e));
     }
 
     private updatePreview = () => {

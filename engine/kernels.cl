@@ -4,7 +4,7 @@ __kernel void vpak(__global cfloat_t*lg, __global cfloat_t*rg,
                    float const exponent, __global float*factor,
                    __global float*gap_weights, __global float*blur_weights,
                    __global float*dest,
-                   int const n_sizes, int const n_orientations, int const n_pixels
+                   int const n_scales, int const n_orientations, int const n_pixels
                    ) {
 
   int si = get_global_id(0);
@@ -22,23 +22,23 @@ __kernel void vpak(__global cfloat_t*lg, __global cfloat_t*rg,
   dest[i] = diff > 0 ? (1. + gap_weights[i]) * diff : (1. + blur_weights[i]) * diff;
 }
 
-__kernel void penalty_parallel(__global float *dest, // [n_sizes, n_orientations, box_height * box_width * n_distances]
-                               int n_sizes,
+__kernel void penalty_parallel(__global float *dest, // [n_scales, n_orientations, box_height * box_width * n_distances]
+                               int n_scales,
                                int n_orientations,
                                int box_height,
                                int box_width,
                                int n_distances,
-                               __global cfloat_t *sc_lg, // [n_sizes, n_orientations, box_height * box_width]
-                               __global cfloat_t *sc_rg, // [n_sizes, n_orientations, box_height * box_width]
+                               __global cfloat_t *sc_lg, // [n_scales, n_orientations, box_height * box_width]
+                               __global cfloat_t *sc_rg, // [n_scales, n_orientations, box_height * box_width]
                                __constant int *shifts_l, // [n_distances]
                                __constant int *shifts_r, // [n_distances]
-                               __global float *factor, // [n_sizes, n_orientations]
+                               __global float *factor, // [n_scales, n_orientations]
                                float exponent,
-                               __global float *gap_weights, // [n_sizes, n_orientations]
-                               __global float *blur_weights) // [n_sizes, n_orientations]
+                               __global float *gap_weights, // [n_scales, n_orientations]
+                               __global float *blur_weights) // [n_scales, n_orientations]
   {
 
-  // sc_lg and sc_rg are reshaped to [n_sizes, n_orientations, box_height * box_width * n_distances].
+  // sc_lg and sc_rg are reshaped to [n_scales, n_orientations, box_height * box_width * n_distances].
   // First, compute the indices in those flattened arrays.
   int si = get_global_id(0);
   int oi = get_global_id(1);

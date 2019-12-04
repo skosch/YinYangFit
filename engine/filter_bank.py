@@ -4,20 +4,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class FilterBank:
-    def __init__(self, n_sizes, n_orientations, box_height, box_width, skip_scales, display_filters=False):
+    def __init__(self, n_scales, n_orientations, box_height, box_width, skip_scales, display_filters=False):
         self.box_height = box_height
         self.box_width = box_width
-        self.n_sizes = n_sizes
+        self.n_scales = n_scales
         self.n_orientations = n_orientations
         self.skip_scales = skip_scales
 
-        self.filter_bank = np.zeros((n_sizes, n_orientations, box_height, box_width)).astype(np.complex64)
+        self.filter_bank = np.zeros((n_scales, n_orientations, box_height, box_width)).astype(np.complex64)
 
         if display_filters:
             sizediv = 60
-            fig, ax = plt.subplots(nrows=n_sizes*2, ncols=n_orientations, gridspec_kw = {'wspace':0, 'hspace':0}, figsize=(box_width * n_orientations / sizediv, box_height * n_sizes * 2 / sizediv))
+            fig, ax = plt.subplots(nrows=n_scales*2, ncols=n_orientations, gridspec_kw = {'wspace':0, 'hspace':0}, figsize=(box_width * n_orientations / sizediv, box_height * n_scales * 2 / sizediv))
 
-        for s in range(n_sizes):
+        for s in range(n_scales):
             sigma = self.sigma(s)
             for o in range(n_orientations):
                 single_filter = self.get_filter(sigma, o) / sigma
@@ -36,7 +36,7 @@ class FilterBank:
     def sigma(self, si):
         min_sigma = 1.5
         max_sigma = self.box_width / 9.
-        sigma = (max_sigma - min_sigma) * (si + self.skip_scales)**2 / (self.n_sizes - 1)**2 + min_sigma
+        sigma = (max_sigma - min_sigma) * (si + self.skip_scales)**2 / (self.n_scales - 1)**2 + min_sigma
         return sigma
 
     def rotated_mgrid(self, oi):

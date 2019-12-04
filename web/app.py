@@ -24,6 +24,13 @@ app = Flask(__name__)
 def hello():
     return render_template('base.html')
 
+@app.route("/api/load_font", methods=["POST"])
+def load_font():
+    data = request.get_json()
+    e.load_font_file(data['file_name'], data['size_factor'])
+    e.load_filter_bank_and_convolve_glyphs(data['n_scales'], data['n_orientations'], data['glyphset'])
+    return json.dumps(e.font_info())
+
 @app.route("/api/font_info")
 def font_info():
     return json.dumps(e.font_info())
@@ -34,13 +41,6 @@ def render_preview():
     preview_data = e.render_sample_text(data["sampleText"], data)
     # TODO: use protobuf for this, so we don't have to encode and decode everything always
     return json.dumps(preview_data)
-
-@app.route("/api/glyph_images", methods=["POST"])
-def glyph_images():
-    chars = request.get_json()['chars']
-    response = make_response(e.get_glyph_images(chars))
-    response.headers.set('Content-Type', 'application/octet-stream')
-    return response
 
 @app.route("/api/best_distances_and_full_penalty_fields", methods=["POST"])
 def best_distances_and_full_penalty_fields():

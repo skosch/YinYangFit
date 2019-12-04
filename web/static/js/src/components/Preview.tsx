@@ -4,13 +4,20 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import { IAppState } from "../reducers/AppReducer";
-import { previewActions, IPreviewState } from "../reducers/PreviewReducer";
+import {
+  previewActions,
+  IPreviewState,
+  EPreviewStatus
+} from "../reducers/PreviewReducer";
 
 import ndarray from "ndarray";
 import ndarrayOps from "ndarray-ops";
 import pool from "typedarray-pool";
 
 import { applyColormap } from "../utils/Color";
+
+import Slider from "@material-ui/core/Slider";
+import TextField from "@material-ui/core/TextField";
 
 import "../style/Preview.less";
 
@@ -31,7 +38,7 @@ class Preview extends PureComponent<IPreviewProps & typeof previewActions> {
     this.ctx = this.previewCanvasRef.current.getContext("2d");
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     this.repaintPreviewCanvas();
   }
 
@@ -39,29 +46,50 @@ class Preview extends PureComponent<IPreviewProps & typeof previewActions> {
     return (
       <div id="preview">
         <div id="preview-controls">
-        <input
-          id="sample-text-input"
-          value={this.props.preview.sampleText}
-          onChange={this.updateSampleText}
-        />
-        <input
-          type="range"
-          min={0}
-          max={1.0}
-          step={0.01}
-            value={this.props.preview.penaltyFieldsAlpha}
-            onChange={this.updatePenaltyFieldsAlpha}
-          />
-        <input
-          type="range"
-          min={0}
-          max={1.0}
-          step={0.01}
-            value={this.props.preview.sampleTextAlpha}
-            onChange={this.updateSampleTextAlpha}
-          />
+          <div>
+            <input
+              id="sample-text-input"
+              value={this.props.preview.sampleText}
+              onChange={this.updateSampleText}
+              onKeyDown={this.onSampleTextKeyDown}
+              type="text"
+            />
+          </div>
+          <div>
+            Penalty fields alpha:
+            <Slider
+              value={this.props.preview.penaltyFieldsAlpha}
+              onChange={this.updatePenaltyFieldsAlpha}
+              valueLabelDisplay="auto"
+              min={0}
+              max={1.0}
+              step={0.01}
+            />
+          </div>
+          <div>
+            Sample text alpha:
+            <Slider
+              value={this.props.preview.sampleTextAlpha}
+              onChange={this.updateSampleTextAlpha}
+              valueLabelDisplay="auto"
+              min={0}
+              max={1.0}
+              step={0.01}
+            />
+          </div>
+          <div>
+            Displayed scales:
+            <Slider
+              value={this.props.preview.currentScaleRange}
+              onChange={this.updateCurrentScaleRange}
+              valueLabelDisplay="auto"
+              min={0}
+              max={17}
+              step={1}
+            />
+          </div>
         </div>
-          
+
         <canvas
           id="preview-canvas"
           height={200}
@@ -72,19 +100,47 @@ class Preview extends PureComponent<IPreviewProps & typeof previewActions> {
     );
   }
 
-  private updateSampleText = (ev: any) => {
+  private updateSampleText = ev => {
     this.props.updateSampleText(ev.currentTarget.value);
   };
 
-  private updatePenaltyFieldsAlpha = (ev: any) => {
-    this.props.update({penaltyFieldsAlpha: {$set: parseFloat(ev.currentTarget.value)}});
+  private onSampleTextKeyDown = ev => {
+    if (ev.key === "Enter") {
+      fetch("/api/best_distances_and_full_penalty_fields", {
+        method: "POST",
+        body: JSON.stringify({
+          params: {
+            ...this.props.controls,
+            sampleText: this.props.preview.sampleText
+          }
+        }),
+        headers: {
+          Accept: "application/octet-stream",
+          "Content-Type": "application/json"
+        }
+      })
+        .then(res => res.arrayBuffer())
+        .then(this.props.updateBestDistancesAndFullPenaltyFieldsPreviewData)
+        .catch(e => console.log(e));
+    }
   };
-  private updateSampleTextAlpha = (ev: any) => {
-    this.props.update({sampleTextAlpha: {$set: parseFloat(ev.currentTarget.value)}});
+
+  private updatePenaltyFieldsAlpha = (ev, value) => {
+    this.props.update({ penaltyFieldsAlpha: { $set: value } });
   };
-    
+  private updateSampleTextAlpha = (ev, value) => {
+    this.props.update({ sampleTextAlpha: { $set: value } });
+  };
+  private updateCurrentScaleRange = (ev, value) => {
+    this.props.update({ currentScaleRange: { $set: value } });
+  };
+
   private repaintPreviewCanvas = () => {
-    if (!this.props.preview.currentPenaltyFields[this.props.preview.sampleText.slice(0, 2)]) {
+    if (
+      !this.props.preview.currentPenaltyFields[
+        this.props.preview.sampleText.slice(0, 2)
+      ]
+    ) {
       return;
     }
 
@@ -103,18 +159,20 @@ class Preview extends PureComponent<IPreviewProps & typeof previewActions> {
     for (let i = 0; i < this.props.preview.sampleText.length - 1; i++) {
       const lc = this.props.preview.sampleText[i];
       const rc = this.props.preview.sampleText[i + 1];
-      const field = ndarray(this.props.preview.currentPenaltyFields[lc + rc], [
-        this.props.app.height,
-        penaltyFieldWidths[i]
-      ]);
+      if (this.props.preview.currentPenaltyFields.hasOwnProperty(lc + rc)) {
+        const field = ndarray(
+          this.props.preview.currentPenaltyFields[lc + rc],
+          [this.props.app.height, penaltyFieldWidths[i]]
+        );
 
-      for (let y = 0; y < this.props.app.height; y++) {
-        for (let x = 0; x < penaltyFieldWidths[i]; x++) {
-          outArray.set(
-            y,
-            x + penaltyFieldPositions[i],
-            outArray.get(y, x + penaltyFieldPositions[i]) + field.get(y, x)
-          );
+        for (let y = 0; y < this.props.app.height; y++) {
+          for (let x = 0; x < penaltyFieldWidths[i]; x++) {
+            outArray.set(
+              y,
+              x + penaltyFieldPositions[i],
+              outArray.get(y, x + penaltyFieldPositions[i]) + field.get(y, x)
+            );
+          }
         }
       }
     }
@@ -144,9 +202,15 @@ class Preview extends PureComponent<IPreviewProps & typeof previewActions> {
           const glyphiness = glyphArray.get(y, x); // 1. for glyph active, 0 for not active
           // if the glyph is not active, we want no change,
           // if the glyph is active, we want a darkening between current and zero
-          const newR = currentR * (1. - this.props.preview.sampleTextAlpha * glyphiness) | 0;
-          const newG = currentG * (1. - this.props.preview.sampleTextAlpha * glyphiness) | 0;
-          const newB = currentB * (1. - this.props.preview.sampleTextAlpha * glyphiness) | 0;
+          const newR =
+            (currentR * (1 - this.props.preview.sampleTextAlpha * glyphiness)) |
+            0;
+          const newG =
+            (currentG * (1 - this.props.preview.sampleTextAlpha * glyphiness)) |
+            0;
+          const newB =
+            (currentB * (1 - this.props.preview.sampleTextAlpha * glyphiness)) |
+            0;
           colorizedArray.set(y, glyphPosition + x, 0, newR);
           colorizedArray.set(y, glyphPosition + x, 1, newG);
           colorizedArray.set(y, glyphPosition + x, 2, newB);
@@ -161,6 +225,7 @@ class Preview extends PureComponent<IPreviewProps & typeof previewActions> {
       this.props.app.height
     );
     this.ctx.putImageData(imageData, 0, 0);
+    this.props.update({ status: { $set: EPreviewStatus.RenderedAndPainted } });
   };
 
   private getPositionsAndWidth = () => {
@@ -179,30 +244,36 @@ class Preview extends PureComponent<IPreviewProps & typeof previewActions> {
       glyphPositions[i] =
         glyphPositions[i - 1] +
         this.props.preview.glyphImages[lc].width +
-        this.props.preview.currentDistances[lc + rc];
+        (this.props.preview.currentDistances[lc + rc] || 0);
     }
 
     // Then, place all of the penalty field images.
     for (let i = 0; i < this.props.preview.sampleText.length - 1; i++) {
       const lc = this.props.preview.sampleText[i];
       const rc = this.props.preview.sampleText[i + 1];
-        
+
       const glyphPairAtDistanceWidth =
         this.props.preview.glyphImages[lc].width +
-        this.props.preview.currentDistances[lc + rc] +
+        (this.props.preview.currentDistances[lc + rc] || 0) +
         this.props.preview.glyphImages[rc].width;
 
-      const fieldWidth =
-        this.props.preview.currentPenaltyFields[lc + rc].length /
-        this.props.app.height;
+      if (this.props.preview.currentPenaltyFields.hasOwnProperty(lc + rc)) {
+        const fieldWidth =
+          this.props.preview.currentPenaltyFields[lc + rc].length /
+          this.props.app.height;
 
-      const glyphPairMarginLeft = Math.floor(
-        (fieldWidth - glyphPairAtDistanceWidth) / 2
-      );
+        const glyphPairMarginLeft = Math.floor(
+          (fieldWidth - glyphPairAtDistanceWidth) / 2
+        );
 
-      penaltyFieldWidths[i] = fieldWidth;
-      penaltyFieldPositions[i] = glyphPositions[i] - glyphPairMarginLeft;
-      totalWidth = penaltyFieldPositions[i] + fieldWidth;
+        penaltyFieldWidths[i] = fieldWidth;
+        penaltyFieldPositions[i] = glyphPositions[i] - glyphPairMarginLeft;
+        totalWidth = penaltyFieldPositions[i] + fieldWidth;
+      } else {
+        penaltyFieldWidths[i] = this.props.app.fontInfo.boxWidth;
+        penaltyFieldPositions[i] = glyphPositions[i];
+        totalWidth = penaltyFieldPositions[i] + this.props.preview.glyphImages[lc].width + this.props.preview.glyphImages[rc].width;
+      }
     }
 
     // now we just have to shift everything over by penaltyFieldPositions[0], to correct for the
@@ -225,10 +296,11 @@ class Preview extends PureComponent<IPreviewProps & typeof previewActions> {
 }
 
 export default connect(
-  ({ app, preview }: any) => {
+  ({ app, preview, controls }: any) => {
     return {
       app,
-      preview
+      preview,
+      controls
     };
   },
   dispatch => ({

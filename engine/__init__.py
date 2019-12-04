@@ -16,6 +16,7 @@ from tqdm import tqdm
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
+import base64
 
 import pyopencl as cl
 
@@ -25,28 +26,32 @@ print("Loading OpenCL kernel file at", kernels_file_path)
 all_lc_glyphs = "abcdefghijklmnopqrstuvwxyz"
 
 class Engine:
-    def __init__(self, file_name, size_factor=1.1, n_sizes=17, n_orientations=4, glyphs=all_lc_glyphs):
+    def __init__(self, file_name, size_factor=2.1, n_scales=17, n_orientations=4, glyphset=all_lc_glyphs):
         self.single_glyph_widths = {}
         self.single_glyph_images = {}
         self.convolved_glyph_images = {}
         self.set_up_gpu_processor_kernel()
 
         self.load_font_file(file_name, size_factor)
-        self.load_filter_bank_and_convolve_glyphs(n_sizes, n_orientations, glyphs)
+        self.load_filter_bank_and_convolve_glyphs(n_scales, n_orientations, glyphset)
         print("Engine loaded.")
 
     def load_font_file(self, file_name, size_factor):
         (f, box_height, box_width) = load_font(file_name, size_factor)
         self.f = f
+        self.file_name = file_name
+        self.size_factor = size_factor
         self.box_height = box_height
         self.box_width = box_width
         print("Font loaded.")
 
-    def load_filter_bank_and_convolve_glyphs(self, n_sizes, n_orientations, glyphs):
-        self.filter_bank = FilterBank(n_sizes, n_orientations, self.box_height, self.box_width, 0, display_filters=False)
-        self.n_sizes = n_sizes
+    def load_filter_bank_and_convolve_glyphs(self, n_scales, n_orientations, glyphset):
+        self.filter_bank = FilterBank(n_scales, n_orientations, self.box_height, self.box_width, 0, display_filters=False)
+        self.glyphset = glyphset
+        self.n_scales = n_scales
         self.n_orientations = n_orientations
-        for g in glyphs:
+        print("Convolving glyphs ...")
+        for g in tqdm(glyphset):
             rg = self.f.glyph(g)
             self.single_glyph_widths[g] = rg.ink_width
             self.single_glyph_images[g] = rg.as_matrix(normalize=True).with_padding_to_constant_box_width(self.box_width)
@@ -58,11 +63,11 @@ class Engine:
         For convenience. Used by the web interface to display info about the loaded font,
         adjust the height of the preview canvas, etc.
         """
-
         font_info = {
+            "size_factor": self.size_factor,
             "box_height": self.box_height,
             "box_width": self.box_width,
-            "n_sizes": self.n_sizes,
+            "n_scales": self.n_scales,
             "n_orientations": self.n_orientations,
             "ascender": self.f.ascender,
             "ascender_px": self.f.ascender_px,
@@ -71,13 +76,35 @@ class Engine:
             "descender_px": self.f.descender_px,
             "family_name": self.f.face.family_name.decode("utf-8"),
             "style_name": self.f.face.style_name.decode("utf-8"),
-            "filename": self.f.filename,
+            "file_name": self.file_name,
             "full_height": self.f.full_height,
             "full_height_px": self.f.full_height_px,
             "xheight": self.f.get_xheight(),
             "italic_angle": self.f.italic_angle,
+            "glyph_images": self.get_glyph_images(self.glyphset)
         }
         return font_info
+
+
+    def get_glyph_images(self, glyphset):
+        bytes_writer = io.BytesIO()
+
+        # We're using the following encoding:
+        # 4 bytes character (utf-16)
+        # 4 bytes height (int32)
+        # 4 bytes width (int32)
+        # (height * width * 4) bytes penalty_fields (float32)
+
+        for c in glyphset:
+            rg = self.f.glyph(c)
+            bytes_writer.write(c.encode("utf-16")) # utf-16 means always use 4 bytes (2 for BOM, then 2 for the character)
+            bytes_writer.write(np.int32(self.box_height).tobytes()) # height
+            bytes_writer.write(np.int32(rg.ink_width).tobytes()) # width
+            bytes_writer.write(rg.as_matrix(normalize=True).astype(np.float32).tobytes())
+
+        binary_images = bytes_writer.getvalue()
+        binary_as_string = base64.b64encode(binary_images).decode("utf-8")
+        return binary_as_string
 
     def set_up_gpu_processor_kernel(self):
         self.ctx = cl.create_some_context(False)      # Create a context with your device
@@ -102,8 +129,8 @@ class Engine:
         # Renders the penalty field for a certain set of sizes and orientations (or all), and returns the diffs
         # TODO: get distances from params
 
-        sc_lg = self.convolved_glyph_images[lc].reshape([self.n_sizes, self.n_orientations, self.box_height * self.box_width])
-        sc_rg = self.convolved_glyph_images[rc].reshape([self.n_sizes, self.n_orientations, self.box_height * self.box_width])
+        sc_lg = self.convolved_glyph_images[lc].reshape([self.n_scales, self.n_orientations, self.box_height * self.box_width])
+        sc_rg = self.convolved_glyph_images[rc].reshape([self.n_scales, self.n_orientations, self.box_height * self.box_width])
         shifts_l, shifts_r = self.create_pair_image_distances(lc, rc, distances)
 
         sc_lg_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=sc_lg)
@@ -115,12 +142,12 @@ class Engine:
         blur_weights_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['blur_weights'])
 
         # create output buffer
-        diffs = np.ones((self.n_sizes, self.n_orientations, self.box_height * self.box_width * len(distances)), dtype=np.float32)
+        diffs = np.ones((self.n_scales, self.n_orientations, self.box_height * self.box_width * len(distances)), dtype=np.float32)
         dest_dev = cl.Buffer(self.ctx, cl.mem_flags.WRITE_ONLY, diffs.nbytes)
 
         self.vp.penalty_parallel(self.queue, diffs.shape, None,
                                  dest_dev,
-                                 np.int32(self.n_sizes),
+                                 np.int32(self.n_scales),
                                  np.int32(self.n_orientations),
                                  np.int32(self.box_height),
                                  np.int32(self.box_width),
@@ -136,7 +163,7 @@ class Engine:
 
         # Get result back
         cl.enqueue_copy(self.queue, diffs, dest_dev)
-        penalty_field = np.reshape(diffs, (self.n_sizes, self.n_orientations, self.box_height, self.box_width, len(distances))).astype(np.float32)
+        penalty_field = np.reshape(diffs, (self.n_scales, self.n_orientations, self.box_height, self.box_width, len(distances))).astype(np.float32)
 
         return penalty_field
 
@@ -197,25 +224,6 @@ class Engine:
                 bytes_writer.write(np.int32(np_penalty_fields.shape[2]).tobytes()) # height
                 bytes_writer.write(np.int32(np_penalty_fields.shape[3]).tobytes()) # height
                 bytes_writer.write(np.sum(np_penalty_fields[:, :, :, :, best_distance_index], (0, 1)).astype(np.float32).tobytes())
-
-        return bytes_writer.getvalue()
-
-
-    def get_glyph_images(self, chars):
-        bytes_writer = io.BytesIO()
-
-        # We're using the following encoding:
-        # 4 bytes character (utf-16)
-        # 4 bytes height (int32)
-        # 4 bytes width (int32)
-        # (height * width * 4) bytes penalty_fields (float32)
-
-        for c in chars:
-            rg = self.f.glyph(c)
-            bytes_writer.write(c.encode("utf-16")) # utf-16 means always use 4 bytes (2 for BOM, then 2 for the character)
-            bytes_writer.write(np.int32(self.box_height).tobytes()) # height
-            bytes_writer.write(np.int32(rg.ink_width).tobytes()) # width
-            bytes_writer.write(rg.as_matrix(normalize=True).astype(np.float32).tobytes())
 
         return bytes_writer.getvalue()
 

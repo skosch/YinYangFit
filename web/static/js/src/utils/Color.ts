@@ -25,11 +25,11 @@ interface IScaleEntry {
 
 const createColormap = () => {
     const scale: IScaleEntry[] = [
-        { index: 0, rgba: [178, 10, 28, 255] },
-        { index: 0.4, rgba:  [178, 10, 28, 255]},
+        { index: 0,   rgba: [138, 2, 78, 255] },
+        { index: 0.2, rgba: [239, 138, 98, 255]},
         { index: 0.5, rgba: [255, 255, 255, 255] },
-        { index: 0.6, rgba: [5, 10, 172, 255] },
-        { index: 1, rgba: [5, 10, 172, 255]}
+        { index: 0.8, rgba: [103, 169, 207, 255] },
+        { index: 1,   rgba: [5, 80, 172, 255]}
     ];
 
   const nshades = 256;

@@ -5,6 +5,7 @@ import update from 'immutability-helper';
 interface IFontInfo {
   boxHeight: number;
   boxWidth: number;
+  sizeFactor: number;
   nSizes: number;
   nOrientations: number;
   ascender: number;
@@ -23,21 +24,17 @@ interface IFontInfo {
 
 interface IAppState {
   fontInfo: IFontInfo;
-  fontFilePath: string;
   fontLoadedStatus: string;
   fontName: string;
   height: number;
+  loadingText: string;
 };
 
-const defaultState: IAppState = {
-  fontFilePath: "",
-  fontLoadedStatus: "No file loaded",
-  fontName: "",
-  height: 89,
-  fontInfo: {
+const emptyFontInfo = {
     boxHeight: 0,
     boxWidth: 0,
     nSizes: 0,
+    sizeFactor: 0,
     nOrientations: 0,
     ascender: 0,
     ascenderPx: 0,
@@ -51,17 +48,28 @@ const defaultState: IAppState = {
     fullHeightPx: 0,
     xHeight: 0,
     italicAngle: 0,
-  },
+};
+
+const defaultState: IAppState = {
+  fontLoadedStatus: "No file loaded",
+  fontName: "",
+  height: 171,
+  fontInfo: emptyFontInfo,
+  loadingText: "",
 };
 
 const appActions = {
-  loadFont: createAction("app/LOAD_FONT")<string>(),
-  updateFontInfo: createAction("app/UPDATE_FONT_INFO")<IFontInfo>(),
+  updateFileName: createAction("app/UPDATE_FILE_NAME")<string>(),
+  loadFontInfo: createAction("app/UPDATE_FONT_INFO")<{fontInfo: IFontInfo, glyphImagesRaw: any}>(),
+  setLoading: createAction("app/SET_LOADING")<string>(),
 };
 
 const AppReducer = createReducer(defaultState)
-.handleAction(appActions.loadFont, (state: IAppState, {payload: fontFilePath}: {payload: string}) => update(state, {fontFilePath: {$set: fontFilePath}}))
-.handleAction(appActions.updateFontInfo, (state: IAppState, {payload: fontInfo}: {payload: IFontInfo}) => update(state, {fontInfo: {$merge: fontInfo}}));
+      .handleAction(appActions.updateFileName, (state: IAppState, {payload: fileName}: {payload: string}) => update(state, {fontInfo: {$set: update(emptyFontInfo, {
+                                                                                                                              fileName: {$set: fileName}})}}))
+      .handleAction(appActions.loadFontInfo, (state: IAppState, {payload: {fontInfo, glyphImagesRaw}}: {payload: any}) => update(state, {fontInfo: {$merge: fontInfo},
+                                                                                                                                         height: {$set: fontInfo.boxHeight}}))
+      .handleAction(appActions.setLoading, (state: IAppState, {payload: loadingText}: {payload: string}) => update(state, {loadingText: {$set: loadingText}}));
 
 export {
   appActions,
