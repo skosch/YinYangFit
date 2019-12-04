@@ -26,7 +26,7 @@ print("Loading OpenCL kernel file at", kernels_file_path)
 all_lc_glyphs = "abcdefghijklmnopqrstuvwxyz"
 
 class Engine:
-    def __init__(self, file_name, size_factor=2.1, n_scales=17, n_orientations=4, glyphset=all_lc_glyphs):
+    def __init__(self, file_name, size_factor=0.9, n_scales=17, n_orientations=4, glyphset=all_lc_glyphs):
         self.single_glyph_widths = {}
         self.single_glyph_images = {}
         self.convolved_glyph_images = {}
@@ -128,9 +128,15 @@ class Engine:
     def render_penalty_fields(self, lc, rc, params, distances):
         # Renders the penalty field for a certain set of sizes and orientations (or all), and returns the diffs
         # TODO: get distances from params
+        current_scales = np.array(params.get("currentScales", np.arange(self.n_scales)))
+        n_current_scales = len(current_scales)
+        current_orientations = np.array(params.get("currentOrientations", np.arange(self.n_orientations)))
+        n_current_orientations = len(current_orientations)
 
-        sc_lg = self.convolved_glyph_images[lc].reshape([self.n_scales, self.n_orientations, self.box_height * self.box_width])
-        sc_rg = self.convolved_glyph_images[rc].reshape([self.n_scales, self.n_orientations, self.box_height * self.box_width])
+        print("SCALES", self.convolved_glyph_images[lc][current_scales[:, None], current_orientations[None, :], :, :].shape)
+
+        sc_lg = self.convolved_glyph_images[lc][current_scales[:, None], current_orientations[None, :], :, :].reshape([n_current_scales, n_current_orientations, self.box_height * self.box_width])
+        sc_rg = self.convolved_glyph_images[rc][current_scales[:, None], current_orientations[None, :], :, :].reshape([n_current_scales, n_current_orientations, self.box_height * self.box_width])
         shifts_l, shifts_r = self.create_pair_image_distances(lc, rc, distances)
 
         sc_lg_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=sc_lg)
@@ -142,13 +148,13 @@ class Engine:
         blur_weights_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['blur_weights'])
 
         # create output buffer
-        diffs = np.ones((self.n_scales, self.n_orientations, self.box_height * self.box_width * len(distances)), dtype=np.float32)
+        diffs = np.ones((n_current_scales, n_current_orientations, self.box_height * self.box_width * len(distances)), dtype=np.float32)
         dest_dev = cl.Buffer(self.ctx, cl.mem_flags.WRITE_ONLY, diffs.nbytes)
 
         self.vp.penalty_parallel(self.queue, diffs.shape, None,
                                  dest_dev,
-                                 np.int32(self.n_scales),
-                                 np.int32(self.n_orientations),
+                                 np.int32(n_current_scales),
+                                 np.int32(n_current_orientations),
                                  np.int32(self.box_height),
                                  np.int32(self.box_width),
                                  np.int32(len(distances)),
@@ -163,7 +169,7 @@ class Engine:
 
         # Get result back
         cl.enqueue_copy(self.queue, diffs, dest_dev)
-        penalty_field = np.reshape(diffs, (self.n_scales, self.n_orientations, self.box_height, self.box_width, len(distances))).astype(np.float32)
+        penalty_field = np.reshape(diffs, (n_current_scales, n_current_orientations, self.box_height, self.box_width, len(distances))).astype(np.float32)
 
         return penalty_field
 
@@ -171,10 +177,16 @@ class Engine:
         # Generate the fields for just a single distance, and a subset of sizes and orientations.
         params = self.prepare_params(params)
 
-        fb = flatbuffers.Builder()
-
-
         rendered_pairs = {} # Just so we don't do work more than once
+
+        bytes_writer = io.BytesIO()
+
+        # We're using the following encoding:
+        # 4 bytes first character
+        # 4 bytes second character
+        # 4 bytes height
+        # 4 bytes width
+        # (height * width * 4) bytes penalty_fields (float32)
 
         text = params["sampleText"]
         for i in tqdm(range(len(text) - 1)):
@@ -182,12 +194,17 @@ class Engine:
             rc = text[i + 1]
             if (lc + rc) not in rendered_pairs:
                 rendered_pairs[(lc + rc)] = True
-                penalty_fields = self.render_penalty_fields(lc, rc, params, np.array([params['distance']]).astype(np.int32))
+                print("Current distance:", params['currentDistances'][lc + rc])
+                np_penalty_fields = self.render_penalty_fields(lc, rc, params, np.array([params['currentDistances'][lc + rc]]).astype(np.int32))
+                print("Rendered penalty field, shape", np_penalty_fields.shape)
 
-                protobuf_output.penalty_fields[(lc + rc)] = np.sum(penalty_fields[:, :, :, :, 0], (0, 1)).astype(np.float32).tobytes()
-                protobuf_output.best_distances[(lc + rc)] = int(0) # This should just be ignored in the browser.
+                bytes_writer.write(lc.encode("utf-16")) # utf-16 means always use 4 bytes (2 for BOM, then 2 for the character)
+                bytes_writer.write(rc.encode("utf-16")) # Can't use utf32 becaues not supported by browsers
+                bytes_writer.write(np.int32(np_penalty_fields.shape[2]).tobytes()) # height
+                bytes_writer.write(np.int32(np_penalty_fields.shape[3]).tobytes()) # height
+                bytes_writer.write(np.sum(np_penalty_fields[:, :, :, :, 0], (0, 1)).astype(np.float32).tobytes())
 
-        return protobuf_output.SerializeToString()
+        return bytes_writer.getvalue()
 
 
     def get_best_distances_and_full_penalty_fields(self, params):

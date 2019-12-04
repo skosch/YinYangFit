@@ -5,7 +5,6 @@ import {bufferFromBase64} from "../utils/Base64";
 
 import { appActions } from "./AppReducer";
 
-export enum EPreviewStatus {NotRendered, RenderedAndPainted, OutOfDate, RenderedNotPainted}
 interface IPreviewState {
   fullPenaltyFields: {
     [pair: string]: Float32Array;
@@ -20,13 +19,13 @@ interface IPreviewState {
     [pair: string]: number;
   };
   currentScaleRange: [number, number];
+  currentOrientations: number[];
   glyphImages: {
     [c: string]: {
       array: Float32Array;
       width: number;
     };
   };
-  status: EPreviewStatus;
   maxAbsVal: number;
   sampleText: string;
   penaltyFieldsAlpha: number;
@@ -39,10 +38,10 @@ const defaultState: IPreviewState = {
   currentPenaltyFields: {},
   bestDistances: {},
   currentDistances: {},
+  currentOrientations: [0, 1, 2, 3],
   glyphImages: {},
   maxAbsVal: 0,
   sampleText: "ham",
-  status: EPreviewStatus.NotRendered,
   currentScaleRange: [0, 17],
   penaltyFieldsAlpha: 1.0,
   sampleTextAlpha: 0.5,
@@ -103,20 +102,47 @@ const PreviewReducer = createReducer(defaultState)
         fullPenaltyFields: { $set: fullPenaltyFields },
         currentPenaltyFields: { $set: fullPenaltyFields },
         maxAbsVal: { $set: maxAbsVal },
-        status: {$set: EPreviewStatus.RenderedNotPainted },
       });
     }
   )
   .handleAction(
     previewActions.updatePenaltyFieldsSubsetPreviewData,
-    (state: IPreviewState, { payload: previewDataBuf }) => {
-      return state;
+    (state: IPreviewState, { payload: {previewDataBuf, currentScaleRange, currentOrientations, currentDistances }}) => {
+
+      const currentPenaltyFields = {};
+
+      let i = 0;
+      while (i < previewDataBuf.byteLength) {
+        const lc = te.decode(new Uint8Array(previewDataBuf.slice(i, i + 4)));
+        const rc = te.decode(
+          new Uint8Array(previewDataBuf.slice(i + 4, i + 8))
+        );
+        const hw = new Int32Array(previewDataBuf.slice(i + 8, i + 16));
+        const height = hw[0];
+        const width = hw[1];
+        const arraySize = height * width * 4;
+        const array = new Float32Array(
+          previewDataBuf.slice(i + 16, i + 16 + arraySize)
+        );
+
+        currentPenaltyFields[lc + rc] = array;
+
+        i += 16 + arraySize;
+      }
+
+      return update(state, {
+        currentPenaltyFields: { $set: currentPenaltyFields },
+        currentScaleRange: {$set: currentScaleRange },
+        currentOrientations: {$set: currentOrientations },
+        currentDistances: {$set: currentDistances },
+        loadingText: {$set: ""},
+      });
     }
   )
   .handleAction(
     previewActions.updateSampleText,
     (state: IPreviewState, { payload: sampleText }: { payload: string }) =>
-      update(state, { sampleText: { $set: sampleText }, status: {$set: EPreviewStatus.OutOfDate} })
+      update(state, { sampleText: { $set: sampleText } })
   )
   .handleAction(appActions.updateFileName, (state: IPreviewState) =>
     update(state, {
@@ -131,7 +157,6 @@ const PreviewReducer = createReducer(defaultState)
         penaltyFieldsAlpha: 0.1,
         sampleTextAlpha: 0.5,
         width: 0,
-        status: EPreviewStatus.OutOfDate,
       }
     })
   )
@@ -161,7 +186,7 @@ const PreviewReducer = createReducer(defaultState)
         i += 12 + arraySize;
       }
 
-      return update(state, { glyphImages: { $set: glyphImages }, status: {$set: EPreviewStatus.OutOfDate}});
+      return update(state, { glyphImages: { $set: glyphImages }, loadingText: {$set: ""}});
     }
   )
 

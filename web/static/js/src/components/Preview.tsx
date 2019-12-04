@@ -3,12 +3,8 @@ import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
-import { IAppState } from "../reducers/AppReducer";
-import {
-  previewActions,
-  IPreviewState,
-  EPreviewStatus
-} from "../reducers/PreviewReducer";
+import { IAppState, appActions } from "../reducers/AppReducer";
+import { previewActions, IPreviewState } from "../reducers/PreviewReducer";
 
 import ndarray from "ndarray";
 import ndarrayOps from "ndarray-ops";
@@ -23,6 +19,7 @@ import "../style/Preview.less";
 
 interface IPreviewProps {
   app: IAppState;
+  appActions: typeof appActions;
   preview: IPreviewState;
 }
 class Preview extends PureComponent<IPreviewProps & typeof previewActions> {
@@ -77,17 +74,20 @@ class Preview extends PureComponent<IPreviewProps & typeof previewActions> {
               step={0.01}
             />
           </div>
-          <div>
-            Displayed scales:
-            <Slider
-              value={this.props.preview.currentScaleRange}
-              onChange={this.updateCurrentScaleRange}
-              valueLabelDisplay="auto"
-              min={0}
-              max={17}
-              step={1}
-            />
-          </div>
+          {this.hasFreshPaint() ? (
+            <div>
+              Displayed scales:
+              <Slider
+                value={this.props.preview.currentScaleRange}
+                onChangeCommitted={this.updateCurrentScaleRangeAndRerender}
+                onChange={this.updateCurrentScaleRange}
+                valueLabelDisplay="auto"
+                min={0}
+                max={17}
+                step={1}
+              />
+            </div>
+          ) : null}
         </div>
 
         <canvas
@@ -100,12 +100,27 @@ class Preview extends PureComponent<IPreviewProps & typeof previewActions> {
     );
   }
 
+  private hasFreshPaint = () => {
+    for (let i = 0; i < this.props.preview.sampleText.length - 1; i++) {
+      const lc = this.props.preview.sampleText[i];
+      const rc = this.props.preview.sampleText[i + 1];
+      if (
+        !this.props.preview.bestDistances.hasOwnProperty(lc + rc) ||
+        !this.props.preview.fullPenaltyFields.hasOwnProperty(lc + rc)
+      ) {
+        return false;
+      }
+    }
+    return true;
+  };
+
   private updateSampleText = ev => {
     this.props.updateSampleText(ev.currentTarget.value);
   };
 
   private onSampleTextKeyDown = ev => {
     if (ev.key === "Enter") {
+      this.props.appActions.setLoading("Optimizing distances ...");
       fetch("/api/best_distances_and_full_penalty_fields", {
         method: "POST",
         body: JSON.stringify({
@@ -131,8 +146,51 @@ class Preview extends PureComponent<IPreviewProps & typeof previewActions> {
   private updateSampleTextAlpha = (ev, value) => {
     this.props.update({ sampleTextAlpha: { $set: value } });
   };
+
   private updateCurrentScaleRange = (ev, value) => {
     this.props.update({ currentScaleRange: { $set: value } });
+  };
+
+  private updateCurrentScaleRangeAndRerender = (ev, value) => {
+    this.fetchSubsetPreviewDataAndUpdate({ currentScaleRange: value });
+  };
+
+  private fetchSubsetPreviewDataAndUpdate = updatedValues => {
+    const params = {
+      currentScaleRange: this.props.preview.currentScaleRange,
+      currentOrientations: this.props.preview.currentOrientations,
+      currentDistances: this.props.preview.currentDistances,
+      ...updatedValues
+    };
+    const currentScales = [
+      ...Array(params.currentScaleRange[1] - params.currentScaleRange[0]).keys()
+    ].map(x => x + params.currentScaleRange[0]);
+
+    this.props.appActions.setLoading("Rendering ...");
+    fetch("/api/penalty_fields_subset", {
+      method: "POST",
+      body: JSON.stringify({
+        params: {
+          ...this.props.controls,
+          ...this.props.preview,
+          ...params,
+          currentScales,
+          sampleText: this.props.preview.sampleText
+        }
+      }),
+      headers: {
+        Accept: "application/octet-stream",
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => res.arrayBuffer())
+      .then(previewDataBuf => {
+        this.props.updatePenaltyFieldsSubsetPreviewData({
+          previewDataBuf,
+          ...params
+        });
+      })
+      .catch(e => console.log(e));
   };
 
   private repaintPreviewCanvas = () => {
@@ -225,7 +283,6 @@ class Preview extends PureComponent<IPreviewProps & typeof previewActions> {
       this.props.app.height
     );
     this.ctx.putImageData(imageData, 0, 0);
-    this.props.update({ status: { $set: EPreviewStatus.RenderedAndPainted } });
   };
 
   private getPositionsAndWidth = () => {
@@ -272,7 +329,10 @@ class Preview extends PureComponent<IPreviewProps & typeof previewActions> {
       } else {
         penaltyFieldWidths[i] = this.props.app.fontInfo.boxWidth;
         penaltyFieldPositions[i] = glyphPositions[i];
-        totalWidth = penaltyFieldPositions[i] + this.props.preview.glyphImages[lc].width + this.props.preview.glyphImages[rc].width;
+        totalWidth =
+          penaltyFieldPositions[i] +
+          this.props.preview.glyphImages[lc].width +
+          this.props.preview.glyphImages[rc].width;
       }
     }
 
@@ -304,6 +364,7 @@ export default connect(
     };
   },
   dispatch => ({
+    appActions: bindActionCreators(appActions, dispatch),
     ...bindActionCreators(previewActions, dispatch)
   })
 )(Preview);
