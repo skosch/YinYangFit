@@ -1068,6 +1068,12 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
+CanvasSpliner@jonathanlurie/CanvasSpliner:
+  version "0.1.0"
+  resolved "https://codeload.github.com/jonathanlurie/CanvasSpliner/tar.gz/549d3ca8778e2f45edcb4442f246d7f619ab445a"
+  dependencies:
+    splines jonathanlurie/splines
+
 abbrev@1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
@@ -5508,6 +5514,10 @@ spdy@^4.0.1:
     http-deceiver "^1.2.7"
     select-hose "^2.0.0"
     spdy-transport "^3.0.0"
+
+splines@jonathanlurie/splines:
+  version "1.0.0"
+  resolved "https://codeload.github.com/jonathanlurie/splines/tar.gz/571665cfe15f5aa9aad338cb6f933c773e251073"
 
 split-string@^3.0.1, split-string@^3.0.2:
   version "3.1.0"

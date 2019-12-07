@@ -6,7 +6,7 @@ interface IFontInfo {
   boxHeight: number;
   boxWidth: number;
   sizeFactor: number;
-  nSizes: number;
+  nScales: number;
   nOrientations: number;
   ascender: number;
   ascenderPx: number;
@@ -33,7 +33,7 @@ interface IAppState {
 const emptyFontInfo = {
     boxHeight: 0,
     boxWidth: 0,
-    nSizes: 0,
+    nScales: 0,
     sizeFactor: 0,
     nOrientations: 0,
     ascender: 0,

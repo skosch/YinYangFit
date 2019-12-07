@@ -9,6 +9,8 @@ import { previewActions, IPreviewState } from "../reducers/PreviewReducer";
 
 import Button from '@material-ui/core/Button';
 
+import CanvasSpliner from "./CanvasSpliner";
+
 import "../style/Controls.less";
 
 interface IControlsProps {
@@ -21,8 +23,43 @@ class Controls extends PureComponent<
   IControlsProps & (typeof controlsActions)
   > {
     public render() {
+
       return (
         <div id="controls">
+          <div className="spliners">
+            <CanvasSpliner
+              csPoints={this.props.controls.factorPoints}
+              nPoints={this.props.app.fontInfo.nScales}
+              yMin={0.1}
+              yMax={1000.}
+              onChange={(cp, yv) => this.updateParam("factor", cp, yv)}
+              title="Factor"
+            />
+            <CanvasSpliner
+              csPoints={this.props.controls.betaPoints}
+              nPoints={this.props.app.fontInfo.nScales}
+              yMin={0.1}
+              yMax={1000.}
+              onChange={(cp, yv) => this.updateParam("beta", cp, yv)}
+              title="Beta"
+            />
+            <CanvasSpliner
+              csPoints={this.props.controls.gapWeightsPoints}
+              nPoints={this.props.app.fontInfo.nScales}
+              yMin={0.1}
+              yMax={5000.}
+              onChange={(cp, yv) => this.updateParam("gapWeights", cp, yv)}
+              title="Gap weights"
+            />
+            <CanvasSpliner
+              csPoints={this.props.controls.blurWeightsPoints}
+              nPoints={this.props.app.fontInfo.nScales}
+              yMin={0.1}
+              yMax={5000.}
+              onChange={(cp, yv) => this.updateParam("blurWeights", cp, yv)}
+              title="Blur weights"
+            />
+          </div>
           <textarea
             onChange={this.updateParams}
             rows={30} cols={60}
@@ -39,6 +76,10 @@ class Controls extends PureComponent<
       } catch (e) {
         console.log("Could not update params:", e);
       }
+    }
+
+    private updateParam = (key, csPoints, values) => {
+      this.props.updateControlParam({key, csPoints, values});
     }
 
     private updatePreview = () => {

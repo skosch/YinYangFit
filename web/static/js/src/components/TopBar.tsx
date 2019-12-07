@@ -94,7 +94,7 @@ class TopBar extends PureComponent<ITopBarProps & typeof appActions> {
         size_factor: sizeFactor,
         n_scales: 17,
         n_orientations: 4,
-        glyphset: "abcdefghijklmnopqrstuvwxyz"
+        glyphset: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
       }),
       headers: {
         Accept: "application/json",
@@ -108,7 +108,7 @@ class TopBar extends PureComponent<ITopBarProps & typeof appActions> {
             boxHeight: fontInfo.box_height,
             boxWidth: fontInfo.box_width,
             sizeFactor: fontInfo.size_factor,
-            nSizes: fontInfo.n_sizes,
+            nScales: fontInfo.n_scales,
             nOrientations: fontInfo.n_orientations,
             ascender: fontInfo.ascender,
             ascenderPx: fontInfo.ascender_px,

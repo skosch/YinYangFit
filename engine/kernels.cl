@@ -33,6 +33,7 @@ __kernel void penalty_parallel(__global float *dest, // [n_scales, n_orientation
                                __constant int *shifts_l, // [n_distances]
                                __constant int *shifts_r, // [n_distances]
                                __global float *factor, // [n_scales, n_orientations]
+                               __global float *beta, // [n_scales, n_orientations]
                                float exponent,
                                __global float *gap_weights, // [n_scales, n_orientations]
                                __global float *blur_weights) // [n_scales, n_orientations]
@@ -86,11 +87,20 @@ __kernel void penalty_parallel(__global float *dest, // [n_scales, n_orientation
 
   // Now compute the difference
   int soi = si * n_orientations + oi;
-  float diff = (
-                half_powr(factor[soi] * cfloat_abs_squared(vp), exponent/2.) -
-                half_powr(factor[soi] * cfloat_abs_squared(vl), exponent/2.) -
-                half_powr(factor[soi] * cfloat_abs_squared(vr), exponent/2.)
-                );
+
+  // Now compute the exponentiated values
+  float evp = half_powr(cfloat_abs_squared(vp), exponent/2.);
+  float evl = half_powr(cfloat_abs_squared(vl), exponent/2.);
+  float evr = half_powr(cfloat_abs_squared(vr), exponent/2.);
+
+  // Now compute the hyperbolic ratio values
+  float lvp = factor[soi] * evp / (beta[soi] + evp);
+  float lvl = factor[soi] * evl / (beta[soi] + evl);
+  float lvr = factor[soi] * evr / (beta[soi] + evr);
+
+  // Now perform the orientation inhibition (TODO)
+
+  float diff = (lvp - lvl - lvr);
 
   dest[gi] = diff > 0 ? (1. + gap_weights[soi]) * diff : (1. + blur_weights[soi]) * diff;
 }

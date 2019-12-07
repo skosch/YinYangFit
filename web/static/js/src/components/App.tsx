@@ -58,7 +58,7 @@ class App extends PureComponent<IAppProps & typeof appActions> {
             boxHeight: fontInfo.box_height,
             boxWidth: fontInfo.box_width,
             sizeFactor: fontInfo.size_factor,
-            nSizes: fontInfo.n_sizes,
+            nScales: fontInfo.n_scales,
             nOrientations: fontInfo.n_orientations,
             ascender: fontInfo.ascender,
             ascenderPx: fontInfo.ascender_px,

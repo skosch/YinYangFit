@@ -24,9 +24,11 @@ kernels_file_path = os.path.join(script_dir, "kernels.cl")
 print("Loading OpenCL kernel file at", kernels_file_path)
 
 all_lc_glyphs = "abcdefghijklmnopqrstuvwxyz"
+all_uc_glyphs = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+all_glyphs = all_lc_glyphs + all_uc_glyphs
 
 class Engine:
-    def __init__(self, file_name, size_factor=0.9, n_scales=17, n_orientations=4, glyphset=all_lc_glyphs):
+    def __init__(self, file_name, size_factor=0.9, n_scales=17, n_orientations=4, glyphset=all_glyphs):
         self.single_glyph_widths = {}
         self.single_glyph_images = {}
         self.convolved_glyph_images = {}
@@ -133,8 +135,6 @@ class Engine:
         current_orientations = np.array(params.get("currentOrientations", np.arange(self.n_orientations)))
         n_current_orientations = len(current_orientations)
 
-        print("SCALES", self.convolved_glyph_images[lc][current_scales[:, None], current_orientations[None, :], :, :].shape)
-
         sc_lg = self.convolved_glyph_images[lc][current_scales[:, None], current_orientations[None, :], :, :].reshape([n_current_scales, n_current_orientations, self.box_height * self.box_width])
         sc_rg = self.convolved_glyph_images[rc][current_scales[:, None], current_orientations[None, :], :, :].reshape([n_current_scales, n_current_orientations, self.box_height * self.box_width])
         shifts_l, shifts_r = self.create_pair_image_distances(lc, rc, distances)
@@ -143,9 +143,10 @@ class Engine:
         sc_rg_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=sc_rg)
         shifts_l_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=shifts_l)
         shifts_r_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=shifts_r)
-        factor_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['factor'])
-        gap_weights_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['gap_weights'])
-        blur_weights_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['blur_weights'])
+        factor_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['factor'][current_scales[:, None], current_orientations[None, :]])
+        beta_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['beta'][current_scales[:, None], current_orientations[None, :]])
+        gap_weights_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['gap_weights'][current_scales[:, None], current_orientations[None, :]])
+        blur_weights_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['blur_weights'][current_scales[:, None], current_orientations[None, :]])
 
         # create output buffer
         diffs = np.ones((n_current_scales, n_current_orientations, self.box_height * self.box_width * len(distances)), dtype=np.float32)
@@ -163,6 +164,7 @@ class Engine:
                                  shifts_l_dev,
                                  shifts_r_dev,
                                  factor_dev,
+                                 beta_dev,
                                  np.float32(params['exponent']),
                                  gap_weights_dev,
                                  blur_weights_dev)
@@ -194,14 +196,13 @@ class Engine:
             rc = text[i + 1]
             if (lc + rc) not in rendered_pairs:
                 rendered_pairs[(lc + rc)] = True
-                print("Current distance:", params['currentDistances'][lc + rc])
-                np_penalty_fields = self.render_penalty_fields(lc, rc, params, np.array([params['currentDistances'][lc + rc]]).astype(np.int32))
-                print("Rendered penalty field, shape", np_penalty_fields.shape)
+                dist = np.array([params['currentDistances'][lc + rc]]).astype(np.int32) + self.f.minimum_ink_distance(lc, rc)
+                np_penalty_fields = self.render_penalty_fields(lc, rc, params, dist)
 
                 bytes_writer.write(lc.encode("utf-16")) # utf-16 means always use 4 bytes (2 for BOM, then 2 for the character)
                 bytes_writer.write(rc.encode("utf-16")) # Can't use utf32 becaues not supported by browsers
                 bytes_writer.write(np.int32(np_penalty_fields.shape[2]).tobytes()) # height
-                bytes_writer.write(np.int32(np_penalty_fields.shape[3]).tobytes()) # height
+                bytes_writer.write(np.int32(np_penalty_fields.shape[3]).tobytes()) # width
                 bytes_writer.write(np.sum(np_penalty_fields[:, :, :, :, 0], (0, 1)).astype(np.float32).tobytes())
 
         return bytes_writer.getvalue()
@@ -209,7 +210,7 @@ class Engine:
 
     def get_best_distances_and_full_penalty_fields(self, params):
         # Generate the fields for a whole set of distances, then find the best distance, and return it all.
-        distances = np.arange(20).astype(np.int32) # TODO: get from params
+        distances = (np.arange(20) - 5).astype(np.int32) # TODO: get from params
         params = self.prepare_params(params)
 
         rendered_fields = {}
@@ -233,21 +234,28 @@ class Engine:
                 np_penalty_fields = self.render_penalty_fields(lc, rc, params, distances)
                 # Find the zero crossing
                 # TODO: there's probably a better way than to do argmin(abs(x)) -- summing and root finding could be done on GPU?
-                best_distance_index = np.argmin(np.abs(np.sum(np_penalty_fields, (0, 1, 2, 3))))
+                # Find smallest negative index:
+                totals = np.sum(np_penalty_fields, (0, 1, 2, 3))
+                best_distance_index = 0
+                for ii in range(len(distances) - 1):
+                    if totals[ii] < 0 and totals[ii + 1] >= 0:
+                        best_distance_index = ii
+                        break
+
+                #best_distance_index = np.argmin(np.abs(np.sum(np_penalty_fields, (0, 1, 2, 3))))
 
                 bytes_writer.write(lc.encode("utf-16")) # utf-16 means always use 4 bytes (2 for BOM, then 2 for the character)
                 bytes_writer.write(rc.encode("utf-16")) # Can't use utf32 becaues not supported by browsers
                 bytes_writer.write(np.int32(distances[best_distance_index] - self.f.minimum_ink_distance(lc, rc)).tobytes())
                 bytes_writer.write(np.int32(np_penalty_fields.shape[2]).tobytes()) # height
-                bytes_writer.write(np.int32(np_penalty_fields.shape[3]).tobytes()) # height
+                bytes_writer.write(np.int32(np_penalty_fields.shape[3]).tobytes()) # width
                 bytes_writer.write(np.sum(np_penalty_fields[:, :, :, :, best_distance_index], (0, 1)).astype(np.float32).tobytes())
 
         return bytes_writer.getvalue()
 
-
     def prepare_params(self, params):
         params['factor'] = np.tile(np.array(params['factor'])[:, None].astype(np.float32), [1, self.n_orientations])
-        #params['beta'] = np.array(params['beta'])[:, None]
+        params['beta'] = np.tile(np.array(params['beta'])[:, None].astype(np.float32), [1, self.n_orientations])
         params['gap_weights'] = np.tile(np.array(params['gapWeights'])[:, None].astype(np.float32), [1, self.n_orientations])
         params['blur_weights'] = np.tile(np.array(params['blurWeights'])[:, None].astype(np.float32), [1, self.n_orientations])
         #params['gap_weights_sq'] = np.array(params['gap_weights_sq'])[:, None].astype(np.float32)

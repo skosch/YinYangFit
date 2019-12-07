@@ -74,6 +74,17 @@ class Preview extends PureComponent<IPreviewProps & typeof previewActions> {
               step={0.01}
             />
           </div>
+          <div>
+            Zoom:
+            <Slider
+              value={this.props.preview.zoomFactor}
+              onChange={this.updateZoomFactor}
+              valueLabelDisplay="auto"
+              min={1.0}
+              max={10.0}
+              step={0.01}
+            />
+          </div>
           {this.hasFreshPaint() ? (
             <div>
               Displayed scales:
@@ -92,6 +103,7 @@ class Preview extends PureComponent<IPreviewProps & typeof previewActions> {
 
         <canvas
           id="preview-canvas"
+          style={{transform: `scale(${this.props.preview.zoomFactor})`}}
           height={200}
           width={800}
           ref={this.previewCanvasRef}
@@ -106,7 +118,7 @@ class Preview extends PureComponent<IPreviewProps & typeof previewActions> {
       const rc = this.props.preview.sampleText[i + 1];
       if (
         !this.props.preview.bestDistances.hasOwnProperty(lc + rc) ||
-        !this.props.preview.fullPenaltyFields.hasOwnProperty(lc + rc)
+        !this.props.preview.currentPenaltyFields.hasOwnProperty(lc + rc)
       ) {
         return false;
       }
@@ -145,6 +157,9 @@ class Preview extends PureComponent<IPreviewProps & typeof previewActions> {
   };
   private updateSampleTextAlpha = (ev, value) => {
     this.props.update({ sampleTextAlpha: { $set: value } });
+  };
+  private updateZoomFactor = (ev, value) => {
+    this.props.update({ zoomFactor: { $set: value } });
   };
 
   private updateCurrentScaleRange = (ev, value) => {
@@ -209,6 +224,12 @@ class Preview extends PureComponent<IPreviewProps & typeof previewActions> {
       glyphPositions
     } = this.getPositionsAndWidth();
 
+      const canvas = this.previewCanvasRef.current;
+      this.ctx = canvas.getContext('2d');
+      canvas.width = totalWidth;
+      canvas.height = this.props.app.height;
+      this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     const outArray = ndarray(
       new Float32Array(totalWidth * this.props.app.height),
       [this.props.app.height, totalWidth]
@@ -228,7 +249,7 @@ class Preview extends PureComponent<IPreviewProps & typeof previewActions> {
             outArray.set(
               y,
               x + penaltyFieldPositions[i],
-              outArray.get(y, x + penaltyFieldPositions[i]) + field.get(y, x)
+              field.get(y, x) + outArray.get(y, x + penaltyFieldPositions[i])
             );
           }
         }
@@ -240,8 +261,8 @@ class Preview extends PureComponent<IPreviewProps & typeof previewActions> {
 
     // now, colorize the outArray
     const colorizedArray = applyColormap(outArray, {
-      min: -this.props.preview.maxAbsVal,
-      max: +this.props.preview.maxAbsVal
+      min: -this.props.preview.currentMaxAbsVal,
+      max: +this.props.preview.currentMaxAbsVal
     });
 
     for (let i = 0; i < this.props.preview.sampleText.length; i++) {

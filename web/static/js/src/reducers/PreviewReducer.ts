@@ -27,9 +27,11 @@ interface IPreviewState {
     };
   };
   maxAbsVal: number;
+  currentMaxAbsVal: number;
   sampleText: string;
   penaltyFieldsAlpha: number;
   sampleTextAlpha: number;
+  zoomFactor: number;
   width: number; // note that height is fixed, based on the scaling factor. See AppReducer
 }
 
@@ -41,10 +43,12 @@ const defaultState: IPreviewState = {
   currentOrientations: [0, 1, 2, 3],
   glyphImages: {},
   maxAbsVal: 0,
+  currentMaxAbsVal: 0,
   sampleText: "ham",
   currentScaleRange: [0, 17],
   penaltyFieldsAlpha: 1.0,
   sampleTextAlpha: 0.5,
+  zoomFactor: 1.0,
   width: 0
 };
 
@@ -102,6 +106,7 @@ const PreviewReducer = createReducer(defaultState)
         fullPenaltyFields: { $set: fullPenaltyFields },
         currentPenaltyFields: { $set: fullPenaltyFields },
         maxAbsVal: { $set: maxAbsVal },
+        currentMaxAbsVal: { $set: maxAbsVal },
       });
     }
   )
@@ -110,6 +115,7 @@ const PreviewReducer = createReducer(defaultState)
     (state: IPreviewState, { payload: {previewDataBuf, currentScaleRange, currentOrientations, currentDistances }}) => {
 
       const currentPenaltyFields = {};
+      let currentMaxAbsVal = 0;
 
       let i = 0;
       while (i < previewDataBuf.byteLength) {
@@ -125,6 +131,13 @@ const PreviewReducer = createReducer(defaultState)
           previewDataBuf.slice(i + 16, i + 16 + arraySize)
         );
 
+        for (let n of array) {
+          if (n > currentMaxAbsVal) {
+            currentMaxAbsVal = n;
+          } else if (-n > currentMaxAbsVal) {
+            currentMaxAbsVal = -n;
+          }
+        }
         currentPenaltyFields[lc + rc] = array;
 
         i += 16 + arraySize;
@@ -135,6 +148,7 @@ const PreviewReducer = createReducer(defaultState)
         currentScaleRange: {$set: currentScaleRange },
         currentOrientations: {$set: currentOrientations },
         currentDistances: {$set: currentDistances },
+        currentMaxAbsVal: {$set: currentMaxAbsVal },
         loadingText: {$set: ""},
       });
     }
@@ -154,7 +168,7 @@ const PreviewReducer = createReducer(defaultState)
         glyphImages: {},
         maxAbsVal: 0,
         currentScaleRange: [0, 17],
-        penaltyFieldsAlpha: 0.1,
+        penaltyFieldsAlpha: 1.0,
         sampleTextAlpha: 0.5,
         width: 0,
       }
