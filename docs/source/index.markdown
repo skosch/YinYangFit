@@ -351,7 +351,7 @@ like, imagine that you are looking at a section view of a lowercase l, as shown
 on the right. Next, consider the responses of various one-dimensional wavelets
 when convolved with this function:
 
-<img src="img/interference2.png" alt="Basic interference" />
+<img src="img/interference2.png" alt="Basic interference" style="max-width: 30rem"/>
 
 <span><input type="checkbox"
 id="mn-soc-multiscale" class="margin-toggle"><label for="mn-abs-multiscale"
@@ -365,7 +365,8 @@ distance away from an edge, and most strongly at centers, when both edges are
 the same distance away. Note also how their scale-dependence differs: odd
 filters elicit a full response at any edge, as long as they are *smaller* than
 the width $w$; even filters show no significant response unless their scale is
-approximately *equal* to $w$.
+approximately *equal* to $w$. If this isn't immediately obvious, take a piece of
+paper and perform some convolutions by hand until it becomes clear.
 
 We can compute the square of the magnitude to find the local energy. Because of
 the scale dependence of the filters, this energy peaks for edges at small
@@ -375,25 +376,28 @@ example on the right).
 Now let's add a neighbouring letter on the right, and see what happens to the
 filter responses. Just looking at the smaller one is enough to illustrate the point:
 
-<img src="img/interference2.png" alt="Basic interference: difference" />
+<img src="img/interference3.png" alt="Basic interference: difference"
+style="max-width: 30rem;"/>
 
 The dotted lines show what the local energy would have been, if the two letters
 had been convolved individually. The difference introduced by the
 neighbour-neighbour interference is shown at the bottom.
 
-It's useful to understand intuitively how the encroaching neighbour
-dampens some responses (particularly the edges) and amplifies others
-(particularly the gap).<label for="sn-ndr"
-class="margin-toggle sidenote-number"></label> <input type="checkbox"
-id="sn-ndr" class="margin-toggle"> <span class="sidenote">I have not found much
-discussion of this competitive phenomenon in the psychophysics literature,
-probably because it's not inherently interesting outside of models like this
-one.</span> This difference is at the heart of the proposed letterfitting model.
+Take the time, with pencil and paper, to develop an intuition how the
+encroaching neighbour dampens some responses (particularly the edges) and
+amplifies others (particularly the gap).<label for="sn-ndr" class="margin-toggle
+sidenote-number"></label> <input type="checkbox" id="sn-ndr"
+class="margin-toggle"> <span class="sidenote">I have not found much discussion
+of this competitive phenomenon in the psychophysics literature, probably because
+it's not inherently interesting outside of models like this one.</span> This
+difference is at the heart of the proposed letterfitting model. It's not a
+metaphorical construct of the kind that underlies other letterfitting models: it
+really exists in your brain as you are reading these words.
 
-It's worth appreciating the arithmetic behind the phenomenon as well. First, thanks to
+It's worth appreciating the arithmetic behind the model as well. First, thanks to
 the linearity of the Fourier transform, we can obtain the convolution of the
 pair image by simply adding the complex-valued results of the two single-letter
-images. This saves us one DFT round-trip. Next, you may question the
+images, saving us one DFT round-trip. Next, you may question the
 necessity of the squaring operation. Well: for one, without it, the difference would always be
 negative<label for="sn-negd"
 class="margin-toggle sidenote-number"></label> <input type="checkbox"
@@ -415,9 +419,65 @@ The very simple model described here is, in fact, able to produce a remarkably
 decent fit on most fonts simply by limiting the sum of the negative differences
 to a fixed amount. Of course, we must choose our scale/orientation coefficients well.
 
-<a name="extending">
+<a name="extending"></a>
 
 ## Extending our model: lateral inhibition and divisive normalization
+
+As I mentioned above, cells don't just take input from the retina and trigger
+higher-level neurons, analogous to a classic feed-forward convolutional network.
+No: in reality, cells also affect their neighbours, and even themselves. And because
+neurons are little physical tubes of flowing chemicals, those neighbourly interactions
+happen with miniscule delays, leading to incredibly complicated temporal
+dynamics. We can't model those here!
+
+What we can do, however, is improve on our basic model by vaguely approximating
+some of those neighbourly interactions *on average*. This puts us in an awkward
+position halfway between the actual biophysics and a higher-level signals-based
+description, and we must be careful not to stretch the approximations into too
+handwavy a territory. Nevertheless, everything described below comes
+straight out of the mainstream computational neuroscience literature, so it's
+at least not known to be outrageously wrong.
+
+Let's start with a single neuron – say, a simple cell.
+
+The most basic model relates the spiking rate of our neuron to the strength of
+its input as a simple linear function, known to deep learning practicioners as a
+[ReLU](https://en.wikipedia.org/wiki/Rectifier_(neural_networks)):
+
+<img src="img/relu.png" alt="ReLU" style="max-width: 15rem;" />
+
+This is, in effect, what our basic model uses (before the phases get squashed
+into a single magnitude, of course).
+
+It turns out that real neurons tend to behave differently. At first, they don't
+spike much at all. But once a certain spiking rate is reached, they're physically
+incapable of going faster, saturating out:
+
+<img src="img/hra.png" alt="HRA" style="max-width: 15rem;" />
+
+One of the most popular equations<label for="sn-nra"
+class="margin-toggle sidenote-number"></label> <input type="checkbox"
+id="sn-nra" class="margin-toggle"> <span class="sidenote">This kind of sigmoid goes by
+many names: hyperbolic ratio, Naka-Rushton function, and others.</span> to model
+this is:
+$$y = \frac{f x^k}{\beta^k + x^k}$$
+The $f$ scales the curve vertically, $k$ makes the kink steeper, and $\beta$
+shifts the threshold to the right. Look at how this function works: the
+numerator increases the firing rate, and the denominator decreases it. For
+relatively small values of $x$, $\beta^k$ dominates the denominator and we're basically
+dealing with a scaled-down version of $fx^k$ (values of about 2 or 3 are common
+for $k$, which explains why we squared the magnitude in our basic model). Once
+$x^k$ gets large enough though, $\beta^k$ dwarfs in comparison, and we're left
+approaching $f$.<label for="sn-hrn"
+class="margin-toggle sidenote-number"></label> <input type="checkbox"
+id="sn-hrn" class="margin-toggle"> <span class="sidenote">Note that this specific activation function is effectively never used in deep learning, both
+for historical reasons and because [its asymptotic behaviour slows down learning](https://en.wikipedia.org/wiki/Vanishing_gradient_problem).</span>
+
+Conveniently, having now described our neuron using this function, we can 
+sneak some extra suppressive terms into the denominator, namely, the inhibition coming
+from our neuron's neighbours:
+
+$$y_i = \frac{f x_i^k}{\beta^k + \sum_j w_j x_j^k}$$
 
 
 

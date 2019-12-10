@@ -9,14 +9,14 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="158.52469mm"
+   width="114.26707mm"
    height="71.398682mm"
-   viewBox="0 0 158.52469 71.398684"
+   viewBox="0 0 114.26708 71.398684"
    version="1.1"
    id="svg23469"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="interference3.svg"
-   inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/interference2.png"
+   inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/interference3.png"
    inkscape:export-xdpi="180.09561"
    inkscape:export-ydpi="180.09561">
   <defs
@@ -348,7 +348,7 @@
        style="fill:none;fill-rule:evenodd;stroke:#e1544d;stroke-width:0.70555556;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.93333333;image-rendering:optimizeQuality;shape-rendering:geometricPrecision;text-rendering:geometricPrecision" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.70555556;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker22179)"
-       d="M 50.294084,25.525287 H 162.5112"
+       d="m 50.66252,25.525287 h 67.59107"
        id="path18497"
        inkscape:connector-curvature="0" />
     <rect
@@ -382,7 +382,7 @@
        inkscape:connector-curvature="0" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.70555556;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker22179-8)"
-       d="M 50.104553,41.671691 H 162.5112"
+       d="M 50.548361,41.671691 H 118.25359"
        id="path18497-7"
        inkscape:connector-curvature="0" />
     <circle
@@ -513,7 +513,7 @@
        inkscape:connector-curvature="0" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.70555556;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker22179-8-0)"
-       d="M 50.104553,72.407868 H 162.5112"
+       d="M 50.548361,72.407868 H 118.25359"
        id="path18497-7-8"
        inkscape:connector-curvature="0" />
     <path
@@ -542,7 +542,7 @@
        sodipodi:nodetypes="ccccc" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.70555556;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker22179-8-8)"
-       d="M 50.104555,57.07422 H 162.5112"
+       d="M 50.548362,57.07422 H 118.25359"
        id="path18497-7-5"
        inkscape:connector-curvature="0" />
     <path
@@ -644,7 +644,7 @@
        sodipodi:nodetypes="ccccc" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.70555556;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker22179-8-0-6)"
-       d="M 50.104553,87.810398 H 162.5112"
+       d="M 50.548361,87.810398 H 118.25359"
        id="path18497-7-8-2"
        inkscape:connector-curvature="0" />
     <rect
