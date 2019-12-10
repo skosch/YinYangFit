@@ -1,2 +1,2 @@
 docs:
-	pandoc -s --css source/style.css --metadata pagetitle=YinYangFit -o index.html source/index.markdown
+	pandoc -s --css source/style.css --katex --metadata pagetitle=YinYangFit -o index.html source/index.markdown

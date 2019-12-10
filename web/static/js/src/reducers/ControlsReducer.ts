@@ -5,8 +5,13 @@ interface IControlsState {
   factor: number[];
   factorPoints: any[];
   gapWeights: number[];
+  gapWeightsPoints: any[];
   blurWeights: number[];
+  blurWeightsPoints: any[];
+  blurWeightExps: number[];
+  blurWeightExpsPoints: any[];
   exponent: number;
+  target: number;
 }
 
 const defaultState: IControlsState = {
@@ -22,7 +27,11 @@ const defaultState: IControlsState = {
   blurWeightsPoints: [{x: 0, xLocked: true, safe: true, y: 0.2},
                  {x: 1.0, xLocked: true, safe: true, y: 0.2}],
   blurWeights: [],
+  blurWeightExpsPoints: [{x: 0, xLocked: true, safe: true, y: 0.2},
+                 {x: 1.0, xLocked: true, safe: true, y: 0.2}],
+  blurWeightExps: [],
   exponent: 2.5,
+  target: 0.1,
 };
 
 const controlsActions = {

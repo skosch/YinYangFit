@@ -65,7 +65,7 @@ class FilterBank:
         d2 = sigma**1.5 * np.fft.fft2(d2_space + 1j * np.zeros_like(d2_space)) #, [box_height, box_width])
 
         # Filter is complex(-d2,d1)
-        return 1j * (d2 + 1j * d1) * sigma
+        return 1j * (d2 + 1j * d1) #* sigma
 
     def convolve(self, input_image):
         """

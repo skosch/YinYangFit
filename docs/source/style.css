@@ -273,7 +273,7 @@ img {
   vertical-align: super;
 }
 label.margin-toggle {
-  vertical-align: super;
+  transform: translateY(-0.5rem);
 }
 
 .sidenote-number:after {
@@ -360,7 +360,7 @@ input.margin-toggle {
 }
 
 label.sidenote-number {
-    display: inline; 
+  display: inline-block;
 }
 
 label.margin-toggle:not(.sidenote-number) {

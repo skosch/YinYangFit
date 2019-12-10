@@ -145,8 +145,9 @@ class Engine:
         shifts_r_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=shifts_r)
         factor_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['factor'][current_scales[:, None], current_orientations[None, :]])
         beta_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['beta'][current_scales[:, None], current_orientations[None, :]])
-        gap_weights_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['gap_weights'][current_scales[:, None], current_orientations[None, :]])
+        #gap_weights_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['gap_weights'][current_scales[:, None], current_orientations[None, :]])
         blur_weights_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['blur_weights'][current_scales[:, None], current_orientations[None, :]])
+        blur_weight_exps_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['blur_weight_exps'][current_scales[:, None], current_orientations[None, :]])
 
         # create output buffer
         diffs = np.ones((n_current_scales, n_current_orientations, self.box_height * self.box_width * len(distances)), dtype=np.float32)
@@ -166,8 +167,9 @@ class Engine:
                                  factor_dev,
                                  beta_dev,
                                  np.float32(params['exponent']),
-                                 gap_weights_dev,
-                                 blur_weights_dev)
+        #                         gap_weights_dev,
+                                 blur_weights_dev,
+                                 blur_weight_exps_dev)
 
         # Get result back
         cl.enqueue_copy(self.queue, diffs, dest_dev)
@@ -210,7 +212,7 @@ class Engine:
 
     def get_best_distances_and_full_penalty_fields(self, params):
         # Generate the fields for a whole set of distances, then find the best distance, and return it all.
-        distances = (np.arange(20) - 5).astype(np.int32) # TODO: get from params
+        distances = (np.arange(-5, 40, 2)).astype(np.int32) # TODO: get from params
         params = self.prepare_params(params)
 
         rendered_fields = {}
@@ -235,10 +237,24 @@ class Engine:
                 # Find the zero crossing
                 # TODO: there's probably a better way than to do argmin(abs(x)) -- summing and root finding could be done on GPU?
                 # Find smallest negative index:
-                totals = np.sum(np_penalty_fields, (0, 1, 2, 3))
+                plt.imshow(np.sum(np.log(np_penalty_fields[3:, :, :, :, -1]), (0, 1))**2)
+                plt.colorbar()
+                plt.show()
+                plt.imshow(np.sum(np.log(np_penalty_fields[3:, :, :, :, 3]), (0, 1))**2)
+                plt.colorbar()
+                plt.show()
+
+                totals = np.sum(np.sum(np_penalty_fields, (2, 3)) ** params['blur_weight_exps'][:, :, None], (0, 1))
                 best_distance_index = 0
+                #plt.plot(totals - params['target'])
+                #plt.plot(totals)
+                for si in range(self.n_scales):
+                    plt.plot(np.sum(np_penalty_fields[si, :, :, :], (0, 1, 2)), linestyle='dotted')
+                plt.show()
+
                 for ii in range(len(distances) - 1):
-                    if totals[ii] < 0 and totals[ii + 1] >= 0:
+                    if (((totals[ii] - params['target']) < 0 and (totals[ii + 1] - params['target']) >= 0) or
+                        ((totals[ii] - params['target']) > 0 and (totals[ii + 1] - params['target']) <= 0)):
                         best_distance_index = ii
                         break
 
@@ -258,6 +274,7 @@ class Engine:
         params['beta'] = np.tile(np.array(params['beta'])[:, None].astype(np.float32), [1, self.n_orientations])
         params['gap_weights'] = np.tile(np.array(params['gapWeights'])[:, None].astype(np.float32), [1, self.n_orientations])
         params['blur_weights'] = np.tile(np.array(params['blurWeights'])[:, None].astype(np.float32), [1, self.n_orientations])
+        params['blur_weight_exps'] = np.tile(np.array(params['blurWeightExps'])[:, None].astype(np.float32), [1, self.n_orientations])
         #params['gap_weights_sq'] = np.array(params['gap_weights_sq'])[:, None].astype(np.float32)
         #params['blur_weights_sq'] = np.array(params['blur_weights_sq'])[:, None].astype(np.float32)
         return params
