@@ -28,7 +28,7 @@ all_uc_glyphs = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 all_glyphs = all_lc_glyphs + all_uc_glyphs
 
 class Engine:
-    def __init__(self, file_name, size_factor=0.9, n_scales=17, n_orientations=4, glyphset=all_glyphs):
+    def __init__(self, file_name, size_factor=0.9, n_scales=14, n_orientations=4, glyphset=all_glyphs):
         self.single_glyph_widths = {}
         self.single_glyph_images = {}
         self.convolved_glyph_images = {}
@@ -151,10 +151,10 @@ class Engine:
 
         # create output buffer
         diffs = np.ones((n_current_scales, n_current_orientations, self.box_height * self.box_width * len(distances)), dtype=np.float32)
-        dest_dev = cl.Buffer(self.ctx, cl.mem_flags.WRITE_ONLY, diffs.nbytes)
+        diff_dest_dev = cl.Buffer(self.ctx, cl.mem_flags.WRITE_ONLY, diffs.nbytes)
 
         self.vp.penalty_parallel(self.queue, diffs.shape, None,
-                                 dest_dev,
+                                 diff_dest_dev,
                                  np.int32(n_current_scales),
                                  np.int32(n_current_orientations),
                                  np.int32(self.box_height),
@@ -172,7 +172,7 @@ class Engine:
                                  blur_weight_exps_dev)
 
         # Get result back
-        cl.enqueue_copy(self.queue, diffs, dest_dev)
+        cl.enqueue_copy(self.queue, diffs, diff_dest_dev)
         penalty_field = np.reshape(diffs, (n_current_scales, n_current_orientations, self.box_height, self.box_width, len(distances))).astype(np.float32)
 
         return penalty_field
@@ -198,7 +198,7 @@ class Engine:
             rc = text[i + 1]
             if (lc + rc) not in rendered_pairs:
                 rendered_pairs[(lc + rc)] = True
-                dist = np.array([params['currentDistances'][lc + rc]]).astype(np.int32) + self.f.minimum_ink_distance(lc, rc)
+                dist= np.array([params['currentDistances'][lc + rc]]).astype(np.int32) + self.f.minimum_ink_distance(lc, rc)
                 np_penalty_fields = self.render_penalty_fields(lc, rc, params, dist)
 
                 bytes_writer.write(lc.encode("utf-16")) # utf-16 means always use 4 bytes (2 for BOM, then 2 for the character)
@@ -212,7 +212,7 @@ class Engine:
 
     def get_best_distances_and_full_penalty_fields(self, params):
         # Generate the fields for a whole set of distances, then find the best distance, and return it all.
-        distances = (np.arange(-5, 40, 2)).astype(np.int32) # TODO: get from params
+        distances = (np.arange(-1, 40, 2)).astype(np.int32) # TODO: get from params
         params = self.prepare_params(params)
 
         rendered_fields = {}
@@ -234,27 +234,25 @@ class Engine:
             if (lc + rc) not in rendered_fields:
                 rendered_fields[(lc + rc)] = True
                 np_penalty_fields = self.render_penalty_fields(lc, rc, params, distances)
-                # Find the zero crossing
-                # TODO: there's probably a better way than to do argmin(abs(x)) -- summing and root finding could be done on GPU?
-                # Find smallest negative index:
-                plt.imshow(np.sum(np.log(np_penalty_fields[3:, :, :, :, -1]), (0, 1))**2)
-                plt.colorbar()
-                plt.show()
-                plt.imshow(np.sum(np.log(np_penalty_fields[3:, :, :, :, 3]), (0, 1))**2)
-                plt.colorbar()
-                plt.show()
 
-                totals = np.sum(np.sum(np_penalty_fields, (2, 3)) ** params['blur_weight_exps'][:, :, None], (0, 1))
+                # Of the original image, a certain mask is affected by the pairing at all.
+                # Of the originals in the pairing mask, how much is lost?
+
+                # Here, we are exponentiating each channel total with a exponent.
+                # Consider also dividing the channel totals by the original total.
+                loss_totals = np.sum(np_penalty_fields, (2, 3)) # <s, o, d>
+                totals = np.sum(loss_totals, (0, 1)) # <d>
                 best_distance_index = 0
-                #plt.plot(totals - params['target'])
                 #plt.plot(totals)
-                for si in range(self.n_scales):
-                    plt.plot(np.sum(np_penalty_fields[si, :, :, :], (0, 1, 2)), linestyle='dotted')
-                plt.show()
+                #plt.show()
+                #for si in range(self.n_scales):
+                #    plt.plot(np.sum(np_penalty_fields[si, :, :, :], (0, 1, 2)), linestyle='dotted')
+                #plt.show()
 
                 for ii in range(len(distances) - 1):
-                    if (((totals[ii] - params['target']) < 0 and (totals[ii + 1] - params['target']) >= 0) or
-                        ((totals[ii] - params['target']) > 0 and (totals[ii + 1] - params['target']) <= 0)):
+                    if (((totals[ii]) < 0 and (totals[ii + 1]) >= 0) or
+                        ((totals[ii]) > 0 and (totals[ii + 1]) <= 0)):
+                        print("Best distance is", distances[ii])
                         best_distance_index = ii
                         break
 
@@ -271,6 +269,8 @@ class Engine:
 
     def prepare_params(self, params):
         params['factor'] = np.tile(np.array(params['factor'])[:, None].astype(np.float32), [1, self.n_orientations])
+        params['factor'][:, 1:] = 0.
+        # We want to convert x to 1/x
         params['beta'] = np.tile(np.array(params['beta'])[:, None].astype(np.float32), [1, self.n_orientations])
         params['gap_weights'] = np.tile(np.array(params['gapWeights'])[:, None].astype(np.float32), [1, self.n_orientations])
         params['blur_weights'] = np.tile(np.array(params['blurWeights'])[:, None].astype(np.float32), [1, self.n_orientations])

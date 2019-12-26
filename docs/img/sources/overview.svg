@@ -75,15 +75,15 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.8"
-     inkscape:cx="315.28927"
+     inkscape:cx="247.43213"
      inkscape:cy="83.476625"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="3200"
-     inkscape:window-height="1736"
+     inkscape:window-width="2560"
+     inkscape:window-height="1401"
      inkscape:window-x="0"
-     inkscape:window-y="32"
+     inkscape:window-y="19"
      inkscape:window-maximized="1"
      fit-margin-top="0"
      fit-margin-left="0"
@@ -97,7 +97,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -293,18 +293,18 @@
              style="opacity:0.931;fill:#75afd1;fill-opacity:1;stroke:none;stroke-width:0.34827822;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
           <flowRoot
              transform="matrix(0.1651527,0,0,0.1651527,27.061116,3.0783784)"
-             style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#e1544d;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#e1544d;fill-opacity:0.93333334;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
              id="flowRoot876"
              xml:space="preserve"><flowRegion
-               style="fill:#e1544d;fill-opacity:1"
+               style="fill:#e1544d;fill-opacity:0.93333334;"
                id="flowRegion878"><rect
-                 style="fill:#e1544d;fill-opacity:1"
+                 style="fill:#e1544d;fill-opacity:0.93333334;"
                  y="-7.3359289"
                  x="212.38457"
                  height="146.47212"
                  width="213.8998"
                  id="rect880" /></flowRegion><flowPara
-               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Reforma 1918';-inkscape-font-specification:'Reforma 1918, ';fill:#e1544d;fill-opacity:1"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Reforma 1918';-inkscape-font-specification:'Reforma 1918, ';fill:#e1544d;fill-opacity:0.93333334;"
                id="flowPara882">WALTER</flowPara></flowRoot>        </g>
       </g>
     </g>

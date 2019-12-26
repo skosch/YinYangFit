@@ -11,14 +11,15 @@ class FilterBank:
         self.n_orientations = n_orientations
         self.skip_scales = skip_scales
 
-        self.filter_bank = np.zeros((n_scales, n_orientations, box_height, box_width)).astype(np.complex64)
+        self.filter_bank = np.zeros((n_scales, n_orientations, 2*box_height, 2*box_width)).astype(np.complex64)
 
         if display_filters:
             sizediv = 60
             fig, ax = plt.subplots(nrows=n_scales*2, ncols=n_orientations, gridspec_kw = {'wspace':0, 'hspace':0}, figsize=(box_width * n_orientations / sizediv, box_height * n_scales * 2 / sizediv))
 
+        sigmas = self.get_sigmas()
         for s in range(n_scales):
-            sigma = self.sigma(s)
+            sigma = sigmas[s]
             for o in range(n_orientations):
                 single_filter = self.get_filter(sigma, o) / sigma
                 if display_filters:
@@ -33,21 +34,24 @@ class FilterBank:
         if display_filters:
                 plt.show()
 
-    def sigma(self, si):
-        min_sigma = 1.5
-        max_sigma = self.box_width / 9.
-        sigma = (max_sigma - min_sigma) * (si + self.skip_scales)**2 / (self.n_scales - 1)**2 + min_sigma
-        return sigma
+    def get_sigmas(self):
+        sigmas = []
+        for s in range(self.n_scales):
+            min_sigma = 1.5
+            max_sigma = self.box_width / 12.
+            #sigma = (max_sigma - min_sigma) * (si + self.skip_scales)**2 / (self.n_scales - 1)**2 + min_sigma
+            sigmas.append((max_sigma - min_sigma) * s / self.n_scales + min_sigma)
+        return np.array(sigmas)
 
     def rotated_mgrid(self, oi):
         """Used by __init__ only. Generates a meshgrid and rotate it by RotRad radians."""
         rotation = np.array([[ np.cos(np.pi*oi/self.n_orientations), np.sin(np.pi*oi/self.n_orientations)],
                         [-np.sin(np.pi*oi/self.n_orientations), np.cos(np.pi*oi/self.n_orientations)]])
-        hh = self.box_height / 2
-        bw = self.box_width / 2
-        y, x = np.mgrid[-hh:hh, -bw:bw]
-        y += 0 if self.box_height % 2 == 0 else 0.5
-        x += 0 if self.box_width % 2 == 0 else 0.5
+        hh = self.box_height #/ 2
+        bw = self.box_width #/ 2
+        y, x = np.mgrid[-hh:hh, -bw:bw].astype(np.float64)
+        y += 0.5 # if self.box_height % 2 == 0 else 0.5
+        x += 0.5 # if self.box_width % 2 == 0 else 0.5
         return np.einsum('ji, mni -> jmn', rotation, np.dstack([x, y]))
 
     def get_filter(self, sigma, theta):
@@ -79,13 +83,25 @@ class FilterBank:
         elif len(input_image.shape) == 6:
              bdsohw_input_image = np.einsum("bsohwd->bdsohw", input_image)
 
-        input_in_freqdomain = np.fft.fft2(bdsohw_input_image + 1j * np.zeros_like(bdsohw_input_image))
+        padded_input = np.pad(bdsohw_input_image, [[0, 0], [0, 0], [0, 0], [0, 0],
+                            [int(np.ceil(self.box_height / 2)), int(self.box_height / 2)],
+                            [int(np.ceil(self.box_width / 2)), int(self.box_width / 2)]])
 
-        result = (np.fft.ifft2(input_in_freqdomain * self.filter_bank[None, None, :, :, :, :]))
+        input_in_freqdomain = np.fft.fft2(padded_input + 1j * np.zeros_like(padded_input))
+
+        padded_result = (np.fft.ifft2(input_in_freqdomain * self.filter_bank[None, None, :, :, :, :]))
 
         if len(input_image.shape) == 2:
-            return np.fft.fftshift(result[0, 0, :, :, :, :], axes=[-2, -1]) # Return <s, o, h, w>
+            presult = np.fft.fftshift(padded_result[0, 0, :, :, :, :], axes=[2, 3])
+            return presult[:, :, int(np.ceil(self.box_height / 2)):int(self.box_height + np.ceil(self.box_height / 2)),
+                           int(np.ceil(self.box_width / 2)):int(self.box_width + np.ceil(self.box_width / 2))]
         elif len(input_image.shape) == 4:
-            return np.fft.fftshift(result[0, 0, :, :, :, :], axes=[-2, -1]) # Return <s, o, h, w>
+            presult = np.fft.fftshift(padded_result[0, 0, :, :, :, :], axes=[2, 3])
+            # Return <s, o, h, w>
+            return presult[:, :, int(np.ceil(self.box_height / 2)):int(self.box_height + np.ceil(self.box_height / 2)),
+                            int(np.ceil(self.box_width / 2)):int(self.box_width + np.ceil(self.box_width / 2))]
         elif len(input_image.shape) == 6:
-            return np.einsum("bdsohw->bsohwd", np.fft.fftshift(result, axes=[-2, -1])) # Return <b, s, o, h, w, d>
+            presult = np.einsum("bdsohw->bsohwd", np.fft.fftshift(padded_result, axes=[2, 3]))
+            return presult[:, :, :, :,
+                            int(np.ceil(self.box_height / 2)):int(self.box_height + np.ceil(self.box_height / 2)),
+                            int(np.ceil(self.box_width / 2)):int(self.box_width + np.ceil(self.box_width / 2))]

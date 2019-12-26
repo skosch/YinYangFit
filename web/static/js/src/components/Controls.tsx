@@ -30,8 +30,8 @@ class Controls extends PureComponent<
             <CanvasSpliner
               csPoints={this.props.controls.factorPoints}
               nPoints={this.props.app.fontInfo.nScales}
-              yMin={0.1}
-              yMax={1000.}
+              yMin={0.001}
+              yMax={1.}
               onChange={(cp, yv) => this.updateParam("factor", cp, yv)}
               title="Factor"
             />

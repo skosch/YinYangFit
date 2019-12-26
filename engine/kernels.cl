@@ -100,10 +100,7 @@ __kernel void penalty_parallel(__global float *dest, // [n_scales, n_orientation
   float lvr = factor[soi] * evr; // / (beta[soi] + evr);
 
   // Now perform the orientation inhibition (TODO)
-
   float diff = (lvp - lvl - lvr);
 
-  //dest[gi] = diff > 0 ? (1. + gap_weights[soi]) * diff : (1. + blur_weights[soi]) * diff;
-  //dest[gi] = diff > 0 ? 0. : -diff; // half_powr(-blur_weights[soi] * diff, blur_weight_exps[soi]);
-  dest[gi] = lvp;
+  dest[gi] = diff;
 }

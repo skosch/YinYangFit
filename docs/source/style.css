@@ -15,8 +15,9 @@ body {
     width: 87.5%;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 12.5%;
-    font-family: "HK Grotesk", Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+    padding-left: 8.5%;
+    padding-right: 4.5%;
+    font-family: "CrimsonProS", Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
     /*background-color: #fffff8;
     color: #111;*/
     max-width: 1400px;
@@ -107,13 +108,17 @@ section {
 p,
 ol,
 ul {
-    font-size: 1.4rem;
-    line-height: 1.86rem;
+    font-size: 1.7rem;
+    line-height: 2rem;
     hanging-punctuation: first last;
 
-    -webkit-font-feature-settings: 'liga' 1, 'onum' 1, 'kern' 1, 'salt';
+    /*-webkit-font-feature-settings: 'liga' 1, 'onum' 1, 'kern' 1, 'salt';
     -moz-font-feature-settings: 'liga' 1, 'onum' 1, 'kern' 1, 'salt';
-    -o-font-feature-settings: 'liga' 1, 'onum' 1, 'kern' 1, 'salt';
+    -o-font-feature-settings: 'liga' 1, 'onum' 1, 'kern' 1, 'salt';*/
+}
+
+.katex {
+    font-size: 1em !important;
 }
 
 p {
@@ -165,7 +170,7 @@ blockquote footer {
 article > p,
 article > footer,
 article > table {
-    width: 55%; 
+    width: 60%; 
 }
 
 /* 50 + 5 == 55, to be the same width as paragraph */
@@ -254,7 +259,7 @@ img {
     margin-right: -60%;
     width: 50%;
     margin-top: 0;
-    margin-bottom: 0;
+    margin-bottom: 1rem;
     font-size: 1.1rem;
     line-height: 1.3;
     vertical-align: baseline;
@@ -278,7 +283,7 @@ label.margin-toggle {
 
 .sidenote-number:after {
     content: counter(sidenote-counter);
-    font-size: 1rem;
+    font-size: 1.3rem;
     /*top: -0.5rem;*/
     left: 0.1rem; 
 }

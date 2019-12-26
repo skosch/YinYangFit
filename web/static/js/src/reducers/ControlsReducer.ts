@@ -14,10 +14,27 @@ interface IControlsState {
   target: number;
 }
 
+const factors = [
+  0.00467659,0.06577225,0.24097916,0.48909482,0.7240027,0.89074767 ,0.97817814,1.,0.97676164,0.9267816,0.8634805,0.79563844 ,0.7285213,0.66501266];
+
 const defaultState: IControlsState = {
-  factorPoints: [{x: 0, xLocked: true, safe: true, y: 0.2},
-                 {x: 1.0, xLocked: true, safe: true, y: 0.2}],
-  factor: [],
+  factorPoints: [
+    {x: 0./14., xLocked: true, safe: true, y: factors[0]},
+    {x: 1./14., xLocked: true, safe: true, y: factors[1]},
+    {x: 2./14., xLocked: true, safe: true, y: factors[2]},
+    {x: 3./14., xLocked: true, safe: true, y: factors[3]},
+    {x: 4./14., xLocked: true, safe: true, y: factors[4]},
+    {x: 5./14., xLocked: true, safe: true, y: factors[5]},
+    {x: 6./14., xLocked: true, safe: true, y: factors[6]},
+    {x: 7./14., xLocked: true, safe: true, y: factors[7]},
+    {x: 8./14., xLocked: true, safe: true, y: factors[8]},
+    {x: 9./14., xLocked: true, safe: true, y: factors[9]},
+    {x: 10./14., xLocked: true, safe: true, y: factors[10]},
+    {x: 11./14., xLocked: true, safe: true, y: factors[11]},
+    {x: 12./14., xLocked: true, safe: true, y: factors[12]},
+    {x: 13./14., xLocked: true, safe: true, y: factors[13]},
+  ],
+  factor: factors,
   betaPoints: [{x: 0, xLocked: true, safe: true, y: 0.2},
                  {x: 1.0, xLocked: true, safe: true, y: 0.2}],
   beta: [],

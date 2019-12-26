@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="gapgains_blurlosses.svg">
+  <defs
+     id="defs2">
+    <circle
+       stroke-width="0.5"
+       r="0.5"
+       id="gpDot" />
+    <path
+       d="M-1,0 h2 M0,-1 v2"
+       stroke="currentColor"
+       stroke-width="0.267"
+       id="gpPt0" />
+    <path
+       d="M-1,-1 L1,1 M1,-1 L-1,1"
+       stroke="currentColor"
+       stroke-width="0.267"
+       id="gpPt1" />
+    <path
+       d="M-1,0 L1,0 M0,-1 L0,1 M-1,-1 L1,1 M-1,1 L1,-1"
+       stroke="currentColor"
+       stroke-width="0.267"
+       id="gpPt2" />
+    <rect
+       height="2"
+       width="2"
+       y="-1"
+       x="-1"
+       stroke="currentColor"
+       stroke-width="0.267"
+       id="gpPt3" />
+    <rect
+       height="2"
+       width="2"
+       y="-1"
+       x="-1"
+       fill="currentColor"
+       stroke="currentColor"
+       stroke-width="0.267"
+       id="gpPt4" />
+    <circle
+       r="1"
+       cy="0"
+       cx="0"
+       stroke="currentColor"
+       stroke-width="0.267"
+       id="gpPt5" />
+    <use
+       stroke="none"
+       fill="currentColor"
+       id="gpPt6"
+       xlink:href="#gpPt5" />
+    <path
+       d="M0,-1.33 L-1.33,0.67 L1.33,0.67 z"
+       stroke="currentColor"
+       stroke-width="0.267"
+       id="gpPt7" />
+    <use
+       stroke="none"
+       fill="currentColor"
+       id="gpPt8"
+       xlink:href="#gpPt7" />
+    <use
+       transform="rotate(180)"
+       stroke="currentColor"
+       id="gpPt9"
+       xlink:href="#gpPt7" />
+    <use
+       stroke="none"
+       fill="currentColor"
+       id="gpPt10"
+       xlink:href="#gpPt9" />
+    <use
+       transform="rotate(45)"
+       stroke="currentColor"
+       id="gpPt11"
+       xlink:href="#gpPt3" />
+    <use
+       stroke="none"
+       fill="currentColor"
+       id="gpPt12"
+       xlink:href="#gpPt11" />
+    <circle
+       stroke-width="0.5"
+       r="0.5"
+       id="gpDot-6" />
+    <path
+       d="M-1,0 h2 M0,-1 v2"
+       stroke="currentColor"
+       stroke-width="0.267"
+       id="gpPt0-7" />
+    <path
+       d="M-1,-1 L1,1 M1,-1 L-1,1"
+       stroke="currentColor"
+       stroke-width="0.267"
+       id="gpPt1-5" />
+    <path
+       d="M-1,0 L1,0 M0,-1 L0,1 M-1,-1 L1,1 M-1,1 L1,-1"
+       stroke="currentColor"
+       stroke-width="0.267"
+       id="gpPt2-3" />
+    <rect
+       height="2"
+       width="2"
+       y="-1"
+       x="-1"
+       stroke="currentColor"
+       stroke-width="0.267"
+       id="gpPt3-5" />
+    <rect
+       height="2"
+       width="2"
+       y="-1"
+       x="-1"
+       fill="currentColor"
+       stroke="currentColor"
+       stroke-width="0.267"
+       id="gpPt4-6" />
+    <circle
+       r="1"
+       cy="0"
+       cx="0"
+       stroke="currentColor"
+       stroke-width="0.267"
+       id="gpPt5-2" />
+    <use
+       stroke="none"
+       fill="currentColor"
+       id="gpPt6-9"
+       xlink:href="#gpPt5-2" />
+    <path
+       d="M0,-1.33 L-1.33,0.67 L1.33,0.67 z"
+       stroke="currentColor"
+       stroke-width="0.267"
+       id="gpPt7-1" />
+    <use
+       stroke="none"
+       fill="currentColor"
+       id="gpPt8-2"
+       xlink:href="#gpPt7-1" />
+    <use
+       transform="rotate(180)"
+       stroke="currentColor"
+       id="gpPt9-7"
+       xlink:href="#gpPt7-1" />
+    <use
+       stroke="none"
+       fill="currentColor"
+       id="gpPt10-0"
+       xlink:href="#gpPt9-7" />
+    <use
+       transform="rotate(45)"
+       stroke="currentColor"
+       id="gpPt11-9"
+       xlink:href="#gpPt3-5" />
+    <use
+       stroke="none"
+       fill="currentColor"
+       id="gpPt12-3"
+       xlink:href="#gpPt11-9" />
+    <defs
+       id="defs2083">
+      <circle
+         style="stroke-width:0.5"
+         cy="0"
+         cx="0"
+         id="circle2301"
+         r="0.5" />
+      <path
+         style="stroke:currentColor;stroke-width:0.26699999"
+         inkscape:connector-curvature="0"
+         id="path2303"
+         d="M -1,0 H 1 M 0,-1 v 2" />
+      <path
+         style="stroke:currentColor;stroke-width:0.26699999"
+         inkscape:connector-curvature="0"
+         id="path2305"
+         d="M -1,-1 1,1 M 1,-1 -1,1" />
+      <path
+         style="stroke:currentColor;stroke-width:0.26699999"
+         inkscape:connector-curvature="0"
+         id="path2307"
+         d="M -1,0 H 1 M 0,-1 v 2 m -1,-2 2,2 m -2,0 2,-2" />
+      <rect
+         style="stroke:currentColor;stroke-width:0.26699999"
+         id="rect2309"
+         x="-1"
+         y="-1"
+         width="2"
+         height="2" />
+      <rect
+         style="fill:currentColor;stroke:currentColor;stroke-width:0.26699999"
+         id="rect2311"
+         x="-1"
+         y="-1"
+         width="2"
+         height="2" />
+      <circle
+         style="stroke:currentColor;stroke-width:0.26699999"
+         id="circle2313"
+         cx="0"
+         cy="0"
+         r="1" />
+      <use
+         height="100%"
+         width="100%"
+         y="0"
+         x="0"
+         style="fill:currentColor;stroke:none"
+         xlink:href="#gpPt5-2"
+         id="use2315" />
+      <path
+         style="stroke:currentColor;stroke-width:0.26699999"
+         inkscape:connector-curvature="0"
+         id="path2317"
+         d="m 0,-1.33 -1.33,2 h 2.66 z" />
+      <use
+         height="100%"
+         width="100%"
+         y="0"
+         x="0"
+         style="fill:currentColor;stroke:none"
+         xlink:href="#gpPt7-1"
+         id="use2319" />
+      <use
+         height="100%"
+         width="100%"
+         y="0"
+         x="0"
+         style="stroke:currentColor"
+         xlink:href="#gpPt7-1"
+         id="use2321"
+         transform="scale(-1)" />
+      <use
+         height="100%"
+         width="100%"
+         y="0"
+         x="0"
+         style="fill:currentColor;stroke:none"
+         xlink:href="#gpPt9-7"
+         id="use2323" />
+      <use
+         height="100%"
+         width="100%"
+         y="0"
+         x="0"
+         style="stroke:currentColor"
+         xlink:href="#gpPt3-5"
+         id="use2325"
+         transform="rotate(45)" />
+      <use
+         height="100%"
+         width="100%"
+         y="0"
+         x="0"
+         style="fill:currentColor;stroke:none"
+         xlink:href="#gpPt11-9"
+         id="use2327" />
+    </defs>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="5.6"
+     inkscape:cx="332.97593"
+     inkscape:cy="822.16165"
+     inkscape:document-units="mm"
+     inkscape:current-layer="g2796"
+     showgrid="false"
+     inkscape:window-width="2560"
+     inkscape:window-height="1401"
+     inkscape:window-x="0"
+     inkscape:window-y="19"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="gnuplot_canvas"
+       transform="matrix(0.26458333,0,0,0.26458333,21.918801,11.424535)">
+      <defs
+         id="defs1201">
+        <circle
+           r="0.5"
+           id="circle1524"
+           cx="0"
+           cy="0"
+           style="stroke-width:0.5" />
+        <path
+           d="M -1,0 H 1 M 0,-1 v 2"
+           id="path1526"
+           inkscape:connector-curvature="0"
+           style="stroke:currentColor;stroke-width:0.26699999" />
+        <path
+           d="M -1,-1 1,1 M 1,-1 -1,1"
+           id="path1528"
+           inkscape:connector-curvature="0"
+           style="stroke:currentColor;stroke-width:0.26699999" />
+        <path
+           d="M -1,0 H 1 M 0,-1 v 2 m -1,-2 2,2 m -2,0 2,-2"
+           id="path1530"
+           inkscape:connector-curvature="0"
+           style="stroke:currentColor;stroke-width:0.26699999" />
+        <rect
+           height="2"
+           width="2"
+           y="-1"
+           x="-1"
+           id="rect1532"
+           style="stroke:currentColor;stroke-width:0.26699999" />
+        <rect
+           height="2"
+           width="2"
+           y="-1"
+           x="-1"
+           id="rect1534"
+           style="fill:currentColor;stroke:currentColor;stroke-width:0.26699999" />
+        <circle
+           r="1"
+           cy="0"
+           cx="0"
+           id="circle1536"
+           style="stroke:currentColor;stroke-width:0.26699999" />
+        <use
+           id="use1538"
+           xlink:href="#gpPt5"
+           style="fill:currentColor;stroke:none"
+           x="0"
+           y="0"
+           width="100%"
+           height="100%" />
+        <path
+           d="m 0,-1.33 -1.33,2 h 2.66 z"
+           id="path1540"
+           inkscape:connector-curvature="0"
+           style="stroke:currentColor;stroke-width:0.26699999" />
+        <use
+           id="use1542"
+           xlink:href="#gpPt7"
+           style="fill:currentColor;stroke:none"
+           x="0"
+           y="0"
+           width="100%"
+           height="100%" />
+        <use
+           transform="scale(-1)"
+           id="use1544"
+           xlink:href="#gpPt7"
+           style="stroke:currentColor"
+           x="0"
+           y="0"
+           width="100%"
+           height="100%" />
+        <use
+           id="use1546"
+           xlink:href="#gpPt9"
+           style="fill:currentColor;stroke:none"
+           x="0"
+           y="0"
+           width="100%"
+           height="100%" />
+        <use
+           transform="rotate(45)"
+           id="use1548"
+           xlink:href="#gpPt3"
+           style="stroke:currentColor"
+           x="0"
+           y="0"
+           width="100%"
+           height="100%" />
+        <use
+           id="use1550"
+           xlink:href="#gpPt11"
+           style="fill:currentColor;stroke:none"
+           x="0"
+           y="0"
+           width="100%"
+           height="100%" />
+      </defs>
+      <g
+         id="g1203"
+         style="color:#ffffff;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter" />
+      <g
+         style="color:#ffffff;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter"
+         id="g2085"
+         transform="translate(57.073626,-3.0304533)" />
+      <g
+         id="g2770">
+        <g
+           style="fill:none"
+           transform="translate(23.502197,128.04098)"
+           id="gnuplot_plot_1">
+          <title
+             id="title2217">gnuplot_plot_1</title>
+          <g
+             id="g2221"
+             style="color:#ff0000;fill:none;stroke:currentColor;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter" />
+        </g>
+        <g
+           id="g2796"
+           transform="matrix(0.60646778,0,0,1,158.33598,0)"
+           style="stroke-width:1.28409195">
+          <path
+             style="color:#ff0000;fill:none;stroke:#ff0000;stroke-width:1.28409195;stroke-linecap:butt;stroke-linejoin:miter"
+             d="m 52.8,73.2 c 9.583789,0.338983 19.378343,-0.750383 28.8,0.7 8.4682,3.18154 9.823037,13.725878 12.265863,21.31874 9.749167,43.16708 12.109197,87.65807 21.551067,130.88627 1.87569,5.96049 2.46465,13.60576 7.68307,17.59499 4.51077,0.37815 5.84889,-5.71835 7.5,-9 9.3891,-27.08689 13.94901,-55.57218 21.9,-83.1 6.12946,-21.01452 12.15469,-43.10093 26.4,-60.2 10.35389,-12.49368 27.12169,-16.336848 42.5,-17.1 25.18607,-1.534949 50.71075,-0.907183 76.1,-1.1 27.13667,0 54.27333,0 81.41,0"
+             id="path2219"
+             inkscape:connector-curvature="0"
+             transform="translate(23.502198,128.04098)" />
+          <g
+             id="gnuplot_plot_2"
+             transform="translate(23.502197,128.04098)"
+             style="fill:none;stroke-width:1.28409195">
+            <title
+               id="title2224">gnuplot_plot_2</title>
+            <g
+               style="color:#008000;fill:none;stroke:currentColor;stroke-width:1.28409195;stroke-linecap:butt;stroke-linejoin:miter"
+               id="g2228">
+              <path
+                 style="fill:none;stroke:#008000;stroke-width:1.28409195"
+                 d="m 52.8,73.2 c 15.255095,0.21192 30.643009,-0.456421 45.8,0.4 10.99983,1.054956 16.0101,12.461879 19.9,21.4 6.38042,14.48356 9.829,30.45437 18.9,43.6 2.79574,4.25352 9.01585,4.70966 12.1,0.5 10.41604,-11.46331 15.68399,-26.60865 24.9,-39 7.77502,-11.936571 19.69653,-21.486767 33.9,-24.1 19.9497,-3.635855 40.655,-2.362938 61.1,-2.8 36.50333,0 73.00667,0 109.51,0"
+                 id="path2226"
+                 inkscape:connector-curvature="0" />
+            </g>
+          </g>
+          <g
+             id="gnuplot_plot_3"
+             transform="translate(23.502197,128.04098)"
+             style="fill:none;stroke-width:1.28409195">
+            <title
+               id="title2231">gnuplot_plot_3</title>
+            <g
+               style="color:#0000ff;fill:none;stroke:currentColor;stroke-width:1.28409195;stroke-linecap:butt;stroke-linejoin:miter"
+               id="g2235">
+              <path
+                 style="fill:none;stroke:#0000ff;stroke-width:1.28409195"
+                 d="m 52.8,73.2 c 21.555707,0.167538 43.223382,-0.354906 64.7,0.3 10.17935,0.340116 17.99029,7.935454 23.5,15.9 5.76944,6.922569 10.41928,16.95998 20,18.9 9.40271,-10e-4 15.41057,-8.671311 21.9,-14.3 9.6606,-9.892029 22.04396,-17.465328 35.9,-19 19.20597,-2.489149 38.95109,-1.508488 58.5,-1.8 33.87,0 67.74,0 101.61,0"
+                 id="path2233"
+                 inkscape:connector-curvature="0" />
+            </g>
+          </g>
+          <g
+             id="g2242"
+             style="color:#00ffff;fill:none;stroke:currentColor;stroke-width:1.28409195;stroke-linecap:butt;stroke-linejoin:miter"
+             transform="translate(23.502197,128.04098)">
+            <path
+               style="fill:none;stroke:#00ffff;stroke-width:1.28409195"
+               d="m 52.8,73.2 c 27.55954,0.118296 55.18713,-0.246012 82.7,0.2 9.85376,0.06567 18.92117,4.907753 26.1,11.4 6.37107,5.495692 14.80989,11.344314 23.6,7.9 11.76958,-4.736006 21.62851,-13.793349 34.3,-16.4 17.71491,-4.069895 36.24512,-2.689995 54.5,-3.1 34.97,0 69.94,0 104.91,0"
+               id="path2240"
+               inkscape:connector-curvature="0" />
+          </g>
+          <g
+             id="gnuplot_plot_5"
+             transform="translate(23.502197,128.04098)"
+             style="fill:none;stroke-width:1.28409195">
+            <title
+               id="title2245">gnuplot_plot_5</title>
+            <g
+               style="color:#157545;fill:none;stroke:currentColor;stroke-width:1.28409195;stroke-linecap:butt;stroke-linejoin:miter"
+               id="g2249">
+              <path
+                 style="fill:none;stroke:#157545;stroke-width:1.28409195"
+                 d="m 52.8,73.2 c 33.857861,0.120932 67.79549,-0.249694 101.6,0.2 10.22646,0.03982 19.71727,4.473261 28.5,9.3 7.98197,4.646011 17.85246,4.329542 26.1,0.5 12.36013,-5.596832 25.59423,-9.37456 39.2,-9.5 29.94183,-0.981104 60.13898,-0.292761 90.2,-0.5 13.50333,0 27.00667,0 40.51,0"
+                 id="path2247"
+                 inkscape:connector-curvature="0" />
+            </g>
+          </g>
+          <g
+             id="gnuplot_plot_6"
+             transform="translate(23.502197,128.04098)"
+             style="fill:none;stroke-width:1.28409195">
+            <title
+               id="title2252">gnuplot_plot_6</title>
+            <g
+               style="color:#000094;fill:none;stroke:currentColor;stroke-width:1.28409195;stroke-linecap:butt;stroke-linejoin:miter"
+               id="g2256">
+              <path
+                 style="fill:none;stroke:#000094;stroke-width:1.28409195"
+                 d="m 52.8,73.2 c 39.095312,0.06222 78.23148,-0.12731 117.3,0.1 10.61897,-0.113404 20.74809,3.218319 30.7,6.8 11.39224,4.357348 23.1712,-0.05152 34.3,-3.2 20.0322,-4.97881 41.07504,-3.297347 61.8,-3.7 27.33667,0 54.67333,0 82.01,0"
+                 id="path2254"
+                 inkscape:connector-curvature="0" />
+            </g>
+          </g>
+          <g
+             id="gnuplot_plot_7"
+             transform="translate(23.502197,128.04098)"
+             style="fill:none;stroke-width:1.28409195">
+            <title
+               id="title2259">gnuplot_plot_7</title>
+            <g
+               style="color:#ff9900;fill:none;stroke:currentColor;stroke-width:1.28409195;stroke-linecap:butt;stroke-linejoin:miter"
+               id="g2263">
+              <path
+                 style="fill:none;stroke:#ff9900;stroke-width:1.28409195"
+                 d="m 52.8,73.2 c 44.861964,0.06231 89.76483,-0.127433 134.6,0.1 11.28983,-0.09931 22.06087,3.345559 33,5.5 14.78445,2.26827 28.83598,-4.434659 43.5,-4.8 24.41693,-1.441418 49.19711,-0.54431 73.8,-0.8 13.73667,0 27.47333,0 41.21,0"
+                 id="path2261"
+                 inkscape:connector-curvature="0" />
+            </g>
+          </g>
+        </g>
+      </g>
+      <g
+         id="g2742">
+        <path
+           inkscape:connector-curvature="0"
+           id="path2143"
+           d="m 76.002201,201.24098 c 2.5,0 5,0 7.5,0 m 318.899999,0 c -2.48974,0 -5.03366,0 -7.49,0"
+           style="color:#000000;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path2143-6"
+           d="m 76.002201,200.96265 c 2.5,0 5,0 7.5,0 m 318.899999,0 c -2.48974,0 -5.03366,0 -7.49,0"
+           style="color:#000000;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter" />
+        <g
+           style="fill:none"
+           transform="matrix(1,0,0,-1,23.502193,274.16265)"
+           id="gnuplot_plot_1-0">
+          <title
+             id="title2217-6">gnuplot_plot_1</title>
+          <g
+             id="g2221-2"
+             style="color:#ff0000;fill:none;stroke:currentColor;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter">
+            <path
+               inkscape:connector-curvature="0"
+               id="path2219-6"
+               d="m 52.8,73.2 c 9.583789,0.338983 19.378343,-0.750383 28.8,0.7 8.4682,3.18154 9.823037,13.725878 12.265863,21.31874 9.749167,43.16708 12.109197,87.65807 21.551067,130.88627 1.87569,5.96049 2.46465,13.60576 7.68307,17.59499 4.51077,0.37815 5.84889,-5.71835 7.5,-9 9.3891,-27.08689 13.94901,-55.57218 21.9,-83.1 6.12946,-21.01452 12.15469,-43.10093 26.4,-60.2 10.35389,-12.49368 27.12169,-16.336848 42.5,-17.1 25.18607,-1.534949 50.71075,-0.907183 76.1,-1.1 27.13667,0 54.27333,0 81.41,0"
+               style="fill:none;stroke:#ff0000" />
+          </g>
+        </g>
+        <g
+           style="fill:none"
+           transform="matrix(1,0,0,-1,23.502193,274.16265)"
+           id="gnuplot_plot_2-1">
+          <title
+             id="title2224-8">gnuplot_plot_2</title>
+          <g
+             id="g2228-7"
+             style="color:#008000;fill:none;stroke:currentColor;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter">
+            <path
+               inkscape:connector-curvature="0"
+               id="path2226-9"
+               d="m 52.8,73.2 c 15.255095,0.21192 30.643009,-0.456421 45.8,0.4 10.99983,1.054956 16.0101,12.461879 19.9,21.4 6.38042,14.48356 9.829,30.45437 18.9,43.6 2.79574,4.25352 9.01585,4.70966 12.1,0.5 10.41604,-11.46331 15.68399,-26.60865 24.9,-39 7.77502,-11.936571 19.69653,-21.486767 33.9,-24.1 19.9497,-3.635855 40.655,-2.362938 61.1,-2.8 36.50333,0 73.00667,0 109.51,0"
+               style="fill:none;stroke:#008000" />
+          </g>
+        </g>
+        <g
+           style="fill:none"
+           transform="matrix(1,0,0,-1,23.502193,274.16265)"
+           id="gnuplot_plot_3-2">
+          <title
+             id="title2231-0">gnuplot_plot_3</title>
+          <g
+             id="g2235-2"
+             style="color:#0000ff;fill:none;stroke:currentColor;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter">
+            <path
+               inkscape:connector-curvature="0"
+               id="path2233-3"
+               d="m 52.8,73.2 c 21.555707,0.167538 43.223382,-0.354906 64.7,0.3 10.17935,0.340116 17.99029,7.935454 23.5,15.9 5.76944,6.922569 10.41928,16.95998 20,18.9 9.40271,-10e-4 15.41057,-8.671311 21.9,-14.3 9.6606,-9.892029 22.04396,-17.465328 35.9,-19 19.20597,-2.489149 38.95109,-1.508488 58.5,-1.8 33.87,0 67.74,0 101.61,0"
+               style="fill:none;stroke:#0000ff" />
+          </g>
+        </g>
+        <g
+           transform="matrix(1,0,0,-1,23.502193,274.16265)"
+           style="color:#00ffff;fill:none;stroke:currentColor;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter"
+           id="g2242-7">
+          <path
+             inkscape:connector-curvature="0"
+             id="path2240-5"
+             d="m 52.8,73.2 c 27.55954,0.118296 55.18713,-0.246012 82.7,0.2 9.85376,0.06567 18.92117,4.907753 26.1,11.4 6.37107,5.495692 14.80989,11.344314 23.6,7.9 11.76958,-4.736006 21.62851,-13.793349 34.3,-16.4 17.71491,-4.069895 36.24512,-2.689995 54.5,-3.1 34.97,0 69.94,0 104.91,0"
+             style="fill:none;stroke:#00ffff" />
+        </g>
+        <g
+           style="fill:none"
+           transform="matrix(1,0,0,-1,23.502193,274.16265)"
+           id="gnuplot_plot_5-9">
+          <title
+             id="title2245-2">gnuplot_plot_5</title>
+          <g
+             id="g2249-2"
+             style="color:#157545;fill:none;stroke:currentColor;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter">
+            <path
+               inkscape:connector-curvature="0"
+               id="path2247-8"
+               d="m 52.8,73.2 c 33.857861,0.120932 67.79549,-0.249694 101.6,0.2 10.22646,0.03982 19.71727,4.473261 28.5,9.3 7.98197,4.646011 17.85246,4.329542 26.1,0.5 12.36013,-5.596832 25.59423,-9.37456 39.2,-9.5 29.94183,-0.981104 60.13898,-0.292761 90.2,-0.5 13.50333,0 27.00667,0 40.51,0"
+               style="fill:none;stroke:#157545" />
+          </g>
+        </g>
+        <g
+           style="fill:none"
+           transform="matrix(1,0,0,-1,23.502193,274.16265)"
+           id="gnuplot_plot_6-9">
+          <title
+             id="title2252-7">gnuplot_plot_6</title>
+          <g
+             id="g2256-3"
+             style="color:#000094;fill:none;stroke:currentColor;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter">
+            <path
+               inkscape:connector-curvature="0"
+               id="path2254-6"
+               d="m 52.8,73.2 c 39.095312,0.06222 78.23148,-0.12731 117.3,0.1 10.61897,-0.113404 20.74809,3.218319 30.7,6.8 11.39224,4.357348 23.1712,-0.05152 34.3,-3.2 20.0322,-4.97881 41.07504,-3.297347 61.8,-3.7 27.33667,0 54.67333,0 82.01,0"
+               style="fill:none;stroke:#000094" />
+          </g>
+        </g>
+        <g
+           style="fill:none"
+           transform="matrix(1,0,0,-1,23.502193,274.16265)"
+           id="gnuplot_plot_7-1">
+          <title
+             id="title2259-2">gnuplot_plot_7</title>
+          <g
+             id="g2263-9"
+             style="color:#ff9900;fill:none;stroke:currentColor;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter">
+            <path
+               inkscape:connector-curvature="0"
+               id="path2261-3"
+               d="m 52.8,73.2 c 44.861964,0.06231 89.76483,-0.127433 134.6,0.1 11.28983,-0.09931 22.06087,3.345559 33,5.5 14.78445,2.26827 28.83598,-4.434659 43.5,-4.8 24.41693,-1.441418 49.19711,-0.54431 73.8,-0.8 13.73667,0 27.47333,0 41.21,0"
+               style="fill:none;stroke:#ff9900" />
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
