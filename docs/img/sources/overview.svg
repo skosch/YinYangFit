@@ -2,6 +2,7 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
+   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -21,6 +22,22 @@
    inkscape:export-ydpi="268.90302">
   <defs
      id="defs3066">
+    <linearGradient
+       id="linearGradient2670"
+       osb:paint="solid">
+      <stop
+         style="stop-color:#e35f59;stop-opacity:1;"
+         offset="0"
+         id="stop2668" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient2646"
+       osb:paint="solid">
+      <stop
+         style="stop-color:#e4655f;stop-opacity:1;"
+         offset="0"
+         id="stop2644" />
+    </linearGradient>
     <marker
        inkscape:stockid="Arrow1Mstart"
        orient="auto"
@@ -75,10 +92,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.8"
-     inkscape:cx="247.43213"
-     inkscape:cy="83.476625"
+     inkscape:cx="169.03927"
+     inkscape:cy="80.619482"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g1180"
      showgrid="false"
      inkscape:window-width="2560"
      inkscape:window-height="1401"
@@ -330,7 +347,7 @@
          cy="31.172958"
          r="1.9016926"
          id="path957"
-         style="opacity:0.931;fill:#75afd1;fill-opacity:1;stroke:none;stroke-width:0.34686992;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+         style="opacity:1;fill:#75afd1;fill-opacity:1;stroke:none;stroke-width:0.34686992;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
       <rect
          y="29.601994"
          x="73.445496"
@@ -405,12 +422,6 @@
          r="0.86225826"
          id="path957-3"
          style="opacity:0.931;fill:#e1544d;fill-opacity:1;stroke:none;stroke-width:0.15727642;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-      <circle
-         cx="71.839104"
-         cy="34.326694"
-         r="0.86225826"
-         id="path957-3-8"
-         style="opacity:0.931;fill:#e1544d;fill-opacity:1;stroke:none;stroke-width:0.15727642;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     </g>
     <flowRoot
        transform="matrix(0.12108785,0,0,0.12108785,79.249689,12.948048)"
@@ -434,7 +445,7 @@
          inkscape:connector-curvature="0"
          d="m 444.72422,98.610547 -0.6,0.12 h -10.8 v 2.960003 h 9.76 c -1.92,7.88 -5.96,13.88 -11.04,17.2 0.72,0.44 1.92,1.6 2.36,2.24 5.64,-3.96 10.32,-11.36 12.24,-21.760003 z"
          id="path1176"
-         style="fill:#e35f59;fill-opacity:1" />
+         style="fill:#e35959;fill-opacity:1" />
       <path
          inkscape:connector-curvature="0"
          d="m 462.88422,96.010547 c -1.92,2.72 -5.04,6.240003 -7.72,8.720003 -1.24,-2.08 -2.32,-4.28 -3.2,-6.480003 v -9.6 h -3.12 v 32.360003 c 0,0.68 -0.24,0.88 -0.92,0.92 -0.6,0 -2.68,0 -4.96,-0.08 0.48,0.88 1,2.36 1.12,3.24 3.04,0 5.04,-0.08 6.24,-0.64 1.16,-0.52 1.64,-1.48 1.64,-3.44 v -16.88 c 3.64,7.2 8.8,13.52 15,16.8 0.52,-0.88 1.52,-2.08 2.2,-2.68 -4.8,-2.24 -9.12,-6.4 -12.52,-11.32 2.8,-2.36 6.28,-5.96 8.92,-9.000003 z"

@@ -21,7 +21,7 @@ body {
     /*background-color: #fffff8;
     color: #111;*/
     max-width: 1400px;
-    counter-reset: sidenote-counter;
+    counter-reset: sidenote-counter heading appendixheading;
 
     /*font-family: "HK Grotesk", serif;*/
     /*letter-spacing: 0.01rem;*/
@@ -62,7 +62,35 @@ h2 {
     margin-bottom: 0rem;
     font-size: 1.6rem;
     line-height: 1; 
+    position: relative;
 }
+
+h2.nonumber:before {
+    content: "";
+    position: absolute;
+    width: 3rem;
+    left: -3rem;
+    text-align: right;
+}
+
+h2.appendix:before {
+    content: counter(appendixheading, upper-alpha)". ";
+    counter-increment: appendixheading;
+    position: absolute;
+    width: 3rem;
+    left: -3rem;
+    text-align: right;
+}
+
+h2:not(.nonumber):not(.appendix):before {
+    content: counter(heading)". ";
+    counter-increment: heading;
+    position: absolute;
+    width: 3rem;
+    left: -3rem;
+    text-align: right;
+}
+
 
 h3 {
     font-style: italic;
@@ -81,6 +109,12 @@ hr {
     border-top: 1px solid #ccc;
     margin: 1em 0;
     padding: 0; 
+}
+
+strong {
+    font-weight: 600;
+    opacity: 0.94;
+    font-style: italic;
 }
 
 p.subtitle {
@@ -176,7 +210,7 @@ article > table {
 /* 50 + 5 == 55, to be the same width as paragraph */
 article > ol,
 article > ul {
-    width: 50%;
+    width: 57.5%;
     -webkit-padding-start: 5%; 
 }
 
@@ -366,6 +400,7 @@ input.margin-toggle {
 
 label.sidenote-number {
   display: inline-block;
+  line-height: 100%;
 }
 
 label.margin-toggle:not(.sidenote-number) {
