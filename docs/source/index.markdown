@@ -20,10 +20,16 @@ This research would not have been possible without funding from Google.
 10. YinYangFit, the tool (check back soon!)
 3. Appendix: [Exisiting letterfitting tools](#existing_tools) -->
 
+<h2 class="nonumber">Intended audience</h2>
+
+I have tried to write for a general audience whenever possible, with links for
+in-depth reading in the margin, but previous experience with type design, computational
+neuroscience and deep learning is helpful.
+
 <h2 class="nonumber">Abstract</h2>
 
 Adjusting letter distances to be visually pleasing is a challenging and
-time-consuming task. As existing tools are too basic to reliably handle the
+time-consuming task. As existing tools are too primitive to reliably handle the
 infinite variety of typefaces, designers have to mostly rely on their intuitive
 judgment.
 The model presented here is the first one developed from basic principles
@@ -57,38 +63,275 @@ the aesthetics of an "even colour", i.e. a printed page with a uniform texture
 and no noticeable blobs of black or white. Meanwhile, Frank Blokland has
 argued<label for="sn-lea" class="margin-toggle sidenote-number"></label> <input
 type="checkbox" id="sn-lea" class="margin-toggle"> <span class="sidenote">See
-his [PhD thesis](https://www.lettermodel.org/).</span> that font measurements
-are mainly a holdover from the early days of metal type, when the distances
-between letter stems were the result of practical considerations. None of these
-explanations have led to an automated letterfitting algorithm<label for="sn-lea"
+his [PhD thesis](https://www.lettermodel.org/).</span> that the distances
+between letter stems are mainly a holdover from the early days of printing,
+when the measurements of cast type were the result of practical considerations. None of these
+explanations have yet led to an automated letterfitting algorithm<label for="sn-lea"
 class="margin-toggle sidenote-number"></label> <input type="checkbox"
 id="sn-lea" class="margin-toggle"> <span class="sidenote">I've listed the most
 popular existing attempts in the [appendix](#existing_tools).</span> that reliably
 reproduces the hand-tweaked pair distances in existing fonts of different
-styles.
+styles, so we need a new approach.
 
 My hypothesis is that all of the <nobr>above—subjective beauty,</nobr>
 black-white balance, and standardization across metal <nobr>type—are</nobr>
-merely pleasant side effects. The true explanation is that **letterfitting is the
-pursuit of optimal legibility under the predicted reading conditions**, in
-other words, the pursuit of the optimal activation of the neural circuitry that underlies
-our perception of letters and words.
+merely pleasant side effects. The true explanation is that **letterfitting is
+the pursuit of optimal legibility under the predicted reading conditions**. In
+other words: letterfitting is about evoking the most effective activation of the
+neural circuitry that underlies our perception of letters and words.
 
-This is by no means a revolutionary idea,<label for="sn-cbgl" class="margin-toggle
-sidenote-number"></label> <input type="checkbox" id="sn-cbgl"
-class="margin-toggle"> <span class="sidenote">
-Type legend Charles Bigelow recently compiled a [comprehensive review of
-legibility studies](https://www.sciencedirect.com/science/article/pii/S0042698919301087),
-covering many important concepts including weight and optical sizing.
-</span> yet for all of the empirical results produced by vision scientists, we
-still have no explanatory model that directly relates letter distances to
-legibility. Prototyping such a model is the objective of this project.
+This is by no means a revolutionary idea,<label for="sn-cbgl"
+class="margin-toggle sidenote-number"></label> <input type="checkbox"
+id="sn-cbgl" class="margin-toggle"> <span class="sidenote"> Type legend Charles
+Bigelow recently compiled a [comprehensive review of legibility
+studies](https://www.sciencedirect.com/science/article/pii/S0042698919301087),
+covering many important concepts including weight and optical sizing.</span>
+yet for all the findings psychologists have made about legibility, we still have no
+explicit, unified model that would allow type designers to make use of them.
+Indeed, the disconnect between the two fields is quite surprising, because existing typefaces<label
+for="sn-sltf" class="margin-toggle sidenote-number"></label> <input
+type="checkbox" id="sn-sltf" class="margin-toggle"> <span class="sidenote">And I
+don't mean the [Sloan letters](https://en.wikipedia.org/wiki/Sloan_letters) used
+by most experimental psychologists.</span> contain so much implicit information about legibility that they should be a natural,
+cheap source of validation data for psychophysical theories. The goal of this
+project is to lay the groundwork for such models, starting with the relationship
+between pair distances and legibility.
 
-## A simple model of legibility
+## A high-level view of reading
 
-To quantify legibility, we must understand how letters and words are perceived
-in our brains. Although many details are still under scientific dispute,
-a consensus has formed around a rough sketch of the process:
+As you read these words, the visual image of the letters on your screen is
+transformed into words in your head. For well-fitted text, this is a quick and
+automatic process, but when the fit is poor, it becomes a slow and deliberate
+struggle. That’s legibility: the speed at which an image of letters is able to
+filter through your brain’s circuitry to evoke the perception of the correct
+word. 
+
+To predict how letter distances affect legibility, we need to understand
+how reading works in the brain. Fortunately for us, generations of anatomists, electrophysiologists,
+psychologists and neurolinguists<label for="sn-opph" class="margin-toggle
+sidenote-number"></label><input type="checkbox" id="sn-opph"
+class="margin-toggle"><span class="sidenote">One of the first in-depth books on
+vision was Prof. Helmholtz's [Handbuch der physiologischen
+Optik](https://archive.org/details/handbuchderphysi00helm/page/n6) from 1867
+(worth a skim if you read German). In the 1950s, scientists used
+[microelectrodes](https://en.wikipedia.org/wiki/Microelectrode_array) to
+understand how neurons were wired up to retinal photoreceptors. The 1970s and
+1980s saw the publication of many simple computational models, undoubtedly owed
+to the advent of personal computers, and the introduction of [functional
+MRI](https://en.wikipedia.org/wiki/Functional_magnetic_resonance_imaging) in the
+early 1990s gave researchers a tool to map out brain regions in real time.
+[Scholarpedia](http://www.scholarpedia.org/article/Models_of_visual_cortex)
+maintains an accessible history of the major publications in the field.</span>
+have discovered enough clues about it that we can now piece
+together a rough sketch of a model, even if many of the details remain
+uncertain.
+
+<img src="img/vision_overview_cat.png" />
+
+Reading is a multi-stage process that piggybacks on the visual abilities we
+develop early in life. The first stage is often referred to as "early vision"
+and is not specific to reading: all visual imagery arriving at the visual cortex
+undergoes extensive pre-processing, such as contrast and colour
+correction and basic shape recognition. These basic shapes then serve as the
+input to the more specialized reading networks<label for="sn-vwfy" class="margin-toggle
+sidenote-number"></label><input type="checkbox" id="sn-vwfy"
+class="margin-toggle"><span class="sidenote">To wit, the networks of the [visual word form
+area](https://en.wikipedia.org/wiki/Visual_word_form_area), located in the
+fusiform gyrus on the
+underside of the left hemisphere of the brain. Delightfully, the recognition of
+Chinese characters also recruits the fusiform gyrus in the right hemisphere,
+a region traditionally associated with face recognition (although [EEG readings
+suggest that face-recognition circuitry isn't directly involved](https://doi.org/10.1371/journal.pone.0041103)).
+</span> which, once we have
+learned to read, identify first letters in these basic shapes,
+then ordered combinations of letters, and finally, via coordination with the
+brain's language networks, entire words.<label for="sn-vwfx" class="margin-toggle
+sidenote-number"></label><input type="checkbox" id="sn-vwfx"
+class="margin-toggle"><span class="sidenote">This big-picture theory was perhaps
+most clearly articulated in [this 2003 article](https://doi.org/10.1016/S1364-6613(03)00134-7), which continues to set
+the research agenda.</span>
+
+## Letter pairs and the primary visual cortex
+
+The legibility hypothesis claims that a poor fit reduces the activation of the
+letter-detecting, or letter-combination-detecting, neurons—and thereby makes
+reading more difficult. This reduction could happen quite early and propagate
+downstream, so let's zoom into the pre-processing infrastructure first.
+
+All visual information from the retina enters the brain at the very back of your
+head, in a region called the primary visual cortex or area V1. Here, neurons
+detect the presence of lines and edges in the image. Information about edges and
+lines then combines in area V2 to detect lines of particular lengths, junctions,
+corners, etc. This information, in turn, is relayed to several different brain
+regions, including area V4, where the lines and corners combine into curved
+contours and simple geometric shapes. These simple shape detector neurons then
+feed into higher-level regions, and eventually into the letter recognition
+networks.<label for="sn-vwfx" class="margin-toggle
+sidenote-number"></label><input type="checkbox" id="sn-vwfx"
+class="margin-toggle"><span class="sidenote">This architecture inspired the deep
+convolutional networks that power today's image recognition systems.</span>
+
+Let's examine how letters and letter pairs activate the neurons in the very
+first processing stage, area V1. V1 is an obvious place to start, because
+consist of little more than lines and edges. What's more, V1 is perhaps the
+best-understood brain region, and it's the easiest to model computationally because
+it operates directly on the visual input.
+
+As mentioned above, the line- and edge-detecting neurons in V1 receive input
+directly from the <nobr>retina.<label for="sn-rgct" class="margin-toggle
+sidenote-number"></label></nobr><input type="checkbox" id="sn-rgct"
+class="margin-toggle"><span class="sidenote">There are some intermediate steps,
+such as the pooling operation performed by [retinal ganglion
+cells](https://en.wikipedia.org/wiki/Retinal_ganglion_cell), and any temporal
+decorrelation performed in the [lateral geniculate
+nucleus](https://en.wikipedia.org/wiki/Lateral_geniculate_nucleus) on the way
+from the eye to the visual cortex, but we will ignore those here.</span> Each
+neuron is connected to a small contiguous group of photoreceptors, its
+*receptive field* (RF), and it will activate when a particular subset of the
+receptors detects light but the others don't. The on/off subsets are configured
+such that each neuron effectively detects a small piece of a line or edge of a
+particular size and orientation somewhere in the field of vision.
+
+<img src="img/edge_line_rfs.png" />
+
+These neurons are called *simple cells*, and we can easily predict their
+response to a given input. For instance, when we see an single uppercase *I* on a page,
+some simple cells will respond strongly and others not at all, depending on
+the tuning and location of their receptive fields:
+<label for="sn-huwi" class="margin-toggle
+sidenote-number"></label></nobr><input type="checkbox" id="sn-huwi"
+class="margin-toggle"><span class="sidenote">This was first discovered by David Hubel and Torsten Wiesel in the
+1950s, by showing patterns of light to a cat after sticking electrodes in its brain
+([video of said cat](https://www.youtube.com/watch?v=Yoo4GWiAx94)). The
+researchers went on to win a Nobel Prize for their experiments.</span>
+
+<img src="img/single_i_example.png" />
+
+For each simple cell of a particular phase, there is another one tuned to the
+opposite phase, e.g dark-to-light edges and light-to-dark edges, and we can
+toggle which cells are active by inverting the contrast of the input image. But
+at some point during pre-processing, i.e. before letters are detected,<label for="sn-bgsr"
+class="margin-toggle sidenote-number"></label></nobr><input type="checkbox"
+id="sn-bgsr" class="margin-toggle"><span class="sidenote"> [These
+results](https://doi.org/10.3389/fpsyg.2015.01695) by Rüdiger von der Heydt and
+his students are worth a read. They suggest quite convincingly that it happens
+no later than in area V2, and that it is based on feedback signals from
+higher-level brain regions that encode which side of an object an edge belongs
+to. [This 2018 fMRI study](https://doi.org/10.1523/ENEURO.0075-18.2018) by an
+Italian team used natural images, which are perhaps less relevant to reading, but provides an
+in-depth discussion of the phenomenon.</span> this polarity seems to disappear,
+because we can <span style="background:
+#3A4145; color: white;">evidently</span> read white-on-black text
+just as well as we can read black-on-white.<label for="sn-wbtx" class="margin-toggle
+sidenote-number"></label></nobr><input type="checkbox" id="sn-wbtx"
+class="margin-toggle"><span class="sidenote">In practice, dark text on light
+backgrounds has advantages: light backgrounds make the pupil contract, which
+[creates a sharper image](http://dx.doi.org/10.1016/j.apergo.2016.11.001), and
+V1 outputs are [stronger for dark
+features](https:///doi.org/10.1523/JNEUROSCI.1991-09.2009), so dark text presumably
+evokes stronger letter-detector activations downstream. Nevertheless, the effects
+of contrast inversion seem to be orthogonal to the effects of pair
+distances.</span> This is not to say that the information is lost, as of course you
+can name the colour of the foreground and background, but it most likely is not
+available to the letter detectors, and we may therefore be able to ignore phase
+information in our model.
+
+    
+* In the context of letterfitting:  
+  * We could reasonably hypothesize that as far as individual letter detectors go,
+    they will be activated perfectly fine by such a standalone letter.
+  * Let's see what happens when we add a second letter next to it.
+  
+* Addition of a second letter.
+  * Adding a second letter changes the responses of the cells in significant
+    ways. Most crucially, neurons that previously activated based on the
+    presence of an inside edge will now be activated much less strongly.
+  * This effect is noticeable because these neurons don't respond linearly.
+    Reducing their input slightly will in many cases not reduce their output in
+    proportion, but turn them off entirely.
+  * This means that by placing another letter next to the original one, we are
+    indirectly weakening the activation of the letter detector itself!
+
+* In the context of letterfitting:
+  * The closer we place letters together, the less our brain is able to
+    recognize them for what they are.
+  * Again, because neurons behave so nonlinearly, a small reduction may have
+    virtually no effect, but a slightly larger reduction may make the letter
+    much harder to read (especially if it involves a very important feature of
+    the letter.)
+  * This incentivizes us to keep letters far apart.
+
+* But addition of a second letter also creates a gap:
+  * While the edges of the letters are weakened, the gap between the two letters
+    is strengthened.
+  * While this could have some effect on the perception of the letters, it's
+    more likely that it does something else: mimic a word break.
+  * We need to better understand how letters and word breaks are processed into words.
+
+* High-level description of letter coding models.
+
+
+As you read these words, the visual image of the letters on your screen is
+transformed into words in your head. For well-fitted text, this is a quick and
+automatic process, but when the fit is poor, it becomes a slow and deliberate
+struggle. That's legibility: the speed at which an image of letters is able to
+filter through your brain's circuitry to evoke the perception of the correct
+word.
+
+Understanding this circuitry would allow us to predict how changing a letter
+pair's distance would affect its legibility. Fortunately for us, generations of
+anatomists, electrophysiologists, psychologists and neurolinguists<label
+for="sn-opph" class="margin-toggle sidenote-number"></label><input
+type="checkbox" id="sn-opph" class="margin-toggle"><span class="sidenote">One of
+the first in-depth books on vision was Prof. Helmholtz's [Handbuch der
+physiologischen
+Optik](https://archive.org/details/handbuchderphysi00helm/page/n6) from 1867
+(worth a skim if you read German). In the 1950s, scientists used
+[microelectrodes](https://en.wikipedia.org/wiki/Microelectrode_array) to
+understand how neurons were wired up to retinal photoreceptors. The 1970s and
+1980s saw the publication of many simple computational models, undoubtedly owed
+to the advent of personal computers, and the introduction of [functional
+MRI](https://en.wikipedia.org/wiki/Functional_magnetic_resonance_imaging) in the
+early 1990s gave researchers a tool to map out brain regions in real time.
+[Scholarpedia](http://www.scholarpedia.org/article/Models_of_visual_cortex)
+maintains an accessible history of the major publications in the field.</span>
+have discovered enough clues about its architecture that we can now piece
+together a rough sketch of a model, even if many of the details remain
+uncertain.
+
+[Pattern detection] -> [Shape detection] -> [Letter/space detection] ->
+[letter/space pair detection] -> [word detection].
+
+Reading is an acquired skill that piggybacks on our ability to recognize
+objects. As such, it relies on the enormous neural infrastructure of "early
+vision", the deep hierarchy of neurons that pre-processes any incoming
+visual imagery and identifies basic geometric shapes like lines, corners and
+curves. Children can quickly learn to recognize letters in these shapes, using
+the same mechanisms that allow them to recognize other things.<label
+for="sn-objr" class="margin-toggle sidenote-number"></label><input
+type="checkbox" id="sn-objr" class="margin-toggle"><span class="sidenote">It 
+often takes extra time to unlearn rotational/reflectional invariance—a
+teacup is a teacup even when upside down, but chiral letters like p, b, q and d
+are all different.</span>
+
+
+
+creates many new structures in the brain: first, 
+
+- describe the vague overview
+- highlight that the goal should be to maximally activate the 
+
+- reading is a multi-stage process: first, the shapes are recognized as letters,
+  then, clusters of letters are recognized, then, the information about clusters
+  of letters is combined with the semantic expectations of your brain's language
+  center to create the perception of a word.
+- The first 
+
+- Reading is an acquired skill 
+- it's a specialization of the object recognition mechanisms in our brain
+- the first 
+
+
 
 1. **Visual processing:** In the vision part of our brain, neurons respond to the presence of simple
    stripe-like patterns in the field of vision. These neurons combine to
@@ -1092,3 +1335,5 @@ designers some time. Toshi Omagari has built a [Glyphs plugin](https://github.co
    #3A4145; color: white;">contrast inversion</span>
 
 interference paper (bernt skottun): https://www.sciencedirect.com/science/article/pii/S016643281731937X?via%3Dihub#!
+Identification  Confusions  Among  Letters  of the  Alphabet (just compare the
+fourier transforms, gets decent correlation to actual confusion matrix): https://sci-hub.tw/10.1037/0096-1523.10.5.655
