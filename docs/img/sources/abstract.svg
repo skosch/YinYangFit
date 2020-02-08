@@ -451,9 +451,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4"
-     inkscape:cx="451.44523"
-     inkscape:cy="22.061406"
+     inkscape:zoom="2.8"
+     inkscape:cx="245.2004"
+     inkscape:cy="129.33103"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -477,7 +477,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -546,7 +546,7 @@
        xml:space="preserve"
        id="flowRoot1672"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.66666603px;line-height:1.25;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
-       transform="matrix(0.26458334,0,0,0.26458334,1.0074866,180.01635)"><flowRegion
+       transform="matrix(0.26458334,0,0,0.26458334,3.747814,180.01635)"><flowRegion
          id="flowRegion1674"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.66666603px;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk'"><rect
            id="rect1676"
@@ -556,7 +556,7 @@
            y="136.85526"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.66666603px;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk'" /></flowRegion><flowPara
          id="flowPara1678"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.66666603px;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk'">Filter</flowPara></flowRoot>    <g
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.66666603px;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk'">RF</flowPara></flowRoot>    <g
        id="g21878-0"
        transform="matrix(2.3267376,0,0,2.3399662,-248.28904,-9.0807978)"
        style="stroke-width:0.67861086">
@@ -760,7 +760,7 @@
        xml:space="preserve"
        id="flowRoot1672-13"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.66666603px;line-height:1.25;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
-       transform="matrix(0.26458334,0,0,0.26458334,1.00749,214.60118)"><flowRegion
+       transform="matrix(0.26458334,0,0,0.26458334,3.7478174,214.60118)"><flowRegion
          id="flowRegion1674-6"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.66666603px;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk'"><rect
            id="rect1676-4"
@@ -770,7 +770,7 @@
            y="136.85526"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.66666603px;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk'" /></flowRegion><flowPara
          id="flowPara1678-0"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.66666603px;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk'">Filter</flowPara></flowRoot>    <flowRoot
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.66666603px;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk'">RF</flowPara></flowRoot>    <flowRoot
        xml:space="preserve"
        id="flowRoot1672-2-9"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.66666603px;line-height:1.25;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"

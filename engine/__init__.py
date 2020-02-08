@@ -143,8 +143,11 @@ class Engine:
         sc_rg_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=sc_rg)
         shifts_l_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=shifts_l)
         shifts_r_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=shifts_r)
-        factor_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['factor'][current_scales[:, None], current_orientations[None, :]])
+        letter_tuning_function_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['ltf'][current_scales[:, None], current_orientations[None, :]])
+        vertical_gap_tuning_function_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['vgtf'][current_scales[:, None], current_orientations[None, :]])
+        horizontal_gap_tuning_function_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['hgtf'][current_scales[:, None], current_orientations[None, :]])
         beta_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['beta'][current_scales[:, None], current_orientations[None, :]])
+
         #gap_weights_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['gap_weights'][current_scales[:, None], current_orientations[None, :]])
         blur_weights_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['blur_weights'][current_scales[:, None], current_orientations[None, :]])
         blur_weight_exps_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['blur_weight_exps'][current_scales[:, None], current_orientations[None, :]])
@@ -164,7 +167,9 @@ class Engine:
                                  sc_rg_dev,
                                  shifts_l_dev,
                                  shifts_r_dev,
-                                 factor_dev,
+                                 letter_tuning_function_dev,
+                                 vertical_gap_tuning_function_dev,
+                                 horizontal_gap_tuning_function_dev,
                                  beta_dev,
                                  np.float32(params['exponent']),
         #                         gap_weights_dev,
@@ -268,7 +273,9 @@ class Engine:
         return bytes_writer.getvalue()
 
     def prepare_params(self, params):
-        params['factor'] = np.tile(np.array(params['factor'])[:, None].astype(np.float32), [1, self.n_orientations])
+        params['ltf'] = np.array(params['ltf']) #np.tile(np.array(params['ltf'])[:, None].astype(np.float32), [1, self.n_orientations])
+        params['vgtf'] = np.array(params['vgtf']) #np.tile(np.array(params['ltf'])[:, None].astype(np.float32), [1, self.n_orientations])
+        params['hgtf'] = np.array(params['hgtf']) #np.tile(np.array(params['ltf'])[:, None].astype(np.float32), [1, self.n_orientations])
         params['factor'][:, 1:] = 0.
         # We want to convert x to 1/x
         params['beta'] = np.tile(np.array(params['beta'])[:, None].astype(np.float32), [1, self.n_orientations])

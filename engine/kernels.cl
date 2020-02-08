@@ -32,7 +32,9 @@ __kernel void penalty_parallel(__global float *dest, // [n_scales, n_orientation
                                __global cfloat_t *sc_rg, // [n_scales, n_orientations, box_height * box_width]
                                __constant int *shifts_l, // [n_distances]
                                __constant int *shifts_r, // [n_distances]
-                               __global float *factor, // [n_scales, n_orientations]
+                               __global float *letter_tuning_function, // [n_scales, n_orientations]
+                               __global float *vertical_gap_tuning_function, // [n_scales, n_orientations]
+                               __global float *horizontal_gap_tuning_function, // [n_scales, n_orientations]
                                __global float *beta, // [n_scales, n_orientations]
                                float exponent,
 //                               __global float *gap_weights, // [n_scales, n_orientations]
@@ -86,21 +88,22 @@ __kernel void penalty_parallel(__global float *dest, // [n_scales, n_orientation
   // Now for the sum of the two values: (vp = value of pair)
   cfloat_t vp = cfloat_add(vl, vr);
 
-  // Now compute the difference
-  int soi = si * n_orientations + oi;
-
   // Now compute the exponentiated values
   float evp = half_powr(cfloat_abs_squared(vp), exponent/2.);
   float evl = half_powr(cfloat_abs_squared(vl), exponent/2.);
   float evr = half_powr(cfloat_abs_squared(vr), exponent/2.);
 
-  // Now compute the hyperbolic ratio values
-  float lvp = factor[soi] * evp; // / (beta[soi] + evp);
-  float lvl = factor[soi] * evl; // / (beta[soi] + evl);
-  float lvr = factor[soi] * evr; // / (beta[soi] + evr);
-
   // Now perform the orientation inhibition (TODO)
-  float diff = (lvp - lvl - lvr);
+  float diff = (evp - evl - evr);
 
-  dest[gi] = diff;
+  // Now scale the diffs
+  int soi = si * n_orientations + oi;
+
+  float gap_gain = diff > 0.0 ? diff : 0.0;
+  float edge_loss = diff < 0.0 ? diff : 0.0;
+
+  float edge_loss_scaled = letter_tuning_function[soi] * edge_loss + horizontal_gap_tuning_function[soi] * gap_gain;
+  float gap_gain_scaled = vertical_gap_tuning_function[soi] * gap_gain;
+
+  dest[gi] = gap_gain_scaled - edge_loss_scaled;
 }

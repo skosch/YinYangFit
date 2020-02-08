@@ -35,38 +35,6 @@ class Controls extends PureComponent<
               onChange={(cp, yv) => this.updateParam("factor", cp, yv)}
               title="Factor"
             />
-            <CanvasSpliner
-              csPoints={this.props.controls.betaPoints}
-              nPoints={this.props.app.fontInfo.nScales}
-              yMin={0.1}
-              yMax={1000.}
-              onChange={(cp, yv) => this.updateParam("beta", cp, yv)}
-              title="Beta"
-            />
-              {/*<CanvasSpliner
-              csPoints={this.props.controls.gapWeightsPoints}
-              nPoints={this.props.app.fontInfo.nScales}
-              yMin={0.1}
-              yMax={5000.}
-              onChange={(cp, yv) => this.updateParam("gapWeights", cp, yv)}
-              title="Gap weights"
-                />*/}
-            <CanvasSpliner
-              csPoints={this.props.controls.blurWeightsPoints}
-              nPoints={this.props.app.fontInfo.nScales}
-              yMin={0.1}
-              yMax={5000.}
-              onChange={(cp, yv) => this.updateParam("blurWeights", cp, yv)}
-              title="Blur weights"
-            />
-            <CanvasSpliner
-              csPoints={this.props.controls.blurWeightExpsPoints}
-              nPoints={this.props.app.fontInfo.nScales}
-              yMin={0.1}
-              yMax={10.}
-              onChange={(cp, yv) => this.updateParam("blurWeightExps", cp, yv)}
-              title="Blur weight exps"
-            />
             </div>
             <div>
             <textarea

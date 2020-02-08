@@ -15,7 +15,10 @@
    version="1.1"
    id="svg4978"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
-   sodipodi:docname="vision_overview_cat.svg">
+   sodipodi:docname="vision_overview_cat.svg"
+   inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/vision_overview_cat.png"
+   inkscape:export-xdpi="142.28203"
+   inkscape:export-ydpi="142.28203">
   <defs
      id="defs4972" />
   <sodipodi:namedview
@@ -25,11 +28,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4"
-     inkscape:cx="391.08101"
-     inkscape:cy="210.69373"
+     inkscape:zoom="2.8"
+     inkscape:cx="310.88178"
+     inkscape:cy="171.88814"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g8200"
      showgrid="false"
      units="px"
      showguides="true"
@@ -1199,7 +1202,22 @@
              width="481.84277"
              id="rect7884-3-3-3" /></flowRegion><flowPara
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk'"
-           id="flowPara7886-2-2-6">Letter detection</flowPara></flowRoot>    </g>
+           id="flowPara7886-2-2-6">Letter detection</flowPara></flowRoot>      <g
+         id="g14343"
+         transform="translate(-14.314893,-21.447043)"
+         style="opacity:0.38999999">
+        <path
+           inkscape:connector-curvature="0"
+           id="path14339"
+           d="m 159.55542,175.08113 h 6.25236"
+           style="opacity:1;fill:none;fill-opacity:1;stroke:#e35959;stroke-width:2.64583325;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path14341"
+           d="m 162.6816,175.29998 v 5.9879"
+           style="opacity:1;fill:none;fill-opacity:1;stroke:#e35959;stroke-width:2.64583325;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      </g>
+    </g>
     <g
        id="g7999-0"
        transform="matrix(0.74622902,0,0,0.74622902,50.727542,65.694372)" />

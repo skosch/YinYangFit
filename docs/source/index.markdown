@@ -20,12 +20,6 @@ This research would not have been possible without funding from Google.
 10. YinYangFit, the tool (check back soon!)
 3. Appendix: [Exisiting letterfitting tools](#existing_tools) -->
 
-<h2 class="nonumber">Intended audience</h2>
-
-I have tried to write for a general audience whenever possible, with links for
-in-depth reading in the margin, but previous experience with type design, computational
-neuroscience and deep learning is helpful.
-
 <h2 class="nonumber">Abstract</h2>
 
 Adjusting letter distances to be visually pleasing is a challenging and
@@ -37,6 +31,17 @@ in vision science and has been successfully fitted to existing, hand-fitted
 fonts using backpropagation. It is a first step towards an explanation of *why*
 we perceive letter pairs as too close or too far, regardless of the font style
 or even script.
+
+<h2 class="nonumber">Epistemic status</h2> 
+This article is based on many months
+of reviewing the relevant scientific literature. However, I was not trained as a
+neuroscientist but as an engineer, and some of my hypotheses are true
+predictions, i.e. they lack experimental verification. Although results are
+promising, this should be seen as a roadmap for further research.
+
+I have tried to avoid jargon wherever possible, with links for in-depth reading
+in the margin. Still, readers may find previous exposure to type design,
+computational neuroscience and machine learning helpful.
 
 ## Introduction
 
@@ -75,10 +80,18 @@ styles, so we need a new approach.
 
 My hypothesis is that all of the <nobr>above—subjective beauty,</nobr>
 black-white balance, and standardization across metal <nobr>type—are</nobr>
-merely pleasant side effects. The true explanation is that **letterfitting is
-the pursuit of optimal legibility under the predicted reading conditions**. In
-other words: letterfitting is about evoking the most effective activation of the
-neural circuitry that underlies our perception of letters and words.
+merely pleasant side effects of the pursuit of optimal legibility under the
+predicted reading conditions.<label for="sn-vdss" class="margin-toggle
+sidenote-number"></label> <input type="checkbox" id="sn-vdss"
+class="margin-toggle"><span class="sidenote">In cognitive science terms, I am
+suggesting that a model of the [ventral
+stream](https://en.wikipedia.org/wiki/Two-streams_hypothesis#Ventral_stream)
+(the systems involved in understanding what we see) may
+be sufficient for a good letterfitting model, while traditional heuristics have
+focused more on what could be considered computations of the
+[dorsal stream](https://en.wikipedia.org/wiki/Two-streams_hypothesis#Dorsal_stream)
+(the systems involved in maintaing a precise visual map of the world).</span> In other words: well-fitted text most effectively activates
+the neural circuitry that allows us to read letters and words.
 
 This is by no means a revolutionary idea,<label for="sn-cbgl"
 class="margin-toggle sidenote-number"></label> <input type="checkbox"
@@ -97,88 +110,337 @@ cheap source of validation data for psychophysical theories. The goal of this
 project is to lay the groundwork for such models, starting with the relationship
 between pair distances and legibility.
 
-## A high-level view of reading
+## Different perspectives
 
-As you read these words, the visual image of the letters on your screen is
-transformed into words in your head. For well-fitted text, this is a quick and
-automatic process, but when the fit is poor, it becomes a slow and deliberate
-struggle. That’s legibility: the speed at which an image of letters is able to
-filter through your brain’s circuitry to evoke the perception of the correct
-word. 
+Letterfitting is an astonishingly difficult problem, and those who wish to
+tackle it require a deep understanding of many of the different aspects of
+vision and reading, including:
 
-To predict how letter distances affect legibility, we need to understand
-how reading works in the brain. Fortunately for us, generations of anatomists, electrophysiologists,
-psychologists and neurolinguists<label for="sn-opph" class="margin-toggle
-sidenote-number"></label><input type="checkbox" id="sn-opph"
-class="margin-toggle"><span class="sidenote">One of the first in-depth books on
-vision was Prof. Helmholtz's [Handbuch der physiologischen
+* Basic neurophysiology
+* Organization of the primary visual cortex
+* Divisive normalization mechanisms
+* Recurrent feedback mechanisms from V2, V4 etc.
+* Gestalt psychology
+* Crowding
+* Models of reading
+* Type design (and not just in Latin)
+* Information theory
+
+In this article, I have tried to focus on the topics I believe are most novel to
+those with an engineering background (like myself) and most relevant to type designers.
+
+## Vision and reading: a high-level view
+
+Legibility isn't a matter of taste or opinion. Seeing a printed word triggers
+waves of electrical activity in our brain, which flash back and forth until both
+the visual image and the meaning of the word manifest in our conscious
+perception. This happens in more or less the same way for all of us, and even
+though scientists still lack the instruments to precisely measure the activity
+at a cell level,<label for="sn-meas" class="margin-toggle
+sidenote-number"></label> <input type="checkbox" id="sn-meas"
+class="margin-toggle"><span class="sidenote">Although we have come a long way
+since Prof. Helmholtz's [Handbuch der physiologischen
 Optik](https://archive.org/details/handbuchderphysi00helm/page/n6) from 1867
-(worth a skim if you read German). In the 1950s, scientists used
-[microelectrodes](https://en.wikipedia.org/wiki/Microelectrode_array) to
-understand how neurons were wired up to retinal photoreceptors. The 1970s and
-1980s saw the publication of many simple computational models, undoubtedly owed
-to the advent of personal computers, and the introduction of [functional
-MRI](https://en.wikipedia.org/wiki/Functional_magnetic_resonance_imaging) in the
-early 1990s gave researchers a tool to map out brain regions in real time.
-[Scholarpedia](http://www.scholarpedia.org/article/Models_of_visual_cortex)
-maintains an accessible history of the major publications in the field.</span>
-have discovered enough clues about it that we can now piece
-together a rough sketch of a model, even if many of the details remain
-uncertain.
+(worth a skim if you read German), most experiments still rely on [microelectrode
+arrays](https://en.wikipedia.org/wiki/Microelectrode_array) which pick up very
+precise data, but only touch a few neighbouring neurons at a time;
+[electro-encephalography](https://en.wikipedia.org/wiki/Electroencephalography)
+which has very poor spatial resolution, and [functional
+MRI](https://en.wikipedia.org/wiki/Functional_magnetic_resonance_imaging) which
+shows the whole brain but has poor spatial *and* temporal resolution.
+[Optogenetic techniques](https://en.wikipedia.org/wiki/Optogenetics) are very
+promising, but not yet widely used.</span> they now have a
+rough understanding of the computations performed. This
+makes it possible to recast typographic ideas about letterfitting in the
+language of psychophysics—but first we'll have to review what is known about how
+our brain processes letters and words.
+
+Reading, as a skill, relies on specialized letter-and-word-detecting circuitry in
+our brain, and this circuitry piggybacks on our generic image processing system.
+To explain reading, we need to explain both.
+
+<span><input type="checkbox" id="mn-newb"
+class="margin-toggle"><label for="mn-newb"
+class="margin-toggle"></label> <span class="marginnote"> <img
+src="img/newborn.png" alt="How a newborn sees">Newborns are not only extremely
+myopic and nearly colourblind, they also lack the fine-tuning of the visual
+cortex that would allow them to perceive objects clearly.</span></span>
+The generic image processing system occupies a brain region called the *visual
+cortex*, located at the back of our head. Its layout is vaguely shaped by our
+mammalian genes, but its precise neural connections develop in response to the
+imagery presented to it over the first few months of our life, during which
+synapses that help provide useful information about our natural world are
+strengthened, while others wither away.
+
+Some of the most interesting details in our environment are lines, edges, and colours.
+These basic features combine to form shapes, and shapes combine to form objects.
+Our visual cortex, having sculpted itself to make the best possible use of this
+natural hierarchy of information, is organized in the same way.
+<label for="sn-nsce" class="margin-toggle
+sidenote-number"></label> <input type="checkbox" id="sn-nsce"
+class="margin-toggle"><span class="sidenote">Much of the research on perception
+is based on this idea of [statistically ideal
+observers](https://en.wikipedia.org/wiki/Ideal_observer_analysis) in the context of
+[natural scenes](https://en.wikipedia.org/wiki/Natural_scene_perception).
+Luckily, type design doesn't involve moving objects like natural scenes do.</span> 
+The first phalanx of about 140 million neurons to process input from the retina,
+collectively called V1, has a single task: to activate in response to small
+fragments of coloured lines and edges. Downstream, other neurons are connected
+to sets of V1 neurons that are aligned to correspond to continuous lines or corners.
+Further downstream, those neurons combine with others to activate neurons
+responding to particular shapes, which combine to detect objects.
 
 <img src="img/vision_overview_cat.png" />
 
-Reading is a multi-stage process that piggybacks on the visual abilities we
-develop early in life. The first stage is often referred to as "early vision"
-and is not specific to reading: all visual imagery arriving at the visual cortex
-undergoes extensive pre-processing, such as contrast and colour
-correction and basic shape recognition. These basic shapes then serve as the
-input to the more specialized reading networks<label for="sn-vwfy" class="margin-toggle
-sidenote-number"></label><input type="checkbox" id="sn-vwfy"
-class="margin-toggle"><span class="sidenote">To wit, the networks of the [visual word form
-area](https://en.wikipedia.org/wiki/Visual_word_form_area), located in the
-fusiform gyrus on the
-underside of the left hemisphere of the brain. Delightfully, the recognition of
-Chinese characters also recruits the fusiform gyrus in the right hemisphere,
-a region traditionally associated with face recognition (although [EEG readings
-suggest that face-recognition circuitry isn't directly involved](https://doi.org/10.1371/journal.pone.0041103)).
-</span> which, once we have
-learned to read, identify first letters in these basic shapes,
-then ordered combinations of letters, and finally, via coordination with the
-brain's language networks, entire words.<label for="sn-vwfx" class="margin-toggle
-sidenote-number"></label><input type="checkbox" id="sn-vwfx"
-class="margin-toggle"><span class="sidenote">This big-picture theory was perhaps
-most clearly articulated in [this 2003 article](https://doi.org/10.1016/S1364-6613(03)00134-7), which continues to set
+Once the visual cortex has thus extracted some noteworthy intel about the
+incoming imagery—vitally, the shape and location of objects—the next step
+involves the actual recognition and comprehension of said objects. For letters
+this happens in the so-called *visual word form area* on the underside of the
+left half of the brain, which is in turn connected to the language-recognition
+networks in *Wernicke's area* and other places.<label for="sn-vwfx"
+class="margin-toggle sidenote-number"></label><input type="checkbox"
+id="sn-vwfx" class="margin-toggle"><span class="sidenote">This big-picture
+theory was perhaps most clearly articulated in [this 2003
+article](https://doi.org/10.1016/S1364-6613(03)00134-7), which continues to set
 the research agenda.</span>
 
-## Letter pairs and the primary visual cortex
+## Letters, words, and uncertainty
 
-The legibility hypothesis claims that a poor fit reduces the activation of the
-letter-detecting, or letter-combination-detecting, neurons—and thereby makes
-reading more difficult. This reduction could happen quite early and propagate
-downstream, so let's zoom into the pre-processing infrastructure first.
+It is deceptively easy to think of this process as data smoothly flowing upwards
+through ever-higher-level brain regions, as if the brain were an assembly line
+leading from our sensory organs to a place called consciousness. In reality, the
+process is fiercely antagonistic.<label for="sn-nxxn" class="margin-toggle
+sidenote-number"></label><input type="checkbox" id="sn-nxxn"
+class="margin-toggle"><span class="sidenote">[This interactive
+visualization](http://nxxcxx.github.io/Neural-Network/) is far from realistic
+but a much more useful visual metaphor than feed-forward deep learning
+architectures.</span> The higher-level brain regions are already happily abuzz
+with activity representing their own understanding of the world, activity which
+bounces around in stable patterns and which even feeds back into the lower-level
+regions to reinforce itself. Only strong, sustained sensory evidence for new
+information is enough to disrupt and update the patterns. <label for="sn-ndcsx"
+class="margin-toggle sidenote-number"></label><input type="checkbox"
+id="sn-ndcsx" class="margin-toggle"><span class="sidenote"> This is a slapdash
+framing of [set](https://en.wikipedia.org/wiki/Set_(psychology)) as [Bayesian
+inference](https://en.wikipedia.org/wiki/Bayesian_inference_in_motor_learning)
+via top-down modulation: the original state of the higher-level area corresponds
+to a statistical prior and the updated state to a posterior. This is a deep and
+fascinating area of research of itself, and this article is only meant to convey
+an intuition, not a rigorous description of reality.</span>
 
-All visual information from the retina enters the brain at the very back of your
-head, in a region called the primary visual cortex or area V1. Here, neurons
-detect the presence of lines and edges in the image. Information about edges and
-lines then combines in area V2 to detect lines of particular lengths, junctions,
-corners, etc. This information, in turn, is relayed to several different brain
-regions, including area V4, where the lines and corners combine into curved
-contours and simple geometric shapes. These simple shape detector neurons then
-feed into higher-level regions, and eventually into the letter recognition
-networks.<label for="sn-vwfx" class="margin-toggle
-sidenote-number"></label><input type="checkbox" id="sn-vwfx"
-class="margin-toggle"><span class="sidenote">This architecture inspired the deep
-convolutional networks that power today's image recognition systems.</span>
+A neat, letterfitting-related example of these mechanics is the following
+paradox, which vision researchers have probed in endless studies: on one hand,
+we can raed wrods even when their letrtes are out of odrer, indicating that the
+brain ignores most information about letter positions.<label for="sn-jls" class="margin-toggle
+sidenote-number"></label> <input type="checkbox" id="sn-jls"
+class="margin-toggle"><span class="sidenote">[Jumbled
+letters](https://en.wikipedia.org/wiki/Transposed_letter_effect) are a crowd
+favourite ever since the infamous [Cambridge
+email](http://www.mrc-cbu.cam.ac.uk/people/dennis.norris/personal/cambridgeemail/)
+meme. The strength of the effect appears to depend on many factors: the
+[relative position of the
+letter](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2662926/), [the jumbling
+distance](http://www.bcbl.eu/consolider/images/stories/publications/Perea_etal_ExpPsy07.pdf),
+[the language](https://psycnet.apa.org/record/2008-03492-004), and even on [your
+age](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6542500/) (curiously, it does
+depend on whether you are a human [or a
+baboon](https://journals.sagepub.com/doi/abs/10.1177/0956797612474322)).</span> On the other hand, we
+have no trouble distinguishing anagrams like *cat* and *act*. Nobody has yet
+observed the responsible neurons in action, but the mountains of experimental
+data tell a story that goes like this:
 
-Let's examine how letters and letter pairs activate the neurons in the very
-first processing stage, area V1. V1 is an obvious place to start, because
-consist of little more than lines and edges. What's more, V1 is perhaps the
-best-understood brain region, and it's the easiest to model computationally because
-it operates directly on the visual input.
+The word *cat* appears in the center of vision, triggering a cascade of
+electrical pulses in the visual cortex. Vertical, horizontal, and angled
+features are detected in various places, and they combine to activate neurons
+that code for the presence of letters. In early models of reading, researchers
+thought of these letter-detecting neurons as assigned to fixed positions,
+representing data like *"c" in position 1*, *"a" in position 2*, and so forth—but
+that's not realistic. Instead, there are probably multiple detectors activating for
+each letter, and because of the spatial uncertainty introduced by multiple
+levels of feature detection, all they can do is collectively express a
+probability distributions in space:<label for="sn-ovel" class="margin-toggle
+sidenote-number"></label><input type="checkbox" id="sn-ovel"
+class="margin-toggle"><span class="sidenote">This is the [overlap
+model](https://doi.org/10.1037/a0012667) by Gomez, Ratcliff, and Perea.</span>
 
-As mentioned above, the line- and edge-detecting neurons in V1 receive input
-directly from the <nobr>retina.<label for="sn-rgct" class="margin-toggle
+<img src="img/ld_lcd.png" alt="Letter detector and letter combination detector neurons">
+
+The probabilistic nature of this architecture, which is illustrated in the
+diagram by circles representing stronger and weaker activations, naturally
+extends to neurons which detect the presence of ordered combinations of
+letters.<label for="sn-opbi" class="margin-toggle
+sidenote-number"></label><input type="checkbox" id="sn-opbi"
+class="margin-toggle"><span class="sidenote">The concept of such
+combination-detecting neurons originated with the [open bigram
+model](https://doi.org/10.1080/01690960344000198) championed by researchers
+Carol Whitney and Jonathan Graigner. Soon, biologically plausible models were
+proposed (I particularly like [this
+paper](https://doi.org/10.1016/j.tics.2005.05.004) by Dehaene et al. for its
+lucid explanations), followed by [fMRI
+evidence](https://doi.org/10.1016/j.neuron.2007.05.031). </span> Although the
+diagram above shows only two types of detectors—letters and bigrams—the brain
+likely contains a whole interconnected hierarchy of them, detecting letters,
+bigrams, trigrams, quadrigrams, and larger morphemes, all of which contribute to
+the detection of the word.<label for="sn-wddt" class="margin-toggle
+sidenote-number"></label><input type="checkbox" id="sn-wddt"
+class="margin-toggle"><span class="sidenote">It is not clear whether detectors
+correspond to single neurons (sparse coding) or constellations of neurons
+(population coding), especially at the level of quadrigram or morpheme
+detectors.</span> All of the above likely use overlapping,
+Gaussian-weighted receptive fields.
+
+Which word we finally perceive is not up to the letter-combination detectors,
+however. Instead, that's a decision for the rather more dignified brain areas
+that deal with language processing—and they are free to disagree with the visual
+system. To illustrate, let's consider a situation where *cat* was, in fact, a
+typo for *act*.
+
+Imagine, for instance, that we have just read the words "police caught the bank
+robber in the". Although we have not yet seen the next word (*cat*), our language
+networks are already sizzling with electrical activity that renders the neurons
+for *act* especially sensitive. Shortly after, some signals arrive: strong
+signals for CA and AT, moderate signals for AC and OA, and some weak signals for
+CT, as shown in the diagram above. However, despite their strong activation,
+the neurons for CA and AT find it difficult to activate any word-coding neurons.
+Sure, *cat* fires some spikes, but without the support of the rest of the
+language network, it's a rather hesitant activation. Meanwhile, even the
+comparatively small contributions of AC and CT (and AT, which is also weakly
+connected to *act*) are enough to give the primed *act* a serious boost. This
+seals the deal, because *act* has neural connections going backwards to AC and CT,
+creating a self-amplifying feedback loop that has *act* glowing red-hot
+(metaphorically) within just tens of milliseconds, far outdoing any notion of
+*cat*.<label for="sn-ctsm"
+class="margin-toggle sidenote-number"></label> <input type="checkbox"
+id="sn-ctsm" class="margin-toggle"><span class="sidenote">This is a tremendous
+oversimplification. The neural deliberations involved in word individuation
+depend on first and last letters, syllable structure, position of vowels and
+consonants, and other factors that are still the subject of painstaking research.</span>
+In addition, detectors likely have inhibitive connections that implement direct
+competition between them, so as time passes, *act* might actively suppress
+*cat*, or the two may oscillate back and forth, depending on the circumstances.
+No diagram can do these complicated two-way dynamics justice, of course, but we
+might visualize the effect of the initial top-down feedback like so:
+
+<img src="img/ld_lcd_feedback.png" alt="Letter detector and letter combination detector neurons, with feedback">
+
+This process of "word individuation" takes about quarter of a second; meanwhile, the eyes have long moved
+on to the next sentence.<label for="sn-jlsn"
+class="margin-toggle sidenote-number"></label> <input type="checkbox"
+id="sn-jlsn" class="margin-toggle"><span class="sidenote">There are several EEG
+studies on this subject, but [this
+one](https://www.pnas.org/content/113/29/8162) is especially cool as it involves
+deep-brain stimulation of live human volunteers.</span> A quick reader might
+therefore never notice the typo at all. Of course, this
+mechanism is even more effective for jmbueld letrtes, because *letrtes* isn't a
+word at all—there are no neurons or synapses coding for it in our language
+system, so the next-best word will always win by default. That's true even
+though the initial mismatch may be enough to draw your conscious attention,
+which unpleasantly interrupts the flow of reading.<label for="sn-pmin"
+class="margin-toggle sidenote-number"></label> <input type="checkbox"
+id="sn-pmin" class="margin-toggle"><span class="sidenote">It's not clear how
+that works, although the [predictive
+coding](https://en.wikipedia.org/wiki/Predictive_coding) theories of the brain,
+promoted heavily by researchers like Karl Friston and Andy Clark, provide some
+promising ideas. [This article](https://dx.doi.org/10.3389%2Ffpsyg.2012.00096) by Jacob
+Hohwy contains many of the relevant references.</span>
+
+Given this model, we can make the following hypothesis about letterfitting:
+excessively small or large pair distances result in poor activation of letter
+detectors and/or letter-combination detectors. Due to this poor activation, the
+activity in the visual word form area takes longer until it settles into the
+stable pattern corresponding to the perception of the word. On aggregate, this
+has the effect of slowing down reading.
+
+<img src="img/no_th.png" alt="Effect of pair distances on letter detectors and LCD">
+
+I grant that this remains a hypothesis until electrocorticographical evidence
+shows an effect of letterfit on the temporal dynamics of word individuation. The idea
+seems plausible, however, and raises the question: how exactly does a poor fit
+lead to poor activation of detectors?
+
+One could speculate that the most effective way to activate a particular letter
+detector is to present only the corresponding letter, in the fovea and on an otherwise
+blank page—in other words, at a pair distance of infinity, or at least
+exceeding the field of vision. Contrarily, it is clear that touching or even
+overlapping letters are difficult to recognize.
+
+[image]
+
+This would suggest that more loosely fitted words are easier to recognize, and
+indeed, research confirms just that.<label for="sn-dsx" class="margin-toggle
+sidenote-number"></label> <input type="checkbox" id="sn-dsx"
+class="margin-toggle"><span class="sidenote">See e.g. [these
+experiments](https://doi.org/10.1371/journal.pone.0047568) by Gomez and Perea.
+Buy sadly there's no free lunch for typographers, either. When text is tracked
+out, less of it fits into the field of sharp vision (the "visual span", as Gordon Legge calls it), so it takes extra saccades to process the whole text (see
+e.g. Legge et al.'s [visual span experiments](https://doi.org/10.1167/7.2.9)).
+All in all, it's a wash in terms of reading speed. The only ones who consistently
+benefit from a looser fit are dyslexics, as
+[reported](https://doi.org/10.1073/pnas.1205566109) by Marco Zorzi et al., which
+suggests that dyslexia is related to a deficit in letter-position coding.</span> This brings into focus a
+key question that any reliable letterfitting model must answer: how exactly does
+the tightening of pairs reduce the activation of letter detectors? We'll later
+construct a simple but effective model to address this question.
+
+In addition, we should note that in tight pairs, the problem of diminished letter detector
+activation is actually compounded by the increased activation of the
+reverse-order bigram detector, which likely directly competes with the desired
+bigram detector:
+
+[image]
+
+Although the severity of this problem likely pales in comparison to the weakening of the
+letters themselves, and its practical effect on word individuation speed depends on too many
+factors (width and shape of the letters, orthographic frequency of the
+reverse-order pair, etc.) to model it effectively, it is nevertheless part
+of a complete account.
+
+At excessively large distances, the (perfectly) activated letter
+detectors are too far apart in space in order to jointly activate the
+letter-combination detector, due to the limited size of the receptive field of
+the latter.<label for="sn-lcdwd" class="margin-toggle sidenote-number"></label>
+<input type="checkbox" id="sn-lcdwd" class="margin-toggle"><span
+class="sidenote">In fact, [this experiment](https://doi.org/10.1167/11.6.8) by
+Fabien Vinckier et al. showed precisely that once more than two spaces are
+inserted between letters, reading speed drops off a cliff, which aligns well
+with the proposed receptive field size of bigram detectors.</span> 
+
+[image]
+
+This alone should incentivize us to limit pair distances to hit the sweet spot
+of the letter-combination detectors. However, there may be another reason to do
+so: a large gap between letters suggests the presence of a word break, which
+allows for the detection of two individual fragments which will compete with the
+actual word at the word detector level.
+
+Curiously, word breaks have been all but ignored in the psychophysical
+literature until now. At first blush, it seems that the limited size of
+combination-detector receptive fields, combined with competitive
+cross-inhibition between word detectors, should be a sufficient explanation for
+word breaks: a loose pair in the middle produces a weak bigram activation, which
+in turn weakens the support for the whole word, in favour of the detection of
+two individual fragments. This suggests that the *relative* activation of
+combination detectors is most important, which agrees with the top-down feedback
+model of word indviduation as well as with the observation that no apparent word
+breaks are introduced if well-fitted text is tracked-out evenly. Still, it is
+perhaps not the whole story, as second-order contrast normalization, gestalt
+grouping, and other feedback-based mechanisms—all of which occur much earlier
+during visual processing—may contribute to the perception of word edges.<label
+for="sn-becm" class="margin-toggle sidenote-number"></label> <input
+type="checkbox" id="sn-becm" class="margin-toggle"><span class="sidenote">The
+existence of these kinds of saliency-enhancing computations in the visual cortex
+is certain, but the exact influence on higher-level processes like word
+individuation is not. Nevertheless, Simon Fischer-Baum and colleagues have found
+that the position of word edges does indeed have particular relevance during
+reading, as suggested by [priming
+experiments](https://doi.org/10.3758/s13423-011-0160-3) and [brain injury
+patients](https://www.tandfonline.com/doi/abs/10.1080/02643294.2014.880675).</span>
+I will address those below.
+
+## The direct effect of pair distances on the primary visual cortex
+
+The line- and edge-detecting neurons in V1 receive input directly from the
+<nobr>retina.<label for="sn-rgct" class="margin-toggle
 sidenote-number"></label></nobr><input type="checkbox" id="sn-rgct"
 class="margin-toggle"><span class="sidenote">There are some intermediate steps,
 such as the pooling operation performed by [retinal ganglion
@@ -187,10 +449,24 @@ decorrelation performed in the [lateral geniculate
 nucleus](https://en.wikipedia.org/wiki/Lateral_geniculate_nucleus) on the way
 from the eye to the visual cortex, but we will ignore those here.</span> Each
 neuron is connected to a small contiguous group of photoreceptors, its
-*receptive field* (RF), and it will activate when a particular subset of the
-receptors detects light but the others don't. The on/off subsets are configured
-such that each neuron effectively detects a small piece of a line or edge of a
-particular size and orientation somewhere in the field of vision.
+*receptive field* (RF),<label for="sn-v1l4" class="margin-toggle
+sidenote-number"></label></nobr><input type="checkbox" id="sn-v1l4"
+class="margin-toggle"><span class="sidenote">To be clear, the majority of neurons
+physically located in V1 don't actually receive direct input from the eye but rather just
+serve as local connections to facilitate basic image enhancement, such as
+contrast normalization. We shall also ignore many of the details regarding
+colour perception.</span> and it will activate when a particular subset of
+the receptors detects light but the others don't. The on/off subsets are
+laid out such that each neuron effectively detects a small piece of a line or
+edge of a particular size and orientation somewhere in the field of vision.
+<label for="sn-mlct" class="margin-toggle
+sidenote-number"></label><input type="checkbox" id="sn-mlct"
+class="margin-toggle"><span class="sidenote">For those readers completely
+unfamiliar with these concepts, I recommend watching [this introductory
+animation](https://www.youtube.com/watch?v=NnVLXr0qFT8) followed by [this
+Allen Institute talk](https://www.youtube.com/watch?v=mtPgW1ebxmE) about the
+visual system, followed by [this in-depth MIT
+lecture](https://www.youtube.com/watch?v=T9HYPlE8xzc) on the anatomical details.</span>
 
 <img src="img/edge_line_rfs.png" />
 
@@ -207,414 +483,173 @@ researchers went on to win a Nobel Prize for their experiments.</span>
 
 <img src="img/single_i_example.png" />
 
-For each simple cell of a particular phase, there is another one tuned to the
-opposite phase, e.g dark-to-light edges and light-to-dark edges, and we can
-toggle which cells are active by inverting the contrast of the input image. But
-at some point during pre-processing, i.e. before letters are detected,<label for="sn-bgsr"
-class="margin-toggle sidenote-number"></label></nobr><input type="checkbox"
-id="sn-bgsr" class="margin-toggle"><span class="sidenote"> [These
-results](https://doi.org/10.3389/fpsyg.2015.01695) by Rüdiger von der Heydt and
-his students are worth a read. They suggest quite convincingly that it happens
-no later than in area V2, and that it is based on feedback signals from
-higher-level brain regions that encode which side of an object an edge belongs
-to. [This 2018 fMRI study](https://doi.org/10.1523/ENEURO.0075-18.2018) by an
-Italian team used natural images, which are perhaps less relevant to reading, but provides an
-in-depth discussion of the phenomenon.</span> this polarity seems to disappear,
-because we can <span style="background:
-#3A4145; color: white;">evidently</span> read white-on-black text
-just as well as we can read black-on-white.<label for="sn-wbtx" class="margin-toggle
+It is these signals—the image decomposed into fragments of lines and edges of
+various sizes and orientations—that provide the input for further visual
+processing and, ultimately, the letter detectors.
+
+As it turns out, some V1 neurons are less sensitive to phase than others, and
+some may even respond equally to both lines and edges, as long as scale and
+orientation match their tuning. Those cells are called *complex cells*, and how they
+interact with simple cells is still unclear,<label for="sn-cce" class="margin-toggle sidenote-number"></label></nobr><input
+type="checkbox" id="sn-cce" class="margin-toggle"> <span class="sidenote">Simple
+and complex cells lie along a spectrum of phase specificity, which is
+brilliantly explained by [this recent
+paper](https://www.biorxiv.org/content/biorxiv/early/2019/09/25/782151.full.pdf)
+by Korean researchers Gwangsu Kim, Jaeson Jang and Se-Bum Paik. But it seems that there's even more to
+the story, as complex cells seem to [change their simpleness
+index](https://hal.archives-ouvertes.fr/hal-00660536/document) in response to
+their input as well.</span> although thanks to their phase invariance, they have
+traditionally been modelled as summing the activations of nearby
+quadrature-phase quadruplets of simple cells. ENERGY.
+
+In the context of letterfitting (and perception research in general), the
+existence of complex cells is convenient because invariance to phase implies
+invariance to contrast inversion, and of course our letterfitting algorithm
+needs to work equally well for white-on-black text as for black-on-white. This
+does not mean that complex cells are necessarily contributors to the signals
+that finally activate the letter detectors, but they are a useful computational
+tool here as they allow us to collapse four rectified quadrature-phase signals
+into just one.<label for="sn-wbtx" class="margin-toggle
 sidenote-number"></label></nobr><input type="checkbox" id="sn-wbtx"
 class="margin-toggle"><span class="sidenote">In practice, dark text on light
-backgrounds has advantages: light backgrounds make the pupil contract, which
-[creates a sharper image](http://dx.doi.org/10.1016/j.apergo.2016.11.001), and
-V1 outputs are [stronger for dark
-features](https:///doi.org/10.1523/JNEUROSCI.1991-09.2009), so dark text presumably
-evokes stronger letter-detector activations downstream. Nevertheless, the effects
-of contrast inversion seem to be orthogonal to the effects of pair
-distances.</span> This is not to say that the information is lost, as of course you
-can name the colour of the foreground and background, but it most likely is not
-available to the letter detectors, and we may therefore be able to ignore phase
-information in our model.
+backgrounds lead to measurably better reading performance. Not only do light
+backgrounds make the pupil contract, [creating a sharper
+image](http://dx.doi.org/10.1016/j.apergo.2016.11.001), but V1 outputs are also
+[stronger for dark features](https:///doi.org/10.1523/JNEUROSCI.1991-09.2009),
+so it seems doubtful that complex cells truly have a leading role in letter
+recognition.</span> Taking all orientations into account, the map of complex
+cells responses for the uppercase *I* looks like this:
 
-    
-* In the context of letterfitting:  
-  * We could reasonably hypothesize that as far as individual letter detectors go,
-    they will be activated perfectly fine by such a standalone letter.
-  * Let's see what happens when we add a second letter next to it.
+<img src="img/single_i_complex_example.png" />
+
+Next, consider what happens to the activations of simple and complex cells when
+a second letter is added. Shown here, for instance, are the activations of some
+complex cells to the left and right side of a lowercase *n*. (The
+fixed-phase receptive fields are shown only to illustrate the peak-response
+phase angle at the given location).
+
+<img src="img/abstract.png">
+
+The V1 response to the standalone letter includes cells whose
+receptive fields cover, in part, the space to the right of the letter.
+That space is half of what makes up the right edge of the letter. Adding a
+neighbouring letter on the right partly fills this space, reducing the
+activation of said cells. In other words: adding the neighbour directly takes
+away from the signal available to stimulate higher cortical areas, i.e. the letter detectors.
+
+This interaction goes both ways: it happens simultaneously for both involved
+letters, and it is a direct result of the nonlinearity of complex cells, which
+squash phases into local magnitude values. In particular, the activation near
+the inner edges of the letter pair is reduced.<label for="sn-fftm"
+class="margin-toggle sidenote-number"></label><input type="checkbox"
+id="sn-fftm" class="margin-toggle"><span class="sidenote">From the perspective
+of the complex wavelet decomposition performed by the simple cells, this
+corresponds to local destructive interference between the out-of-phase signals
+for each frequency band. The frequency-domain view is natural in the context of
+the DFT-based software implementation of this model, but signal processing
+theory is beyond the scope of this article. Note also that this is distinct from the
+[lateral masking effect](https://en.wikipedia.org/wiki/Lateral_masking) commonly
+attributed to lateral inhibitive connections in the early visual cortex.
+Somewhat surprisingly, the
+only author known to me who has [published
+on](https://doi.org/10.1016/j.bbr.2018.04.016) interference at the stimulus
+level is researcher Bernt Christian Skottun, who has (as of early 2020) not
+garnered any citations on his papers.</span>
+
+Of course, this interference is only a concern for cells with receptive fields
+affected by both letters. Receptive fields that are smaller than the gap itself are
+not affected:
+
+[image]
+
+In other words, signals representing smaller frequency scales are only affected
+when letters are very close together, while large scales see a a reduction at
+larger distances too:
+
+[image]
+
+Research has shown that humans rely mostly on the mid-size scales for letter
+ recognition.<label for="sn-mids"
+class="margin-toggle sidenote-number"></label><input type="checkbox"
+id="sn-mids" class="margin-toggle"><span class="sidenote">This is widely
+ recognized, but perhaps most clearly described in
+ [this](https://jov.arvojournals.org/article.aspx?articleid=2122458) article 
+ by Oruç and Landy and
+ [this](https://jov.arvojournals.org/article.aspx?articljeid=2191906) article by
+ Legge and Bigelow.</span> Extra-fine
+details like serifs are relatively unimportant. We can therefore assume that loss
+in mid-size signals is most detrimental to the letter detectors:
+
+[image]
+
+Of course, the meaning of "mid-size" is relative to the font size, tying in the
+idea of optical sizing: At larger font sizes, smaller details shift into the
+mid-size range of spatial frequencies and dominate letterfitting decisions,
+whereas at very small sizes, it is entire letters that dominate. We could think
+of three broad regimes: serif-serif interference, stem-stem interference, and
+letter-letter interference.
+
+How exactly does the energy loss in certain locations, orientations and scales
+affect the activation strength of the letter detectors? This is a difficult
+question to answer, because we have no precise knowledge of all of the neural
+computations performed between the retina and the visual word form area.
+However, we can make some educated guesses, and build models of varying complexity.
+
+One such model could be:
+
+1. Weight all energy losses by orientation and scale, and apply an
+   exponentiation to account for the possibility that some losses compound nonlinearly.
+2. Sum all losses to yield a total loss.
+3. The total loss is assumed to nonlinearly predict the reduction in letter
+   detector strength, with a nonlinearity of arbitrary complexity and
+   letter-dependent parameters.
+   
+This can yield surprisingly good results. It is even better, however, to attempt to model
+the response of letter detectors more directly. Although we lack a full
+model of the visual cortex, we must assume that letter detectors are
+incentivized to distinguish letters in a statistically optimal <nobr>way:<label
+for="sn-fnft" class="margin-toggle sidenote-number"></label> <input
+type="checkbox" id="sn-fntf" class="margin-toggle"></nobr><span
+class="sidenote">We can get an intuition for this by covering up parts of
+letters to find out which features contribute the most to their identification
+at various frequency scales, as Daniel Fiset et al. [have
+done](https://doi.org/10.1111/j.1467-9280.2008.02218.x). </span>
+
+[image]
+
+We can estimate what each letter detector looks for by simply training a
+classifier against the letter shapes of the font we wish to fit:
+
+[image]
+
+This allows us to directly observe the effect of placing two letters directly
+next to one another:
+
+[image]
+
+
+## Predicting the response of combination detectors
+
+- Use an ideal observer model to build a model of bigram detector kernels
+
+- Problem: ii, mm, and ll all have the same distance. How can it be that 
+
+- Reduction in ii actually makes it go away. Whereas reduction in mm creates
+  competition from other letter detectors.
   
-* Addition of a second letter.
-  * Adding a second letter changes the responses of the cells in significant
-    ways. Most crucially, neurons that previously activated based on the
-    presence of an inside edge will now be activated much less strongly.
-  * This effect is noticeable because these neurons don't respond linearly.
-    Reducing their input slightly will in many cases not reduce their output in
-    proportion, but turn them off entirely.
-  * This means that by placing another letter next to the original one, we are
-    indirectly weakening the activation of the letter detector itself!
+- This points towards a different mechanism of action. If we let mm get closer
+  together, 
 
-* In the context of letterfitting:
-  * The closer we place letters together, the less our brain is able to
-    recognize them for what they are.
-  * Again, because neurons behave so nonlinearly, a small reduction may have
-    virtually no effect, but a slightly larger reduction may make the letter
-    much harder to read (especially if it involves a very important feature of
-    the letter.)
-  * This incentivizes us to keep letters far apart.
+## Modelling interactions in the early visual cortex
 
-* But addition of a second letter also creates a gap:
-  * While the edges of the letters are weakened, the gap between the two letters
-    is strengthened.
-  * While this could have some effect on the perception of the letters, it's
-    more likely that it does something else: mimic a word break.
-  * We need to better understand how letters and word breaks are processed into words.
+- Divisive second-order contrast normalization
+- Gestalt grouping via B/G cells
+- Contour integration via V4 feedback
+- Anisotropic surround integration
 
-* High-level description of letter coding models.
+## Word breaks: are bigram kernels the whole story?
 
 
-As you read these words, the visual image of the letters on your screen is
-transformed into words in your head. For well-fitted text, this is a quick and
-automatic process, but when the fit is poor, it becomes a slow and deliberate
-struggle. That's legibility: the speed at which an image of letters is able to
-filter through your brain's circuitry to evoke the perception of the correct
-word.
-
-Understanding this circuitry would allow us to predict how changing a letter
-pair's distance would affect its legibility. Fortunately for us, generations of
-anatomists, electrophysiologists, psychologists and neurolinguists<label
-for="sn-opph" class="margin-toggle sidenote-number"></label><input
-type="checkbox" id="sn-opph" class="margin-toggle"><span class="sidenote">One of
-the first in-depth books on vision was Prof. Helmholtz's [Handbuch der
-physiologischen
-Optik](https://archive.org/details/handbuchderphysi00helm/page/n6) from 1867
-(worth a skim if you read German). In the 1950s, scientists used
-[microelectrodes](https://en.wikipedia.org/wiki/Microelectrode_array) to
-understand how neurons were wired up to retinal photoreceptors. The 1970s and
-1980s saw the publication of many simple computational models, undoubtedly owed
-to the advent of personal computers, and the introduction of [functional
-MRI](https://en.wikipedia.org/wiki/Functional_magnetic_resonance_imaging) in the
-early 1990s gave researchers a tool to map out brain regions in real time.
-[Scholarpedia](http://www.scholarpedia.org/article/Models_of_visual_cortex)
-maintains an accessible history of the major publications in the field.</span>
-have discovered enough clues about its architecture that we can now piece
-together a rough sketch of a model, even if many of the details remain
-uncertain.
-
-[Pattern detection] -> [Shape detection] -> [Letter/space detection] ->
-[letter/space pair detection] -> [word detection].
-
-Reading is an acquired skill that piggybacks on our ability to recognize
-objects. As such, it relies on the enormous neural infrastructure of "early
-vision", the deep hierarchy of neurons that pre-processes any incoming
-visual imagery and identifies basic geometric shapes like lines, corners and
-curves. Children can quickly learn to recognize letters in these shapes, using
-the same mechanisms that allow them to recognize other things.<label
-for="sn-objr" class="margin-toggle sidenote-number"></label><input
-type="checkbox" id="sn-objr" class="margin-toggle"><span class="sidenote">It 
-often takes extra time to unlearn rotational/reflectional invariance—a
-teacup is a teacup even when upside down, but chiral letters like p, b, q and d
-are all different.</span>
-
-
-
-creates many new structures in the brain: first, 
-
-- describe the vague overview
-- highlight that the goal should be to maximally activate the 
-
-- reading is a multi-stage process: first, the shapes are recognized as letters,
-  then, clusters of letters are recognized, then, the information about clusters
-  of letters is combined with the semantic expectations of your brain's language
-  center to create the perception of a word.
-- The first 
-
-- Reading is an acquired skill 
-- it's a specialization of the object recognition mechanisms in our brain
-- the first 
-
-
-
-1. **Visual processing:** In the vision part of our brain, neurons respond to the presence of simple
-   stripe-like patterns in the field of vision. These neurons combine to
-   activate successive layers<label
-   for="sn-laym" class="margin-toggle sidenote-number"></label> <input
-   type="checkbox" id="sn-laym" class="margin-toggle"><span
-   class="sidenote">Here, "layer" is used in the deep-learning sense, not in the
-   anatomical sense.</span> of other neurons which detect increasingly complex
-   shapes and eventually letters. Because the neurons' effective receptive fields grow larger with each
-   layer, only very vague information about each letter's location remains at
-   the letter-detecting layer.<label for="sn-caln" class="margin-toggle sidenote-number"></label>
-   <input type="checkbox" id="sn-caln" class="margin-toggle"><span
-   class="sidenote">
-   This idea was expressed most clearly in [this
-   article](https://www.sciencedirect.com/science/article/abs/pii/S1364661303001347)
-   published in 2003, which continues to set the research agenda.
-   The similarity to feedforward convolutional nets is not
-   coincidental, and has naturally inspired [ConvNet-based word detection
-   experiments](https://mindmodeling.org/cogsci2016/papers/0435/paper0435.pdf),
-   but remember that our goal here is not to train a black-box neural net but to identify
-   an explanatory model of the relationship between letter distances and legibility.
-   </span> 
-   
-    <img src="img/letter_layers.png" alt="Convolutional letter detection" />
-
-   In this illustration, the first layer of neurons identifies stripe-like
-   patterns of certain spatial frequencies and orientations. Those neurons, in
-   turn, are wired up to other neurons, facilitating the detection of simple
-   geometric features. After some layers, letters are detected.
-
-   This process applies to everything we see, not just text. Presumably, letter
-   detectors occupy a similar place in our brains' hierarchy as detectors of
-   objects, such as teacups or airplanes. As a result of this agnosticism, not
-   only letters are detected but also the gaps between them; after all, a gap is
-   nothing but another stripe-like feature.
-   
-2. **Semantic expectations:** Having just read the words "The dog bites the", the language part of our
-   brain is already sizzling with activity that renders the neurons for "man"
-   especially sensitive.
-     <img src="img/word_net.png" alt="Word net" />
-   Here, words already read are shown in red, candidates for the
-   next word are shown in blue, previous discarded candidates are shown in gray.
-   Darker shades of blue correspond to more frequently encountered words. Thick lines represent semantic relationships learned to be common;
-   dashed lines represent lexical competitors (i.e. similar words).
-
-3. **Word individuation:** For about half a second, waves of neural activity flash back and forth in
-   search of the strongest connection between the vague information about letter
-   locations on one side,<label for="sn-klcd" class="margin-toggle sidenote-number"></label>
-   <input type="checkbox" id="sn-klcd" class="margin-toggle"><span
-   class="sidenote">[This wonderfully lucid
-   paper](https://www.sciencedirect.com/science/article/abs/pii/S1364661305001439)
-   presents good arguments for an additional layer of "letter combination
-   detector" neurons that respond to the presence of pairs of letters.</span> and our knowledge of orthography,
-   phonology, and semantic expectations ("man", or perhaps "bone"?) on the
-   other.<label for="sn-jlsn" class="margin-toggle sidenote-number"></label>
-   <input type="checkbox" id="sn-jlsn" class="margin-toggle"><span
-   class="sidenote">There are several EEG studies on this subject, but [this
-   one](https://www.pnas.org/content/113/29/8162) is especially cool as it
-   involves deep-brain stimulation of live human volunteers.</span> About
-   halfway into that half-second, the electrical spikes settle into a stable pattern as the
-   most likely word picks up enough neural activity to enter our consciousness. Meanwhile, our eyes
-   have long moved on to the next word or two.<label for="sn-scjls" class="margin-toggle sidenote-number"></label>
-   <input type="checkbox" id="sn-scjls" class="margin-toggle"><span
-   class="sidenote">And [sometimes it has to jump
-   back](https://www.pnas.org/content/106/50/21086), because residual neural sensitivity
-   from the identification previous words caused us to misread a word.</span>
-
-    <img src="img/man_bone_vwfa.png" alt="Visual word form area" />
-
-
-## Reading models, letter position coding, and letter distances
-
-At this point, we may feel inspired to build a computational model of the visual
-processing circuitry described above, so we can test how differently-fitted
-letter pairs would affect the activation of the letter detectors:
-
-<img src="img/letterpair_layers.png" alt="Convolutional letter detection" />
-
-But wait—we're not quite there yet.
-
-- As you may remember from the Cambridge email, we can read jumbled letters
-  fine. This is probably because of the uncertainty about letter locations
-  introduced by the visual processing pipeline. If we can read jumbled letters,
-  then why do small distance changes matter?
-- it's because small distance changes affect the activation of the letter
-  detectors.
-- letter detectors are dampened by neighbours. The closer the neighbours, the
-  lower the letter detector activations.
-- Right, we also want to keep our letters as strongly together as possible, to
-  maximize the information density. This gives us two competing objectives.
-- However, that still doesn't explain a third phenomenon: that slightly
-  increased letter distances are very noticeable, and really annoying.
-- Gaps probably imitate word breaks. Word breaks aren't required in all
-  languages, but in English they're helpful.
-- There is no literature on word breaks, but there is some literature on the
-  coding of letter positions within words, and that those are relative to the
-  edges. 
-- One way in which this could work is that gaps are explicitly encoded by gap
-  detectors. This would extend our model to the following structure:
-  
-  1. overlap model: each letter, including the gaps, have a highly uncertain
-     location by the time they are detected ­ like a probability distribution.
-  2. then, letter combination detectors act as another convolution layer.
-     Although the LCDs are ordered, the wide distribution of the underlying
-     letters means that reverse LCDs are also activated (overcoming the
-     objections raised in [this paper](https://www.sciencedirect.com/science/article/pii/S0749596X13000223).
-  3. 
-  
-
-
-
-
-Before we can start modelling, though, we need to understand 
-
-Ever since the above big-picture perspective of reading took hold in the early 2000s, much of
-the scientific dispute has revolved around one particular mystery: on one hand, we can jbmule
-ltetres aornud<label for="sn-jls" class="margin-toggle
-sidenote-number"></label> <input type="checkbox" id="sn-jls"
-class="margin-toggle"><span class="sidenote">[Jumbled
-letters](https://en.wikipedia.org/wiki/Transposed_letter_effect) are a crowd
-favourite ever since the infamous [Cambridge
-email](http://www.mrc-cbu.cam.ac.uk/people/dennis.norris/personal/cambridgeemail/)
-meme. The strength of the effect appears to depend on many factors: the
-[relative position of the
-letter](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2662926/), [the jumbling
-distance](http://www.bcbl.eu/consolider/images/stories/publications/Perea_etal_ExpPsy07.pdf),
-[the language](https://psycnet.apa.org/record/2008-03492-004), and even on [your
-age](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6542500/) (curiously, it does
-depend on whether you are a human [or a
-baboon](https://journals.sagepub.com/doi/abs/10.1177/0956797612474322)).</span> and mispel words and still read them fine. This should not be
-too surprising, given that much of the information about letters' locations is
-lost during visual processing anyway—evidently, our reading circuitry must be robust to
-letter transpositions. On the other hand, we have no trouble distinguishing
-anagrams like *cat* and *act*, so the relative positions of letters must be
-preserved to some degree.
-
-The subtleties of this apparent paradox have been extensively probed, using
-experiments based on the idea that if subjects respond to a word faster when
-previously exposed to ("primed with") a particularly engineered set of letters, e.g. the word in
-reverse, then the prime must have pre-sensitized a particular neural mechanism
-conjectured to exist. As a result, there now exist a large number of theories
-explaining at least some of the evidence.<label for="sn-rjls" class="margin-toggle
-sidenote-number"></label> <input type="checkbox" id="sn-rjls"
-class="margin-toggle"><span class="sidenote">
-See e.g. this [2013 review of word recognition models](https://www.sciencedirect.com/science/article/pii/S136466131300168X).
-</span>
-
-However, none of the existing models take letter distances into account. It
-turns out that letter distances add an additional complication: if our brain is
-able to deal even with jumbled letters without difficulty, then how can minute,
-position-preserving tweaks to the letterfit be so noticeable?
-
-The answer is that jumbled letters, although mispositioned, are nevertheless
-able to strongly activate their respective letter detectors. Letters with very
-close neighbours, however, are *not* able to do so (and our model will show
-why). You need not be a type designer to know from experience that letters are
-easiest to identify when they stand alone, and most ambiguous when they are
-tightly flanked by many others. Needless to say, studies confirm that slightly
-tracking <nobr>out<label for="sn-tlrs"
-class="margin-toggle sidenote-number"></label></nobr> <input type="checkbox"
-id="sn-tlrs" class="margin-toggle"><span class="sidenote">Type jargon for
-"increasing all pair distances by an equal amount".</span> words speeds up their
-perception.<label for="sn-llrs"
-class="margin-toggle sidenote-number"></label> <input type="checkbox"
-id="sn-llrs" class="margin-toggle"><span class="sidenote">Here is just [one of
-the
-studies](https://www.sciencedirect.com/science/article/abs/pii/S0001691811000758).</span>
-This implies that in order to optimally activate our letter detectors, we should
-want text to be set extremely loosely.
-
-
-
-Most promising and biologically plausible, in my view, is a combination
-between the so-called "overlap model", which posits that letter positions are
-encoded as vague probability distributions just as shown in the
-illustration above, and the concept of "letter-combination detectors", i.e. an
-additional layer of neurons that detects the presence of (likely ordered) pairs
-of letters.<label for="sn-olcd" class="margin-toggle
-sidenote-number"></label> <input type="checkbox" id="sn-olcd"
-class="margin-toggle"><span class="sidenote">
-See [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2597794/) and
-[here](https://www.sciencedirect.com/science/article/abs/pii/S1364661305001439)
-for the overlap and letter-combination papers, respectively.
-</span>
-
-
-
-## The effect of letter distances
-
-
-Before we do that, however, 
-
-Before we do that, however, we should acknowledge that the description of
-reading I gave above appears to deny the key problem of letter distances
-entirely! 
-
-
-At the same time, we would like to keep entire words in the fovea so we don't
-need to piece them together letter by letter. Indeed, the very
-studies that found that looser words are easier to read *also* found that the
-readers had to move their eyes more to take in the whole paragraph: the reduced
-information density completely cancelled out any increases in reading speed.<label for="sn-dlyx"
-class="margin-toggle sidenote-number"></label> <input type="checkbox"
-id="sn-dlyx" class="margin-toggle"><span class="sidenote">Except for dyslexics,
-who seem to consistently benefit from a looser fit, presumably because they
-already struggle to make use of what little location information their letter detectors provide.</span>
-
-However, this does not explain why o<span
-style="letter-spacing:0.15rem">c</span>casi<span
-style="letter-spacing:0.15rem">o</span>nal, slig<span
-style="letter-spacing:0.11rem">h</span>tly-en<span
-style="letter-spacing:0.13rem">l</span>arged (see?) letter distances are so
-perceptible—in an irritating, legibility-reducing way. The straightforward
-hypothesis is that those gaps imitate word breaks. Unfortunately, there is no
-solid literature on how word breaks are processed in our brains at all.<label for="sn-wdb" class="margin-toggle
-sidenote-number"></label> <input type="checkbox" id="sn-wdb"
-class="margin-toggle"><span class="sidenote">If you are a
-psychologist, you may want to consider designing some experiments to answer this
-question.</span> After the gap is processed as yet another
-vertical, stripe-like feature in the visual input, how does it 
-
-
-1. **Dedicated word break detectors:** The gap itself is processed as yet another vertical, stripe-like feature in
-   the visual input, and identified as a word break. It then aids in the segmentation of words. This raises the
-   question, however, of how detected letters' positions relative to the gaps'
-   positions are encoded in the brain, given that most localization is lost at
-   the letter detection layer. Perhaps specialized circuitry exists to shunt the
-   gap location to downstream layers?<label for="sn-rsnt" class="margin-toggle
-   sidenote-number"></label> <input type="checkbox" id="sn-rsnt"
-   class="margin-toggle"><span class="sidenote">Think
-   [ResNets](https://en.wikipedia.org/wiki/Residual_neural_network).</span>
-
-2. **Increased letter detector activation:** A letter at the edge of a word only
-   has one neighbour, while all other have two. Based on what we discussed
-   above, that means that letters located at the edges of words activate their
-   letter detectors more strongly.
-
-Several other mechanisms are conceivable, and multiple could indeed be active at the
-same time. Some authors have indeed found evidence that letters' positions are
-encoded relative to the word edges.<label for="sn-fsbt" class="margin-toggle
-sidenote-number"></label> <input type="checkbox" id="sn-fsbt"
-class="margin-toggle"><span class="sidenote">[This
-study](https://link.springer.com/article/10.3758/s13423-011-0160-3), for
-instance, tried to trick subjects into mixing up words, while [this
-study](https://www.tandfonline.com/doi/abs/10.1080/02643294.2014.880675) took
-clues from a brain injury patient.</span>
-
-   
-   
-   the location of the perceived gaps is
-   preserved or somehow shunted from early
-   
-   Because
-   localization is critical for this task, the information about perceived gaps
-   may need to come from relatively early layers
-   
-   (think 
-
-   letter-detector layer, 
-   
-   While poorly localized letters 
-   
-   This activates a dedicated "word break detector" neuron
-   downstream. Of course, the detected word break would be as poorly
-   localized as detected letters, so additional neural circuitry would be
-   required at lower layers to help segment 
-
-
-- could be the strengthening of start and end letters.
-- could be a separate word break detector that helps anchor other letters within
-  the word.
-- Whatever the exact mechanism, we seem to have no problem adjusting to tracked text, so there is some tuning
-  happening and some degree of expectation.
-- Predictive coding is a popular way of thinking about how violated expectations in
-  the brain create a prediction error that becomes conscious, and competes for
-  our attention with the word itself. In other words, this is probably an
-  obstacle to legibility that occurs as a side effect of the letter and word
-  identification, and not a result of the visual processing.
-
-- they don't reduce the letter detectors nearby, they strengthen them.
-- they are also processed like any other striped pattern
-- our experience as readers suggests that unexpectedly large gaps may fool us
-  into thinking there is a word break.
 - Unfortunately, there is no solid research on how our brains deal with word
   breaks at all. Although separating words with spaces is not universal,<label
   for="sn-thkr" class="margin-toggle sidenote-number"></label> <input
@@ -639,595 +674,9 @@ clues from a brain injury patient.</span>
   down
   words](https://www.researchgate.net/profile/Elisabeth_Beyersmann/publication/316312318_Edge-Aligned_Embedded_Word_Activation_Initiates_Morpho-orthographic_Segmentation/links/5addab7ca6fdcc29358b9656/Edge-Aligned-Embedded-Word-Activation-Initiates-Morpho-orthographic-Segmentation.pdf)
   into morpho-orthographic chunks during processing.</span>
-  
 
+## 
 
-In addition, as I will show later,
-any sufficiently large gaps will become salient and act as noise during the word
-detection process (unless the gaps are word breaks).<label for="sn-fpcm"
-class="margin-toggle sidenote-number"></label> <input type="checkbox"
-id="sn-fpcm" class="margin-toggle"><span class="sidenote">I only know of the
-circumstantial evidence for this effect, but it fits nicely into
-a [predictive coding](https://en.wikipedia.org/wiki/Predictive_coding) framework
-of letter/letter-combination detection, where a sufficiently strong unexpected
-gap is a prediction error that competes with the perceived word for your conscious attention.</span>
-
-
-
-   When the gaps are large enough, they may be perceived as word gaps.<label
-   for="sn-wgdp" class="margin-toggle sidenote-number"></label> <input
-   type="checkbox" id="sn-wgdp" class="margin-toggle"><span class="sidenote">Not
-   much is known about the role of word gaps in reading. It is not crucial for
-   our purposes whether or not a gap is perceived as a word gap, or simply as
-   too large, i.e. salient enough to act as noise. Moreover, despite the
-   evidence that removing spaces [slows down
-   reading](https://link.springer.com/article/10.3758/s13414-018-01648-6), some
-   languages seem to do fine with [other kinds of word
-   dividers](https://en.wikipedia.org/wiki/Word_divider) or even with [none at all](https://en.wikipedia.org/wiki/Thai_script).
-   </span>
-
-
-
-My proposal is that a good fit is nothing but a good compromise between these
-two competing desires. To find that compromise algorithmically, we must
-understand how the distance between neighbouring letters affects the detection
-of letters and gaps, i.e. we must build a mathematical model of the first step
-in the list above. Fortunately for us, neuroscientists have been busy building
-those models for over 70 years, so we have lots of giant shoulders to stand on.
-
-
-
-## Modelling the primary visual cortex
-
-The lowest layers of our visual cortex detect simple, stripe-like patterns in
-our field of vision. This is relevant to letterfitting, because these
-stripe-detecting neurons are directly triggered by both the letters we read and
-the gaps between them.
-
-Whenever we place a letter next to another one at some distance, we influence
-the activity of this pattern-recognition circuitry in predictable ways. In
-particular, when a neuron's receptive field is occupied by two neighbouring
-letters instead of just one, the resulting signal is much weaker (or stronger)
-than what we might expect to result from simple addition. The nonlinear nature
-of this interference results in a strengthened response in the gap between, and a
-weakened response around the edges of the neighbouring letters:
-
-<img src="img/abstract.png" alt="Abstract"/>
-
-Both kinds of interference can impede reading, and I propose that at the ideal
-distance, the perceived weakening of the edges should be in balance with the
-perceived strengthening of the gap.
-
-This article is devoted to an exploration of how the psychophysics of this
-interference phenomenon plays out under various circumstances, and how we can
-turn it into a computational model to automatically fit our fonts.
-
-## Epistemic status
-The ideas presented here are speculative.
-
-I have spent several months reviewing the relevant neuroscientific literature,
-and have discarded countless promising models because they either conflicted with the
-mainstream scientific consensus in one aspect or another or because they
-failed to explain the metrics of existing, well-fitted fonts.
-
-The current framework is most certainly incomplete and should only be regarded
-as a starting point for further experimentation. Still, it seems to explain many
-of the existing letterfitting heuristics; it even predicts the effect of weight,
-x-height, and optical size, and could seed more general theories applicable to
-fitting non-Latin scripts or even to the design of individual glyphs.
-
-<a name="intro"></a>
-
-## Introduction
-
-This whole project is based on the premise that *the goal of letterfitting is
-optimal legibility.* If that seems obvious to you, it isn't: many typographers
-would disagree and say that the goal is to produce an "even colour", in other
-words, a printed page without any noticeable blobs of black or white.
-Unsurprisingly, this latter ideology begets letterfitting heuristics aimed at
-limiting the amount of black or white per unit of space, whether by imposing
-stem distances or by quantifying the area of gaps and counters.<label
-for="sn-lea" class="margin-toggle sidenote-number"></label> <input
-type="checkbox" id="sn-lea" class="margin-toggle"> <span class="sidenote">I've
-listed the most popular of these approaches in the
-[appendix](#existing_tools).</span> This is really difficult to do well, because
-letter shapes are so varied across typefaces that extensive manual adjustments
-are often still required. 
-
-Instead, we'll start with a different question: *How do letter distances affect the reading circuitry in our head?*
-
-Of course, reading is complex. It involves many parts of the brain, and we only
-have a handwavy idea about how it works. We certainly can't answer the question
-conclusively. Nonetheless, as it turns out, we do know enough to get pretty close.
-
-Here are some of the things that seem no longer under dispute:
-
-1. The vision part of your brain identifies simple patterns; these patterns
-   contribute to the identification of simple shapes; these simple shapes contribute to the
-   identification of letters.
-2. An identified letter probably shows up as neuronal activity
-   representing information like "there's a lowercase *m* somewhere left
-   of center in the field of vision, and it's near a word break".
-3. Having just read the words "The dog bites the", the language part of your
-   brain is already sizzling with activity that renders the neurons for "man"
-   especially sensitive.
-4. All of the vaguely localized information about letters combines with the
-   vaguely localized information about word breaks and with your semantic
-   expectations (here: "man"). After a few tens to hundreds of milliseconds of
-   electrochemical deliberation, "man" wins out (over "nan", another candidate),
-   which manifests as a settling of the involved neurons into a stable firing
-   pattern, at least for a short while.
-5. Thanks to the probabilistic nature of this mechanism, you can jbmule teh
-   ltetres aornud or mispel words and still read them, but the neural
-   spiking patterns may take a bit longer to settle into stable oscillations, i.e. your
-   reading will slow down. Similarly, degrading the letters will weaken the
-   activations of the letter detectors and therefore slow down reading.
-
-Knowing all of that, we can reify our desire to optimize for legibility. The
-central question now becomes: *How do letter distances affect the timely,
-strong, and accurate detection of letters and word breaks?*
-
-It seems that to maximize legibility, the presence of any particular letter should
-maximally activate its corresponding letter detector (but not any others). How
-can we accomplish that?
-
-Research shows that spacing all letters slightly further apart speeds up
-the perception of words.<label for="sn-dsx"
-class="margin-toggle sidenote-number"></label> <input type="checkbox"
-id="sn-dsx" class="margin-toggle"> <span class="sidenote">But fewer letters now
-fit into the field of vision, so it takes extra saccades to
-process the whole text. All in all, it's a wash in terms of reading speed,
-except for dyslexics who consistently benefit from a loose fit.</span>
-We might reasonably conclude that neighbouring letters always inhibit letter detector
-activation, and that the strongest activation would be evoked by a standalone letter.
-
-However, extremely l&emsp;o&emsp;o&emsp;s&emsp;e&emsp;l&emsp;y spaced letters
-wouldn't make for a great reading experience either. The huge gaps are perceived
-as word breaks, and instead of reading entire words at once, we have to pay
-conscious attention to piece them together letter by letter. So while we may
-want to maximize the activation of letter detectors by giving every letter lots
-of space, we also want to maintain a high information density and avoid
-activating any word break detectors.
-
-Perhaps that seems like needless mumbo jumbo for "don't put 'em too close, don't
-put 'em too far". But it's more than that: if our assumptions are correct, then
-we have now established that somewhere between your retina and your letter
-detectors, *something actually happens* when two letters get too close or too far;
-something that directly changes the activation of the downstream letter
-detectors and word break detectors. Something happens that, if we're lucky, we can
-simulate in software.
-
-
-## Modelling the primary visual cortex
-
-The list of potential locations *where* this happens is relatively short.
-Light that hits your retina is converted into electrical signals, which are sent
-up through the optic nerve<label for="sn-vga" class="margin-toggle
-sidenote-number"></label> <input type="checkbox" id="sn-vga"
-class="margin-toggle"> <span class="sidenote">Although I enjoy thinking of the
-optic nerve as a VGA cable, it's actually a bundle of 1M+ individual wires, each
-relaying a single pixel's signal.</span>to the thalamus, and from there to the
-visual cortex at the back of your head. The visual cortex is roughly divided
-into several stages of processing, including V1 (simple stripe-like patterns),
-V2 (simple shapes like corners and junctions), V4 (slightly more complex
-shapes), and some others.<label for="sn-vcx" class="margin-toggle sidenote-number"></label>
-<input type="checkbox" id="sn-vcx" class="margin-toggle"> <span
-class="sidenote">Wikipedia has good articles about both the [visual
-system](https://en.wikipedia.org/wiki/Visual_system) in general and the [visual
-cortex](https://en.wikipedia.org/wiki/Visual_cortex) in particular. You may also
-be interested in computational studies such as [this
-one](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4127482/). </span>And then
-we're already in the so-called "[visual word form
-area](https://en.wikipedia.org/wiki/Visual_word_form_area)", where letters and
-words are processed.
-
-Although the effect of letter distances could show up anywhere between retina
-and letter detectors, and even independently in several places, V1 is an obvious
-first suspect, because it seems so naturally plausible that its stripe-like receptive
-fields would somehow interact with the presence of neighbouring letters.
-Conveniently, V1 is the best-understood part of the visual cortex, because it
-can be studied *in vivo*, for example by sticking electrodes into cats' brains
-and measuring how individual neurons respond to test images flashed on a screen.
-
-<span><input type="checkbox" id="mn-simple-cell-sample-rfs"
-class="margin-toggle"><label for="mn-simple-cell-sample-rfs"
-class="margin-toggle"></label> <span class="marginnote"> <img
-src="img/simple_cell_sample_rfs.png" alt="Some receptive fields">Illustration of
-some receptive fields of these so-called "simple cells" in the primary visual
-cortex (V1).</span></span> Each neuron in V1 combines the input from a few
-neighbouring retinal ganglion cells (RGCs) in your retina. RGCs pool the input
-from a small, contiguous patch of photoreceptors and subtract the signal from
-the photorecpetors around it, or vice versa. Thanks to the way the RGCs and V1
-neurons are arranged in space, each of the cells in V1 is
-uniquely sensitive to a particular pattern at a particular location on the
-retina. The receptive fields of simple cells cover a range of spatial frequency,
-orientations, and phases.
-
-If you're completely unfamiliar with these concepts, I recommend you spend some
-time on Youtube first, starting with [this simple
-animation](https://www.youtube.com/watch?v=NnVLXr0qFT8) followed by [this
-in-depth MIT lecture](https://www.youtube.com/watch?v=T9HYPlE8xzc).
-
-To model the output from simple cells sharing a particular spatial frequency,
-orientation, and phase – let's call that a *channel* – we convolve the input
-image with a kernel corresponding to the receptive field.<label for="sn-gab"
-class="margin-toggle sidenote-number"></label> <input type="checkbox"
-id="sn-gab" class="margin-toggle"> <span class="sidenote"> Popular mathematical
-functions used to generate such simulated kernels include [Gabor
-patches](https://en.wikipedia.org/wiki/Gabor_filter),
-differences/<wbr/>derivatives/<wbr/>Laplacians of Gaussians, and many others –
-they all look like the sample receptive fields above. None of them are perfect
-reproductions of reality, but the error is usually negligible. </span> For
-practical reasons, convolution is typically implemented as [multiplication with
-a complex-valued filter in frequency
-space](https://en.wikipedia.org/wiki/Discrete_Fourier_transform#Circular_convolution_theorem_and_cross-correlation_theorem),
-producing a complex-valued output. <span><input type="checkbox"
-id="mn-complex-value" class="margin-toggle"><label for="mn-complex-value"
-class="margin-toggle"></label> <span class="marginnote"> <img
-src="img/complex_value.png" alt="Complex value">The output of the convolution is
-complex-valued.</span></span> To obtain real-valued, positive numbers
-corresponding to neural firing rates, we can rectify the resulting complex
-numbers in each of the four cardinal directions (Re, –Re, Im, –Im).
-
-Doing so for an array of scales and orientations produces a
-three-dimensional tensor (scale, orientation, phase) of estimated simple cell
-responses at each location of the input image.
-
-Some cells exhibit more complex behaviour. Although they are tuned to a
-specific frequency scale and orientation, they will respond not just to one phase, but to
-adjacent phases as well. Some even fire in response to *any* phase, as long as
-the input matches their scale and orientation. These cells are called complex
-cells.<nobr><label for="sn-cce" class="margin-toggle sidenote-number"></label></nobr><input
-type="checkbox" id="sn-cce" class="margin-toggle"> <span class="sidenote">In
-reality, simple and complex cells lie along a spectrum of phase specificity. A
-very recent [Korean
-paper](https://www.biorxiv.org/content/biorxiv/early/2019/09/25/782151.full.pdf)
-has a super neat explanation for that, but it seems that there's even more to
-the story, as complex cells seem to [change their simpleness
-index](https://hal.archives-ouvertes.fr/hal-00660536/document) in response to
-their input as well.</span>Because they are phase-agnostic, their output is modelled as the absolute magnitude of the
-complex-valued convolution results, often called the *local energy*.<nobr><label for="sn-lce" class="margin-toggle sidenote-number"></label></nobr><input
-type="checkbox" id="sn-lce" class="margin-toggle"> <span class="sidenote">Some
-authors define the energy as the square of the magnitude.</span> This energy is
-then taken to a power of about two or three, representing the nonlinear
-behaviour of real-life neurons.
-
-Fully complex cells – i.e, phase-free values – are used exclusively in many
-computational vision models. That may not always be justified, but it works well
-enough with the kind of artificial images typically used in vision studies.
-For reasons discussed below, we will also work with complex cells for our
-letterfitting tool.
-
-<a name="multiscale"></a>
-
-## Building a multi-scale letter pair analyzer
-
-Let's recap: we're trying to understand how the output of V1 complex cells
-differs between two situations: one, when two letters are shown individually
-(presumably maximally activating the letter detectors downstream), and two, when
-both letters are placed next to one another.
-
-Here's an implementation of what we just described:
-
-<img src="img/simple_energy_model.png" alt="Basic energy-based model" />
-
-This most basic version of our model simply convolves our three images – i.e.,
-the pair image, and one image of each individual letter – with our filter bank.
-We then take the absolute magnitude of each output and square it, simulating
-nonlinearly-activating complex cells tuned to various frequency scales and
-orientations. Finally, we simply take the difference between the pair image
-output and the two single-letter outputs, and weighted-sum the results over
-frequencies and orientations.
-
-We find that when the letters are juxtaposed, the facing edges lose energy, and
-the gap gains energy. Presumably, degrading the edges is bad for legibility –
-it's easy to imagine how that will reduce the activation of shape detectors and,
-in turn, the activation of the correct letter detector. Presumably, adding
-energy to the gap is problematic as well, because strong gaps can be perceived
-as word breaks.
-
-Before we dig deeper, let's take a moment to understand how this kind of interference happens.
-
-<span><input type="checkbox"
-id="mn-if1" class="margin-toggle"><label for="mn-if1"
-class="margin-toggle"></label> <span
-class="marginnote"> <img src="img/interference1.png" alt="Illustration of the
-collapse to 1D">One-dimensional view.</span></span>
-For simplicity, let's collapse everything into a single dimension. If you
-like, imagine that you are looking at a section view of a lowercase l, as shown
-on the right. Next, consider the responses of various one-dimensional wavelets
-when convolved with this function:
-
-<img src="img/interference2.png" alt="Basic interference" style="max-width: 30rem"/>
-
-<span><input type="checkbox"
-id="mn-soc-multiscale" class="margin-toggle"><label for="mn-abs-multiscale"
-class="margin-toggle"></label> <span
-class="marginnote"> <img src="img/sample_abs_values.png" alt="Some
-absolute outputs at multiple scales">Local energy magnitudes of a pair image.</span></span>
-The blue lines shows the local energy. The odd filters (i.e. the
-real-valued components, or sine filters) respond to edges, while the even
-filters (i.e. the imaginary-valued components, or cosine filters) respond some
-distance away from an edge, and most strongly at centers, when both edges are
-the same distance away. Note also how their scale-dependence differs: odd
-filters elicit a full response at any edge, as long as they are *smaller* than
-the width $w$, while even filters show no significant response unless their scale is
-approximately *equal* to $w$. If this isn't immediately obvious, take a piece of
-paper and perform some convolutions by hand until it becomes clear.
-
-We can compute the square of the magnitude to find the local energy. Because of
-the scale dependence of the filters, this energy peaks for edges at small
-scales, and for the centers of larger structures at coarser scales (see also the
-example on the right).
-
-Now let's add a neighbouring letter on the right, and see what happens to the
-filter responses. Just looking at the smaller one is enough to illustrate the point:
-
-<img src="img/interference3.png" alt="Basic interference: difference"
-style="max-width: 30rem;"/>
-
-The dotted lines show what the local energy would have been, if the two letters
-had been convolved individually. The difference introduced by the
-neighbour-neighbour interference is shown at the bottom.
-
-Take the time, with pencil and paper, to develop an intuition for how the
-encroaching neighbour dampens some responses (particularly the edges) and
-amplifies others (particularly the gap).<label for="sn-ndr" class="margin-toggle
-sidenote-number"></label> <input type="checkbox" id="sn-ndr"
-class="margin-toggle"> <span class="sidenote">I have not found much discussion
-of this competitive phenomenon in the psychophysics literature, probably because
-it's not inherently interesting outside of models like this one.</span> This
-difference is at the heart of the proposed letterfitting model. It's not a
-metaphorical construct of the kind that underlies other letterfitting models: it
-really exists in your brain as you are reading these words.
-
-It's worth appreciating the arithmetic behind the model as well. First, thanks to
-the linearity of the Fourier transform, we can obtain the convolution of the
-pair image by simply adding the complex-valued results of the two single-letter
-images, saving us one DFT round-trip. Next, you may question the
-necessity of the squaring operation. Well: for one, without it, the difference would always be
-negative<label for="sn-negd"
-class="margin-toggle sidenote-number"></label> <input type="checkbox"
-id="sn-negd" class="margin-toggle"> <span class="sidenote">Trivial triangle inequality:
-the magnitude of the sum of two complex numbers can't exceed the total of the
-summands' magnitudes.</span>. And, as we will
-discuss momentarily, complex cells *do* in fact respond nonlinearly, and a
-squaring operation is a common model.
-
-Another very important aspect of this model – to be exact, a consequence of our
-squashing of phase information into magnitudes – is that it works just as well
-with white-on-black imagery as it does with the conventional black-on-white. Of course,
-we wouldn't want it any other way: we can read text regardless of its contrast
-polarity, which strongly suggests that the letter detectors in higher-level
-brain regions get most of their input from complex cells, rather than
-simple ones.
-
-Cool, so there's some positive and negative interference – but how much, given a
-gap of width $d$ and filters of scale $s$? Well, let's follow through how the
-convolution actually works and run some back-of-the-envelope numerical integrations to get a better idea.
-
-Here are two Gaussian derivative wavelets, odd and even:<label for="sn-negd"
-class="margin-toggle sidenote-number"></label> <input type="checkbox"
-id="sn-negd" class="margin-toggle"> <span class="sidenote">You can think of them
-as the real/sine and imaginary/cosine versions of Gabor wavelets, respectively.
-Unlike even Gabor wavelets, they integrate to zero.</span>
-
-$$
-\begin{aligned}
-f_\mathrm{odd}(x) &= \frac{x}{2\pi \sigma^4}e^{-\frac{x^2}{2\sigma^2}} \\
-f_\mathrm{even}(x) &= \frac{1}{2\pi \sigma^4}e^{-\frac{x^2}{2\sigma^2}} - \frac{x^2}{2\pi \sigma^6} e^{-\frac{x^2}{2\sigma^2}}
-\end{aligned}
-$$
-
-These formulas create wavelets approximately $s \approx 8\sigma$ wide.
-Convolving them over a letter stem of unit value located between two
-x-coordinates $a$ and $b$, just like we did in the illustration above, with a
-convolution variable $\tau$ yields
-
-$$
-\begin{aligned}
-C_\mathrm{odd}(a, b, \sigma, \tau) &= \int_{x=a}^{b} f_\mathrm{odd}(x-\tau) dx = \frac{1}{2\pi \sigma^2} \left[e^{-\frac{9+(\tau-2)\tau}{2\sigma^2}} \left(e^{\frac{4}{\sigma^2}} - e^{\frac{4\tau}{\sigma^2}} \right)\right] \\
-C_\mathrm{even}(a, b, \sigma, \tau) &= \int_{x=a}^{b} f_\mathrm{even}(x-\tau) dx = \frac{1}{2\pi \sigma^4} \left[e^{-\frac{(b-\tau)^2}{2\sigma^2}}(b-\tau) + e^{-\frac{(a-\tau)^2}{2\sigma^2}}(\tau-a)\right]
-\end{aligned}
-$$
-
-Picture now two letter stems of width $w$. One is sitting to the left of the
-origin and the other one to the right, with a distance $d$ between them. That
-means that for our example, the integration bounds $a$ and $b$ will be $\pm \frac{d}{2}$ and $\pm (w +
-\frac{d}{2})$, respectively. That gives us four quantities $C_\mathrm{odd, left}, C_\mathrm{even,
-left}, C_\mathrm{odd, right}, C_\mathrm{even, right}$. From Pythagoras, the squared total magnitude is
-simply $E = C_\mathrm{odd}^2 + C_\mathrm{even}^2$. That gets us $E_\mathrm{left}$
-and $E_\mathrm{right}$, and to get $E_\mathrm{pair}$, we can simply add the even and odd responses of both
-left and right before squaring (remember the linearity mentioned above).
-
-Finally, we evaluate the total positive and negative interference $d^\pm(w, d,
-\sigma, \tau) = \mathrm{ReLU}\left[\pm (E_\mathrm{pair} - E_\mathrm{left} -
-E_\mathrm{right})\right]$ for any values of $w$ and $d$ by numerically
-integrating it over $\tau$ over a sufficiently large domain to
-capture all of the action, e.g. $-10(w+d)$ to $10(w+d)$:
-
-$$
-D^\pm(\sigma) = \int_{-10(w+d)}^{10(w+d)} d^\pm d\tau
-$$
-
-The clipping makes it impossible to evaluate this analytically, so I'll just show you the results:
-
-
-
-
-The very simple model described here is, in fact, able to produce a remarkably
-decent fit on most fonts simply by limiting the sum of the negative differences
-to a fixed amount. Of course, we must choose our scale/orientation coefficients well.
-
-<a name="modelling_visual_cortex"></a>
-
-## Extending our models
-
-Cognitive scientists are confident that the above is a largely correct
-description of the lowest-level cohort of neurons in the primary visual cortex.
-What happens next, however, is less certain. These simple and complex cells
-don't just pass their outputs up to higher-level brain areas; they
-also interact with one another, electrochemically stimulating and/or
-muting nearby cells in proportion to their own activity. What's
-more, neurons from higher-level areas can also "reach down" and
-modulate perception as it is still taking shape.<label for="sn-tdm"
-class="margin-toggle sidenote-number"></label> <input type="checkbox"
-id="sn-tdm" class="margin-toggle"> <span class="sidenote">This really
-means that our learned expectations directly shape our experience,
-so it's not unlikely that your familiarity with the Latin script and
-English orthography subtly affects your perception of a font's metrics.
-Modelling *that* is hopelessly out of reach, of course.</span>The waves
-of electricity that flash through these inscrutably connected networks
-are, in aggregate, responsible for the experimental findings: local
-contrast normalization, contour pop-out, and so forth. These don't
-necessarily happen in sequence, but rather in parallel, until the
-electrical oscillations settle into a stable pattern for some tens of
-milliseconds before new information comes in.
-
-http://nxxcxx.github.io/Neural-Network/
-
-Of course, that biological complexity hasn't kept generations of clever
-PhD students from inventing simple(r) formulas that can reproduce the
-experimental results *without* simulating the temporal dynamics of the
-whole network. Such a model is what we will use to predict how the
-distance between a pair of letters affects their appearance relative to how they
-appear individually.
-
-Although I do not provide a literature review here (perhaps in a future
-version?), I strongly encourage interested readers to dig into the huge variety
-of models people have come up with. A great place to start is [this 2011 review
-of the last 25 years of research](https://doi.org/10.1016/j.visres.2011.02.007)
-by Norma Graham, followed by Michael Morgan's [review of image
-features](https://doi.org/10.1016/j.visres.2010.08.002).
-
-<a name="extending"></a>
-
-## Extending our model: lateral inhibition and divisive normalization
-
-As I mentioned above, cells don't just take input from the retina and trigger
-higher-level neurons, analogous to a classic feed-forward convolutional network.
-No: in reality, cells also affect their neighbours, and even themselves. And because
-neurons are little physical tubes of flowing chemicals, those neighbourly interactions
-happen with miniscule delays, leading to incredibly complicated temporal
-dynamics. We can't model those here!
-
-What we can do, however, is improve on our basic model by vaguely approximating
-some of those neighbourly interactions *on average*. This puts us in an awkward
-position halfway between the actual biophysics and a higher-level signals-based
-description, and we must be careful not to stretch the approximations into too
-handwavy a territory. Nevertheless, everything described below comes
-straight out of the mainstream computational neuroscience literature, so it's
-at least not known to be outrageously wrong.
-
-Let's start with a single neuron – say, a simple cell responding to some region
-of our input image.
-
-The simplest model relates the spiking rate of this neuron to the strength of
-its input as a linear function, known to deep learning practicioners as a
-[ReLU](https://en.wikipedia.org/wiki/Rectifier_(neural_networks)):
-
-<img src="img/relu.png" alt="ReLU" style="max-width: 15rem;" />
-
-This is, in effect, what our basic model uses (before the phases get squashed
-into a single magnitude, of course).
-
-It turns out that real neurons tend to behave differently. At first, they don't
-spike much at all. But once a certain spiking rate is reached, they're physically
-incapable of going any faster, saturating out:
-
-<img src="img/hra.png" alt="HRA" style="max-width: 15rem;" />
-
-One of the most popular equations<label for="sn-nra"
-class="margin-toggle sidenote-number"></label> <input type="checkbox"
-id="sn-nra" class="margin-toggle"> <span class="sidenote">This kind of sigmoid goes by
-many names: hyperbolic ratio, Naka-Rushton function, and others.</span> to model
-this is:
-$$y = \frac{f x^k}{\beta^k + x^k}$$
-The $f$ scales the curve vertically, $k$ makes the kink steeper, and $\beta$
-shifts the threshold to the right. Look at how this function works: the
-numerator increases the firing rate, and the denominator decreases it. For
-relatively small values of $x$, $\beta^k$ dominates the denominator and we're basically
-dealing with a scaled-down version of $fx^k$ (values of about 2 or 3 are common
-for $k$, which explains why we squared the magnitude in our basic model). Once
-$x^k$ gets large enough though, $\beta^k$ pales in comparison, and we're left
-approaching $f$.<label for="sn-hrn"
-class="margin-toggle sidenote-number"></label> <input type="checkbox"
-id="sn-hrn" class="margin-toggle"> <span class="sidenote">This specific activation function is effectively never used in deep learning, both
-for historical reasons and because [its asymptotic behaviour would slow down training](https://en.wikipedia.org/wiki/Vanishing_gradient_problem).</span>
-
-Conveniently, having now described our neuron using this function, we can 
-sneak some extra suppressive terms into the denominator, namely, the inhibition coming
-from our neuron's neighbours:
-
-$$y_i = \frac{f x_i^k}{\beta^k + \sum_j w_j x_j^k}$$
-
-This is called *divisive normalization*, and if it seems fishy to you, you'll be
-pleased to know that [it's actually in happy agreement with simple dynamics
-models](https://arxiv.org/pdf/1906.08246.pdf).
-
-Neuroscientists have long been fans of divisive normalization, because it
-explains a great deal of experimental results. One can find many variations on
-the above formula in the literature: extra constants, extra square roots in the
-denominator, extra rectifiers, etc., but the core idea is always the same.
-
-The key question now becomes: which neighbours contribute to the denominator,
-and how strongly, i.e. what are the values for $w_j$? The answer, first and
-foremost, is that the closest neighbours contribute the most, including the
-neuron in question itself. That creates a sharpening effect, and here's why:
-consider two neighbouring neurons, with activations $x_1 = 8$ and $x_2 = 12$,
-respectively. If $\beta = f = 10$, $w_{11} = 1$, and $w_{12} = 0.85$, we get
-
-$$y_1 = \frac{10\cdot{}8^2}{10 + 8^2 + 0.85\cdot{}12^2} \approx 0.33,\enspace y_2 = \frac{10\cdot{}12^2}{10 + 12^2 +
-0.85\cdot{}8^2} \approx 0.69$$
-
-As a result, $\frac{y_2}{y_1} = 2.1$ even though $\frac{x_2}{x_1} = 1.4$. In
-other words, this kind of lateral inhibition allows
-stronger-activated neurons to actively drown out their neighbours, in effect
-sharpening the peaks in the signal.
-
-This kind of winner-takes-all competition is found everywhere in the brain, and your
-experience wouldn't be the same without it. In vision, even though the receptive
-field of a cell is centered at a unique location and tuned to a certain
-frequency scale, orientation, and phase angle, it will still respond to an input
-that doesn't quite match those parameters – just a little less strongly. That
-correlation between cell responses simply lies in the nature of the filtering
-operation,<label for="sn-gsm"
-class="margin-toggle sidenote-number"></label> <input type="checkbox"
-id="sn-gsm" class="margin-toggle"><span class="sidenote">The image processing
-literature is chock-full with analyses of Gaussian scale mixture models of this
-phenomenon.</span> and it's therefore in the "true" neuron's interest to suppress its
-neighbours that were activated by accident, so to speak.
-
-But back to computing $w_i$: The statement that the strongest inhibition comes from the closest neighbours holds
-true for the distance in spatial position, orientation, and scale. [This enormous 2017 review
-paper](https://www.physiology.org/doi/full/10.1152/jn.00821.2016) suggests that
-we use a 2D Gaussian kernel over the spatial distance, a 1D Gaussian kernel over
-the log-scale, and a von-Mises kernel over the orientation, and simply multiply
-them together. Of course, plenty of experimental evidence supports these
-suggestions – they're not just pulled out of a hat.
-
-However, we can further improve on those choices.
-
-- Phase angle
-- Assymemtry Cowles
-- Contour integration
-
-
-One of the models that has found some recent popularity is the [second-order contrast](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003079) (SOC) model by Kendrick Kay et al. It's relatively simple and ticks many of the boxes that other filter-rectify-filter models don't,
-and it even appears to predict fMRI responses quite well (bonus points!).
-
-However, it was tested only at a single filter scale, whereas our
-hypothesis incorporates the agreement between feature detectors across
-multiple scales. We will therefore run the SOC model at multiple scales.
-
-Quantifying the agreement between feature detectors across multiple
-scales isn't a new idea. Researchers have written
-papers about this since the 1980s – the key terms are [phase
-congruency](https://en.wikipedia.org/wiki/Phase_congruency) and [local
-energy](https://www.sciencedirect.com/science/article/abs/pii/0167865587
-900134).
-
-(To be continued ...)
 
 ## Results
 
@@ -1312,28 +761,3 @@ abutting the bubbles. While this isn't technically a letterfitting heuristic at
 all, it's still worth mentioning as a neat idea that could perhaps save
 designers some time. Toshi Omagari has built a [Glyphs plugin](https://github.com/Tosche/BubbleKern).
 
-### Other links
-
-   Although much has been written about how the loss of
-   information about precise letter location might be reconciled with our
-   ability to read anagrams ([this
-   article](https://onlinelibrary.wiley.com/doi/pdf/10.1111/j.1551-6709.2012.01236.x)
-   is representative of the field), nobody has truly researched how spaces
-   allows us to separate words. Some have floated the idea of "[letter
-   combination
-   detector](https://www.sciencedirect.com/science/article/abs/pii/S1364661305001439)"
-   neurons that respond to the presence of pairs of letters, combined with
-   additional mechanisms that [link letters' positions to the word
-   edges](https://link.springer.com/article/10.3758/s13421-017-0786-0)—and
-   although all of that is quite plausible and in good agreement with the
-   proposals in *this* article,
-
-
-   
-   There is fascinating research on how readers [disassemble words](https://www.researchgate.net/profile/Elisabeth_Beyersmann/publication/316312318_Edge-Aligned_Embedded_Word_Activation_Initiates_Morpho-orthographic_Segmentation/links/5addab7ca6fdcc29358b9656/Edge-Aligned-Embedded-Word-Activation-Initiates-Morpho-orthographic-Segmentation.pdf)
-   The fact that our reading ability is unaffected by <span style="background:
-   #3A4145; color: white;">contrast inversion</span>
-
-interference paper (bernt skottun): https://www.sciencedirect.com/science/article/pii/S016643281731937X?via%3Dihub#!
-Identification  Confusions  Among  Letters  of the  Alphabet (just compare the
-fourier transforms, gets decent correlation to actual confusion matrix): https://sci-hub.tw/10.1037/0096-1523.10.5.655
