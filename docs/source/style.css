@@ -63,6 +63,7 @@ h2 {
     font-size: 1.6rem;
     line-height: 1; 
     position: relative;
+    width: 60%;
 }
 
 h2.nonumber:before {
@@ -434,6 +435,10 @@ label.margin-toggle:not(.sidenote-number) {
     article > footer,
     article > table {
       width: 100%; 
+    }
+
+    h2 {
+        width: 100%;
     }
 
     /* 50 + 5 == 55, to be the same width as paragraph */
