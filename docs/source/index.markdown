@@ -37,9 +37,9 @@ scientific papers, most of which are not cited explicitly. That said,
 neurocognitive hypotheses are continuously revised, discarded, and replaced.
 Nothing in this article should be considered final. I welcome corrections!
 
-## Introduction
+## Introduction: form follows function, beauty follows legibility
 
-**What is letterfitting?** Letterfitting refers to the process of adjusting the
+Letterfitting refers to the process of adjusting the
 distances between pairs of letters<label for="sn-lgl" class="margin-toggle
 sidenote-number"></label> <input type="checkbox" id="sn-lgl"
 class="margin-toggle"> <span class="sidenote">I use the word "letter" very
@@ -56,261 +56,142 @@ distances are the sum of fixed amounts of space around every letter (so-called
 (so-called *kerns*). Quality fonts often contain thousands of hand-kerned pairs
 that undergo weeks of testing and refinement.
 
-**Why do we fit letters at all?** Some would say that well-fitted type is simply
-the result of the designer's intuition for beauty. Others have tried to appeal to
-the aesthetics of an "even colour", i.e. a printed page with a uniform texture
-and no noticeable blobs of black or white. Meanwhile, Frank Blokland has
-argued<label for="sn-lea" class="margin-toggle sidenote-number"></label> <input
-type="checkbox" id="sn-lea" class="margin-toggle"> <span class="sidenote">See
-his [PhD thesis](https://www.lettermodel.org/).</span> that the distances
-between letter stems are mainly a holdover from the early days of printing,
-when the measurements of cast type were the result of practical considerations. None of these
-explanations have yet led to an automated letterfitting algorithm<label for="sn-lea"
+*Why do we fit letters at all?* Some would say that well-fitted type is
+simply the result of the designer's personal intuition for beauty.<label
+for="sn-kerg" class="margin-toggle sidenote-number"></label>
+<input type="checkbox" id="sn-kerg" class="margin-toggle"><span
+class="sidenote">Type designers who adjust pair distances by hand
+often feel that there seems to be no right answer. In those moments,
+letterfitting can feel quite arbitrary. If you have not experienced
+this yourself, the venerable [kern game](https://type.method.ac/)
+lets you try your hand on existing fonts.</span> Others have tried
+to appeal to the aesthetics of an "even colour", i.e. a printed
+page with a uniform texture and no noticeable blobs of black or
+white. Meanwhile, Frank Blokland has argued<label for="sn-lea"
 class="margin-toggle sidenote-number"></label> <input type="checkbox"
-id="sn-lea" class="margin-toggle"> <span class="sidenote">I've listed the most
-popular existing attempts in the [appendix](#existing_tools).</span> that reliably
-reproduces the hand-tweaked pair distances in existing fonts of different
-styles, so we need a new approach.
+id="sn-lea" class="margin-toggle"> <span class="sidenote">See his [PhD
+thesis](https://www.lettermodel.org/).</span> that the distances between
+letter stems are mainly a holdover from the early days of printing,
+when the measurements of cast type were the result of practical
+considerations.
 
-My hypothesis is that all of the <nobr>above—subjective beauty,</nobr>
-black-white balance, and standardization across metal <nobr>type—are</nobr>
-merely pleasant side effects of the pursuit of optimal legibility under the
-predicted reading conditions.<label for="sn-vdss" class="margin-toggle
-sidenote-number"></label> <input type="checkbox" id="sn-vdss"
-class="margin-toggle"><span class="sidenote">In cognitive science terms, I am
-suggesting that a model of the [ventral
-stream](https://en.wikipedia.org/wiki/Two-streams_hypothesis#Ventral_stream)
-(the systems involved in understanding what we see) may
-be sufficient for a good letterfitting model, while traditional heuristics have
-focused more on what could be considered computations of the
-[dorsal stream](https://en.wikipedia.org/wiki/Two-streams_hypothesis#Dorsal_stream)
-(the systems involved in maintaing a precise visual map of the world).</span> In other words: well-fitted text most effectively activates
-the neural circuitry that allows us to read letters and words.
+These ideas aren't wrong, but they're underpowered. None have led to
+automated letterfitting algorithms<label for="sn-lea" class="margin-toggle
+sidenote-number"></label> <input type="checkbox" id="sn-lea"
+class="margin-toggle"> <span class="sidenote">I've listed the most
+popular existing attempts in the [appendix](#existing_tools).</span>
+that reliably reproduce the hand-tweaked pair distances in existing
+fonts—from hairline slab serifs to broad-nib italics, from captions to headline
+sizes, and from Latin to Khmer.
 
-This is by no means a revolutionary idea,<label for="sn-cbgl"
-class="margin-toggle sidenote-number"></label> <input type="checkbox"
-id="sn-cbgl" class="margin-toggle"> <span class="sidenote"> Type legend Charles
+To move forward, we need to understand how reading works in the brain.
+By reframing letterfitting as the pursuit of *optimal legibility*, we
+can climb on the giant shoulders of generations of cognitive science
+researchers and begin to understand what vague ideas like "black-white
+balance" actually mean in our visual cortex. In short: well-fitted text is text
+that most effectively activates the neural circuitry that allows us to read
+letters and words, and therefore maximizes reading speed.
+
+The connection between type design and legibility is self-evident
+and well-studied.<label for="sn-cbgl" class="margin-toggle
+sidenote-number"></label> <input type="checkbox" id="sn-cbgl"
+class="margin-toggle"> <span class="sidenote"> Type legend Charles
 Bigelow recently compiled a [comprehensive review of legibility
-studies](https://www.sciencedirect.com/science/article/pii/S0042698919301087),
-covering many important concepts including weight and optical sizing.</span>
-yet for all the findings psychologists have made about legibility, we still have no
-explicit, unified model that would allow type designers to make use of them.
-Indeed, the disconnect between the two fields is quite surprising, because existing typefaces<label
-for="sn-sltf" class="margin-toggle sidenote-number"></label> <input
-type="checkbox" id="sn-sltf" class="margin-toggle"> <span class="sidenote">And I
-don't mean the [Sloan letters](https://en.wikipedia.org/wiki/Sloan_letters) used
-by most experimental psychologists.</span> contain so much implicit information about legibility that they should be a natural,
-cheap source of validation data for psychophysical theories. The goal of this
-project is to lay the groundwork for such models, starting with the relationship
-between pair distances and legibility.
+studies](https://www.sciencedirect.com/science/article/pii/S004269891930
+1087), covering many important concepts including weight and optical
+sizing.</span> But even though psychologists have published plenty empirical
+findings, we are only just beginning to understand the neural architectures
+which explain them, and which will one day power the type design tools of the future.
+
+The goal of this article is to provide an informal review of the state
+of the art in vision and reading science and to explore some new ideas
+for approximate letterfitting algorithms. I hope that it will inspire both
+typographers and vision researchers to more deeply explore the connection
+between letterfitting and perception.
 
 ## Visual and literal sources of poor legibility: an overview
 
-Letterfitting, for its superficial triviality, is an astonishingly tough nut to
-crack. Type designers who adjust pair distances by hand often feel that there
-seems to be no right answer.<label for="sn-kerg" class="margin-toggle
-sidenote-number"></label> <input type="checkbox" id="sn-kerg"
-class="margin-toggle"><span class="sidenote">If you are not a typographer, the
-venerable [kern game](https://type.method.ac/) lets you experience this
-feeling.</span> In those moments, letterfitting can feel arbitrary, giving
-rise to the notion that the decisions are a matter of personal taste. But that
-sense of subjectivity quickly wanes when pairs that appeared well-fitted on their
-own suddenly stick out as noticeably loose or tight when viewed in the context
-of a page of text.
+Letterfitting means making a compromise between the legibility of letters and
+the integrity of words. A poor fit can ruin both:
 
-There is a good reason why letterfitting is so tricky: the neural mechanisms
-that will make a pair appear too tightly fitted appear to be different from the
-mechanisms that will make it appear loose, and both can be active at once. And
-thanks to our brain's tendency to perceive things in context, the activity of
-those mechanisms depends not only on the letter shapes but also on the font
-size, the lighting contrast, and the tightness of the surrounding pairs. For a
-practicing designer, that means that a pair cannot be fitted until all the other
-pairs are fitted as well, leading to endless tweaking and re-tweaking.
+<img src="img/legibility_issues.png" alt="Legibility issues">
 
-The architecture of our brain's reading circuits is still under scientific
-investi&shy;gation, but the evidence points to a hierarchical network of letter
-detectors, letter-combination detectors (bigrams, trigrams, common morphemes,
-etc.) that interact with the brain's language areas to detect words, with some
-degree of top-down modulation. The letter detectors are fed by imagery
-pre-processed by the networks of the visual cortex. I will review the mechanics
-of letter and word recognition in section 5.
+When the fit is too tight, the identifiability of individual letters suffers
+(1). This is a direct consequence of frequency-domain interference, and it is
+relatively easy to measure directly, as described in Section 5.
 
-Of the many reasons a piece of text might be poorly legible, there appear to be
-two that are actually unrelated to reading, but instead associated with the
-architecture of more fundamental vision circuitry. In other words: in order to
-address these two major sources of poor legibility, one need not know how to
-read the script at all. These phenomena, of course, are particularly interesting. We might
-call them *visual*, in contrast to *literal* design issues that directly
-relate to the recognition of letters of the script in question.
+When the fit is irregular, word fragments may be perceived as words
+(2). Ideally, each word is readily perceived as a single object (here:
+"strange"), rather than as multiple fragments (here: "come"). This
+means that we need to make all pairs exactly equal in their ability
+to facilitate perceptual grouping: even a loose fit is still quite
+legible if it is *consistently* loose across all pairs. Unfortunately, our scientific
+understanding of the perceptual grouping of shapes is in its infancy, so
+predicting grouping strength is a challenge, as we will see in Section 7.
 
-<img src="img/source_table.png" alt="Different sources of signal degradation">
+When letters are much too far apart, we can no longer read entire words but need to
+piece them together letter by letter (3). This likely has to do with the size of
+receptive fields in our brain's reading networks, as will be described in
+Section 4.
 
-The first visual cause of poor legibility is destructive interference at the earliest
-stage of the visual cortex, V1. This is a direct result of placing shapes very
-close to one another. It does not make letter recognition impossible, but it
-can thwart the use of the strongest spatial frequency bands, and inadvertently
-strengthen the response of other letter detectors.<label for="sn-rnmz" class="margin-toggle
-sidenote-number"></label> <input type="checkbox" id="sn-rnmz"
-class="margin-toggle"><span class="sidenote">The fusion of *rn* into *m* is a
-classic example.</span> This phenomenon is
-relatively easy to model mathematically, and addressed in detail in section 6.
+Minimizing these three problems does not require us to know the letters
+we are fitting, or the alphabet they come from. Current geometry-based
+letterfitting heuristics are limited to this purely visual level. This
+article, too, is more concerned with vision than with the linguistic
+subtleties of reading. In the future, however, letterfitting tools may
+well incorporate character recognition and language models to allow them
+to deal with semantic aspects:
 
-The second visual cause of poor legibility is the disruption of perceptual
-grouping of letters into words. This happens when letters are too far apart.
-Although grouping has been a hot topic in cognitive science ever since Gestalt
-psychologists observed it nearly a century ago, researchers still aren't able to
-model it reliably. All available evidence suggests that perceptual grouping is
-the result of recurrent feedback mechanisms, which don't lend themselves to
-straightforward computational simulation. In addition, letterfitting algorithms
-operate on pairs, although, as mentioned, the strength of pair grouping may vary
-with the fit of other pairs nearby. In this context of letterfitting, our
-challenge will therefore be to find a reasonable approximation to the strength
-of pair grouping. I address it in section 7.
+<img src="img/legibility_issues_semantic.png" alt="Legibility issues">
 
-Irregularly fitted text can exhibit both problems, but it is of particular
-concern because failed grouping between two halves of a word can suggest the
-presence of two words instead of one, which leads to competition at the word
-level. Realistically, of course, irregular fits are the wild type, but it's
-helpful to recognize them as hybrids with their own particular pathology.
+Pairs of letters may be confused for other letters, particularly when
+the fit is tight (4). The classic example is *rn/m*. The fitting
+algorithm may choose to increase the pair distance according to the
+statistical likelihood of lexical confusion.
 
-## Letterfitting tools in context: what is and what will be
+Character models are required to allow the algorithm to ignore decorative elements (5), as
+purely visual tools cannot distinguish a swash (which may overlap with a
+neighbouring letter) from a basic letter feature (which must not).
 
-I would like to give some perspective on what has been possible in the past,
-what we can hope to achieve in the present, and what may be possible in the future.
-The evolution of letterfitting theories has tracked our understanding of visual
-perception, albeit with some delay, and I expect that this concurrence will
-continue.
+Finally, a well-trained character model may allow the tool to predict which
+features of a letter are the most salient, and thereby improve the accuracy of
+the purely visual models.
 
-The first generation of efforts to formalize letterfitting, beginning with
-Kindersley's lightbox experiments, was built on metaphors drawn from geometry
-and electromagnetics. Gestalt psychologists, likewise, had a tendency to refer
-to observed perceptions in terms of "force fields", "lights", "areas",
-"attraction", "rhythm", and so on; silly as it may seem, they repurposed the
-only scientific concepts known to them at the time. This language is still
-present in very recent letterfitting models. Such models, in combination with
-hardcoded heuristics, can achieve good results on "normal" type. (We are here.)
+## An informal review of vision and reading
 
-The next generation will incorporate mechanistic explanations as far as
-possible, and fill in the gaps with function approximators, the parameters of
-which will initially be fitted to existing high-quality fonts. If 
-separable, human-interpretable approximators are used—say, a set of two-dimensional
-polyharmonic splines, rather than a deep neural net—then designers can tune
-the behaviour of the algorithm to the style of the typeface and the predicted
-reading conditions. Compared to first-gen models, this approach would presumably
-generalize better to different font styles and even to different scripts; it
-would allow for a more interactive design experience, and even permit—if I am
-allowed the microtypographical fantasy—the estimation of per-pair tracking
-stiffness coefficients.
+Each of the five challenges mentioned above has a neural correlate in
+the brain, and computational models of those neural correlates should
+allow us to algorithmically optimize for a good fit.
 
-Eventually, sufficiently rich models of the recurrent dynamics of our biological
-vision networks will become available. It's possible that they will be directly
-incorporated into design tools, supporting humans with design tasks that go
-beyond mere letterfitting. It is also quite likely, however, that our
-understanding of those dynamics will be translated directly into human-interpretable Bayesian priors
-that capture our brain's inherent assumptions about our natural environment.
-Those would allow us to do away with direct brain simulations, and instead
-approach letterfitting from a purely entropy-minimizing perspective.<label for="sn-mrch"
-class="margin-toggle sidenote-number"></label> <input type="checkbox"
-id="sn-mrch" class="margin-toggle"></nobr><span class="sidenote">An overview of some of these ideas can be found in Wagemans et al.'s [review of
-a century of Gestalt psychology](https://dx.doi.org/10.1037%2Fa0029334). Some
-researchers are already toying with such models, e.g. Wilder et al. with their
-[skeleton matching model](https://dx.doi.org/10.1016%2Fj.cognition.2011.01.009).</span>
+Any incoming imagery must pass through multiple stages of visual processing before
+our letter- and word-recognizing circuitry gains access to it.
 
-Finally, we cannot ignore the question of whether a purely visual analysis of
-letter pairs is enough. On one hand, it's evident that even the most naïve geometric heuristics
-can fit most fonts to a mediocre standard; on the other, no visual model is up
-to a Roundhand cursive. Indeed, the particular concern with any kind of
-decorative face is that destructive interference between flourishes will throw
-off the optimization.
+<img src="img/vision_model.png" alt="Vision model">
 
-The realistic view is that purely visual models can achieve good results, for
-instance by minimizing a weighted sum of the destructive interference and
-grouping disruption for each pair, but this only works for typefaces in which
-the entirety of every letter should be involved in the analysis.
+Sensory input from the eye travels up the optic nerve, through the
+lateral geniculate nucleus (LGN) on the brain's thalamus, to the visual
+cortex at the very back of the head. The neurons there perform what
+amounts to a band-filtered wavelet decomposition. Next, the individual
+signals representing the presence of oriented fragments of lines
+or edges are correlated by neurons in V2 across space, scale, and
+orientation. These signals, in turn, are further correlated in area V4,
+allowing neurons there to respond to the presence of particular shapes
+or textures. Finally, a hierarchy of cells in the so-called visual word form area,
+located on the underside of the left hemisphere of the brain, detects letters,
+combinations of letters, and words. 
 
-A hypothetical full model would require a network of letter detectors and
-letter-combination detectors to correctly classify n-grams, trained on n-grams
-rendered in a variety of font styles and sizes. Such a network would correctly
-identify the salient parts of each letter, ignore the rest, and likely achieve
-superior results.<label
-for="sn-fnft" class="margin-toggle sidenote-number"></label> <input
-type="checkbox" id="sn-fntf" class="margin-toggle"></nobr><span
-class="sidenote">We can get an intuition for what such a model would do by covering up parts of
-letters to find out which features contribute the most to their identification
-at various frequency scales, as Daniel Fiset et al. [have
-done](https://doi.org/10.1111/j.1467-9280.2008.02218.x). </span>
-
-
-## Vision and reading: a high-level view
-
-Reading, as a skill, relies on specialized letter-and-word-detecting circuitry in
-our brain, and this circuitry piggybacks on our generic image processing system,
-the visual cortex at the back of our head.
-
-<span><input type="checkbox" id="mn-newb" class="margin-toggle"><label
-for="mn-newb" class="margin-toggle"></label> <span class="marginnote"> <img
-src="img/newborn.png" alt="How a newborn sees">Newborns are not only extremely
-myopic and nearly colourblind, they also lack the fine-tuning of the visual
-cortex that would allow them to perceive objects clearly.</span></span> Its
-layout is vaguely shaped by our mammalian genes, but its precise neural
-connections develop in response to the imagery presented to it over the first
-few months of our life, during which synapses that help provide useful
-information about our natural world are strengthened, while others wither away.
-
-Some of the most interesting details in our environment are lines, edges, and colours.
-These basic features combine to form shapes, and shapes combine to form objects.
-Our visual cortex, having sculpted itself to make the best possible use of this
-natural hierarchy of information, is organized in the same way.
-<label for="sn-nsce" class="margin-toggle
-sidenote-number"></label> <input type="checkbox" id="sn-nsce"
-class="margin-toggle"><span class="sidenote">
-This idea of "efficient coding" of [natural
-scenes](https://en.wikipedia.org/wiki/Natural_scene_perception) forms the 
-Much of the research on perception
-is based on this idea of 
-
-[statistically ideal
-observers](https://en.wikipedia.org/wiki/Ideal_observer_analysis) in the context of
-.
-Luckily, type design doesn't involve moving objects like natural scenes do.</span> 
-The first phalanx of about 140 million neurons to process input from the retina,
-collectively called V1, has a single task: to activate in response to small
-fragments of coloured lines and edges. Downstream, other neurons are connected
-to sets of V1 neurons that are aligned to correspond to continuous lines or
-corners. Further downstream, in areas V2 and V4, those neurons combine with
-others to activate neurons responding to particular shapes, which further
-combine to respond to objects and groups of objects. At these stages, the precise
-arrangement of edges and surfaces plays a key role in perception according to
-Gestalt principles.
-
-Once the visual cortex has thus extracted some noteworthy intel about the
-incoming imagery—vitally, the shape and location of groups of objects—the next step
-involves the actual recognition and comprehension of said objects. For letters
-this happens in the so-called *visual word form area* on the underside of the
-left half of the brain, which is in turn connected to the language-recognition
-networks, such as Wernicke's area.<label for="sn-vwfx"
-class="margin-toggle sidenote-number"></label><input type="checkbox"
-id="sn-vwfx" class="margin-toggle"><span class="sidenote">This big-picture
-theory was perhaps most clearly articulated in [this 2003
-article](https://doi.org/10.1016/S1364-6613(03)00134-7), which continues to set
-the research agenda.</span>
-
-## Letters, words, and uncertainty
-
-It is deceptively easy to underappreciate the dynamic nature of these processes,
-and to think of perception as data smoothly flowing upwards
-through ever-higher-level brain regions, as if the brain were an assembly line
-leading from our sensory organs to a place called consciousness. In reality, the
-process is vigorous back-and-forth over the course of hundreds of milliseconds.<label for="sn-nxxn" class="margin-toggle
+Superficially, this resembles the kind of feed-forward convolutional networks popular
+in image recognition software, in which perception is the result of a
+computation. In the brain, however, plenty of recurrent neural connections turn
+perception into a continuous process.<label for="sn-nxxn" class="margin-toggle
 sidenote-number"></label><input type="checkbox" id="sn-nxxn"
 class="margin-toggle"><span class="sidenote">[This interactive
 visualization](http://nxxcxx.github.io/Neural-Network/) is far from realistic
 but a much more useful visual metaphor than feed-forward deep learning
-architectures.</span> As new sensory signals come in, the higher-level brain regions are already happily abuzz
-with activity representing their own understanding of the world, activity which
-bounces around in stable patterns and which even feeds back into the lower-level
-regions to reinforce itself. Only strong, sustained sensory evidence for new
-information is enough to disrupt and update the patterns. <label for="sn-ndcsx"
+architectures.</span> In particular, conscious perception
+emerges from the give-and-take between lower-level brain areas,
+whose state represents fresh sensory input, and higher-level areas, whose state
+represents the current, pre-processed, sanitized understanding of the world.<label for="sn-ndcsx"
 class="margin-toggle sidenote-number"></label><input type="checkbox"
 id="sn-ndcsx" class="margin-toggle"><span class="sidenote"> This is a slapdash
 framing of [set](https://en.wikipedia.org/wiki/Set_(psychology)) as [Bayesian
@@ -321,9 +202,26 @@ states itself to [attractors](https://en.wikipedia.org/wiki/Attractor). This is 
 fascinating area of research of itself, and this article is only meant to convey
 an intuition, not a rigorous description of reality.</span>
 
-Between detectors of letters, letter-combinations, and words, these
-dynamics are necessary to resolve uncertainty about what is seen on the
-page. A neat example is the following paradox, which vision researchers
+It is accepted, for instance, that lateral connections in V1 allow
+neurons to inhibit others that are tuned to similar locations,
+orientations or scales in proportion to their own activation, such that
+after a few dozen milliseconds, only the neurons with the strongest
+activations stay active. This achieves a kind of sharpening of the
+signal, and it is likely that the same competitive mechnanism is active
+throughout the brain.
+
+Similarly, feedback from higher brain areas can amplify or inhibit the
+activity of lower-level areas. For example, if V1 responses suggest the
+presence of a pattern of uniform scale and orientation over a large area
+(e.g. a vertical grating), the V2 neurons picking up this correlation
+across space will actively suppress the V1 neurons providing the input. After
+a brief time, this will dampen the perception of the pattern, while leaving
+untouched the perception of the pattern's edge (where V2 activation was weaker).
+
+Our reading circuitry itself is best understood as a series of feedback loops
+as well: between detectors of letters, letter-combinations, and words, such
+feedback dynamics are necessary to resolve uncertainty about what is seen on the
+page. Consider the following paradox, which vision researchers
 have probed in endless studies: on one hand, we can raed wrods even
 when their letrtes are out of odrer, indicating that the brain
 ignores most information about letter positions.<label for="sn-jls"
@@ -342,7 +240,7 @@ age](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6542500/)
 (curiously, it does not depend on whether you are a human [or a
 baboon](https://journals.sagepub.com/doi/abs/10.1177/0956797612474322)).
 English words are particularly forgiving to letter transpositions,
-while e.g. Semitic languages are much more sensitive to them, as was
+while e.g. Semitic languages are much more sensitive to them, as 
 [pointed out](https://dx.doi.org/10.1017%2FS0140525X11001841) by Israeli
 researcher Ram Frost.</span> On the other hand, we have no trouble
 distinguishing anagrams like *cat* and *act*. Nobody has yet observed
@@ -400,57 +298,63 @@ that deal with language processing—and they are free to disagree with the visu
 system. To illustrate, let's consider a situation where *cat* was, in fact, a
 typo for *act*.
 
-Imagine, for instance, that we have just read the words "police caught the bank
-robber in the". Although we have not yet seen the next word (*cat*, the typo),
-our language networks are already sizzling with electrical activity that renders
-the neurons for *act* especially sensitive. Shortly after, some signals arrive
-from below:<label for="sn-bvca" class="margin-toggle sidenote-number"></label>
-<input type="checkbox" id="sn-bvca" class="margin-toggle"><span
-class="sidenote">Or from behind, rather, to be faithful to anatomy.</span>
-signals for CA and AT, moderate signals for AC and OA, and some weak signals for
-CT, as shown in the diagram above. However, despite their strong activation, the
-neurons for CA and AT find it difficult to activate any word-coding neurons.
-Sure, *cat* fires some spikes, but without the support of the rest of the
-language network, it's a rather hesitant activation. Meanwhile, even the
-comparatively small contributions of AC and CT (and AT, which is also weakly
-connected to *act*) are enough to give the primed *act* a serious boost. This
-seals the deal, because *act* has neural connections going backwards to AC and
-CT, creating a self-amplifying feedback loop that has *act* glowing red-hot
-(metaphorically) within just tens of milliseconds, far outdoing any notion of
-*cat*.<label for="sn-ctsm" class="margin-toggle sidenote-number"></label> <input
-type="checkbox" id="sn-ctsm" class="margin-toggle"><span class="sidenote">This
-is a tremendous oversimplification. The neural deliberations involved in word
-individuation depend on first and last letters, syllable structure, position of
-vowels and consonants, and other factors that are still the subject of
-painstaking research.</span> In addition, detectors likely have inhibitive
-connections that implement direct competition between them, so as time passes,
-*act* might actively suppress *cat*, or the two may oscillate back and forth,
-depending on the circumstances. No diagram can do these complicated two-way
-dynamics justice, of course, but we might visualize the effect of the initial
+Imagine, for instance, that just before seeing "cat" we had read the
+words "police caught the bank robber in the". At this instant, our
+language networks are already sizzling with electrical activity that
+renders the neurons for *act* especially sensitive. Shortly after, some
+signals arrive from below:<label for="sn-bvca" class="margin-toggle
+sidenote-number"></label> <input type="checkbox" id="sn-bvca"
+class="margin-toggle"><span class="sidenote">Or from behind, rather,
+to be faithful to anatomy.</span> signals for CA and AT, moderate
+signals for AC and OA, and some weak signals for CT, as shown in
+the diagram above. However, despite their strong activation, the
+neurons for CA and AT find it difficult to activate any word-coding
+neurons. Sure, *cat* fires some spikes, but without the support of
+the rest of the language network, it's a rather hesitant activation.
+Meanwhile, even the comparatively small contributions of AC and CT
+(and AT, which is also weakly connected to *act*) are enough to
+give the primed *act* a serious boost. This seals the deal, because
+*act* has modulatory neural connections going backwards to AC and
+CT, creating a self-amplifying feedback loop that has *act* glowing
+red-hot (metaphorically) within just tens of milliseconds, far
+outdoing any notion of *cat*.<label for="sn-ctsm" class="margin-toggle
+sidenote-number"></label> <input type="checkbox" id="sn-ctsm"
+class="margin-toggle"><span class="sidenote">This story is a tremendous
+oversimplification. The neural deliberations involved in word
+individuation depend on first and last letters, syllable structure,
+position of vowels and consonants, and other factors that are still the
+subject of painstaking research.</span> In addition, detectors
+may well have lateral inhibitive connections to implement direct
+competition between them, so as time passes, *act* may actively
+suppress *cat*, or the two may oscillate back and forth, depending on
+the circumstances. No diagram can do these complicated two-way dynamics
+justice, of course, but we might visualize the effect of the initial
 top-down feedback like so:
 
 <img src="img/ld_lcd_feedback.png" alt="Letter detector and letter combination detector neurons, with feedback">
 
-This process of "word individuation" takes about quarter of a second; meanwhile, the eyes have long moved
-on to the next sentence.<label for="sn-jlsn"
-class="margin-toggle sidenote-number"></label> <input type="checkbox"
-id="sn-jlsn" class="margin-toggle"><span class="sidenote">There are several EEG
-studies on this subject, but [this
-one](https://www.pnas.org/content/113/29/8162) is especially cool as it involves
-deep-brain stimulation of live human volunteers.</span> A quick reader might
-therefore never notice the typo at all. Of course, this
-mechanism is even more effective for jmbueld letrtes, because *letrtes* isn't a
-word at all—there are no neurons or synapses coding for it in our language
-system, so the next-best word will always win by default. That's true even
-though the initial mismatch may be enough to draw your conscious attention,
-which unpleasantly interrupts the flow of reading.<label for="sn-pmin"
-class="margin-toggle sidenote-number"></label> <input type="checkbox"
-id="sn-pmin" class="margin-toggle"><span class="sidenote">It's not clear how
-that works, although the [predictive
-coding](https://en.wikipedia.org/wiki/Predictive_coding) theories of the brain,
-promoted heavily by researchers like Karl Friston and Andy Clark, provide some
-promising ideas. [This article](https://dx.doi.org/10.3389%2Ffpsyg.2012.00096) by Jacob
-Hohwy contains many of the relevant references.</span>
+This process of "word individuation" takes about quarter of a second;
+meanwhile, the eyes have long moved on to the next sentence.<label
+for="sn-jlsn" class="margin-toggle sidenote-number"></label>
+<input type="checkbox" id="sn-jlsn" class="margin-toggle"><span
+class="sidenote">There are several EEG studies on this subject, but
+[this one](https://www.pnas.org/content/113/29/8162) is especially cool
+as it involves deep-brain stimulation of live human volunteers.</span>
+A quick reader might therefore never notice the typo at all. Of
+course, this error-correcting mechanism is even more effective for
+jmbueld letrtes, because *letrtes* isn't a word at all—there are
+no neurons or synapses coding for it in our language system, so
+the next-best word will always win by default. That's true even
+though the initial mismatch may be enough to draw your conscious
+attention, which unpleasantly interrupts the flow of reading.<label
+for="sn-pmin" class="margin-toggle sidenote-number"></label>
+<input type="checkbox" id="sn-pmin" class="margin-toggle"><span
+class="sidenote">It's not clear how that works, although the
+[predictive coding](https://en.wikipedia.org/wiki/Predictive_coding)
+theories of the brain, promoted heavily by researchers like Karl
+Friston and Andy Clark, provide some promising ideas. [This
+article](https://dx.doi.org/10.3389%2Ffpsyg.2012.00096) by Jacob Hohwy
+contains many of the relevant references.</span>
 
 This understanding puts in stark relief what letterfitting is all about. Strong
 activations in the correct letter detectors and letter-combination detectors,
@@ -461,7 +365,7 @@ id="sn-iptf" class="margin-toggle"><span class="sidenote">Notably, the model
 also predicts that excessively tight fits would mask jumbled letters better—I'm
 not aware of any studies on this, but it certainly seems plausible. However, the
 tight fit would lead to more letter identification errors ispo facto, so it's more
-desirable to optimize for correctly spelled text.</span> And the faster and more
+desirable to optimize under the assumption of correctly spelled text.</span> And the faster and more
 confidently readers perceive words, the faster they can read without needing to
 do jump back for double-takes.<label for="sn-mrch" class="margin-toggle
 sidenote-number"></label> <input type="checkbox" id="sn-mrch"
@@ -474,29 +378,33 @@ well](https://doi.org/10.1016/S0042-6989(02)00131-1).</span>
 
 <img src="img/no_th.png" alt="Effect of pair distances on letter detectors and LCD">
 
-I grant that this remains a hypothesis until electrocorticographical evidence
+I grant that the above story remains a hypothesis until electrocorticographical evidence
 shows an effect of letterfit on the temporal dynamics of word individuation. The
 idea seems plausible, however, and compels us to find ways to quantify how pair
 distances affect letter detectors and letter-combination detectors.
 
-One could speculate that the most effective way to activate a particular letter
-detector is to present only the corresponding letter, in the fovea and on an
-otherwise blank page—in other words, at a pair distance of infinity, or at least
-exceeding the field of vision. Contrarily, it is clear that touching or even
-overlapping letters are difficult to recognize. This would suggest that more
-loosely fitted words are easier to recognize, and indeed, research confirms just
-that.<label for="sn-dsx" class="margin-toggle sidenote-number"></label> <input
-type="checkbox" id="sn-dsx" class="margin-toggle"><span class="sidenote">See
-e.g. [these experiments](https://doi.org/10.1371/journal.pone.0047568) by Gomez
-and Perea. Buy sadly there's no free lunch for typographers, either. When text
-is tracked out, less of it fits into the field of sharp vision (the "visual
-span", as Gordon Legge calls it), so it takes extra saccades to process the
-whole text (see e.g. Legge et al.'s [visual span
-experiments](https://doi.org/10.1167/7.2.9)). All in all, it's a wash in terms
-of reading speed. The only ones who consistently benefit from a looser fit are
-dyslexics, as [reported](https://doi.org/10.1073/pnas.1205566109) by Marco Zorzi
-et al., which suggests that dyslexia is related to a deficit in letter-position
-coding.</span> I provide an explanation for this in the next section.
+One could speculate that the most effective way to activate a
+particular letter detector is to present only the corresponding
+letter, in the fovea and on an otherwise blank page—in other
+words, at a pair distance of infinity, or at least exceeding the
+field of vision. Contrarily, it is clear that touching or even
+overlapping letters are difficult to recognize. This would suggest
+that more loosely fitted words are easier to recognize, and indeed,
+research confirms just that.<label for="sn-dsx" class="margin-toggle
+sidenote-number"></label> <input type="checkbox" id="sn-dsx"
+class="margin-toggle"><span class="sidenote">See e.g. [these
+experiments](https://doi.org/10.1371/journal.pone.0047568) by
+Gomez and Perea. Buy sadly there's no free lunch for typographers,
+either. When text is tracked out, less of it fits into the field of
+sharp vision (the "visual span", as Gordon Legge calls it), so it
+takes extra saccades to process the whole text (see e.g. Legge et
+al.'s [visual span experiments](https://doi.org/10.1167/7.2.9)).
+All in all, it's a wash in terms of reading speed. The only ones
+who consistently benefit from a looser fit are dyslexics, as
+[reported](https://doi.org/10.1073/pnas.1205566109) by Marco Zorzi et
+al., which suggests that (at least some forms of) dyslexia are related to
+a deficit in letter-position coding.</span> I provide an explanation for
+this in the next section.
 
 We should also note that in tight pairs, the problem of diminished letter
 detector activation is actually compounded by an increase in the activation of
@@ -516,9 +424,19 @@ id="sn-lcdwd" class="margin-toggle"><span class="sidenote">In fact, [this
 experiment](https://doi.org/10.1167/11.6.8) by Fabien Vinckier et al. showed
 precisely that once more than two spaces are inserted between letters, reading
 speed drops off a cliff, which aligns well with the proposed receptive field
-size of bigram detectors.</span> More importantly, however, large distances
-suggest the presence of a word break, which leads to competition at the word
-level. This will be addressed in section 7.
+size of bigram detectors.</span> This provides an explanation for the claim
+that excessively loose fits hurt legibility.
+
+Finally, however, we need to discuss the importance of grouping and timing on word
+perception. On one hand, grouping guides our saccades. On the other hand, our
+eyes move before the current word is even processed, and we take in lots more
+than just the word in focus, and it is grouping that really allows just the
+letters of the central word to be read while the rest is background (and doesn't
+distract from the words).
+
+This is all quite questionable, because of languages like Burmese that don't use
+spaces at all, so rely on phonological processing, or on fixed saccade
+distances.
 
 ## The direct effect of pair distances on the primary visual cortex
 
@@ -694,71 +612,171 @@ each letter.
 
 ## Consistency of fit: word grouping, and how to optimize for it
 
-As presented above, our model suggests two things: that very tight spacing
-weakens the identifiability of individual letters, and that very loose spacing
-makes it impossible to read words as wholes. Both findings match our intuition,
-but they don't amount to a prescription for good letterfitting. Let's look at
-our options and dive deeper into the neuroscientific literature!
-
 Arguably, there is a *best fit* for any font. However, even somewhat
 tight or loose fits could be considered acceptable, as long as the pair
 distances are perceived to be consistent. Why is the occasional loose
 pair so noticeable, but fully tracked-out text is comparatively unremarkable?
 
-The answer lies in our vision system's ability to lock onto individual
-objects. It likely accomplishes this by means of another kind
-of self-stabilizing feedback loop that links together neurons
-responding to neighbouring, aligned contours with brain structures
-that correspond to spatial attention. This allows us to perceptually
-isolate objects from their surroundings,<label for="sn-fgbg"
+The cognitive science literature offers two answers to this question:
+
+1. An inconsistent fit facilitates the perception of bogus word gaps between letter
+   pairs that just happen to be unexpectedly loose.
+2. An inconsistent fit facilitates the perception of an uneven colour across the
+   page, i.e. visually salient blobs of dark or light colour.
+
+These two explanations point to two closely related phenomena known as *perceptual grouping*
+and *crowding*.
+
+Perceptual grouping refers to our visual system's ability to lock
+onto contiguous objects. This ability allows us to perceive objects
+as separate from their surroundings ("figure-ground segmentation"),
+in order to examine and learn about them. In the context of reading,
+this is how we effortlessly group nearby letters into words. The rules
+according to which our brain groups visual signals are complicated and
+still poorly understood. Proximity, collinear alignment, and regular
+spacing appear to be crucial; these factors, described by Gestalt
+psychologists a century ago, also describe good letterfitting. An
+unexpectedly large gap between two letters thus results in perceptual
+grouping of two separate word fragments, which hampers reading.
+
+Crowding refers to our inability to make out letters in our
+visual periphery when they are flanked by other letters, even
+though we can identify them easily when they stand alone. In
+other words, wherever the spatial statistics are relatively
+uniform (as in a leafy forest, across a metal grating, or in a
+group of letters) our visual system degrades the exact visual
+signals into a "good-enough" summary of said statistics.<label
+for="sn-prts" class="margin-toggle sidenote-number"></label>
+<input type="checkbox" id="sn-prts" class="margin-toggle"><span
+class="sidenote">The most fruitful ideas on this topic have come
+out of Eero Simoncelli's lab at NYU, see e.g. the [experiments by Javier
+Portilla](https://doi.org/10.1023/A:1026553619983) and [with Ziemba,
+Freeman and Movshon](https://doi.org/10.1152/jn.00900.2017).</span>
+This effect is particularly strong in the visual periphery.
+However, crowding never affects visual features which stand out from
+their surroundings (as in a stand-alone letter, an unexpectedly large
+gap, or very tight pair), even in the periphery. In the context of
+typography, the "evenness of colour" can thus be operationalized as
+the strength of crowding facilitated by the text.<label for="sn-crdw"
 class="margin-toggle sidenote-number"></label> <input type="checkbox"
-id="sn-fgbg" class="margin-toggle"><span class="sidenote">This is
-often referred to as figure-ground separation or foreground-background
-segmentation.</span> which is a prerequisite for learning about, recognizing,
-and reasoning about objects in our environment.
+id="sn-crdw" class="margin-toggle"><span class="sidenote">The idea
+that a good letterfit should help degrade, not enhance, the visual
+information in the brain may seem suprising. But crowding is likely
+an adaptation to minimize the energy needed to process background
+scenery, and features can escape crowding by being saliently different
+from their surroundings. Saliently different spatial statistics would
+be considered a distraction, rather than a design success, by any
+reasonable typographer. Indeed, this applies not only to the gap between
+letter pairs but also to the design of individual letter outlines, which
+suggests that type design tools could use such statistics to guide the design
+process.</span>
 
-In the context of reading, our visual grouping circuitry allows us to
-effortlessly perceive words as coherent objects. When the letterfit is
-inconsistent, this grouping can fail, and fragments of the word are perceived as
-individual objects. This, of course, leads to delays in the processing of the
-latter word fragments. In other, more intuitive words: unexpectedly large letter
-gaps can dissemble word breaks.
+It appears that the spatial statistics underlying crowding are
+primarily represented by neurons in area V2, and that the neural
+processes underlying grouping operate on neurons in V4 which
+encode shapes. Experiments further suggest that clusters of
+shapes are more susceptible to crowding if they group together,
+and that the dynamics of grouping, in turn, depend on our
+spatial attention.<label for="sn-frhz" class="margin-toggle
+sidenote-number"></label> <input type="checkbox" id="sn-frhz"
+class="margin-toggle"><span class="sidenote">Most of the work on
+this relationship has come out of Michael Herzog's lab at EFPL (see
+[here](https://doi.org/10.1167/15.6.5) for a comprehensive summary).
+The most rigorous empirical evidence was compiled by [Doerig et
+al.](https://dx.doi.org/10.1371%2Fjournal.pcbi.1006580), and their best
+current model (see [this paper](http://dx.doi.org/10.1037/rev0000070)
+by Francis et al. and, more recently, [this
+paper](https://dx.doi.org/10.3389%2Ffnbot.2019.00033)) is based on
+the ideas of Steven Grossberg.</span> Therefore, a full account of
+our perception of letters and words would require a neural-level
+understanding of the feedback loops responsible for grouping and crowding. 
 
-We can therefore reframe the question about perceptual consistency as a question
-of perceptual grouping: how does the distance between two letters affect our
-brain's tendency to group them into a single object?
+Unfortunately, this understanding is currently rudimentary at best.
+What's more, even if intricate dynamical models of the visual cortex
+become available to correctly predict crowding and grouping behaviour,
+their computational complexity would likely make them unsuitable for the
+use in design tools. While I continue this line of research, we would be
+well served by simpler models that still capture the essence of grouping
+and crowding.
 
-Questions about this seemingly mundane phenomenon of perceptual grouping have
-been asked for over a century. Experimental psychologists have long known about
-our tendency to perceive "gestalts" instead of merely the raw sensory input, and
-formulated "gestalt laws" to describe visual arrangements that are particularly conducive
-to grouping: proximity, regularity, and concavity are just the most important.
+Any model should comply with two basic sanity checks
 
-More recently, grouping has come up in the context of *crowding*.
-<label for="sn-tbsc"
-class="margin-toggle sidenote-number"></label> <input type="checkbox"
-id="sn-tbsc" class="margin-toggle"><span class="sidenote">[Crowding research](https://en.wikipedia.org/wiki/Visual_crowding)
-first took off in the 1970s, with Herman Bouma's [seminal paper](https://doi.org/10.1038/226177a0).</span>
-Crowding refers to our inability to perceptually single out letters
-in the periphery when they are flanked by other letters. Most likely, crowding
-is due to a combination of different effects, but a growing body of research
-is connecting it to grouping and spatial attention.
+1. The distance between straight stems should be uniform, regardless of the
+   presence of ascenders (*nn* vs. *nl*), descenders, or serifs. It should stay
+   uniform even despite differences in stroke contrast (*IU* vs. *UL*).
+   Uppercase distances are larger.
+
+2. The distance between round letters should be smaller than that between
+   straight stems (*oo* vs. *nn*).
+
+Both of these generally hold true across typefaces:
+
+<img src="img/benchmark_gaps.png" alt="benchmark gaps">
+
+Evidently, the counter width has minimal influence on the gap widths. One crude
+method, therefore, is to simply approximate the gap width via the spectrum of the
+energy gains, as in the V1-based model in Section 6 above.
+
+[explain model]
+
+- Predictive coding model
+- Explains surround suppression
+- V1 combine to V2 neuron that says "lots of similar V1 in this wide area"
+- Suppresses incoming V1s, because they're all the same.
+- V2 measures correlation between V1s in a certain area.
+- V4 measures correlations between correlations.
+- V4 has a certain texture that is quite active.
+- V4 the *strengthens* those correlations in V2.
+- V2 then suppresses the V1 parts more.
+- V4 strengthens V2, V2 weakens V1. (or both).
+-
 
 
-Thanks to this architecture, our perception
-effortlessly locks onto individual objects. For readers of Chinese, such objects
-are characters; for readers of English, such objects are words. The locking-on
-phenomenon appears to be yet another feedback loop: wherever our gaze falls on
-a word, the signal from certain neurons captures our attention first, but as the
-self-reinforcing electrical dance spreads to neighbouring neurons, the whole
-word is quickly enshrouded in attention.<label
-for="sn-stgs" class="margin-toggle sidenote-number"></label> <input
-type="checkbox" id="sn-stgs" class="margin-toggle"><span class="sidenote">The
-term "enshrouded" here is borrowed from the writings of Stephen Grossberg, the
-Boston University researcher who has been pioneering mathematical models of our
-vision system for the last five decades.</span>
 
-The role of attention 
+One promising, if likely oversimplified, theory explains perceptual
+grouping as a process that spreads not just across connected surfaces,
+but also along boundaries.
+
+<span><input type="checkbox" id="mn-knzs" class="margin-toggle"><label
+for="mn-knzs" class="margin-toggle"></label> <span
+class="marginnote"><img src="img/kanisza.png" alt="Kanizsa square">The
+classic illusion by Gaetano Kanizsa demonstrates the perception of
+[illusory contours](https://en.wikipedia.org/wiki/Illusory_contours).
+On the right, an illustration of the facilitative receptive
+field of a bipole cell (top), and how their feedback creates
+illusory contours (left, right, bottom). Bipole cells feature
+most prominently in the work of Stephen Grossberg, but have
+been independently proposed by many others, particularly in
+the context of contour integration, e.g. Zhaoping Li's [1998
+model](https://doi.org/10.1162/089976698300017557).</span></span>
+Notably, this would include illusory boundaries, the kind that enable
+us to see the classic Kanizsa square. Such illusory boundaries are
+presumed to be due to feedback from neurons aggregating signals from a
+bipole-shaped receptive field.
+
+
+
+
+* grouping happens based on statistics, not based on boundaries.
+
+
+
+
+* [Simon
+Coen-Caghli](https://www.biorxiv.org/content/biorxiv/early/2020/01/25/20
+20.01.24.918813.full.pdf) say that crowding modulation is particulary
+active for natural stimuli. It also says that the kind of crowding in letter
+perception, which is foveally asymmetric, may not be exactly the same thing as
+texture modulation for naturalistic textures. Also texture modulation isn't
+exactly the same as crowding, because it's not asymmetric.
+
+* It could be that not only V2 is affected but also V1, via surround
+  suppression, which is different for naturalistic stimuli than for letters; or
+  it could be that grouping strength affects the size of the pooling windows. 
+
+* Although in nature, grouping increases crowding and interacts with it in
+  particular ways, we can aim to increase both separately, by measuring both
+  boundary connection and statistical similarity.
 
 
 
@@ -1188,7 +1206,7 @@ the recent ones perform surprisingly well on many (if not all) pairs.
 While neural nets are fascinating, they tend to be black boxes: we can only make
 guesses at how they work, and we cannot tune their behaviour to suit our taste.
 This problem holds not just for convolutional nets, but for statistical function
-approximators in general; I will not discuss them further in this post.
+approximators in general; I do not discuss them further here.
 
 **Honorable mention:** [Bubble
 Kerning](https://groups.google.com/forum/#!searchin/comp.fonts/laurence$20penney$20kern/comp.fonts/GEjTE9_H52M/BSLdSE2lgmsJ)
