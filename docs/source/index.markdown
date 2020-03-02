@@ -218,6 +218,8 @@ across space will actively suppress the V1 neurons providing the input. After
 a brief time, this will dampen the perception of the pattern, while leaving
 untouched the perception of the pattern's edge (where V2 activation was weaker).
 
+## Tight and loose fits in convolutional reading models
+
 Our reading circuitry itself is best understood as a series of feedback loops
 as well: between detectors of letters, letter-combinations, and words, such
 feedback dynamics are necessary to resolve uncertainty about what is seen on the
@@ -356,44 +358,37 @@ Friston and Andy Clark, provide some promising ideas. [This
 article](https://dx.doi.org/10.3389%2Ffpsyg.2012.00096) by Jacob Hohwy
 contains many of the relevant references.</span>
 
-This understanding puts in stark relief what letterfitting is all about. Strong
+This understanding puts in stark relief why letters should not be too close *or*
+too far apart. Strong
 activations in the correct letter detectors and letter-combination detectors,
 and the absence of activation in distracting signals, guarantee that activity
 settles on the right word detector *quickly*.<label for="sn-iptf"
 class="margin-toggle sidenote-number"></label><input type="checkbox"
 id="sn-iptf" class="margin-toggle"><span class="sidenote">Notably, the model
-also predicts that excessively tight fits would mask jumbled letters better—I'm
+also predicts that jumbled letters are easier to read in a tight fit—I'm
 not aware of any studies on this, but it certainly seems plausible. However, the
-tight fit would lead to more letter identification errors ispo facto, so it's more
+tight fit would lead to more letter identification and letter position errors ispo facto, so it's still more
 desirable to optimize under the assumption of correctly spelled text.</span> And the faster and more
 confidently readers perceive words, the faster they can read without needing to
-do jump back for double-takes.<label for="sn-mrch" class="margin-toggle
-sidenote-number"></label> <input type="checkbox" id="sn-mrch"
-class="margin-toggle"></nobr><span class="sidenote">Saccade efficiency may be
-the ultimate optimization target in type design. Indeed, researchers have
-studied it for a while: Gordon Legge et al. built a statistical model called
-[Mr. Chips](https://doi.org/10.1037/0033-295X.104.3.524) in 1997 to predict the
-need for saccades based on partially perceived words, and [found it to work
-well](https://doi.org/10.1016/S0042-6989(02)00131-1).</span>
+do jump back for double-takes.
 
 <img src="img/no_th.png" alt="Effect of pair distances on letter detectors and LCD">
 
 I grant that the above story remains a hypothesis until electrocorticographical evidence
 shows an effect of letterfit on the temporal dynamics of word individuation. The
-idea seems plausible, however, and compels us to find ways to quantify how pair
+theory seems plausible, however, and compels us to find ways to estimate how pair
 distances affect letter detectors and letter-combination detectors.
 
-One could speculate that the most effective way to activate a
-particular letter detector is to present only the corresponding
-letter, in the fovea and on an otherwise blank page—in other
-words, at a pair distance of infinity, or at least exceeding the
-field of vision. Contrarily, it is clear that touching or even
-overlapping letters are difficult to recognize. This would suggest
-that more loosely fitted words are easier to recognize, and indeed,
-research confirms just that.<label for="sn-dsx" class="margin-toggle
-sidenote-number"></label> <input type="checkbox" id="sn-dsx"
-class="margin-toggle"><span class="sidenote">See e.g. [these
-experiments](https://doi.org/10.1371/journal.pone.0047568) by
+The architecture described above suggests that the most effective way
+to activate a particular letter detector is to present nothing but the
+corresponding letter—in other words, at a pair distance of infinity,
+or at least exceeding the width of our field of vision. Contrarily, it is
+intuitively clear that touching or even overlapping letters are difficult to recognize.
+This would mean that more loosely fitted words are easier to
+recognize, and indeed, research confirms just that.<label for="sn-dsx"
+class="margin-toggle sidenote-number"></label> <input type="checkbox"
+id="sn-dsx" class="margin-toggle"><span class="sidenote">See e.g.
+[these experiments](https://doi.org/10.1371/journal.pone.0047568) by
 Gomez and Perea. Buy sadly there's no free lunch for typographers,
 either. When text is tracked out, less of it fits into the field of
 sharp vision (the "visual span", as Gordon Legge calls it), so it
@@ -402,41 +397,85 @@ al.'s [visual span experiments](https://doi.org/10.1167/7.2.9)).
 All in all, it's a wash in terms of reading speed. The only ones
 who consistently benefit from a looser fit are dyslexics, as
 [reported](https://doi.org/10.1073/pnas.1205566109) by Marco Zorzi et
-al., which suggests that (at least some forms of) dyslexia are related to
-a deficit in letter-position coding.</span> I provide an explanation for
-this in the next section.
-
-We should also note that in tight pairs, the problem of diminished letter
-detector activation is actually compounded by an increase in the activation of
-the reverse-order bigram detector, which likely directly competes with the
-desired bigram detector (shown as the comparatively strong activation of AC in
-the top row of the diagram above). In practice, the severity of this problem likely
-pales in comparison to the weakening of the letters themselves, and its
-effect on word individuation speed depends on too many other factors (width
-and shape of the letters, orthographic frequency of the reverse-order pair,
-etc.) to model it effectively, but it is nevertheless part of a complete account.
+al., which suggests that (at least some forms of) dyslexia are related
+to a deficit in letter-position coding.</span> We will discuss the mechanisms
+responsible for this letter-letter interaction in the next section.
 
 At excessively large distances, the letter detectors are too far apart in space
-in order to jointly activate the letter-combination detector, due to the limited
-size of the receptive field of the latter.<label for="sn-lcdwd"
+in order to jointly activate the letter-combination detectors, which after all
+have receptive fields of a limited size.<label for="sn-lcdwd"
 class="margin-toggle sidenote-number"></label> <input type="checkbox"
 id="sn-lcdwd" class="margin-toggle"><span class="sidenote">In fact, [this
 experiment](https://doi.org/10.1167/11.6.8) by Fabien Vinckier et al. showed
 precisely that once more than two spaces are inserted between letters, reading
-speed drops off a cliff, which aligns well with the proposed receptive field
-size of bigram detectors.</span> This provides an explanation for the claim
-that excessively loose fits hurt legibility.
+speed drops off a cliff, a distance which aligns well with the proposed receptive field
+size of bigram detectors.</span> This could explain why excessively loose fits hurt legibility.
 
-Finally, however, we need to discuss the importance of grouping and timing on word
-perception. On one hand, grouping guides our saccades. On the other hand, our
-eyes move before the current word is even processed, and we take in lots more
-than just the word in focus, and it is grouping that really allows just the
-letters of the central word to be read while the rest is background (and doesn't
-distract from the words).
+We can further note that in tight pairs, the problem of diminished letter
+detector activation is actually compounded by an increase in the activation of
+the reverse-order bigram detector, which likely directly competes with the
+desired bigram detector (shown as the comparatively strong activation of AC in
+the top row of the diagram above). But in practice, the severity of this problem likely
+pales in comparison to the weakening of the letters themselves, and its
+effect on word individuation speed depends on too many other factors (width
+and shape of the letters, orthographic frequency of the reverse-order pair,
+etc.) to model it effectively. 
 
-This is all quite questionable, because of languages like Burmese that don't use
-spaces at all, so rely on phonological processing, or on fixed saccade
-distances.
+## Word perception in reading models
+
+As we have seen, current models of reading offer some ideas for why letters
+must not be too close or too far apart, and even how we might go about
+estimating the impact of pair distance on letter detector activation.
+Unfortunately, they do not address word perception, which motivates regularity
+of fit. What do we know about word perception?
+
+To scan a line of words, our eyes make saccadic movements. After coming to rest for a fraction
+of a second to take in some imagery, the eyes make a targeted jump ahead just far enough to reveal text
+that was previously too blurry to process.<label for="sn-mrch" class="margin-toggle
+sidenote-number"></label> <input type="checkbox" id="sn-mrch"
+class="margin-toggle"></nobr><span class="sidenote">Researchers have
+studied saccades in reading for a while: Gordon Legge et al. built a statistical model called
+[Mr. Chips](https://doi.org/10.1037/0033-295X.104.3.524) in 1997 to predict the
+need for saccades based on partially perceived words, and [found it to match
+human performance quite
+well](https://doi.org/10.1016/S0042-6989(02)00131-1).</span> There is
+significant overlap between the images from subsequent saccades, and although
+the eyes often come to rest between the beginning and middle of each word, fast
+readers can easily take in multiple small words in a single saccade. The visual
+cortex therefore needs a mechanism to keep track of words across saccades, and
+our reading circuitry needs to be able to limit processing to individual words.
+
+This challenge, of course, is not particular to reading text. Our gaze
+moves around constantly, and yet we effortlessly keep track of objects
+in our vision without confusing them. This requires more than a trivial
+remapping, because our world is three-dimensional and how much an object is
+shifted depends on how far it is away. Depth perception therefore requires our
+visual system to intelligently group raw sensory signals into coherent objects.
+Although reading requires no depth perception, our visual cortex automatically
+groups nearby letters into words.
+
+Just as we are able to consciously perceive a single tree even when
+looking into the forest, the letter detectors in our visual word form
+area are evidently able to limit themselves to single words at a time,
+even though many other letters are clearly being processed in the
+visual cortex at the same time. Although the timing of activating the
+letter detectors certainly plays an important role during fast reading,
+word perception still works when we fix our gaze. The likely mechanism
+therefore involves yet another feedback loop: paying attention to a
+word, even if we are not looking directly at it, neurally translates
+to injecting, top-down, extra energy into a resonating pattern of
+electrical activity that extends through lower and higher brain regions
+and that automatically spreads out horizontally to cover the spatial
+extent of the whole word (or tree, or other object). Thanks to this
+self-reinforcing feedback, a tiny bit of attention somewhere within the
+word is enough to light up the entire word within a few milliseconds,
+and thereby allow our reading circuitry to perceive just one word at a time.
+
+The crucial ingredient therefore is the question: how does the attention spread
+to cover the whole word?
+
+This understanding creates a few questions. First: how does this work with
+languages which don't use spaces? And second: 
 
 ## The direct effect of pair distances on the primary visual cortex
 
