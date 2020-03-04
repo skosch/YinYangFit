@@ -445,17 +445,18 @@ readers can easily take in multiple small words in a single saccade. The visual
 cortex therefore needs a mechanism to keep track of words across saccades, and
 our reading circuitry needs to be able to limit processing to individual words.
 
-This challenge, of course, is not particular to reading text. Our gaze
-moves around constantly, and yet we effortlessly keep track of objects
-in our vision without confusing them. This requires more than a trivial
-remapping, because our world is three-dimensional and how much an object is
-shifted depends on how far it is away. Depth perception therefore requires our
-visual system to intelligently group raw sensory signals into coherent objects.
-Although reading requires no depth perception, our visual cortex automatically
-groups nearby letters into words.
+This challenge, of course, is not particular to reading text. Our
+gaze and our head move around constantly, and yet we effortlessly
+lock onto a single tree in a forest of others. Evidently,
+our visual system automatically groups raw sensory signals into
+coherent objects according to certain rules,<label for="sn-grft" class="margin-toggle
+sidenote-number"></label><input type="checkbox" id="sn-grft"
+class="margin-toggle"><span class="sidenote">This ability is intricately linked
+with depth perception, which primarily relies on [binocular disparity](https://en.wikipedia.org/wiki/Stereopsis).
+Without it, we would not be able to examine and learn about objects.</span> and
+the same mechanisms help us keep track of individual words.
 
-Just as we are able to consciously perceive a single tree even when
-looking into the forest, the letter detectors in our visual word form
+The letter detectors in our visual word form
 area are evidently able to limit themselves to single words at a time,
 even though many other letters are clearly being processed in the
 visual cortex at the same time. Although the timing of activating the
@@ -463,7 +464,7 @@ letter detectors certainly plays an important role during fast reading,
 word perception still works when we fix our gaze. The likely mechanism
 therefore involves yet another feedback loop: paying attention to a
 word, even if we are not looking directly at it, neurally translates
-to injecting, top-down, extra energy into a resonating pattern of
+to injecting extra energy, top-down, into a resonating pattern of
 electrical activity that extends through lower and higher brain regions
 and that automatically spreads out horizontally to cover the spatial
 extent of the whole word (or tree, or other object). Thanks to this
@@ -471,11 +472,50 @@ self-reinforcing feedback, a tiny bit of attention somewhere within the
 word is enough to light up the entire word within a few milliseconds,
 and thereby allow our reading circuitry to perceive just one word at a time.
 
+[image]
+
 The crucial ingredient therefore is the question: how does the attention spread
 to cover the whole word?
 
 This understanding creates a few questions. First: how does this work with
-languages which don't use spaces? And second: 
+languages which don't use spaces? <label
+  for="sn-thkr" class="margin-toggle sidenote-number"></label> <input
+  type="checkbox" id="sn-thkr" class="margin-toggle"><span
+  class="sidenote">Historically, non-space [word
+  dividers](https://en.wikipedia.org/wiki/Word_divider) symbols were common.
+  Today, [Thai](https://en.wikipedia.org/wiki/Thai_script) and
+  [Burmese](https://en.wikipedia.org/wiki/Burmese_alphabet) still use no word
+  dividers, [Vietnamese](https://en.wikipedia.org/wiki/Vietnamese_morphology)
+  divides syllables instead of words, and Koreans frequently omit spaces in
+  [Hangul](https://en.wikipedia.org/wiki/Hangul) in informal writing. Then
+  again, those are [isolating
+  languages](https://en.wikipedia.org/wiki/Isolating_language) in which
+  virtually every syllable maps directly onto a [free
+  morpheme](https://en.wikipedia.org/wiki/Bound_and_free_morphemes), so spaces
+  would not be of much help anyway. In more [fusional
+  languages](https://en.wikipedia.org/wiki/Fusional_language) like English,
+  there is no doubt that spaces help us process which morphemes belong together.
+  Of course, removingspacesslowsusdown, but what's more telling is that add ing
+  spa ces at syl labic breaks is less confusing than a ddi ng t hem ra ndo ml y.
+  On a related note, there is some fascinating research on how our brains [break
+  down
+  words](https://www.researchgate.net/profile/Elisabeth_Beyersmann/publication/316312318_Edge-Aligned_Embedded_Word_Activation_Initiates_Morpho-orthographic_Segmentation/links/5addab7ca6fdcc29358b9656/Edge-Aligned-Embedded-Word-Activation-Initiates-Morpho-orthographic-Segmentation.pdf)
+  into morpho-orthographic chunks during processing.</span>
+
+* Perceptual grouping and crowding
+
+* Gestalt rules
+
+* Crowding via V2 higher-order statistics (Portilla and Simoncelli)
+
+* Grouping via surround suppression
+
+* Grouping via boundary selection (LAMINART model; Francis et al.)
+
+* Grouping as an extension of the B/G cell model (von der Heydt et al.)
+
+* Role of serifs (end cuts/contour integration vs. Kanizsa illusory contours)
+
 
 ## The direct effect of pair distances on the primary visual cortex
 
@@ -649,528 +689,16 @@ One approach, for instance, would model the total loss at the letter detector as
 the complement of a hyperbolic ratio function, with parameters that differ for
 each letter.
 
-## Consistency of fit: word grouping, and how to optimize for it
+## Towards new letterfitting models
 
-Arguably, there is a *best fit* for any font. However, even somewhat
-tight or loose fits could be considered acceptable, as long as the pair
-distances are perceived to be consistent. Why is the occasional loose
-pair so noticeable, but fully tracked-out text is comparatively unremarkable?
+* Simplest: use V1 model only; equalize loss in weighted scales across pairs.
 
-The cognitive science literature offers two answers to this question:
+* Use V1 model only; use function approximator (NN, polyharmonic spline) to
+  weight losses in small scales against losses in large scales.
 
-1. An inconsistent fit facilitates the perception of bogus word gaps between letter
-   pairs that just happen to be unexpectedly loose.
-2. An inconsistent fit facilitates the perception of an uneven colour across the
-   page, i.e. visually salient blobs of dark or light colour.
+* Use V1 model for lower bound on pair distances only; additionally, use a
+  modified version of the V2 statistics model to estimate the pair's appearance.
 
-These two explanations point to two closely related phenomena known as *perceptual grouping*
-and *crowding*.
-
-Perceptual grouping refers to our visual system's ability to lock
-onto contiguous objects. This ability allows us to perceive objects
-as separate from their surroundings ("figure-ground segmentation"),
-in order to examine and learn about them. In the context of reading,
-this is how we effortlessly group nearby letters into words. The rules
-according to which our brain groups visual signals are complicated and
-still poorly understood. Proximity, collinear alignment, and regular
-spacing appear to be crucial; these factors, described by Gestalt
-psychologists a century ago, also describe good letterfitting. An
-unexpectedly large gap between two letters thus results in perceptual
-grouping of two separate word fragments, which hampers reading.
-
-Crowding refers to our inability to make out letters in our
-visual periphery when they are flanked by other letters, even
-though we can identify them easily when they stand alone. In
-other words, wherever the spatial statistics are relatively
-uniform (as in a leafy forest, across a metal grating, or in a
-group of letters) our visual system degrades the exact visual
-signals into a "good-enough" summary of said statistics.<label
-for="sn-prts" class="margin-toggle sidenote-number"></label>
-<input type="checkbox" id="sn-prts" class="margin-toggle"><span
-class="sidenote">The most fruitful ideas on this topic have come
-out of Eero Simoncelli's lab at NYU, see e.g. the [experiments by Javier
-Portilla](https://doi.org/10.1023/A:1026553619983) and [with Ziemba,
-Freeman and Movshon](https://doi.org/10.1152/jn.00900.2017).</span>
-This effect is particularly strong in the visual periphery.
-However, crowding never affects visual features which stand out from
-their surroundings (as in a stand-alone letter, an unexpectedly large
-gap, or very tight pair), even in the periphery. In the context of
-typography, the "evenness of colour" can thus be operationalized as
-the strength of crowding facilitated by the text.<label for="sn-crdw"
-class="margin-toggle sidenote-number"></label> <input type="checkbox"
-id="sn-crdw" class="margin-toggle"><span class="sidenote">The idea
-that a good letterfit should help degrade, not enhance, the visual
-information in the brain may seem suprising. But crowding is likely
-an adaptation to minimize the energy needed to process background
-scenery, and features can escape crowding by being saliently different
-from their surroundings. Saliently different spatial statistics would
-be considered a distraction, rather than a design success, by any
-reasonable typographer. Indeed, this applies not only to the gap between
-letter pairs but also to the design of individual letter outlines, which
-suggests that type design tools could use such statistics to guide the design
-process.</span>
-
-It appears that the spatial statistics underlying crowding are
-primarily represented by neurons in area V2, and that the neural
-processes underlying grouping operate on neurons in V4 which
-encode shapes. Experiments further suggest that clusters of
-shapes are more susceptible to crowding if they group together,
-and that the dynamics of grouping, in turn, depend on our
-spatial attention.<label for="sn-frhz" class="margin-toggle
-sidenote-number"></label> <input type="checkbox" id="sn-frhz"
-class="margin-toggle"><span class="sidenote">Most of the work on
-this relationship has come out of Michael Herzog's lab at EFPL (see
-[here](https://doi.org/10.1167/15.6.5) for a comprehensive summary).
-The most rigorous empirical evidence was compiled by [Doerig et
-al.](https://dx.doi.org/10.1371%2Fjournal.pcbi.1006580), and their best
-current model (see [this paper](http://dx.doi.org/10.1037/rev0000070)
-by Francis et al. and, more recently, [this
-paper](https://dx.doi.org/10.3389%2Ffnbot.2019.00033)) is based on
-the ideas of Steven Grossberg.</span> Therefore, a full account of
-our perception of letters and words would require a neural-level
-understanding of the feedback loops responsible for grouping and crowding. 
-
-Unfortunately, this understanding is currently rudimentary at best.
-What's more, even if intricate dynamical models of the visual cortex
-become available to correctly predict crowding and grouping behaviour,
-their computational complexity would likely make them unsuitable for the
-use in design tools. While I continue this line of research, we would be
-well served by simpler models that still capture the essence of grouping
-and crowding.
-
-Any model should comply with two basic sanity checks
-
-1. The distance between straight stems should be uniform, regardless of the
-   presence of ascenders (*nn* vs. *nl*), descenders, or serifs. It should stay
-   uniform even despite differences in stroke contrast (*IU* vs. *UL*).
-   Uppercase distances are larger.
-
-2. The distance between round letters should be smaller than that between
-   straight stems (*oo* vs. *nn*).
-
-Both of these generally hold true across typefaces:
-
-<img src="img/benchmark_gaps.png" alt="benchmark gaps">
-
-Evidently, the counter width has minimal influence on the gap widths. One crude
-method, therefore, is to simply approximate the gap width via the spectrum of the
-energy gains, as in the V1-based model in Section 6 above.
-
-[explain model]
-
-- Predictive coding model
-- Explains surround suppression
-- V1 combine to V2 neuron that says "lots of similar V1 in this wide area"
-- Suppresses incoming V1s, because they're all the same.
-- V2 measures correlation between V1s in a certain area.
-- V4 measures correlations between correlations.
-- V4 has a certain texture that is quite active.
-- V4 the *strengthens* those correlations in V2.
-- V2 then suppresses the V1 parts more.
-- V4 strengthens V2, V2 weakens V1. (or both).
--
-
-
-
-One promising, if likely oversimplified, theory explains perceptual
-grouping as a process that spreads not just across connected surfaces,
-but also along boundaries.
-
-<span><input type="checkbox" id="mn-knzs" class="margin-toggle"><label
-for="mn-knzs" class="margin-toggle"></label> <span
-class="marginnote"><img src="img/kanisza.png" alt="Kanizsa square">The
-classic illusion by Gaetano Kanizsa demonstrates the perception of
-[illusory contours](https://en.wikipedia.org/wiki/Illusory_contours).
-On the right, an illustration of the facilitative receptive
-field of a bipole cell (top), and how their feedback creates
-illusory contours (left, right, bottom). Bipole cells feature
-most prominently in the work of Stephen Grossberg, but have
-been independently proposed by many others, particularly in
-the context of contour integration, e.g. Zhaoping Li's [1998
-model](https://doi.org/10.1162/089976698300017557).</span></span>
-Notably, this would include illusory boundaries, the kind that enable
-us to see the classic Kanizsa square. Such illusory boundaries are
-presumed to be due to feedback from neurons aggregating signals from a
-bipole-shaped receptive field.
-
-
-
-
-* grouping happens based on statistics, not based on boundaries.
-
-
-
-
-* [Simon
-Coen-Caghli](https://www.biorxiv.org/content/biorxiv/early/2020/01/25/20
-20.01.24.918813.full.pdf) say that crowding modulation is particulary
-active for natural stimuli. It also says that the kind of crowding in letter
-perception, which is foveally asymmetric, may not be exactly the same thing as
-texture modulation for naturalistic textures. Also texture modulation isn't
-exactly the same as crowding, because it's not asymmetric.
-
-* It could be that not only V2 is affected but also V1, via surround
-  suppression, which is different for naturalistic stimuli than for letters; or
-  it could be that grouping strength affects the size of the pooling windows. 
-
-* Although in nature, grouping increases crowding and interacts with it in
-  particular ways, we can aim to increase both separately, by measuring both
-  boundary connection and statistical similarity.
-
-
-
-Glotin et al., ART model of open bigram-based word recognition:
-https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.624.363&rep=rep1&type=pdf
-
-Ram Frost: Towards a universal model of reading. (Hebrew seems to be more strict
-in letter position coding)
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3677812/
-
-
-
-I should note that it is possible to build a letterfitting model that relies
-*only* on limiting the weighted sums of destructive interferences to a constant.
-Such an approach implements the idea that maximizing the activation of letter
-detectors is paramount, even if we can only do so approximately. The simplicity
-of this makes it seem like an attractive option. 
-
-
-
-Curiously, word breaks have been all but ignored in the psychophysical
-literature until now. At first blush, it seems that the limited size of
-combination-detector receptive fields, combined with competitive
-cross-inhibition between word detectors, should be a sufficient explanation for
-word breaks: a loose pair in the middle produces a weak bigram activation, which
-in turn weakens the support for the whole word, in favour of the detection of
-two individual fragments. This suggests that the *relative* activation of
-combination detectors is most important, which agrees with the top-down feedback
-model of word indviduation as well as with the observation that no apparent word
-breaks are introduced if well-fitted text is tracked-out evenly. Still, it is
-perhaps not the whole story, as second-order contrast normalization, gestalt
-grouping, and other feedback-based mechanisms—all of which occur much earlier
-during visual processing—may contribute to the perception of word edges.<label
-for="sn-becm" class="margin-toggle sidenote-number"></label> <input
-type="checkbox" id="sn-becm" class="margin-toggle"><span class="sidenote">The
-existence of these kinds of saliency-enhancing computations in the visual cortex
-is certain, but the exact influence on higher-level processes like word
-individuation is not. Nevertheless, Simon Fischer-Baum and colleagues have found
-that the position of word edges does indeed have particular relevance during
-reading, as suggested by [priming
-experiments](https://doi.org/10.3758/s13423-011-0160-3) and [brain injury
-patients](https://www.tandfonline.com/doi/abs/10.1080/02643294.2014.880675).</span>
-I will address those below.
-
-## What happens when gaps get too large
-
-- LCDs appear to be relatively forgiving within their RF
-- Something else seems to be going on, namely that word edges are perceived when
-  gaps get too large.
-- This leads us directly into Gestalt psychology: what happens, neurally, that
-  allows us to perceive words as objects that are whole or fragmented? This is
-  about proximity, but it's also about regularity.
-- Another thing that *also* seems to be a side effect of Gestalt grouping is
-  crowding, i.e. the difficulty in perceiving visual signals in the periphery.
-  Intriguingly, the very kind of regularity that appeals to us as well-fitted is
-  precisely related to the strength of crowding.
-- Grossberg has a model that says that dynamically, connected (and especially
-  repeated) things are assigned separate neural populations; within those neural
-  populations, some of the details are lost (averaging paper). On one hand, this allows us
-  perceive things as background, and it allows us to remember the gist of things
-  without getting bogged down in the details. It also would explain crowding,
-  because the more letters that are captured by a single coding population
-  because of their excellent grouping, the less detail is retained by each population.
-- So although grouping makes crowding worse, it's still desirable because it
-  allows us to separate words. 
-- Accentuation experiments show that drawing attention to a certain area of the
-  picture strengthenes the groups that happen to intersect with that particular
-  location. This suggests that grouping happens automatically, and reinforcing
-  one of the elements also highlights the whole group.
-- The question is: what is the neural architecture that creates groups in the
-  first place?
-- Or: just by looking at a pair of letters, how can we predict whether the two
-  letters are coupled together?
-
-- The simplest guess: make the centroids of the letters the same distance. That
-  clearly doesn't work; instead, the gap is more important.
-- The next simplest guess: just use the strength and size of the vertical (or
-  near-vertical) gaps. Clearly, the greater the gap, the lower the grouping.
-- A more sophisticated model would take into account the degree of straightness
-  across the top and bottom (inspired by word convexity, cf. von der Heydt).
-  The question here is how does this work across mm, ml, ll, which all have the
-  same distance but very different top profiles.
-- However, we still haven't explained why II and UI have approximately the same
-  gap between them, even though the upstroke of U is much thinner.
-- The visual system appears to have specific mechanisms to detect symmetries.
-  The basic idea seems to be that e.g. neurons are specifically tuned to detect
-  ordered, auto-correlating arrangements of activity coming from below.
-  
-- Grossberg says that boundaries complete first.
-- Boundaries could complete more easily across serifs, and they have a difficult
-  time completing across the gaps of straight stems, but an even harder time
-  completing across gaps of round letters.
-- The boundaries then create surfaces, and the surfaces are convolved with
-  on-off cells that highlight the inside of their boundaries.
-- These on-off cells reinforce (positive feedback) the original boundary
-  signals, at the correct depth, while inhibiting (negative feedback) boundary
-  signals at the wrong depth.
-- The feedback means that a boundary cell is either enhanced by dark/white or
-  white/dark?
-  
-- A boundary is always at some depth; even though all we see are surfaces.
-- It's the brain's job to calculate the depth of the boundary, even though it is
-  invisible.
-- It does this by matching the images from left and right, and depth-associated
-  matching cells between them get active. Then, the brain has to figure out
-  which of the matches is correct.
-- It figures out which of the matches is correct by filling in surfaces.
-- Surfaces that fill in activate surface boundary cells, which reinforce the
-  boundaries at the depths they came from.
-
-- In text, both black (stems) and white (counters) belong to the same depth, so
-  there is no immediate competition, and all other depths are inhibited (which
-  doesn't matter because it's the same with monocular reading).
-  
-- With T-junctions: bipole cells make the outlines so strong that they create a
-  little gap where the third line joins.
-- The horizontal bar is filled in fine; the vertical bar is not. The horizontal
-  bar therefore has a fixed depth; the vertical bar does not.
-- This means that the horizontal rectangle owns even the sides that are shared.
-- The vertical rectangle can complete at a lower depth. This shouldn't normally
-  be possible in 2D, because everything is stereographically the same, but it
-  does work in this case!
-
-- Gestalt laws are affected insofar as proximity and closure both allow for
-  surface filling, which both allow for surface contour feedback. This helps
-  closed surfaces first, but closed and thin surfaces are even more faster (and
-  more secure) to fill.
-
-- S. Van de Cruys: we confuse pleasure derived from regular Gestalts with the
-  pleasure that is *actually* derived from being able to summarize the
-  environment in a single model, i.e. a single gist represented by e.g. just one
-  neural population.
-  
-- consider IUL. If the thin edges are the key frequency scale, then we may want
-  to ensure that the thin edges are not reduced.
-  
-- Is grouping (and gestalt in general) somehow a side effect of depth perception?
-  
-
-- Use an ideal observer model to build a model of bigram detector kernels
-
-- Problem: ii, mm, and ll all have the same distance, but oo is closer, and IUL
-  all have the same distance as well? One, need to consider bipole straightness
-  activation. Several things are clear: a) bipoles strengthen straight lines
-  more than curved lines, which means that straight lines have the ability to
-  lose more heavily. b) For large, display type, it's probably the energies at
-  the edges that matter more than the skeleta, c) we need to consider the
-  word-size grouping (top and bottom word contours) as well.
-  
-- Consider that even monocular vision sees energy at multiple scales. White
-  on/off fills in. With black text, that means that white fills in counters and
-  gaps, and will create surface contours around the outlines of letters, as well
-  as around counters. Boundary filling in between gaps can help with the
-  visibility of the gaps, which helps with the strengthening of the contours.
-  This happens to some degree with vertical stems, but not at all with round
-  ones. However, when it's black on white, the filling-in happens within the
-  letter; the spacing doesn't really matter as much for the perception as the
-  thickness of the letters. [this hypothesis needs to be explored by reading
-  more of grossmann's papers.]
-  
-- How does regularity of spacing come into the picture?
-  How does a particular distance create optimal reinforcement of vertical
-  contours, regardless of the thickness of the letter involved? How does that
-  explain that regularity is important, regardless of absolute distance?
-  
-- That boundaries complete shouldn't actually be surprising; our retina is
-  covered in veins, plus a fat blind spot, that don't actually see anything, and
-  yet the brain fills it in with what it thinks is correct.
-  
-- visible qualia are surface percepts in the blob stream.
-
-- The gaps between letters may be filled in like Kanizsa squares. Brightness is
-  filled in. End-stopping is like a brain's own serifs, and they may contribute
-  to the gap filling process. However, top-down can only modulate but not
-  activate. 
-
-- Hypercomplex cells: competition between scales and orientations of complex
-  cell energies results in the strongest/best-aligned cells winning. Also
-  somehow it end stops. These end stops are the cause of illusory contours at
-  the bottom of arrays of line ends, as in the Ehrenstein figure. Both the stem
-  and the gap could be end-cut, depending on width. (Difference between end cuts
-  and boundary completion?). These end cuts take place in hypercomplex cells in V1.
-  
-- V1 hypercomplex cell outputs are combined (binocular + monocular) in V2, and
-  there is a feedback with bipolar cells that allows for boundary closing.
-  
-- Bipole cells are most active when equally activated by both sides, and they
-  inhibit nearby cells. Could this contribute to grouping?
-  
-- Need to understand a) how end cutting works and b) how to simulate bipole
-  cells.
-  
-- Top down is modulatory; it can strengthen and weaken but it doesn't create something out of nothing.
-- The ability to recognize letters of different fonts is related to our ability
-  to recognize objects of different types and different angles.
-- Viewing creates boundaries in V2 and surfaces in V4, and they compete for
-  attention (i.e. top-down resonances) from the parietal areas. 
-  
-- Related to crowding is the idea of spatial resolution of attention,
-  (Intriliguator and Cavanagh), which is the minimum distance between objects
-  that allows us to track a single object.
-- Crowding is a result of cortical magnification (spherical compression or
-  log-polar), which explains why it's stronger for farther-out objects, but it
-  also has to do with attention. The thing is though, we don't care about
-  crowding far out; we care about the effect of flankers. 
-- Grossberg says that this is because when enough objects are in the periphery,
-  a single resonant shroud encompasses all of them, which makes object
-  recognition difficult.
-- Grossberg says that spatial attention is important; salient features can shift
-  the position of the attentional shroud, which can pull the whole object in one
-  direction or another.
-- The question remains unresolved, however, why oo needs to be closer together
-  to be part of the same shroud than nn.
-  
-- Theory: words are recognized as separate objects because they have separate
-  attentional shrouds; the shrouds are based on distance but also on grouping.
-  It is thus the desire of type designers to create such regularity that letters
-  are grouped together. The downside of this is maximal crowding, but
-  fortunately most words are short enough that they can still be read in a
-  saccade or two anyway, so readers are happy to pay the price of crowding for
-  the ability to attend to (and comprehend) full words at a time.
-  
-- The question is therefore: how can we estimate, based on the presumed
-  mechanisms in the visual cortex, how likely letters are to be grouped
-  together?
-  
-- An important consideration is that letterfitting is done on a pair-by-pair
-  basis, whereas the IRL grouping happens in words; the exact spacing is
-  therefore a matter of tuning, and an additional parameter to be used in every
-  pair. One basic hypothesis is that grouping extends competitively between
-  objects; tendency is to group into separate objects instead of a single one.
-  
-- Intriligator + Cavanagh say: first and last bar in crowded array are easier to
-  attend to, because even if the spatial resolution of attention is very coarse,
-  we can cheat by capturing both the space *and* the last item, which isn't an
-  option for interior items.
-  
-- In practice, our task therefore is to estimate the strength of visual grouping
-  evoked by a pair of letters at a given distance. Because of the dynamic
-  competition between pairs, it is more important that distances are equal than
-  that they are small (although smaller is better, until letters interfere).
-  
-- The simplest way to estimate the distance between is to look at the spectrum
-  of vertical frequencies that constructively interfere, and equalize them. This
-  can be done in multiple ways; we could look at the total or at the average. We
-  have to consider that nn and ll have the same perceived distance. Ascenders
-  and descenders don't seem to matter so much. But there is still the question
-  of IUL and of oo. This tells us that the horizontal boundaries also play a
-  role, and perhaps even a bigger one.
-
-- There is a common idea that attention effects flow along connected contours.
-  Different attractors can capture different parts of an image, and the
-  attention can flow along connected boundaries to capture more. The stronger
-  the connection between the boundaries, the more likely the subsumption of the
-  object into the attractor. The idea therefore is that connected boundaries are
-  more likely to connect.
-  
-- When we have nno, we connect both above and below, so connection is stronger
-  between nn than no, and nn will be grouped together more strongly.
-  When we have noo, no will be grouped together more strongly than oo, so oo
-  needs to be stronger together.
-
-- In a tool, for each pair, we might as well keep track of the whole curve of connection
-  strength, so we can easily adjust the overall tracking.
-  
-- When we have nnl, nn has a close connection below and above; nl has a close
-  connection below, and that maybe enough, because nn[halfcirclebottom] would
-  have the same distance.
-  
-- When we have nnt, we have a slightly lowered connection below and a slightly
-  increased connection above.
-
-- The reliance on bipole cells that create running, connected boundaries along
-  the top and bottom of words explains why serifs aren't involved in the
-  perception of spacing; the brain creates the equivalent of serifs anyway.
-  
-- Perhaps the boundaries are not enough then; perhaps the areas in between are
-  also involved. How do surfaces contribute to the perception?
-  
-- Bipole cells may also help create boundaries between the top of n and the
-  vertical of l in nl. This definitely helps.
-  
-- But if it's the surfaces that create the visible qualia, then the question
-  becomes, is the light between letters a different colour than the background?
-  What does the connecting of boundaries across gaps achieve? It achieves
-  filling-in of gaps with the background colour, while the background
-  dissipates.
-  
-- Both IUL and nn/ll tells us that horizontal distances are, to a first
-  approximations, the main thing we want.
-  
-- We need to understand, therefore, why horizontal distances are so important.
-- One theory is that the gaps between letters are very consciously perceived.
-That means that counters and gaps, even open ones, are in the FIDO. We want all
-gaps to be the same size; one way to achieve this is to look at the distribution
-of amplified frequencies in V1.
-- The gaps are perceived because letters each have some resonance with a
-  detector, the gaps are left over? And can then be perceived to have some
-  width.
-- The conscious perception of letter gaps is one thing; the perception during
-  reading is fast and therefore another matter.
-- The connection of boundaries is another theory.
-- How does attention figure in? It does seem as if attention flows more easily
-  between closely connected lines.
-- If too far apart, why will it cause a word to be perceived?
-- Could it be that we are simply looking for a piece of large energy that
-  denotes a word start?
-- Equal spacing of stems increases the crowding factor.
-
-- Each letter is an object. 
-
-- Francis et al. made a good case
-
-https://whitneylab.berkeley.edu/PDFs/Francis_Manassi_2017.pdf
-
-- Reduction in ii actually makes it go away. Whereas reduction in mm creates
-  competition from other letter detectors.
-  
-- This points towards a different mechanism of action. If we let mm get closer
-  together, 
-
-## Modelling interactions in the early visual cortex
-
-- Divisive second-order contrast normalization
-- Gestalt grouping via B/G cells
-- Contour integration via V4 feedback
-- Anisotropic surround integration
-
-## Word breaks: are bigram kernels the whole story?
-
-
-- Unfortunately, there is no solid research on how our brains deal with word
-  breaks at all. Although separating words with spaces is not universal,<label
-  for="sn-thkr" class="margin-toggle sidenote-number"></label> <input
-  type="checkbox" id="sn-thkr" class="margin-toggle"><span
-  class="sidenote">Historically, non-space [word
-  dividers](https://en.wikipedia.org/wiki/Word_divider) symbols were common.
-  Today, [Thai](https://en.wikipedia.org/wiki/Thai_script) and
-  [Burmese](https://en.wikipedia.org/wiki/Burmese_alphabet) still use no word
-  dividers, [Vietnamese](https://en.wikipedia.org/wiki/Vietnamese_morphology)
-  divides syllables instead of words, and Koreans frequently omit spaces in
-  [Hangul](https://en.wikipedia.org/wiki/Hangul) in informal writing. Then
-  again, those are [isolating
-  languages](https://en.wikipedia.org/wiki/Isolating_language) in which
-  virtually every syllable maps directly onto a [free
-  morpheme](https://en.wikipedia.org/wiki/Bound_and_free_morphemes), so spaces
-  would not be of much help anyway. In more [fusional
-  languages](https://en.wikipedia.org/wiki/Fusional_language) like English,
-  there is no doubt that spaces help us process which morphemes belong together.
-  Of course, removingspacesslowsusdown, but what's more telling is that add ing
-  spa ces at syl labic breaks is less confusing than a ddi ng t hem ra ndo ml y.
-  On a related note, there is some fascinating research on how our brains [break
-  down
-  words](https://www.researchgate.net/profile/Elisabeth_Beyersmann/publication/316312318_Edge-Aligned_Embedded_Word_Activation_Initiates_Morpho-orthographic_Segmentation/links/5addab7ca6fdcc29358b9656/Edge-Aligned-Embedded-Word-Activation-Initiates-Morpho-orthographic-Segmentation.pdf)
-  into morpho-orthographic chunks during processing.</span>
 
 ## Results
 
