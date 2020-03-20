@@ -16,7 +16,7 @@ body {
     margin-left: auto;
     margin-right: auto;
     padding-left: 8.5%;
-    padding-right: 4.5%;
+    padding-right: 4%;
     font-family: "CrimsonProS", Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
     /*background-color: #fffff8;
     color: #111;*/
@@ -27,7 +27,8 @@ body {
     /*letter-spacing: 0.01rem;*/
     font-size: 1.8rem;
     line-height: 1.65em;
-    color: #3A4145;
+    /*color: #3A4145;*/
+    color: #2E2E2E;
     -webkit-font-feature-settings: 'kern' 1;
     -moz-font-feature-settings: 'kern' 1;
     -o-font-feature-settings: 'kern' 1;
@@ -390,6 +391,10 @@ pre.fullwidth > code {
     clear:both; 
 }
 
+aside.sidenote, aside.marginnote {
+  display: inline;
+}
+
 span.newthought {
     font-variant: small-caps;
     font-size: 1.2em; 
@@ -499,7 +504,8 @@ label.margin-toggle:not(.sidenote-number) {
     }
     label.margin-toggle:not(.sidenote-number) {
       display: inline; 
-      display: block !important;
+      /* display: block !important;*/
+      white-space: nowrap;
       width: max-content;
     }
     label.margin-toggle.sidenote-number {
