@@ -563,3 +563,7 @@ label.margin-toggle:not(.sidenote-number) {
       font-family: "Space Grotesk";
       font-size: 70%;
     }
+
+.katex {
+  line-height: auto !important;
+}

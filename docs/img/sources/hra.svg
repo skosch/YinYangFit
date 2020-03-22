@@ -9,9 +9,9 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="99.585823"
-   height="76.639503"
-   viewBox="0 0 26.348749 20.277534"
+   width="420"
+   height="150"
+   viewBox="0 0 111.125 39.687498"
    version="1.1"
    id="svg29931"
    inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/hra.png"
@@ -59,9 +59,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="5.6"
-     inkscape:cx="44.461709"
-     inkscape:cy="-12.927763"
+     inkscape:zoom="2.8"
+     inkscape:cx="124.29923"
+     inkscape:cy="35.946332"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -93,17 +93,12 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-37.927973,-34.628456)">
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.2081144;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker22179)"
-       d="M 38.783764,52.126675 H 63.866593"
-       id="path18497"
-       inkscape:connector-curvature="0" />
+     transform="translate(-37.927973,-15.218492)">
     <flowRoot
        xml:space="preserve"
        id="flowRoot22223"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:7.09330177"
-       transform="matrix(0.10491792,0,0,0.10584213,53.640177,47.119978)"><flowRegion
+       transform="matrix(0.10491792,0,0,0.10584213,79.1482,42.016147)"><flowRegion
          id="flowRegion22225"
          style="stroke-width:7.09330177"><rect
            id="rect22227"
@@ -113,18 +108,13 @@
            y="38.17144"
            style="stroke-width:7.09330177" /></flowRegion><flowPara
          id="flowPara22229"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.78163528px;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk';stroke-width:7.09330177">in</flowPara></flowRoot>    <path
-       style="fill:none;stroke:#000000;stroke-width:0.28251407;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker22179-1)"
-       d="M 41.029639,54.532445 V 35.1852"
-       id="path18497-6"
-       inkscape:connector-curvature="0" />
-    <flowRoot
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40.17245102px;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk';stroke-width:7.09330177">Input</flowPara></flowRoot>    <flowRoot
        xml:space="preserve"
        id="flowRoot22223-2"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:7.09330177"
-       transform="matrix(0,-0.10491792,0.10584213,0,32.021318,47.60466)"
-       inkscape:transform-center-x="0.094494048"
-       inkscape:transform-center-y="-0.66145833"><flowRegion
+       transform="matrix(0.10491792,0,0,0.10584213,35.152811,13.507519)"
+       inkscape:transform-center-x="-0.66145833"
+       inkscape:transform-center-y="-0.094494064"><flowRegion
          id="flowRegion22225-6"
          style="stroke-width:7.09330177"><rect
            id="rect22227-6"
@@ -134,11 +124,29 @@
            y="38.17144"
            style="stroke-width:7.09330177" /></flowRegion><flowPara
          id="flowPara22229-5"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.78163528px;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk';stroke-width:7.09330177">out</flowPara></flowRoot>    <path
-       style="fill:none;stroke:#e1544d;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0.93333333"
-       d="m 41.045441,52.114861 c 0,0 4.762053,-0.06679 6.656619,-1.300449 3.777479,-2.459737 3.972921,-8.613347 7.739792,-11.089298 3.047231,-2.002933 7.269043,-2.382556 7.269043,-2.382556"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40.17245102px;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk';stroke-width:7.09330177">Output</flowPara></flowRoot>    <path
+       style="fill:none;stroke:#e1544d;stroke-width:0.5291667;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.93333333"
+       d="m 41.924341,47.855634 c 0,0 8.538939,0.27672 12.099179,-1.701105 5.966152,-3.314384 6.285803,-12.469755 13.132527,-15.708524 5.5387,-2.620019 14.147773,-1.913887 14.147773,-1.913887"
        id="path29996"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="casc" />
+    <path
+       d="m 80.92115,46.883668 -0.37279,0.37279 1.06209,1.06209 0.21102,0.14771 -0.0211,0.0633 -0.26025,-0.0211 H 39.61614 v 0.52753 h 41.92398 l 0.26024,-0.0211 0.0211,0.0633 -0.21101,0.14771 -1.06209,1.06209 0.37279,0.37279 1.66699,-1.67403 v -0.42905 z"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;line-height:1.25;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk';letter-spacing:0px;word-spacing:0px;fill:#2e2e2e;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       id="path1921-0"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccccccccccccc" />
+    <path
+       d="m 40.351136,25.156144 0.37279,0.37279 1.06209,-1.06208 0.14771,-0.21102 0.0633,0.0211 -0.0211,0.26024 v 26.756441 h 0.52753 V 24.537184 l -0.0211,-0.26024 0.0633,-0.0211 0.14771,0.21101 1.06209,1.06209 0.37279,-0.37279 -1.67403,-1.66699 h -0.42905 z"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;line-height:1.25;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk';letter-spacing:0px;word-spacing:0px;fill:#2e2e2e;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       id="path1921-0-3"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccccccccccccc" />
+    <path
+       style="fill:none;stroke:#e1544d;stroke-width:0.52916676;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.52916673, 1.05833346;stroke-dashoffset:0;stroke-opacity:0.93333333"
+       d="m 41.924341,47.855634 c 0,0 10.468629,0.19013 13.301892,-3.171087 5.776568,-6.852983 7.439745,-14.622373 8.960206,-20.296811"
+       id="path29996-6"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="csc" />
   </g>
 </svg>

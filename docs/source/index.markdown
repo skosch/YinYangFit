@@ -31,8 +31,11 @@ I review how letterfitting fits into the current scientific understanding of how
 letters and words are perceived in the brain, and present approximate models
 that can be fitted to to existing, hand-fitted fonts using backpropagation.
 
+<h2 class="nonumber">Target audience</h2> 
+Designers and developers with an interest in neuroaesthetics.
+
 <h2 class="nonumber">Epistemic status: tentative</h2> 
-This article is based on a survey of hundreds of peer-reviewed articles,
+This article is based on a survey of hundreds of peer-reviewed articles, 
 and in line with mainstream ideas in vision and neuroscience research. It is the
 product of nearly a year of work and countless revisions. That said, even the
 in-vivo evidence for the suggested models is often indirect or circumstantial.
@@ -152,7 +155,7 @@ dedicated to recognizing letters and words.
 <img src="img/vision_model.png" alt="Vision model">
 
 Many readers may have had some exposure, however superficial, to the
-concept of deep convolutional networks. It is tempting to conceptualize
+concept of deep convolutional networks. It is dangerously tempting to conceptualize
 the architecture of the visual cortex as such a network: raw visual
 input enters at the bottom, undergoes processing through multiple
 layers, then comes out the top as a neat classification of a word. But
@@ -175,7 +178,7 @@ performed by the retina and thalamus, such as the luminance
 adaptation and pooling operations performed by [retinal ganglion
 cells](https://en.wikipedia.org/wiki/Retinal_ganglion_cell).{/sn}
 
-{mn}The wonderful illustration is adapted from Nicolas Henri Jacob (1781–1871), *Traité complet de l'anatomie de l'homme comprenant la medecine operatoire, par le docteur Bourgery*. Available in the [Anatomia Collection](https://anatomia.library.utoronto.ca/) of the Thomas Fisher Rare Book Library, University of Toronto.{/mn}
+{mn}Illustration adapted from Nicolas Henri Jacob (1781–1871), *Traité complet de l'anatomie de l'homme comprenant la medecine operatoire, par le docteur Bourgery*. Available in the [Anatomia Collection](https://anatomia.library.utoronto.ca/) of the Thomas Fisher Rare Book Library, University of Toronto.{/mn}
 <img src="img/vc_anatomy.png" alt="Anatomy; location of the visual cortex">
 
 The first phalanx of cells—the primary visual cortex,
@@ -294,17 +297,87 @@ Applying this phase-squashing to the above images yields:
 
 <img src="img/single_i_complex_example.png" />
 
-Of course, the squaring operation used here is a simplification.
+{mn}<img src="img/hra.png" alt="HRA"> Solid
+line: hyperbolic ratio curve, a.k.a. [Hill
+function](https://en.wikipedia.org/wiki/Hill_equation_(biochemistry))
+or Naka-Rushton function. Dotted line: monotonic polynomial (e.g.
+$x^2$).{/mn} Of course, the squaring nonlinearity is rather unrealistic.
+Increase inputs enough, and the firing rate of real cells will level
+off. A popular model for this is the hyperbolic ratio sigmoid
 
-<p class="missing">
-Sensitivity to frequency scales and orientations (CSF models, Watson and
-Ahumada, Chung et al., etc.)
-</p>
+$$y = \frac{fx^k}{\beta^k + x^k}$$
 
-<p class="missing">
-Divisive normalization for contrast normalization (Sawada and Petrov)
-</p>
+The $f$ scales the curve vertically, $k$ makes the kink steeper, and
+$\beta$ shifts the threshold to the right. Consider how the numerator
+increases the firing rate, and the denominator decreases it. For
+relatively small values of $x$, $\beta^k$ dominates the denominator,
+yielding a scaled-down version of $fx^k$ (values of about 2 or 3
+are common for $k$, in agreement with the square often used). But
+once $x^k$ gets large enough, $\beta^k$ pales in comparison, and
+we are left approaching $f$.{sn}This specific activation function
+is effectively never used in deep learning, both for historical
+reasons and because [its asymptotic behaviour would slow down
+training](https://en.wikipedia.org/wiki/Vanishing_gradient_problem).{/sn}
 
+A common architectural pattern in the brain is *lateral inhibition*,
+in which neurons within a cortical area suppress their neighbours in
+proportion to their own firing rate. Locally, this allows the most
+active neuron to suppress its neighbours more than those neighbours
+are able to suppress it in return. Lateral inhibition thus sharpens
+peaks and flattens valleys in the activity landscape; it is a simple
+and effective way to boost salient signals relative to weaker ones
+that inevitably arise from the correlations between similarly tuned
+convolution filters. In particular, lateral inhibition sharpens the
+orientation and frequency-scale signals we receive from V1.{sn}Of
+course, its main raison d'être is local contrast normalization, but that seems
+less relevant in the context of digital typography.{/sn}
+
+Because lateral inhibition is a recurrent process that takes time to
+reach a steady state, it is most accurately modelled using a system
+of coupled differential equations which describe the time dependence of each
+neuron's firing rate on its neighbours. Conveniently, however, the
+steady state can also be approximated directly using our hyperbolic ratio
+model, by simply sneaking the neighbouring neurons' activities into the
+denominator:{sn}See [this analysis](https://arxiv.org/pdf/1906.08246.pdf) by
+Jesús Malo et al.'s to understand why this works.{/sn}
+
+$$y_i = \frac{fx_i^k}{\beta^k + \sum_j w_j x_j^k}$$
+
+This approximation is called *divisive normalization*. One can find many
+variations on the above formula in the literature: extra constants,
+extra square roots in the denominator, extra rectifiers, etc., but the
+core idea is always the same.
+
+This raises the challenge of determining the right values for $w_j$, i.e.
+modelling the inhibitive strengths of neighbourly connections. Researchers have
+collected formulas,{sn}In 2011, Tadamasa Sawada and Alexander
+Petrov compiled a [very review](https://doi.org/10.1152/jn.00821.2016)
+of divisive normalization models of V1. To my knowledge, it is still the most
+comprehensive reference today.{/sn} but it is not clear that they capture all of
+the interactions there are. What's more, the last decade of research has
+revealed the importance of feedback from higher-level areas (discussed below), some of which may
+have been mistaken for lateral inhibition within V1. Nevertheless, the
+popularity of divisive normalization models makes it important to understand
+them.
+
+{mn}<img src="img/csf.png" alt="Contrast sensitivity function">Contrast
+sensitivity function. The vertical gradient in contrast is uniform
+across the image, but we most easily perceive the mid-frequency
+gratings even at lower contrasts. Note that the red line, shown here
+only for illustrative purposes, may not match the contrast sensitivity
+function you experience at your current viewing distance and screen
+settings.{/mn} Another aspect of vision that appears to manifest
+quite early—the optical limitations of our eye notwithstanding—is
+our specific sensitivity to spatial frequencies. Humans respond
+particularly well to angular frequencies of about 2–5 cycles per
+degree, and unsurprisingly this translates to reading speed as well,
+*especially* under low-contrast conditions.{sn}See studies like [Chung
+and Tjan (2009)](https://doi.org/10.1167/9.9.16), [Oruç and Landy
+(2006)](https://doi.org/10.1167/6.6.118), and many others.{/sn} This,
+of course, is a key reason why e.g. hairline type is difficult to
+read unless at large sizes and a comparatively wide fit. The reader's
+contrast sensitivity function may in fact contribute to $w_j$; in other words,
+mid-scale signals may outcompete fine-scale signals by default.
 
 ## Area V2, Portilla-Simoncelli texture correlations, and crowding effects
 
@@ -561,23 +634,29 @@ hypotheses that appear to explain many aspects of letterfitting practice.
 
 But the patterns of neural activity involved in reading don't stop at the edge
 of the visual cortex: about a quarter second after we first see a word, neurons
-in the so-called *visual word form area* in our left fusiform gyrus (see
+in the so-called *visual word form area* (VWFA) in our left fusiform gyrus (see
 the anatomical illustration above) have settled the identity of the word.
 
-The visual word form area contains neurons that identifies letters
-and words. Understanding how this works may help us refine our
-model to make it aware of semantic issues that can affect design
-decisions. The primary issue is confusability (e.g. between *rn*
+The above sketch of the influence of attention 
+
+Poor letterfitting can affect the performance of the VWFA beyond 
+
+The visual word form area contains neurons that identify letters
+and words. Letterfitting can affect the performance of these 
+
+Understanding how this detection works may help us augment our
+model to  aware of semantic issues that can affect design
+decisions. One common issue is confusability (e.g. between *rn*
 and *m*), but we can look beyond alphabetic letterfitting to the
 relative placement of accents, and even to the strokes and components
-of Hangul and Hanzi—all of these are instances of the problem
-of competitive perceptual grouping.{sn}The recognition of Chinese
-characters takes place in the *right* fusiform gyrus, a region
+of Hangul and Hanzi{sn}The recognition of Chinese
+characters takes place in the *right* fusiform gyrus (the VWFA is in the left), a region
 traditionally associated with face recognition (although [EEG
 readings suggest that face-recognition circuitry isn't directly
 involved](https://doi.org/10.1371/journal.pone.0041103)). The
 compositional mechanisms described here likely transfer in principle,
-however.{/sn}.
+however.{/sn}—all of these are instances of the problem
+of competitive perceptual grouping.
 
 <p class="missing">
 Describe the latest reading model (overlap-based n-gram hierarchy; Graigner,
@@ -624,6 +703,8 @@ contour integration DivN → grouping via fuzzy circular G cells → feedback to
 B → update G cells. Take difference between pair and letters; weight and
 integrate; backprop-fit against existing fonts. Show some results.
 </p>
+
+vicarius
 
 
 <a name="existing_tools"></a>
