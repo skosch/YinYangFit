@@ -550,3 +550,16 @@ label.margin-toggle:not(.sidenote-number) {
 
 }
 
+.missing {
+    padding: 1rem 1.5rem;
+    background: #f0b8ab;
+    border-radius: 3px;
+}
+
+.missing:before {
+      content: "TODO";
+      margin-right: 1rem;
+      letter-spacing: 2px;
+      font-family: "Space Grotesk";
+      font-size: 70%;
+    }
