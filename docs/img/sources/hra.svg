@@ -15,8 +15,8 @@
    version="1.1"
    id="svg29931"
    inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/hra.png"
-   inkscape:export-xdpi="580.32361"
-   inkscape:export-ydpi="580.32361"
+   inkscape:export-xdpi="200"
+   inkscape:export-ydpi="200"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="hra.svg">
   <defs
@@ -125,7 +125,7 @@
            style="stroke-width:7.09330177" /></flowRegion><flowPara
          id="flowPara22229-5"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40.17245102px;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk';stroke-width:7.09330177">Output</flowPara></flowRoot>    <path
-       style="fill:none;stroke:#e1544d;stroke-width:0.5291667;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.93333333"
+       style="fill:none;stroke:#e1544d;stroke-width:0.5291667;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 41.924341,47.855634 c 0,0 8.538939,0.27672 12.099179,-1.701105 5.966152,-3.314384 6.285803,-12.469755 13.132527,-15.708524 5.5387,-2.620019 14.147773,-1.913887 14.147773,-1.913887"
        id="path29996"
        inkscape:connector-curvature="0"

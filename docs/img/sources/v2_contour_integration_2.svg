@@ -93,9 +93,9 @@
      showgrid="false"
      inkscape:current-layer="layer1"
      inkscape:document-units="mm"
-     inkscape:cy="373.43297"
-     inkscape:cx="521.12032"
-     inkscape:zoom="0.98994949"
+     inkscape:cy="248.61496"
+     inkscape:cx="265.14443"
+     inkscape:zoom="1.979899"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -118,7 +118,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -2642,26 +2642,27 @@
            style="line-height:0.5;text-align:center;text-anchor:middle" /></flowRegion><flowPara
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;line-height:0.5;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk';text-align:center;text-anchor:middle;fill:#2e2e2e;fill-opacity:1"
          id="flowPara118744-6-6-5">Feed-back modulation</flowPara></flowRoot>    <ellipse
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#898989;stroke-width:0.44970325;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#898989;stroke-width:0.43740049;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
        id="path124566"
-       cx="191.38165"
-       cy="261.40378"
-       rx="8.2410145"
-       ry="5.8429875"
-       transform="matrix(1,0,-0.37791851,0.92583886,0,0)" />
+       cx="142.70268"
+       cy="246.40915"
+       rx="8.7517242"
+       ry="4.5558105"
+       transform="matrix(1,0,-0.20551767,0.97865341,0,0)" />
     <g
        id="g124692"
-       transform="matrix(-0.14505053,0.3553502,-0.54133594,0,241.51762,210.6925)">
+       transform="matrix(-0.06150365,0.29287394,-0.57488346,0,242.05837,215.33135)"
+       style="stroke-width:1.06888616">
       <path
          inkscape:connector-curvature="0"
          id="path124568"
          d="m 84.323535,236.73071 4.126381,15.39986 4.173001,-15.57385 z"
-         style="fill:url(#linearGradient124584);fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter124682)" />
+         style="fill:url(#linearGradient124584);fill-opacity:1;stroke:none;stroke-width:0.28280944px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter124682)" />
       <path
          inkscape:connector-curvature="0"
          id="path124568-4"
          d="m 84.323534,266.38913 4.126381,-15.39986 4.173001,15.57385 z"
-         style="fill:url(#linearGradient124584-8);fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter124686)" />
+         style="fill:url(#linearGradient124584-8);fill-opacity:1;stroke:none;stroke-width:0.28280944px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter124686)" />
     </g>
   </g>
 </svg>

@@ -393,8 +393,9 @@ indeed, V2 contains a vast variety of neurons representing all kinds
 of different correlations between V1 neurons: correlations between
 simple cells and complex cells, between cells of different scales and
 orientations, and between cells at different spatial locations.
-
-[image]
+{mn}<img src="img/v1_v2.png" alt="Connections from V1 to V2">V2 cells take their
+input from a nearby V1 cells, correlating receptive fields across dimensions of space,
+simpleness/complexity, orientation, and spatial frequency scale.{/mn}
 
 Presumably, the ability to respond to correlations of inputs from V1 is
 conferred to V2 neurons by their nonlinear activation curve. Consider a toy
@@ -472,9 +473,11 @@ topic for another research project!—but they are intimately related to
 perceptual grouping through a phenomenon called *crowding*, which we will
 address later.
 
+<!--
 <p class="missing">
 Surround suppression from uniform textures (Coen-Cagli et al., etc.)
 </p>
+-->
 
 ## Contour integration and V1 feedback
 
@@ -520,8 +523,9 @@ us perceptually in a matter of milliseconds, while non-contour features
 
 <img src="img/v2_contour_integration_2.png">
 
-As we will see, this kind of feedback loop is a key ingredient in
-perceptual grouping.
+This kind of feedback loop is not only a key ingredient in
+the perceptual grouping mechanism we will discuss below but, as we will see, a
+primitive grouping mechanism of its own.
 
 ## V4 and higher-level areas
 
@@ -531,43 +535,255 @@ stream](https://en.wikipedia.org/wiki/Two-streams_hypothesis), i.e.
 parts of the visual system dedicated to object recognition. The dorsal
 stream, on the other hand, comprises areas concerned with keeping track
 of our environment and our position in it; it appears to be irrelevant
-to letterfitting.{/sn} is similar to V2 in that it performs a set of
-convolutions detecting correlations between its inputs.
+to letterfitting.{/sn} mirrors the architecture of V2 in that it performs a set of
+convolutions detecting correlations between its inputs. Arguably, V4 is just
+like V2, only with larger receptive fields. 
 
-Experiments, mainly on macaque monkeys, have revealed that V4 neurons detect two
-kinds of visual features: textures and object-centered contour
-fragments.{sn}Our understanding of this is primarily owed to Anitha Pasupathy and
-her collaborators, who have been published results like [this one](), [this
-one]() and [this one]() for nearly two decades.{/sn}
+Just as in V2, two categories of neurons are particularly noteworthy: texture
+detectors and contour detectors.{sn}Our understanding of V4 is primarily owed to
+Anitha Pasupathy and her collaborators, who have been publishing
+results like [this one](https://doi.org/10.1152/jn.2001.86.5.2505),
+[this one](https://doi.org/10.1152/jn.01265.2006), [this
+one](https://doi.org/10.1523/JNEUROSCI.3073-18.2019) and [this
+one](https://www.nature.com/articles/s41467-017-02438-8) for nearly two
+decades.{/sn} Just as in V2, the contour detectors integrate smaller contour
+fragments across some region. However, the larger receptive fields of V4 allow
+for the target contours to be substantially offset from the neuron's receptive
+field center:
 
-<p class="missing">
-Show examples, e.g. Kanizsa square/triangle
-</p>
+{mn}Note how all shapes have in common the convexity on the lower left.{/mn}
+<img src="img/v4_rf.png" alt="Receptive field and some example stimuli for a V4
+object-centered contour-detecting cell">
 
-<p class="missing">
-Texture coding; hypothesize fovea/periphery distribution
-</p>
+This is significant in practice, because it allows for easy shape
+detection and, as we will see, perceptual grouping. For instance,
+consider how the following population of neurons might respond to the
+corners and sides of a large square. A higher-level square-detecting
+neuron, presumably located in the inferotemporal cortex, would be easily
+able to integrate all of these colocated responses to report a square
+shape:
+
+{mn}The receptive fields, shown as a dashed gray circle in the diagram above,
+are not shown here. Instead, the dotted red lines illustrate the radius of each receptive
+field.{/mn}
+<img src="img/v4_combo.png" alt="Detecting a square">
+
+Thanks to the robustness afforded by the integration mechanisms in V2, V4, and
+higher-level areas, we can now explain how we can simultaneously detect the presence of a square and
+yet not *see* it, in this classic optical illusion:{sn}This phenomenon of
+[illusory contours](https://en.wikipedia.org/wiki/Illusory_contours),
+popularized by [Gaetano Kanizsa](https://en.wikipedia.org/wiki/Gaetano_Kanizsa), has inspired dozens of studies.{/sn}
+
+<img src="img/kanisza.png" alt="Kanizsa square">
+
+Even though the sides of the square are only weakly detected, the sum
+total of activations is enough to allow us to perceive the presence of a
+square although V1 detects no edges at the square's sides at all.
 
 ## Grouping via border ownership
 
-<p class="missing">
-Explain grouping via border ownership (von der Heydt et al., Mihalas, Hu)
-</p>
+Navigating our natural environment requires us to make sense of groups
+of contours as coherent objects in three-dimensional space, even though
+our visual system only has access to a two-dimensional projection.
+As the illusory square above demonstrates, our vision system manages
+to do this even if in the absence of binocular disparity cues, and
+despite interrupted contours and occluded objects. To accomplish this,
+V4 signals that likely constitute an object need to prevail over others
+that do not. For instance, a square not only excites contour detectors
+centered inside of it (red), but also on the outside (blue):
+
+<img src="img/v4_outside.png" alt="V4 respones outside of the square">
+
+Once again, a feedback loop saves the day: the internal (red) neurons
+will almost immediately fire more rapidly, thanks to amplifying
+recurrent signals from the higher-level square detector. The external
+(blue) neurons do not constitute a coherent shape, therefore receive
+such feedback and fire much more slowly as a result:
+
+<img src="img/v4_it_feedback.png" alt="Feedback between V4 and IT">
+
+This basic architectural pattern already explains quite well how contiguous, or
+nearly contiguous, objects rise to salience while other signals wane. But we
+have yet to discuss what happens when multiple objects get involved.
+
+Researchers have discovered that the above feedback loop extends
+downwards to a class of V2 neurons called *border ownership cells*
+or B-cells. B-cells, like the V2 contour integration cells already
+discussed, detect the presence of edges based on V1 complex cells. While
+they are agnostic to the edge's contrast polarity, B-cells fire only if
+they are on one particular side of an object. For instance, the B-cell
+whose receptive field is marked in red below only detects edges on the
+*left side* of objects, as indicated by the small protrusion pointing
+toward the object.{sn}Almost everything we know about border ownership
+networks is owed to Johns Hopkins researcher Rüdiger von der Heydt and
+his students.{/sn} It responds to stimuli 1 and 2, but not 3 and 4:
+
+<img src="img/b_cell_1.png" alt="B cell illustration">
+
+The B-cell only sees an edge. It cannot know which part of the object it is
+on; its receptive field is much too small. So its activity
+must be gated by a neuron which does: namely, one of our
+higher-level V4 neurons.{sn}Signals from other V2 neurons
+are unlikely, because horizontal connections conduct [too
+slowly](https://dx.doi.org/10.1152%2Fjn.00928.2010) to explain
+the lab-measured response times of B-cells.{/sn} The object owning the edge
+fragment could have any shape and size, so all active V4
+neurons whose contour templates coincide with the edge fragment send
+amplifying signals to our B-cell. In turn, our B-cell directly contributes to their
+activation, establishing a positive feedback loop:
+
+<img src="img/bg_feedback_0.png" alt="B-cell feedback loop">
+
+There is an entire population of B-cells, distributed across V2's
+retinotopy. For instance, consider a right-side B-cell (blue below)
+neighbouring our left-side B-cell. Both B-cells are engaged in
+feedback loops with V4 neurons while simultaneously inhibiting local
+competitors—i.e., each other—in proportion to their own activation
+strength (recall our discussion of divisive normalization as an approximation of
+lateral inhibition in V1):
+
+<img src="img/bg_feedback_1.png" alt="B-cell feedback loop">
+
+But as we know, the internal V4 contour detector (red) is already firing
+more strongly than the external one (blue), thanks to its participation
+in a coherent object. This enhances the activity of the left-side (red)
+B-cell, which suppresses its competitor, which in turn further reduces
+the input to the external (blue) V4 cell. After some tens of milliseconds, the
+percept of the square as its own object is solidly established.
+
+<img src="img/bg_feedback_2.png" alt="B-cell feedback loop">
+
+Having introduced the concept of B-cells, we can now finally discuss what happens
+when multiple objects get involved—we are still talking about letterfitting,
+after all!
+
+Consider the following situation, and make a guess whether at the circled
+location, left-side or right-side B-cells would win out:
+
+<img src="img/gestalt_1.png" alt="Gestalt B-cell 1">
+
+Although *technically* the dark shape is a closed, contiguous shape and
+therefore on par with the light circle, it is intuitively obvious that
+the circle dominates, and even appears to lie above the black shape.
+As a result, we can confidently predict that humans will perceive the
+circled region as the left side of the circle, and not as the right side
+of the dark area.
+
+As it turns out, the vast majority (although not all) of the
+object-centered contour detectors in V4 are either straight or
+convex in shape, with various degrees of curvature. This has
+the profound consequence that convex shapes tend to outcompete
+concave shapes in our perception.
+
+Meanwhile, although the hypothetical square detector served us well
+in the examples above, we actually do not know the population of shape
+detectors in our inferotemporal cortex.
+
+In simulations of perceptual grouping, it is therefore practical not to think
+directly about V4 contours and shape detectors. Instead, a popular approach is
+to work with a population of representative (if fictitious) "grouping cells" or
+G-cells, each of which receives input from an annulus of inward-directed B-cells:{sn}The first to
+run an earnest simulation of this idea were [Edward Craft et al.](https://doi.org/10.1152/jn.00203.2007) in 2011.{/sn}
+
+<img src="img/bg_rfs.png" alt="Receptive fields of G cells">
+
+Given that the V4 contour detectors chiefly pick up convex curvatures at
+some eccentricity, this is really quite a reasonable model for whatever
+may truly be going on in our posterior inferotemporal areas.
+
+In the square below, a single large-scale G cell centered on the shape
+is excited by inward-directed B-cells on all four sides (red). Inside the
+corners, a series of smaller-scale G cells receive input from two sides (purple,
+blue). 
+
+<img src="img/g_responses.png" alt="Sample responses of some G cells">
+
+In many other locations, G-cells are activated by only a few B-cells
+on just one side. This is not enough to evoke a strong activation. In
+addition, we may assume that G-cells compete via local inhibition, such
+that those cells receiving inputs from more (and from nearer) B-cells dominate.
+
+Once B-cells and G-cells have settled into an equilibrium, the locus
+of peak responses of G-cells across different scales neatly represents
+the skeleton of the shape, shown on the right:{sn}The technical term for this feat is
+[medial axis transform](https://en.wikipedia.org/wiki/Medial_axis).{/sn}
+
+<img src="img/g_responses.png" alt="Sample responses of some G cells">
+
+Skeletonization is critical to object recognition, because it allows
+us to match on a shape's underlying geometric structure. Consider, for
+instance, our ability to recognize all four letters with the same ease:
+
+{mn}Many different uppercase-E designs exist, but all of them share a
+relationship between the relative location of large-scale G-cell peaks (within
+the counters) and smaller-scale peaks (at the terminals).{/mn}
+<img src="img/e_skeletons.png" alt="Some skeletons at different scales">
+
+Although the shared features of the skeletons (counters, stems, etc.) appear at
+different scales for different letter shapes, they are present in
+the same configuration for all of them. 
+
+This is true even for letters that are outlined, as V4 contour detector
+neurons respond primarily to the contour, not to the fill. Nevertheless:
+when is a stroke perceived as a contour, and when does it turn into a shape of its
+own right, with contours on either side? With letter weights ranging
+from hairline to ultra-heavy, this is a particularly salient question:
+
+<img src="img/letter_weights.png" alt="A range of letter weights">
+
+The hairline letter is, arguably, too thin to allow readers to clearly perceive
+border ownership of the left and right side of each stem (of course this depends
+on the font size and the contrast sensitivity function, as discussed above). Nevertheless, we can
+evidently recognize the letter, so it follows that thin lines must be able to excite
+fine-scale G-cells even if the ownership of sides is fuzzy.
+
 
 <p class="missing">
-Fuzzy circular grouping cells (Craft et al.) vs. inferotemporal integration of V4 as G cells
-</p>
+Inihibition of accidental contours: [Brittany Bushnell et
+al.](https://dx.doi.org/10.1523%2FJNEUROSCI.4766-10.2011) have reported
+that continuous straight contours inhibit the activation of abutting,
+acute V4 contour detectors, which are typically a side-effect of occlusion.</p>
 
 <p class="missing">
-Perception of lines vs blobs
-</p>
-
-<p class="missing">
-Skeletonization (medial axis detection) and cross-inhibition of G cells
+Serifs and skeleton analogs in sans serifs.
 </p>
 
 <p class="missing">
 Classification vs. representation; V1/V2 as a blackboard (Roelfsema 2016)
+</p>
+
+## Why grouping cells exist: attention, crowding, and the spread of activity
+
+We have now roughly sketched out how cognitive scientists currently
+think about shape perception. Fortunately for us, reading does not
+involve much processing of colour, motion, and depth. Before we can
+discuss letterfitting, however, we need to outline how attention
+propagates through this architecture.
+
+
+<p class="missing">
+A feedback model of attentional effects in the visualcortex
+https://doi.org/10.1109/CIMSIVP.2011.5949241
+https://hal.archives-ouvertes.fr/hal-00706798/file/miconi_t_11_106.pdf
+</p>
+
+<p class="missing">
+Review crowding and classic hypotheses of feature pooling and cortical
+magnification
+</p>
+
+<p class="missing">
+Review Herzog lab papers; effect of regularity on crowding (Sareela et al. 2010) and uncrowding via LAMINART grouping (Francis et al.)
+</p>
+
+<p class="missing">
+Offer intuition for perceptual grouping of words and crowding as related effects
+of lateral spread of neural activity.
+</p>
+
+<p class="missing">
+Review the concept of attention, and its ability to affect the spread (both
+facilitatory and laterally inhibitive, see e.g. Mihalas et al.)
 </p>
 
 ## From perceptual grouping to letterfitting 
@@ -604,26 +820,6 @@ stronger inhibition from false inter-stem medial axis (b/c smaller radius).
 Illustrate effect of serifs, italics, x-height and weight
 </p>
 
-## Intuition for grouping: crowding, attention, and the spread of activity
-
-<p class="missing">
-Review crowding and classic hypotheses of feature pooling and cortical
-magnification
-</p>
-
-<p class="missing">
-Review Herzog lab papers; effect of regularity on crowding (Sareela et al. 2010) and uncrowding via LAMINART grouping (Francis et al.)
-</p>
-
-<p class="missing">
-Offer intuition for perceptual grouping of words and crowding as related effects
-of lateral spread of neural activity.
-</p>
-
-<p class="missing">
-Review the concept of attention, and its ability to affect the spread (both
-facilitatory and laterally inhibitive, see e.g. Mihalas et al.)
-</p>
 
 ## Why word grouping matters: models of reading
 
