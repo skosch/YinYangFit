@@ -567,3 +567,13 @@ label.margin-toggle:not(.sidenote-number) {
 .katex {
   line-height: auto !important;
 }
+
+.pdflink {
+  font-size: 88%;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.pdflink:before {
+  content: "[PDF]";
+}

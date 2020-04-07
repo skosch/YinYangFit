@@ -34,7 +34,7 @@ that can be fitted to to existing, hand-fitted fonts using backpropagation.
 <h2 class="nonumber">Target audience</h2> 
 Designers and developers with an interest in neuroaesthetics.
 
-<h2 class="nonumber">Epistemic status: tentative</h2> 
+<h2 class="nonumber">Epistemic status: provisional</h2> 
 This article is based on a survey of hundreds of peer-reviewed articles, 
 and in line with mainstream ideas in vision and neuroscience research. It is the
 product of nearly a year of work and countless revisions. That said, even the
@@ -76,14 +76,13 @@ that reliably reproduce the hand-tweaked pair distances in existing
 fonts—from hairline slab serifs to broad-nib italics, from captions to headline
 sizes, and from Latin to Khmer.
 
-So let's start from square one: with a solid model of how reading works
-in the brain. By reframing letterfitting as the pursuit of *optimal
-legibility* (and not of beauty), we can climb on the giant shoulders of
-generations of vision researchers and begin to understand what vague
-ideas like "black-white balance" actually mean in our visual cortex.
-Our working hypothesis: well-fitted text is text that most effectively activates the
-neural circuitry that allows us to read letters and words, and therefore
-maximizes reading speed.
+So let's start from square one: with a solid model of how reading
+works in the brain. Let's climb on the giant shoulders of generations
+of vision researchers and begin to understand what vague ideas like
+"black-white balance" actually mean in our visual cortex, and how the vague
+concept of "beauty" aligns (or not) with legibility, i.e. the ability of the
+printed word shape to elicit neural responses that quickly and reliably evoke
+the perception of the right word.
 
 The connection between type design and legibility is self-evident
 and well-studied.{sn}Type legend Charles Bigelow recently
@@ -120,11 +119,12 @@ expense of the second. Consider the following example:
 
 <img src="img/grouping_relativity.png" alt="Illustration of the importance of consistency of fit vs absolute distances.">
 
-In the first column, the well-fitted word is perceptually grouped into a single
-object. In the middle column, the loosely fitted word is still perceived as an
-object, but it has to compete with the perception of its constituent letters.
-Finally, the poorly fitted word in the last column triggers the perception of
-*two* separate objects, namely the single letter *c* and a pair *at*.
+In the first column, the well-fitted word is perceptually grouped into
+a single object. In the middle column, the loosely fitted word is still
+perceived as an object, but it has to compete with the perception of
+its constituent letters as independent objects. Finally, the poorly
+fitted word in the last column triggers the perception of *two* separate
+objects, namely the single letter *c* and a pair *at*.
 
 The primary objective of a good fit is to avoid the latter situation.
 When some pairs group more strongly than others, words are fragmented
@@ -132,10 +132,35 @@ into separate perceptual objects, which makes reading difficult. The
 secondary objective of a good fit is to make the fit as tight as
 possible without hampering the identifiability of each letter.
 
-Perceptual grouping networks are a fundamental piece of our vision
-circuitry, and not exclusive to reading. Still, knowledge about letter shapes
-can affect fitting decisions. We will therefore review the latest scientific
-models of both vision *and* reading.
+Perceptual grouping networks are a very fundamental piece of our vision
+circuitry, and not exclusive to reading. Researchers have known about them for a
+long time, too: psychologists over a century ago described our
+tendency to recognize the sum, not the parts, of arrangements of
+shapes:{sn}Often listed as the [Gestalt laws of grouping](https://en.wikipedia.org/wiki/Principles_of_grouping), or the principle of [Prägnanz](https://en.wikipedia.org/wiki/Gestalt_psychology#Pr%C3%A4gnanz).{/sn}
+
+<img src="img/gestalt_laws.png" alt="Illustration of gestalt laws" />
+
+Because these early Gestalt psychologists knew little about the brain's
+vision system, they hypothesized about their findings using sometimes
+abstruse metaphors drawn from electromagnetics, fluid mechanics,
+and even personality studies—in fact, their vocabulary of lights,
+shadows, and force fields closely matched that employed to justify
+today's letterfitting heuristics.{sn}I recommend Johan Wagemans et al.'s
+fantastic two-part historical review of Gestalt psychology, published in
+2012 ([part I](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3482144/),
+[part II](https://dx.doi.org/10.1037%2Fa0029334)).{/sn} Still,
+perceptual grouping is very real, very necessary for survival in
+our natural environment, a key determinant of what we perceive as
+beautiful, and doubtlessly essential to word perception. And to model it
+accurately, we need to understand the underlying neural architectures.
+
+Of course, skilled typographers consider not only Gestalt perception. Famously,
+a (geometrically) well-fitted pair *rn* will look almost exactly like *m*, which
+is undesirable for reasons a Gestalt optimization algorithm cannot understand.
+But such considerations are rare, at least in the fitting of Latin-script
+letters, so we will deal with the Gestalt first.
+
+## A brief tour through our visual system: area V1
 
 Our brain's visual processing system is divided into multiple regions, each of
 which represents the incoming visual imagery at a different level of
@@ -155,20 +180,22 @@ dedicated to recognizing letters and words.
 <img src="img/vision_model.png" alt="Vision model">
 
 Many readers may have had some exposure, however superficial, to the
-concept of deep convolutional networks. It is dangerously tempting to conceptualize
-the architecture of the visual cortex as such a network: raw visual
-input enters at the bottom, undergoes processing through multiple
-layers, then comes out the top as a neat classification of a word. But
-perception, and perceptual grouping in particular, is a dynamic process. It is
-not a computation with input and output, but a dance of electrical activity
-that evolves through time.{sn}[This interactive
-visualization](http://nxxcxx.github.io/Neural-Network/) is far from realistic
-but a much more useful visual metaphor than feed-forward deep learning
-architectures.{/sn}
+concept of deep convolutional networks. It is dangerously tempting
+to conceptualize the architecture of the visual cortex as such a
+network: yes, raw visual input enters at the bottom, undergoes
+processing through multiple layers, then comes out the top as a neat
+classification of a word. Arguably, convolution even plays a big part.
+But perception, and perceptual grouping in particular, is a dynamic
+process. It is not a computation with input and output, but a dance of
+electrical activity that evolves through time.{sn}[This interactive
+visualization](http://nxxcxx.github.io/Neural-Network/) is far from
+realistic but a much more useful visual metaphor than feed-forward deep
+learning diagrams.{/sn} At high resolution, it takes huge computational
+resources to simulate these dynamics accurately. The best we can hope
+for, here, is a rough sketch to guide our intutions as we think about
+better letterfitting models.
 
 With that in mind, let's go on a brief tour through our visual system.
-
-## From the retina to the primary visual cortex
 
 Sensory input from the eye travels up the optic nerve, through
 the lateral geniculate nucleus (LGN) on the brain's thalamus,
@@ -178,7 +205,7 @@ performed by the retina and thalamus, such as the luminance
 adaptation and pooling operations performed by [retinal ganglion
 cells](https://en.wikipedia.org/wiki/Retinal_ganglion_cell).{/sn}
 
-{mn}Illustration adapted from Nicolas Henri Jacob (1781–1871), *Traité complet de l'anatomie de l'homme comprenant la medecine operatoire, par le docteur Bourgery*. Available in the [Anatomia Collection](https://anatomia.library.utoronto.ca/) of the Thomas Fisher Rare Book Library, University of Toronto.{/mn}
+{mn}Illustration adapted from Nicolas Henri Jacob (1781–1871), *Traité complet de l'anatomie de l'homme comprenant la médecine opératoire, par le docteur Bourgery*. Available in the [Anatomia Collection](https://anatomia.library.utoronto.ca/) of the Thomas Fisher Rare Book Library, University of Toronto.{/mn}
 <img src="img/vc_anatomy.png" alt="Anatomy; location of the visual cortex">
 
 The first phalanx of cells—the primary visual cortex,
@@ -196,8 +223,10 @@ organization of V1's layers.{/sn} and activates whenever a particular
 subset of the receptors detects light but the others don't. The on/off
 subsets are laid out such that each neuron effectively detects a
 small piece of a line or edge of a particular size and orientation
-somewhere in the field of vision. {sn}For those readers completely
-unfamiliar with these concepts, I recommend watching [this introductory
+somewhere in the field of vision.{sn}This is a relatively well-known
+concept, because the same kinds of receptive fields tend to emerge in the first layer of
+image-classifying convolutional networks. For those readers completely
+unfamiliar with these ideas, I recommend watching [this introductory
 animation](https://www.youtube.com/watch?v=NnVLXr0qFT8), followed by
 [this Allen Institute talk](https://www.youtube.com/watch?v=mtPgW1ebxmE)
 about the visual system, followed by [this in-depth MIT
@@ -207,35 +236,33 @@ details.{/sn}
 <img src="img/edge_line_rfs.png" />
 
 These neurons are called *simple cells*, and we can easily predict
-their response to a given input. For instance, when we see an
-single uppercase *I* on a page, some simple cells will respond
-strongly and others not at all, depending on the tuning and location
+their response to a given input, depending on the tuning and location
 of their receptive fields.{sn}David Hubel and Torsten Wiesel
 first discovered this in the 1950s by showing patterns of light
 to a cat after sticking electrodes into its brain (Youtube has a [video of said
 cat](https://www.youtube.com/watch?v=Yoo4GWiAx94)). The researchers went
 on to win a Nobel Prize for their experiments.{/sn}
-
 In software models, the filtering operation performed by
 simple cells is typically implemented as Fourier-domain
-multiplication with a bank of complex band-pass filters $G(s, o)$ (where $s$ is
-the frequency scale and $o$ the orientation).{sn}[Gabor
+multiplication with a bank of complex band-pass filters $G(s, o)$, where $s$ is
+the frequency scale and $o$ the orientation.{sn}[Gabor
 patches](https://en.wikipedia.org/wiki/Gabor_filter) are most
 commonly used, but many alternative models with better mathematical properties are
-available.{/sn} This set of convolutions turns the two-dimensional input image into a
-four-dimensional tensor of complex numbers (widtht × height × spatial
+available.{/sn} This set of convolutions turns the two-dimensional input image (width × height) into a
+four-dimensional tensor of complex numbers (width × height × spatial
 frequency scales × orientations), the magnitude and phase angle of
 which capture the activation of simple cells $S_\mathrm{V1}$ at every
-location.
+location:
 
 $$
-S_\mathrm{V1}(x, y, s, o) = \mathcal{F}^{-1}(\mathcal{F}(I(x, y)) \mathcal{F}(G(s, o)))
+S_\mathrm{V1}(x, y, s, o) = \mathcal{F}^{-1}(\mathcal{F}(I(x, y)) \mathcal{F}(G(s, o))),
 $$
 
 {mn}<img src="img/complex_value.png">{/mn}
 
-For instance, to retrieve the activation of representative simple cells at phases 0°, 90°, 180° and 270°, we
-could half-wave-rectify as follows:
+where $\mathcal{F}$ is the Fourier transform. For instance, to retrieve
+wthe activation of representative simple cells at phases 0°, 90°,
+w180° and 270°, one ould half-wave-rectify as follows:
 
 $$
 \begin{aligned}
@@ -262,26 +289,35 @@ story, as complex cells seem to [change their simpleness
 index](https://hal.archives-ouvertes.fr/hal-00660536/document)
 in response to their input as well.{/sn} Thanks to their phase
 invariance, complex cells can extract key structural information at
-the expense of colour and contrast data. But contrast and colour are
-irrelevant to reading—we can read black-on-white just as well as
-white-on-black—suggesting that it is mainly complex cells that provide the
-relevant signals to higher-level brain areas.{sn}In practice, it is measurably
-easier to read dark text on light backgrounds. Not only do light
-backgrounds make the pupil contract, [creating a sharper
-image](http://dx.doi.org/10.1016/j.apergo.2016.11.001), but V1 outputs are also
-[stronger for darker colours](https:///doi.org/10.1523/JNEUROSCI.1991-09.2009),
-which may contribute in higher-level shape-recognition stages.{/sn}
+the expense of colour and contrast data. They respond wherever the frequency scale and
+orientation matches their tuning. The following image shows complex-cell
+responses at different scales, summed across orientations:
 
-To be clear, this does not mean that the signals from simple cells are lost or
-discarded. Just like the signals from colour-detecting cells in the
-so-called *blob* regions of V1, which are not further discussed here, their
-outputs do contribute both to our experience of vision and to the activity of
-higher-level brain regions. For reading (and thus letterfitting) purposes,
-however, we will focus on the responses of complex cells.
+<img src="img/single_i_complex_example.png" />
+
+Coincidentally, contrast and colour are irrelevant to reading—we
+can read black-on-white just as well as white-on-black—suggesting
+that it is mainly complex cells that provide the relevant
+signals to higher-level brain areas.{sn}In practice, it is
+measurably easier to read dark text on light backgrounds. Not
+only do light backgrounds make the pupil contract, [creating a
+sharper image](http://dx.doi.org/10.1016/j.apergo.2016.11.001),
+but V1 outputs are also [stronger for darker
+colours](https:///doi.org/10.1523/JNEUROSCI.1991-09.2009), which may
+contribute to shape perception in higher-level stages. Nevertheless, reading is
+primarily shape- and not colour-based.{/sn}
+
+To be clear, this does not mean that the signals from simple cells
+are lost or discarded. Just like the signals from colour-detecting
+cells in the so-called *blob* regions of V1, which are not further
+discussed here, the signals from simple cells do contribute both to our
+experience of vision and to the activity of higher-level brain regions.
+For reading (and thus letterfitting) purposes, however, we will focus on
+the responses of complex cells.
 
 Traditionally, complex cells were thought to sum the outputs of nearby simple
 cells of equal scale and orientation. This is now known to be a gross
-oversimplification. In software, a similar approach is nevertheless taken to
+oversimplification. In software, a summation-like approach is nevertheless taken to
 approximate the output of complex cells $C_{\mathrm{V1}}$, namely a simple computation of the
 absolute magnitude of the complex tensor:
 
@@ -289,21 +325,16 @@ $$
 C_\mathrm{V1}(x, y, s, o) = |S_\mathrm{V1}(x, y, s, o)|^2
 $$
 
-This is often called the *local energy*. The squaring operation shown here is
-often used to approximate the nonlinear behaviour of complex cells in
-particular.
-
-Applying this phase-squashing to the above images yields:
-
-<img src="img/single_i_complex_example.png" />
-
-{mn}<img src="img/hra.png" alt="HRA"> Solid
-line: hyperbolic ratio curve, a.k.a. [Hill
+This is often called the *local energy*. The squaring operation shown
+here is often used in the literature to approximate the nonlinear
+behaviour of complex cells in particular.{mn}<img src="img/hra.png"
+alt="HRA"> Solid line: hyperbolic ratio curve, a.k.a. [Hill
 function](https://en.wikipedia.org/wiki/Hill_equation_(biochemistry))
 or Naka-Rushton function. Dotted line: monotonic polynomial (e.g.
-$x^2$).{/mn} Of course, the squaring nonlinearity is rather unrealistic.
-Increase inputs enough, and the firing rate of real cells will level
-off. A popular model for this is the hyperbolic ratio sigmoid
+$x^2$).{/mn} Of course, this is a rather unrealistic (if practical)
+choice. In a real cells, the firing rate will level off after the input
+has been increased beyond some limit. A popular model for this is the
+hyperbolic ratio sigmoid
 
 $$y = \frac{fx^k}{\beta^k + x^k}$$
 
@@ -708,7 +739,8 @@ of peak responses of G-cells across different scales neatly represents
 the skeleton of the shape, shown on the right:{sn}The technical term for this feat is
 [medial axis transform](https://en.wikipedia.org/wiki/Medial_axis).{/sn}
 
-<img src="img/g_responses.png" alt="Sample responses of some G cells">
+<img src="img/g_responses_skeleton.png" alt="Sample responses of some G cells,
+forming a skeleton">
 
 Skeletonization is critical to object recognition, because it allows
 us to match on a shape's underlying geometric structure. Consider, for
@@ -748,23 +780,126 @@ acute V4 contour detectors, which are typically a side-effect of occlusion.</p>
 Serifs and skeleton analogs in sans serifs.
 </p>
 
-<p class="missing">
-Classification vs. representation; V1/V2 as a blackboard (Roelfsema 2016)
-</p>
+## Attention, crowding, and the spread of activity
 
-## Why grouping cells exist: attention, crowding, and the spread of activity
+If letters and words are perceived based on their skeletons, and the
+main objective of letterfitting is to ensure reliable detection of
+both letters *and* words, then automating letterfitting requires us to
+predict how placing letters at some distance changes their skeletons
+relative to their individual skeletons. The goal is to maximize the
+perception of two letters as a single object (large-scale skeleton),
+while minimizing changes to the skeletons at finer, stem-size scales.
 
-We have now roughly sketched out how cognitive scientists currently
-think about shape perception. Fortunately for us, reading does not
-involve much processing of colour, motion, and depth. Before we can
-discuss letterfitting, however, we need to outline how attention
-propagates through this architecture.
+We are going to explore how this might play out between
+particular letter pairs—but we first need to establish some intuition for the
+neural dynamics at play.
 
+A powerful arbiter of perceptual grouping, and key ingredient of
+reading, is *attention*. In a network ruled by feedback loops and
+lateral inhibition, attention is simply a bit of extra activity that
+quickly propagates upwards and downwards, strengthening the perception
+of a particular image feature while muting its surroundings.
+
+[image]
+
+In everyday parlance, "paying attention" implies looking straight at
+an object of interest, and intentionally{sn}By which I merely mean
+"triggered by frontal-lobe areas", without endorsing any Cartesian notions of
+dualism.{/sn} activating corresponding populations of neurons.
+But the more general, mechanistic understanding of attention—simply,
+as the amplification of activity in some parts of the network at the
+expense of others—includes paying attention to something in the corner
+of one's eye ("covert attention") and even attention that is involuntarily
+triggered by particular image features ("exogenous attention").
+
+In practice, attention relies on the bidirectionality of the
+feedback loops that connect shape detectors to V1 cells: the
+appropriate visual input excites the shape detector, but attending
+to (i.e., exciting) the shape detector also amplifies any active
+V1 cells that are connected to it. This allows us to "select" a
+feature corresponding to hundreds of V1 neurons by stimulating just
+a single high-level cell.{sn}For a simulation of how this might
+play out between G-cells and V1, take a look at Stefan Mihalaş et
+al.'s [2011 paper](https://doi.org/10.1073/pnas.1014655108).{/sn}
+The selected V1 and V2 neurons, of course, have connections to
+many brain regions besides V4, and all of them are indirectly
+affected by the initial attention.{sn}This had led cognitive
+scientists to call the early visual cortex a ["cognitive
+blackboard"](https://doi.org/10.1146/annurev-vision-111815-114443).{/sn}
+
+- When reading, we can focus our gaze on one word and pay covert attention to
+  other words.
+
+
+- 1. Different pieces of the image excite one another, thanks to feedback.
+- 2. Different pieces of the image also suppress one another, so that only a few things are active at once. In particular, texturally similar areas suppress their inputs.
+- 3. When something stands out from surrounding texture, it is therefore less suppressed, and automatically becomes the strongest neural population.
+     We might call this a salient feature, or a feature that exogenously commands attention.
+- 4. When we read, we need to perceive words as single units. The letter and word detector units in the visual word form area want to limit their input to one word at a time.
+- 5. The challenge is to inject attention in the network at about PIT or V4, and
+     have the activity spread sideways such that one word is selected, but have
+     the suppression work its magic such that not everything gets selected. The
+     brain is great at control theory and does that fine, but the job of a typographer is to make this as quick of a job as possible.
+
+Particularly well-researched is a phenomenon called *crowding*, in which
+activity spreads quickly and widely thanks to V2 and V4 cells responsive
+to texture-like correlations over large spatial distances. These cells,
+with their large receptive fields, are found particularly in the visual
+periphery, where the crowding effect is particularly strong. When
+crowding is strong, it is nearly impossible to attend to a location,
+as any activity is immediately absorbed by the neural populations
+representing texture, at the expense of local shape detectors. In the
+following illustration, it is very difficult to make out the uppercase V
+while focusing on the center cross, even though recognizing the left A, which
+is exactly the same distance away, is no problem:
+
+<img src="img/crowding_example.png" alt="Example of crowding between letters">
+
+Text, of course, is inexorably texture-like,{sn}[And not by
+accident](https://en.wikipedia.org/wiki/Indo-European_vocabulary); both
+*text* and *texture* derive from Proto-Indo-European <em>\*teks–</em>,
+meaning "to weave".{/sn} so the excitation of texture detectors and any
+concomitant crowding are a fact of life. At first blush, crowded text is
+illegible text, and thus to be prevented if possible. The research literature
+offers suggestions: colouring the flanking letters, for instance, or putting
+lots of space between them.{mn}As a rule of thumb, the spacing needs to be at least half the eccentricity, i.e. to the distance from the fovea (see
+Herman Bouma's 1970 report ([DOI](https://doi.org/10.1038/226177a0))). This is
+roughly in line with the growth of receptive field diameters. But
+careful: despite large distances, any extended regularity in spacing will
+still trigger crowding, as Toni Sareela et al. [demonstrated in 2010](https://doi.org/10.1167/10.10.17).{/mn}
+
+Instead I would like to suggest that peripheral crowding may actually
+work in our favour, as it limits the volume of letter-like signals
+impinging on our reading circuitry, thereby reducing the rate of misreadings.
+While 
+
+But crowding even happens in the fovea, depending on the shapes surrounding the
+target. The effect is much smaller, but still measurable. For instance, when
+given the task below, subjects make fewer mistakes on the left image:
+
+[image]
+
+- These kinds of experiments have made clear that crowding and grouping are really the
+  same effect, and that they interact. For example, LAMINART study.
+
+- Ultimately, it's not something we need to directly worry about when letterfitting,
+  because we are dealing with pairs of letters at once, and we can assume that
+  our algorithm (like a human designer) will fit them in the fovea, without much
+  meddling from texture-detecting neurons.
+
+- The dynamics happen so fast, and timing matters, especially when reading fast. Looking at a word or pair is a very different
+  activity from reading (learning as a child) or reading (as an adult), and that
+  has to be taken into account.
+
+
+
+[The link](https://doi.org/10.1109/CIMSIVP.2011.5949241){pdf}https://hal.archives-ouvertes.fr/hal-00706798/file/miconi_t_11_106.pdf{/pdf}
+
+
+Attention is important to word perception.
 
 <p class="missing">
 A feedback model of attentional effects in the visualcortex
-https://doi.org/10.1109/CIMSIVP.2011.5949241
-https://hal.archives-ouvertes.fr/hal-00706798/file/miconi_t_11_106.pdf
 </p>
 
 <p class="missing">
