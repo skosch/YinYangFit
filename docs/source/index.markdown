@@ -350,65 +350,68 @@ is effectively never used in deep learning, both for historical
 reasons and because [its asymptotic behaviour would slow down
 training](https://en.wikipedia.org/wiki/Vanishing_gradient_problem).{/sn}
 
-A common architectural pattern in the brain is *lateral inhibition*,
-in which neurons within a cortical area suppress their neighbours in
-proportion to their own firing rate. Locally, this allows the most
-active neuron to suppress its neighbours more than those neighbours
-are able to suppress it in return. Lateral inhibition thus sharpens
-peaks and flattens valleys in the activity landscape; it is a simple
-and effective way to boost salient signals relative to weaker ones
-that inevitably arise from the correlations between similarly tuned
-convolution filters. In particular, lateral inhibition sharpens the
-orientation and frequency-scale signals we receive from V1.{sn}Of
-course, its main raison d'être is local contrast normalization, but that seems
-less relevant in the context of digital typography.{/sn}
+This formula is particularly relevant thanks to *lateral inhibition*,
+a common architectural pattern in the brain in which neurons within
+a cortical area suppress their neighbours in proportion to their own
+firing rate. Locally, this allows the most active neuron to suppress
+its neighbours more than those neighbours are able to suppress it in
+return. Lateral inhibition thus sharpens peaks and flattens valleys
+in the activity landscape; it is a simple and effective way to boost
+salient signals relative to the weaker ones that inevitably arise from the
+correlations between similarly tuned convolution filters. In V1,
+lateral inhibition thus sharpens the orientation and frequency-scale signals,
+while also normalizing local contrast.
 
 Because lateral inhibition is a recurrent process that takes time to
 reach a steady state, it is most accurately modelled using a system
 of coupled differential equations which describe the time dependence of each
 neuron's firing rate on its neighbours. Conveniently, however, the
-steady state can also be approximated directly using our hyperbolic ratio
+steady-state activations can also be approximated directly using our hyperbolic ratio
 model, by simply sneaking the neighbouring neurons' activities into the
 denominator:{sn}See [this analysis](https://arxiv.org/pdf/1906.08246.pdf) by
-Jesús Malo et al.'s to understand why this works.{/sn}
+Jesús Malo et al. to understand how this approximation works.{/sn}
 
 $$y_i = \frac{fx_i^k}{\beta^k + \sum_j w_j x_j^k}$$
 
 This approximation is called *divisive normalization*. One can find many
 variations on the above formula in the literature: extra constants,
-extra square roots in the denominator, extra rectifiers, etc., but the
+extra square roots in the denominator, extra rectifiers, etc.; but the
 core idea is always the same.
 
 This raises the challenge of determining the right values for $w_j$, i.e.
 modelling the inhibitive strengths of neighbourly connections. Researchers have
 collected formulas,{sn}In 2011, Tadamasa Sawada and Alexander
-Petrov compiled a [very review](https://doi.org/10.1152/jn.00821.2016)
+Petrov compiled a [very long review](https://doi.org/10.1152/jn.00821.2016)
 of divisive normalization models of V1. To my knowledge, it is still the most
 comprehensive reference today.{/sn} but it is not clear that they capture all of
 the interactions there are. What's more, the last decade of research has
-revealed the importance of feedback from higher-level areas (discussed below), some of which may
-have been mistaken for lateral inhibition within V1. Nevertheless, the
-popularity of divisive normalization models makes it important to understand
-them.
+revealed that some measured behaviours previously ascribed to lateral inhibition
+may instead be the result of feedback from higher-level areas. Nevertheless,
+divisive normalization models are ubiquitous and may be a key ingredient to
+letterfitting models.
 
 {mn}<img src="img/csf.png" alt="Contrast sensitivity function">Contrast
 sensitivity function. The vertical gradient in contrast is uniform
-across the image, but we most easily perceive the mid-frequency
-gratings even at lower contrasts. Note that the red line, shown here
-only for illustrative purposes, may not match the contrast sensitivity
+across the image, but we most easily perceive the mid-frequency gratings
+even at lower contrasts. Note that the red line, shown here only
+for illustrative purposes, may not match the contrast sensitivity
 function you experience at your current viewing distance and screen
-settings.{/mn} Another aspect of vision that appears to manifest
-quite early—the optical limitations of our eye notwithstanding—is
-our specific sensitivity to spatial frequencies. Humans respond
-particularly well to angular frequencies of about 2–5 cycles per
-degree, and unsurprisingly this translates to reading speed as well,
+settings.{/mn} Another aspect of vision that appears to manifest quite
+early during visual processing—setting aside the optical limitations
+of our eye—is our specific sensitivity to spatial frequencies. Humans
+respond particularly well to angular frequencies of about 2–5 cycles
+per degree, and unsurprisingly this translates to reading speed as well,
 *especially* under low-contrast conditions.{sn}See studies like [Chung
 and Tjan (2009)](https://doi.org/10.1167/9.9.16), [Oruç and Landy
 (2006)](https://doi.org/10.1167/6.6.118), and many others.{/sn} This,
-of course, is a key reason why e.g. hairline type is difficult to
-read unless at large sizes and a comparatively wide fit. The reader's
-contrast sensitivity function may in fact contribute to $w_j$; in other words,
-mid-scale signals may outcompete fine-scale signals by default.
+of course, is a key reason why e.g. hairline type is difficult to read
+at smaller-than-huge sizes and a comparatively wide fit. The reader's
+contrast sensitivity function may in fact contribute to $w_j$; in other
+words, mid-scale signals may outcompete fine-scale signals by default.
+Even lacking perfect information about such correlations, we can point
+to the contrast sensitivity function as the most basic biological *raison
+d'être* for optical sizes in typography, and to models based on spatial frequency
+channels as a natural fit for this aspect of letterfitting.
 
 ## Area V2, Portilla-Simoncelli texture correlations, and crowding effects
 
@@ -794,6 +797,7 @@ We are going to explore how this might play out between
 particular letter pairs—but we first need to establish some intuition for the
 neural dynamics at play.
 
+<!--
 A powerful arbiter of perceptual grouping, and key ingredient of
 reading, is *attention*. In a network ruled by feedback loops and
 lateral inhibition, attention is simply a bit of extra activity that
@@ -897,7 +901,7 @@ given the task below, subjects make fewer mistakes on the left image:
 
 
 Attention is important to word perception.
-
+-->
 <p class="missing">
 A feedback model of attentional effects in the visualcortex
 </p>
@@ -957,7 +961,7 @@ Illustrate effect of serifs, italics, x-height and weight
 
 
 ## Why word grouping matters: models of reading
-
+<!--
 So far, we have described some important neural dynamics of the visual cortex,
 between V1 and the early inferotemporal cortex. Experimental results have
 yielded rich hypotheses about the neural architecture of perceptual grouping,
@@ -988,6 +992,7 @@ involved](https://doi.org/10.1371/journal.pone.0041103)). The
 compositional mechanisms described here likely transfer in principle,
 however.{/sn}—all of these are instances of the problem
 of competitive perceptual grouping.
+-->
 
 <p class="missing">
 Describe the latest reading model (overlap-based n-gram hierarchy; Graigner,
@@ -1034,9 +1039,6 @@ contour integration DivN → grouping via fuzzy circular G cells → feedback to
 B → update G cells. Take difference between pair and letters; weight and
 integrate; backprop-fit against existing fonts. Show some results.
 </p>
-
-vicarius
-
 
 <a name="existing_tools"></a>
 
