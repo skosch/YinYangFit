@@ -158,7 +158,7 @@ Of course, skilled typographers consider not only Gestalt perception. Famously,
 a (geometrically) well-fitted pair *rn* will look almost exactly like *m*, which
 is undesirable for reasons a Gestalt optimization algorithm cannot understand.
 But such considerations are rare, at least in the fitting of Latin-script
-letters, so we will deal with the Gestalt first.
+letters, so we will deal with the *gestalten* first.
 
 ## A brief tour through our visual system: area V1
 
@@ -413,6 +413,10 @@ to the contrast sensitivity function as the most basic biological *raison
 d'être* for optical sizes in typography, and to models based on spatial frequency
 channels as a natural fit for this aspect of letterfitting.
 
+We will return to the question of how V1 outputs vary in response to
+changing pair distances in a later section. For now, let's move on to how these
+signals are processed in subsequent areas.
+
 ## Area V2, Portilla-Simoncelli texture correlations, and crowding effects
 
 Area V1 deconstructed the incoming imagery into thousands of edge and line
@@ -422,48 +426,63 @@ basis for the perceptual grouping effect we are interested in.
 Each neuron in V2 takes its input from a combinations of neurons in
 V1,{sn}Again, we will skip here a discussion of the various layers and
 interneurons of V2.{/sn} creating receptive fields that can be twice as
-large as those in V1. The choices of V1 inputs are (nearly) endless, and
-indeed, V2 contains a vast variety of neurons representing all kinds
-of different correlations between V1 neurons: correlations between
-simple cells and complex cells, between cells of different scales and
-orientations, and between cells at different spatial locations.
+large as those in V1. For each V2 neuron, the choices of V1 inputs are (nearly) endless, and
+indeed, V2 contains a vast variety of cells representing all kinds
+of different correlations between V1 signals: correlations between
+V1 simple cells and complex cells, between V1 cells of different scales and
+orientations, and between V1 cells at different spatial locations.
 {mn}<img src="img/v1_v2.png" alt="Connections from V1 to V2">V2 cells take their
 input from a nearby V1 cells, correlating receptive fields across dimensions of space,
 simpleness/complexity, orientation, and spatial frequency scale.{/mn}
 
-Presumably, the ability to respond to correlations of inputs from V1 is
+Presumably, the ability to respond to correlations—not just sums—of inputs from V1 is
 conferred to V2 neurons by their nonlinear activation curve. Consider a toy
 example in which two V1 neurons each fire with rates between 0 and 1.0. Then a V2
 neuron with the following activation curve would fire only if *both* inputs are
 sufficiently active, summing to at least 1.5, thereby implementing correlation:
 
-{mn}Anthony Movshon and Eero Simoncelli [call
-this](10.1101/sqb.2014.79.024844) the "cross term", referring
-to the $ab$ in the $(a+b)^2 = a^2 + 2ab + b^2$ expression that
-arises in simplistic square-based activation models. The dashed line shows the
-deep-learning equivalent expression $\mathrm{ReLU(x-1.0)}$.{/mn} <img
+{mn}Shown on the left is another hyperbolic ratio function.
+But even simple squaring nonlinearities would allow computing
+correlations; Anthony Movshon and Eero Simoncelli [call
+this](10.1101/sqb.2014.79.024844) the "cross term", referring to the
+$ab$ in $(a+b)^2 = a^2 + 2ab + b^2$. Finally, the dashed line shows the
+deep-learning equivalent nonlinearity $\mathrm{ReLU(x-1.0)}$.{/mn} <img
 src="img/v2_nonlinearity.png" alt="Nonlinear activation of V2 neurons
 enables computation of correlations">
 
-Intuitively, many of these correlations may appear to be meaningless.
-As it turns out, however, the local ensemble of many of such correlations
-effectively describes the texture of the scene. In a now
-famous experiment, researchers systematically computed a few dozen
-of such correlations for a given scene. They then synthesized new
-images, by tweaking random pixels until local averages of their V2 correlations
-matched the ones in the original scene:{sn}The first iteration of this
-[idea](https://doi.org/10.1023/A:1026553619983) came about in 1999 and is due to
-to Javier Portilla and Eero Simoncelli. Two decades later, these
-"Portilla-Simoncelli textures" have inspired countless psychological
-studies and attempts to refine the model.{/sn}
+Unfortunately, we have no direct measurements of what each of these neurons respond to most
+strongly. However, we can glean some intuition from trained artificial image
+classification networks: by simply picking out some units in the early convolutional
+layers and iteratively generating input images that maximally excite them, we
+can visualize the variety of local correlations different V2 neurons detect:
 
-{mn}The "image metamer" on the left was
-[generated](https://dx.doi.org/10.1038%2Fnn.2889) by Jeremy Freeman
-and Eero Simoncelli in 2011 based on the same principle of matching
-image statistics. As in the human brain, the authors averaged the statistics over a wider area in the
-periphery than in the fovea. When focusing strictly on the image center, the
-metamer is difficult to distinguish from the original.{/mn} <img
-src="img/metamers.png" alt="From 'Metamers of the ventral stream'">
+{mn}These images were adapted from an [interactive online
+article](https://doi.org/10.23915/distill.00024.002) by Chris Olah and his
+colleagues at OpenAI, who have published lots of neat approaches to explain and
+interpret the inner workings of convolutional networks.{/mn}
+<img src="img/v2_texture_neurons.png" alt="Some kernels from Inception V1"/>
+
+On their own, many of these correlations may appear to be meaningless. Together,
+however, they describe the local texture of an image. As it turns out, a mere
+few dozen of such correlations is sufficient to fool human texture perception:
+we can iteratively generate fake images, starting from white noise, that result
+in the same combination of local averages of these presumed V2 responses as in
+the original image.{sn}The first iteration of this
+[idea](https://doi.org/10.1023/A:1026553619983) came about in 1999, long before
+the heyday of convolutional deep nets, and is due to to Javier Portilla and Eero
+Simoncelli. Two decades later, these "Portilla-Simoncelli textures" have
+inspired countless psychological studies and attempts to refine the model.{/sn} If the local averaging takes place over a large area, as is
+the case in the visual periphery, this can result in very distorted
+imagery that nonetheless appears uncannily real:
+
+{mn}The "image metamer" shown here was
+[generated](https://dx.doi.org/10.1038%2Fnn.2889) by Jeremy Freeman and Eero
+Simoncelli in 2011 based on the same principle of matching image statistics. As
+in the human brain, the authors averaged the statistics over a wider area in the
+periphery than in the fovea. When focusing strictly on the image center (best viewed
+closely or after zooming in), the metamer is difficult to distinguish from the
+original.{/mn} <img src="img/metamers.png" alt="From 'Metamers of the ventral
+stream'">
 
 As evident here, a mere approximation of these
 averaged image statistics measured by V2 is enough to simulate,
@@ -472,14 +491,15 @@ after all, higher-level areas (here, V4) precisely respond to
 particular configurations of such V2 neurons, so synthesizing images
 which evoke similar V2 activations will also result in similar
 higher-level perceptions, even if the actual input signals are quite
-different.{sn}One could think of this as the inverse of an [adversarial
+different.{sn}One could think of this as the bizarro-version of an [adversarial
 input](https://en.wikipedia.org/wiki/Adversarial_machine_learning).{/sn}
 
 That V2 neurons so effectively describe local image statistics presents
 us with a first opportunity to reify a heretofore vague concept into
 something concrete and computable: namely, that "rhythm" or
 "balance" between black and white translates to correlations between V1
-responses. And indeed, this appears to be possible:
+responses. And indeed, the uniformity of V2 statistics seems to be key to our perception of
+a texture as "even" or "continuous":
 
 {mn}Here, Javier Portilla and Eero Simoncelli demonstrated how a set of V2 statistics
 computed and averaged over an image of text could be used to extrapolate
@@ -493,30 +513,46 @@ src="img/text_v2_texture.png" alt="Texture extension on image of text.
 From Portilla and Simoncelli, 2000.">
 
 We may be tempted to exploit this effect to build a simple letterfitting
-strategy in which we iteratively adjust pair distances in an image of
-text until a chosen set of V2 responses is nice and uniform across
-the entire image. And indeed, I believe this would be the most
+strategy in which we iteratively adjust pair distances within an
+image of text until a chosen set of V2 responses is nice and uniform
+across the entire image. And indeed, this would probably be the most
 effective and biologically faithful approach to achieve a perfectly even
-typographic "colour". However, it would likely create *too* even of a colour, at
-the expense of the readability of letters and words. There simply is no getting around understanding the
+typographic "colour". Unfortunately, in shifting letters to optimize
+solely for overall colour, the algorithm would disfigure the *gestalten*
+of individual words, at times rendering them illegible. With proper
+letterfitting, there simply is no getting around understanding the
 grouping mechanisms that rule our perception of shapes.
 
-Still, V2 statistics matter. Not only might they serve as a very useful tool
-to optimize visual consistency during the type design process itself—a
-topic for another research project!—but they are intimately related to
-perceptual grouping through a phenomenon called *crowding*, which we will
-address later.
+When V2 neurons detect texture-like correlations between neighbouring V1
+neurons, they tend to return inhibitive feedback signals, especially to the V1
+neurons in the center. This kind of "surround suppression", which acts in
+addition to the lateral inhibition between V1 cells discussed above, helps mute
+V1 activity inside similarly-textured areas.{sn}One way to explore potential
+neural architectures to accomplish this is via computational modelling; see e.g.
+experiments like [this one](https://dx.doi.org/10.1038%2Fnn.4128) by Ruben
+Coen-Cagli et al.{/sn} Because this mechanism *leasts* affects the boundaries
+between differently-textured surfaces, it allows us to perceive the outlines of
+textured objects even when those are weaker (in terms of raw V1 responses) than
+the textures themselves: think of a Zebra on the savanna, or of a cluster of
+regular strokes on a white background—perhaps a word on a page!
 
-<!--
-<p class="missing">
-Surround suppression from uniform textures (Coen-Cagli et al., etc.)
-</p>
--->
+<img src="img/surround_suppression.png" alt="surround suppression example" />
+
+This surround suppression therefore is a kind of early perceptual grouping
+mechanism.{sn}Another way to think of this, from the perspective of [predictive
+coding](https://en.wikipedia.org/wiki/Predictive_coding), is as compression of
+redundant signals, as Laurence Aitchison and Máté Lengyel [have pointed
+out](https://dx.doi.org/10.1016%2Fj.conb.2017.08.010).{/sn} The strength of the
+segmentation certainly depends greatly on the scale, pattern, and contrast of
+the objects involved, so it is difficult to say to what degree it affects the
+perception of words. But inhibitive (as well as facilitatory) feedback is likely
+present between higher-level brain areas as well, and the corresponding dynamics are implicated in other grouping-related
+phenomena as well, such as *crowding*, which we will address later.
 
 ## Contour integration and V1 feedback
 
-Not all V2 neurons respond to peculiar V1 correlations expressing elements of
-texture. Some pick up on more obviously salient signals, such as continuous
+Not all V2 neurons respond to such peculiar V1 correlations, expressing elements of
+texture. Some pick up on signals with more human-interpretable salience, such as continuous
 edges and lines. Experiments suggest that they do so by responding to V1 complex
 cells that co-align:
 
@@ -524,7 +560,7 @@ cells that co-align:
 orientation (the distribution in frequency scales is ignored here).
 Note that the number of V1 cells is exaggerated for effect. This neuron
 responds to collinear V1 activations suggesting the presence of a
-horizontal contour, even if curved (as in the sample shown). It may be inhibited by parallel
+horizontal contour, even if curved (see the gray stroke in the sample shown). It may be inhibited by parallel
 flanking contours and perpendicular contours, although this is less
 clear. This pattern has been called "association field", "bipole",
 and many other names in papers going back to the 1990s.{/mn} <img src="img/v2_contour_integration.png"
@@ -532,17 +568,15 @@ alt="Receptive fields of a V2 contour integration neuron">
 
 This allows these V2 cells to detect continous contours, even if these
 contours are curved or interrupted.{sn}Two studies showing this most clearly are by [Minggui Chen et al. in 2014](https://doi.org/10.1016/j.neuron.2014.03.023) and by [Rujia Chen et al. in 2017](https://doi.org/10.1016/j.neuron.2017.11.004).{/sn} Interrupted contours are a constant
-challenge to the vision system: not only can the edges of an object be
-occluded (e.g. tree branches in front of a mountain), but our retina is
-carpeted with a spider web of light-scattering nerve bundles and capillaries.{sn}Not to mention our
+challenge to the vision system: the edges of an object can be
+occluded not only by other objects—think tree branches in front of a mountain—but also by the spider web of light-scattering
+nerve bundles and capillaries that carpet our retina.{sn}Not to mention our
 [blind spot](https://en.wikipedia.org/wiki/Blind_spot_(vision)).{/sn}
-Contour-integrating V2 cells therefore allow us to perceive contours even where we cannot
-actually see them.
+Contour-integrating V2 cells help us perceive contours even where we cannot
+actually see them. (Of course, the same applies to texture integration across
+space.)
 
-{mn}<img src="img/contour_integration_example.png" alt="Contour
-integration example">Typical contour integration test image. Adapted
-from [Roudaia et al.](https://doi.org/10.3389/fpsyg.2013.00356),
-2013.{/mn} Having thus detected a piece of contour, the V2 neuron
+Having thus detected a piece of contour, the V2 neuron
 now sends an amplifying signal to all of its V1 inputs, which
 in turn increases the input to the V2 cell itself, creating a
 positive feedback loop between V1 and V2. Crucially, however,
@@ -551,27 +585,33 @@ does not induce activity in other inputs (and may even suppress
 them).{sn}Physiologically, this kind of modulatory amplification may be
 related to increased spike synchrony between neurons, as explored in
 [this 2016 study](https://doi.org/10.1152/jn.01142.2015) by Wagatsuma et
-al.{/sn} Thanks to this feedback loop, contiguous contours pop out to
+al.{/sn} {mn}<img src="img/contour_integration_example.png" alt="Contour
+integration example">Typical contour integration test image demonstrating
+contour pop-out. Adapted
+from [Roudaia et al.](https://doi.org/10.3389/fpsyg.2013.00356),
+2013.{/mn} Thanks to this feedback loop, contiguous contours pop out to
 us perceptually in a matter of milliseconds, while non-contour features
 (like the dot in the illustration below) do not:
 
 <img src="img/v2_contour_integration_2.png">
 
-This kind of feedback loop is not only a key ingredient in
-the perceptual grouping mechanism we will discuss below but, as we will see, a
-primitive grouping mechanism of its own.
+This kind of feedback loop is a simple grouping mechanism of its own, and
+responsible for many (though not all) observations of *prägnanz* due to
+collinearity. As we will see below, however, it is also an important ingredient in
+letter and word perception.
+
 
 ## V4 and higher-level areas
 
-The next area of the visual cortex, area
-V4,{sn}This discussion is limited to the [ventral
+The next area of the visual cortex, area V4,{sn}V4 is not the only
+area connected to V2, but this discussion is limited to the [ventral
 stream](https://en.wikipedia.org/wiki/Two-streams_hypothesis), i.e.
 parts of the visual system dedicated to object recognition. The dorsal
-stream, on the other hand, comprises areas concerned with keeping track
-of our environment and our position in it; it appears to be irrelevant
-to letterfitting.{/sn} mirrors the architecture of V2 in that it performs a set of
-convolutions detecting correlations between its inputs. Arguably, V4 is just
-like V2, only with larger receptive fields. 
+stream, on the other hand, comprises areas concerned with keeping
+track of our environment and our position in it; it appears to be less
+relevant to letterfitting.{/sn} mirrors the architecture of V2 in that
+it performs a set of convolutions detecting correlations between its
+inputs. Arguably, V4 is just like V2, only with larger receptive fields.
 
 Just as in V2, two categories of neurons are particularly noteworthy: texture
 detectors and contour detectors.{sn}Our understanding of V4 is primarily owed to
@@ -612,7 +652,7 @@ popularized by [Gaetano Kanizsa](https://en.wikipedia.org/wiki/Gaetano_Kanizsa),
 
 Even though the sides of the square are only weakly detected, the sum
 total of activations is enough to allow us to perceive the presence of a
-square although V1 detects no edges at the square's sides at all.
+square. Meanwhile, V1 detects no edges at the square's sides at all.
 
 ## Grouping via border ownership
 
@@ -621,10 +661,11 @@ of contours as coherent objects in three-dimensional space, even though
 our visual system only has access to a two-dimensional projection.
 As the illusory square above demonstrates, our vision system manages
 to do this even if in the absence of binocular disparity cues, and
-despite interrupted contours and occluded objects. To accomplish this,
-V4 signals that likely constitute an object need to prevail over others
-that do not. For instance, a square not only excites contour detectors
-centered inside of it (red), but also on the outside (blue):
+despite interrupted contours and occluded objects. To accomplish this, V4 needs
+a mechanism to sift out the signals that, taken together, likely constitute a real object.
+
+For instance, the square not only excites contour fragment detectors centered
+inside of it (red), but also on the outside (blue):
 
 <img src="img/v4_outside.png" alt="V4 respones outside of the square">
 
@@ -632,7 +673,7 @@ Once again, a feedback loop saves the day: the internal (red) neurons
 will almost immediately fire more rapidly, thanks to amplifying
 recurrent signals from the higher-level square detector. The external
 (blue) neurons do not constitute a coherent shape, therefore receive
-such feedback and fire much more slowly as a result:
+no such feedback and fire much more slowly as a result:
 
 <img src="img/v4_it_feedback.png" alt="Feedback between V4 and IT">
 
@@ -647,21 +688,21 @@ discussed, detect the presence of edges based on V1 complex cells. While
 they are agnostic to the edge's contrast polarity, B-cells fire only if
 they are on one particular side of an object. For instance, the B-cell
 whose receptive field is marked in red below only detects edges on the
-*left side* of objects, as indicated by the small protrusion pointing
-toward the object.{sn}Almost everything we know about border ownership
+*left side* of objects, as indicated here by the small protrusion pointing
+toward the right.{sn}Almost everything we know about border ownership
 networks is owed to Johns Hopkins researcher Rüdiger von der Heydt and
 his students.{/sn} It responds to stimuli 1 and 2, but not 3 and 4:
 
 <img src="img/b_cell_1.png" alt="B cell illustration">
 
-The B-cell only sees an edge. It cannot know which part of the object it is
+This is remarkable. After all, the B-cell only sees an edge. It cannot know which part of the object it is
 on; its receptive field is much too small. So its activity
 must be gated by a neuron which does: namely, one of our
 higher-level V4 neurons.{sn}Signals from other V2 neurons
 are unlikely, because horizontal connections conduct [too
 slowly](https://dx.doi.org/10.1152%2Fjn.00928.2010) to explain
 the lab-measured response times of B-cells.{/sn} The object owning the edge
-fragment could have any shape and size, so all active V4
+fragment could have any shape and size, so *all* active V4
 neurons whose contour templates coincide with the edge fragment send
 amplifying signals to our B-cell. In turn, our B-cell directly contributes to their
 activation, establishing a positive feedback loop:
@@ -701,7 +742,7 @@ therefore on par with the light circle, it is intuitively obvious that
 the circle dominates, and even appears to lie above the black shape.
 As a result, we can confidently predict that humans will perceive the
 circled region as the left side of the circle, and not as the right side
-of the dark area.
+of the dark area. Why is that so?
 
 As it turns out, the vast majority (although not all) of the
 object-centered contour detectors in V4 are either straight or
@@ -709,33 +750,47 @@ convex in shape, with various degrees of curvature. This has
 the profound consequence that convex shapes tend to outcompete
 concave shapes in our perception.
 
-Meanwhile, although the hypothetical square detector served us well
-in the examples above, we actually do not know the population of shape
-detectors in our inferotemporal cortex.
+In addition, overlapping objects create T-shaped junctions where their
+contours meet, as at the top and bottom of the light circle above. In
+such situations, lateral inhibition between V4 neurons tends to enhance
+the upper object's continuous contour, while suppressing the percept of the acute
+angle formed inside the overlapped contour. This interaction helps
+strengthen the impression that the light circle lies in the foreground.{sn}See
+[here](https://doi.org/10.1523/JNEUROSCI.4766-10.2011) for a painstaking study
+of these effects by Brittany Bushnell et al. from the Pasupathy lab.{/sn}
 
-In simulations of perceptual grouping, it is therefore practical not to think
-directly about V4 contours and shape detectors. Instead, a popular approach is
-to work with a population of representative (if fictitious) "grouping cells" or
-G-cells, each of which receives input from an annulus of inward-directed B-cells:{sn}The first to
-run an earnest simulation of this idea were [Edward Craft et al.](https://doi.org/10.1152/jn.00203.2007) in 2011.{/sn}
+Meanwhile, although the hypothetical square detector served us well in
+the examples above, we actually do not know the population of shape
+detectors in our inferotemporal cortex. In simulations of perceptual
+grouping, it is therefore practical not to think directly about V4
+contours and shape detectors. Instead, a popular approach is to
+work with a population of representative (if possibly fictitious)
+"grouping cells" or G-cells, each of which receives input from, and
+in turn feeds back to, a fuzzy annulus of inward-directed B-cells:{sn}The
+first to run a simulation of this idea in earnest were [Edward Craft et
+al.](https://doi.org/10.1152/jn.00203.2007) in 2011.{/sn}
 
 <img src="img/bg_rfs.png" alt="Receptive fields of G cells">
 
-Given that the V4 contour detectors chiefly pick up convex curvatures at
-some eccentricity, this is really quite a reasonable model for whatever
-may truly be going on in our posterior inferotemporal areas.
+Given that the V4 contour detectors chiefly pick up convex curvatures
+at some eccentricity, and circles are as convex as it gets, an this is
+really quite a reasonable model for whatever may truly be going on in
+our posterior inferotemporal areas.
 
-In the square below, a single large-scale G cell centered on the shape
-is excited by inward-directed B-cells on all four sides (red). Inside the
-corners, a series of smaller-scale G cells receive input from two sides (purple,
-blue). 
+To return the square example, consider first a population of coarse-scale G-cells, each of which is connected to
+B-cells that make up a circle about the size of our square. Among such
+coarse-scale G-cells, only the one centered on the square would respond
+noticeably, as it receives input from B-cells on all four sides (red below):
 
 <img src="img/g_responses.png" alt="Sample responses of some G cells">
 
-In many other locations, G-cells are activated by only a few B-cells
-on just one side. This is not enough to evoke a strong activation. In
-addition, we may assume that G-cells compete via local inhibition, such
-that those cells receiving inputs from more (and from nearer) B-cells dominate.
+Finer-scale G-cells would barely respond in most places. They would
+receive a bit of input near the square's edges, but due to their
+nonlinear activation profile would only really light up inside the
+corners, where they receive inputs from B-cells on two sides (purple,
+blue). In addition, we may assume that G-cells compete via local
+inhibition, such that those cells receiving inputs from more (and from
+nearer) B-cells dominate.
 
 Once B-cells and G-cells have settled into an equilibrium, the locus
 of peak responses of G-cells across different scales neatly represents
@@ -745,12 +800,16 @@ the skeleton of the shape, shown on the right:{sn}The technical term for this fe
 <img src="img/g_responses_skeleton.png" alt="Sample responses of some G cells,
 forming a skeleton">
 
-Skeletonization is critical to object recognition, because it allows
-us to match on a shape's underlying geometric structure. Consider, for
-instance, our ability to recognize all four letters with the same ease:
+Skeletonization is critical to object recognition, because it allows us to match
+on a shape's underlying geometric structure, instead of its exact contours.{sn}And indeed, IT neurons appear to respond to skeleton fragments, such that a
+small population of IT neurons suffices to uniquely identify 3D shapes, as
+Chia-Chun Hung and colleagues
+[demonstrated](https://doi.org/10.1016/j.neuron.2012.04.029) in Macaque
+monkeys.{/sn} Consider, for instance, our ability to recognize the following
+four styles of uppercase *E* with the same ease:
 
 {mn}Many different uppercase-E designs exist, but all of them share a
-relationship between the relative location of large-scale G-cell peaks (within
+relationship between the relative locations of large-scale G-cell peaks (within
 the counters) and smaller-scale peaks (at the terminals).{/mn}
 <img src="img/e_skeletons.png" alt="Some skeletons at different scales">
 
@@ -758,30 +817,26 @@ Although the shared features of the skeletons (counters, stems, etc.) appear at
 different scales for different letter shapes, they are present in
 the same configuration for all of them. 
 
-This is true even for letters that are outlined, as V4 contour detector
-neurons respond primarily to the contour, not to the fill. Nevertheless:
-when is a stroke perceived as a contour, and when does it turn into a shape of its
-own right, with contours on either side? With letter weights ranging
-from hairline to ultra-heavy, this is a particularly salient question:
+This is true even for letters that are outlined (last row), as V4
+contour detector neurons respond primarily to the contour, not to the
+fill (or its absence). Still we can ask: when is a stroke perceived as a
+contour, and when does it turn into a shape of its own right, a shape that owns
+contours on either side? With letter weights ranging from hairline to
+ultra-heavy, this is a particularly salient question:
 
 <img src="img/letter_weights.png" alt="A range of letter weights">
 
 The hairline letter is, arguably, too thin to allow readers to clearly perceive
-border ownership of the left and right side of each stem (of course this depends
-on the font size and the contrast sensitivity function, as discussed above). Nevertheless, we can
+border ownership of the left and right side of each stem.{sn}Of course this depends
+on the font size and the contrast sensitivity function, as discussed earlier.{/sn} Nevertheless, we can
 evidently recognize the letter, so it follows that thin lines must be able to excite
-fine-scale G-cells even if the ownership of sides is fuzzy.
+fine-scale G-cells even if the ownership of sides is fuzzy. It is worth
+remembering also, at this point, that G-cells are merely an abstraction. It is
+quite conceivable that some of their biological equivalents are specialized not on
+ring-like shapes but thin, straight contours.{sn}This was explored by Brian Hu
+et al. in a 2017 [simulation](https://dx.doi.org/10.1007%2Fs10827-017-0659-3).{/sn} 
 
 
-<p class="missing">
-Inihibition of accidental contours: [Brittany Bushnell et
-al.](https://dx.doi.org/10.1523%2FJNEUROSCI.4766-10.2011) have reported
-that continuous straight contours inhibit the activation of abutting,
-acute V4 contour detectors, which are typically a side-effect of occlusion.</p>
-
-<p class="missing">
-Serifs and skeleton analogs in sans serifs.
-</p>
 
 ## Attention, crowding, and the spread of activity
 
@@ -1109,3 +1164,5 @@ letter, such that software can automatically find pair distances by simply
 abutting the bubbles. While this isn't technically a letterfitting heuristic at
 all, it's still worth mentioning as a neat idea that could perhaps save
 designers some time. Toshi Omagari has built a [Glyphs plugin](https://github.com/Tosche/BubbleKern).
+
+
