@@ -25,7 +25,7 @@ also to Simon Cozens and others for many valuable discussions.
 <h2 class="nonumber">Abstract</h2>
 Adjusting letter distances to be visually pleasing is a challenging and
 time-consuming task. As existing tools are too primitive to reliably handle the
-infinite variety of typefaces, designers have to mostly rely on their intuitive
+infinite variety of typefaces, designers still need to rely on their intuitive
 judgment.
 I review how letterfitting fits into the current scientific understanding of how
 letters and words are perceived in the brain, and present approximate models
@@ -37,128 +37,130 @@ Designers and developers with an interest in neuroaesthetics.
 <h2 class="nonumber">Epistemic status: provisional</h2> 
 This article is based on a survey of hundreds of peer-reviewed articles, 
 and in line with mainstream ideas in vision and neuroscience research. It is the
-product of nearly a year of work and countless revisions. That said, even the
+product of many months of work and countless revisions. That said, even the
 in-vivo evidence for the suggested models is often indirect or circumstantial.
 Nothing in this article should be construed as final. I welcome corrections!  
 
-## Introduction: form follows function, beauty follows legibility
+## Introduction: 
 
-Letterfitting refers to the process of adjusting the distances between
-pairs of letters{sn}I use the word "letter" very liberally; the more
-general term is [glyph](https://en.wikipedia.org/wiki/Glyph).{/sn} during
-typeface design. {mn}<img src="img/spacingkerning.png" alt="Spacing and
-kerning"><br> Red vertical bars show side bearings, blue vertical bar shows
-a negative kern.{/mn} It's often referred to as "spacing and kerning",
-because pair distances are the sum of fixed amounts of space around
-every letter (so-called *side bearings*) and additional adjustment
-values for individual pairs (so-called *kerns*). Quality fonts often
-contain thousands of hand-kerned pairs that undergo weeks of testing and
-refinement.
+Letterfitting refers to the process of adjusting the distances between pairs of
+letters{sn}I use the word "letter" very liberally; the more general term is
+[glyph](https://en.wikipedia.org/wiki/Glyph).{/sn} during typeface design.
+{mn}<img src="img/spacingkerning.png" alt="Spacing and kerning"><br> Red
+vertical bars show side bearings, blue vertical bar shows a negative kern.{/mn}
+It's often referred to as "spacing and kerning", because pair distances are the
+sum of fixed amounts of space around every letter (so-called *side bearings*)
+and additional adjustment values for individual pairs (so-called *kerns*).
+Quality fonts often contain thousands of hand-kerned pairs that undergo weeks of
+testing and refinement, all by hand—because surprisingly, there still are no
+automated solutions that reliably do the job.{sn}And not for lack of trying:
+many approaches exist, the most popular of which are listed in the
+[appendix](#existing_tools) below.{/sn}
 
-Some would say that a good fit is simply the result of the designer's
-personal intuition for beauty.{sn}Type designers who adjust pair
-distances by hand often feel that there seems to be no right
-answer. In those moments, letterfitting can feel quite arbitrary.
-If you have not experienced this yourself, the venerable [kern
-game](https://type.method.ac/) lets you try your hand on existing
-fonts.{/sn} Others have invoked the aesthetics of an "even colour",
-i.e. a printed page with a uniform texture and no noticeable blobs of
-black or white. Meanwhile, Frank Blokland has argued{sn}See his [PhD
-thesis](https://www.lettermodel.org/).{/sn} that the distances between
-letter stems are mainly a holdover from the early days of printing,
-when the measurements of cast type were the result of practical
-considerations.
+The heart of the problem: typographers can't even agree what letterfitting
+*does*. Some say that it's about achieving a certain *balance* between letter
+pairs, the judgment of which is to spring from the designer's personal aesthetic
+intuition.{sn}It goes without saying that as for the design decisions of professional
+typographers, *non disputandum est*. This is the premise behind the
+venerable [kern game](https://type.method.ac/).{/sn} Others say that the goal is
+to produce an "even colour", i.e. a printed page with a uniform texture and
+without noticeable blobs of black or white. Yet others have insinuated{sn}First
+and foremost Frank Blokland, who in his [PhD
+thesis](https://www.lettermodel.org/) investigated how practical considerations
+in the Renaissance printing trade may have led to a standardization of font metrics.{/sn}
+that the distances between letter stems are really quite arbitrary, and that we are simply
+conditioned by existing fonts to (prefer to) read letters at particular pair distances.
 
-These ideas aren't wrong, but they're underpowered. None have led to
-automated letterfitting algorithms{sn}I've listed the most
-popular existing attempts in the [appendix](#existing_tools).{/sn}
-that reliably reproduce the hand-tweaked pair distances in existing
-fonts—from hairline slab serifs to broad-nib italics, from captions to headline
-sizes, and from Latin to Khmer.
+All three of the above descriptions seem to point to the same
+story: that skilled designers achieve a pleasing visual balance between letter pairs
+because they have honed their perception through the careful study of existing
+fonts, and that perfectly balanced letter pairs also happen to result in perfect
+legibility and a perfectly even typographic colour. Does that story hold water?
 
-So let's start from square one: with a solid model of how reading
-works in the brain. Let's climb on the giant shoulders of generations
-of vision researchers and begin to understand what vague ideas like
-"black-white balance" actually mean in our visual cortex, and how the vague
-concept of "beauty" aligns (or not) with legibility, i.e. the ability of the
-printed word shape to elicit neural responses that quickly and reliably evoke
-the perception of the right word.
+As it turns out, research suggests that colour, balance, and legibility have
+*different* neural correlates. They are often in rough agreement, but optimizing
+for one does not guarantee a good outcome for the others. Evenness of colour is
+a question of texture perception; quality of balance is a question of
+competitive inhibition between perceptual gestalt groups; and legibility is a
+question of the reliable detection of letters and n-grams from pre-processed
+visual features. On top of that, all of the above are affected differently by
+font size and colour contrast.
 
-The connection between type design and legibility is self-evident
-and well-studied.{sn}Type legend Charles Bigelow recently
-compiled a [comprehensive review of empirical legibility
-studies](https://www.sciencedirect.com/science/article/pii/S004269891930
-1087), covering many important concepts including weight and optical
-sizing.{/sn} But even though psychologists have published empirical
-findings galore, we are only just beginning to understand the neural
-architectures which explain them, and which will one day power the type
-design tools of the future. For vision researchers looking for ways
-to test neural models of shape and Gestalt perception, the thousands
-of high-quality, hand-fitted fonts in existence today present a rich
-testing ground—and a completely underappreciated one. I hope that this
-article will inspire both typographers and vision researchers to more
-deeply explore the connection between letterfitting and perception.
+If we want to develop robust, universal automatic letterfitting <nobr>algorithms—</nobr>algorithms that
+work on both hairline slab serifs and broad-nib italics, on both captions and headline
+sizes, on both Latin and Hangul—then we need to build better intuitions for the neural
+dynamics of our vision system. That's what this article is about.
 
+In a way, it is surprising that type design and cognitive psychology are so
+divorced from one another.{sn}The studies that do exist are almost exclusively
+empirical (see e.g. the [review of legibility
+studies](https://www.sciencedirect.com/science/article/pii/S004269891930 1087)
+compiled recently by type legend Charles Bigelow) but have no explanatory power.
+In fact, the typesetting of most preprints suggests that cognitive scientists
+are altogether unaware of typography as a discipline.{/sn} Computational models
+of vision and reading need to be tested against ground-truth data, of which
+existing fonts are a rich, reliable, and free source. Conversely, type designers
+could massively benefit from tools that emulate aspects of human vision. I hope
+to see much more cross-fertilization between the two fields in the future.
 
-## Letterfitting as perceptual grouping
+## A letterfitter's objectives 
 
-Letterfitting means making a compromise between the legibility of letters and
-the integrity of words. Intuitively, moving letters further apart makes it easier to
-recognize them:
+Before we dive into the science, let's review how the three ideas fit into
+a broader cognitive science context.
 
-<img src="img/distance_letter_identification.png" alt="Letter identifiability is low for extremely tight pairs and high for very loose pairs.">
+Typographic colour refers to the visual texture created by the ink on the page.
+Most obviously, a darker colour is the result of bolder, narrower, more
+tightly-fit type. But the line spacing (leading) contributes to a document's
+characteristic texture as well, and so does the angle of the letters (i.e.
+upright vs. italic) and, ultimately, the design of the individual letters.
+Some design teachers like to give colour-based letterfitting prescriptions, like
+"match the black and the white" or "equalize the negative space in the counters with the negative space in the
+gaps."{sn}Like horoscopes, these rules only work when they are formulated vaguely enough to
+be useless.{/sn} As we will see later, these heuristics are actually a primitive version of the kind
+of spatial frequency correlations that form the basis of texture perception.
 
-Letter identifiability is important. But to form a *word*, letters need to stay
-close enough to allow our visual system to perceive them as a group.
+The brain has a general tendency to group visual features into perceptually coherent objects.
+Meanwhile, the typographer's job is to group letters into perceptually coherent words.
+When the letters are fitted poorly, the perceptual grouping into words will
+fail: this we call poor balance.
 
-Perceptual grouping is a complicated process. The neurons that group
-visual signals into coherent objects operate at different scales, and
-they compete with one another. When one pair of letters is tighter than
-the next, perceptual grouping will bind the first pair tightly together, at the
-expense of the second. Consider the following example:
-
+{mn}Here, the saturation of the coloured blobs indicates the intensity of
+grouping at different scales. Small perceptual groups tend to outcompete larger
+ones, so unless the grouping is balanced, the word will be fragmented. The poorly fitted word in the last column triggers the perception of two separate objects, namely the single letter c and a pair at.{/mn}
 <img src="img/grouping_relativity.png" alt="Illustration of the importance of consistency of fit vs absolute distances.">
-
-In the first column, the well-fitted word is perceptually grouped into
-a single object. In the middle column, the loosely fitted word is still
-perceived as an object, but it has to compete with the perception of
-its constituent letters as independent objects. Finally, the poorly
-fitted word in the last column triggers the perception of *two* separate
-objects, namely the single letter *c* and a pair *at*.
-
-The primary objective of a good fit is to avoid the latter situation.
-When some pairs group more strongly than others, words are fragmented
-into separate perceptual objects, which makes reading difficult. The
-secondary objective of a good fit is to make the fit as tight as
-possible without hampering the identifiability of each letter.
 
 Perceptual grouping networks are a very fundamental piece of our vision
 circuitry, and not exclusive to reading. Researchers have known about them for a
-long time, too: psychologists over a century ago described our
-tendency to recognize the sum, not the parts, of arrangements of
-shapes:{sn}Often listed as the [Gestalt laws of grouping](https://en.wikipedia.org/wiki/Principles_of_grouping), or the principle of [Prägnanz](https://en.wikipedia.org/wiki/Gestalt_psychology#Pr%C3%A4gnanz).{/sn}
+long time, too: psychologists over a century ago described our tendency to
+recognize the sum, not the parts, of arrangements of shapes:{mn}These are often
+listed as the [Gestalt laws of
+grouping](https://en.wikipedia.org/wiki/Principles_of_grouping), or the
+principle of
+[Prägnanz](https://en.wikipedia.org/wiki/Gestalt_psychology#Pr%C3%A4gnanz).
+Because these early Gestalt psychologists knew little about the brain's vision
+system, they hypothesized about their findings using sometimes abstruse
+metaphors drawn from electromagnetics, fluid mechanics, and even personality
+studies—in fact, their vocabulary of lights, shadows, and force fields closely
+matched that often employed to justify today's letterfitting heuristics. I recommend
+Johan Wagemans et al.'s fantastic two-part historical review of Gestalt
+psychology, published in 2012 ([part
+I](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3482144/), [part
+II](https://dx.doi.org/10.1037%2Fa0029334)).{/mn} <img
+src="img/gestalt_laws.png" alt="Illustration of gestalt laws" />
 
-<img src="img/gestalt_laws.png" alt="Illustration of gestalt laws" />
-
-Because these early Gestalt psychologists knew little about the brain's
-vision system, they hypothesized about their findings using sometimes
-abstruse metaphors drawn from electromagnetics, fluid mechanics,
-and even personality studies—in fact, their vocabulary of lights,
-shadows, and force fields closely matched that employed to justify
-today's letterfitting heuristics.{sn}I recommend Johan Wagemans et al.'s
-fantastic two-part historical review of Gestalt psychology, published in
-2012 ([part I](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3482144/),
-[part II](https://dx.doi.org/10.1037%2Fa0029334)).{/sn} Still,
-perceptual grouping is very real, very necessary for survival in
-our natural environment, a key determinant of what we perceive as
-beautiful, and doubtlessly essential to word perception. And to model it
-accurately, we need to understand the underlying neural architectures.
-
-Of course, skilled typographers consider not only Gestalt perception. Famously,
-a (geometrically) well-fitted pair *rn* will look almost exactly like *m*, which
-is undesirable for reasons a Gestalt optimization algorithm cannot understand.
-But such considerations are rare, at least in the fitting of Latin-script
-letters, so we will deal with the *gestalten* first.
+Finally, legibility. Children first learn to recognize individual letters as
+physical objects, then learn to associate these objects with sounds, then learn
+to reproduce the sounds letter by letter, and finally become skilled readers by
+developing neurons that detect, as a shortcut, combinations of letters directly.
+Each one of these developmental steps builds on the next by repurposing a
+different area of the brain. A type designer manipulating a letter shape will
+perceive it as a geometric object (like a child), but an adult reading the
+newspaper perceives combinations of letters in parallel (or almost in parallel)
+using entirely unrelated neural circuitry. These letter-combination-detecting
+neurons work best, of course, on letter pairs that resemble those seen in the
+past. It would be unwise to ignore this conditioning effect, but fortunately we can
+fit primarily for Gestalt and still achieve great legibility simply because
+other fonts were designed by humans, and therefore fit, by and large, for Gestalt as well.
 
 ## A brief tour through our visual system: area V1
 
@@ -836,9 +838,25 @@ quite conceivable that some of their biological equivalents are specialized not 
 ring-like shapes but thin, straight contours.{sn}This was explored by Brian Hu
 et al. in a 2017 [simulation](https://dx.doi.org/10.1007%2Fs10827-017-0659-3).{/sn} 
 
-
-
 ## Attention, crowding, and the spread of activity
+
+If medial-axis skeletons are the [raw preprocessed ingredient] of object
+perception, then 
+
+- Purpose of this section: to gain an appreciation for the conflict between
+  wanting activity to spread across the whole word, but also not smush nearby
+  letter's stems together, thereby reducing their recognition.
+
+- Skeletons are the fuel of object recognition.
+
+cooking -> prepped ingredients
+machining -> 
+winemaking -> grapes -> must -> wine
+bread -> grain -> flour -> bread
+booze -> grain -> mash -> distillation
+
+
+raw data -> gets transformed -> then properly recognized
 
 If letters and words are perceived based on their skeletons, and the
 main objective of letterfitting is to ensure reliable detection of
