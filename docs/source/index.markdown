@@ -110,7 +110,7 @@ a broader cognitive science context.
 
 Typographic colour refers to the visual texture created by the ink on the page.
 Most obviously, a darker colour is the result of bolder, narrower, more
-tightly-fit type. But the line spacing (leading) contributes to a document's
+tightly-fit type. But the line spacing contributes to a document's
 characteristic texture as well, and so does the angle of the letters (i.e.
 upright vs. italic) and, ultimately, the design of the individual letters.
 Some design teachers like to give colour-based letterfitting prescriptions, like
@@ -119,7 +119,7 @@ gaps."{sn}Like horoscopes, these rules only work when they are formulated vaguel
 be useless.{/sn} As we will see later, these heuristics are actually a primitive version of the kind
 of spatial frequency correlations that form the basis of texture perception.
 
-The brain has a general tendency to group visual features into perceptually coherent objects.
+Next, balance. The brain has a general tendency to group visual features into perceptually coherent objects.
 Meanwhile, the typographer's job is to group letters into perceptually coherent words.
 When the letters are fitted poorly, the perceptual grouping into words will
 fail: this we call poor balance.
@@ -169,33 +169,41 @@ which represents the incoming visual imagery at a different level of
 abstraction. Anything we see—landscapes, patterns, text—activates neurons in
 each one of these brain areas. While neurons in the lower-level areas respond to
 concrete details in the visual input, neurons in higher-level areas respond to
-the presence of particular configurations of such details. This allows us to
-simultaneously experience the raw visual qualia *and* comprehend what we see on
-a more abstract level. 
+the presence of particular configurations of such details. Both low- and
+higher-level areas are involved in perception, allowing us to simultaneously
+experience the raw visual qualia *and* comprehend what we see on a more abstract
+level.
 
 Whether we are looking at an apple (and recognizing it as such), a tree
-(and recognizing it as such), or a word (and reading it), the same
-visual circuitry is at work—with the exception that the highest-level neurons responsible for
-recognizing apples and trees are located in a different brain area than those
-dedicated to recognizing letters and words.
+(and recognizing it as such), or a word (and reading it)–most of of the neurons
+involved are the same.
 
+{mn} All visual input activates several pieces of visual cortex before reaching
+dedicated object-detection circuitry such as the Visual Word Form Area (VWFA).
+We will discuss mainly V1, V2, and V4 (the so-called [ventral
+stream](https://en.wikipedia.org/wiki/Two-streams_hypothesis)); many other
+regions exist that are dedicated to visual tasks less relevant to reading, such
+as keeping track of moving objects. This big-picture view of reading was perhaps
+most clearly articulated in [this 2003
+article](https://doi.org/10.1016/S1364-6613(03)00134-7) by the prolific reading
+researchers McCandliss, Cohen and Dehaene. As we will discuss later, the VWFA is
+actually multiple areas.{/mn}
 <img src="img/vision_model.png" alt="Vision model">
 
-Many readers may have had some exposure, however superficial, to the
-concept of deep convolutional networks. It is dangerously tempting
-to conceptualize the architecture of the visual cortex as such a
-network: yes, raw visual input enters at the bottom, undergoes
-processing through multiple layers, then comes out the top as a neat
-classification of a word. Arguably, convolution even plays a big part.
+Many readers may have had some exposure, however superficial, to the concept of
+deep convolutional networks. It is tempting to conceptualize the
+architecture of the visual cortex as such a network: yes, raw visual input
+enters at the bottom, undergoes convolution through multiple layers, then comes
+out the top as a neat classification of a word. 
 But perception, and perceptual grouping in particular, is a dynamic
 process. It is not a computation with input and output, but a dance of
 electrical activity that evolves through time.{sn}[This interactive
 visualization](http://nxxcxx.github.io/Neural-Network/) is far from
 realistic but a much more useful visual metaphor than feed-forward deep
-learning diagrams.{/sn} At high resolution, it takes huge computational
-resources to simulate these dynamics accurately. The best we can hope
-for, here, is a rough sketch to guide our intutions as we think about
-better letterfitting models.
+learning diagrams.{/sn} At high resolution, it unfortunately takes unworkably large computational
+resources to simulate these dynamics accurately, so feed-forward convolutional nets may well
+end up playing a role in the design of letterfitting models, but for now, the
+goal is to gain an appreciation for our neural feedback loops.
 
 With that in mind, let's go on a brief tour through our visual system.
 
@@ -246,36 +254,9 @@ cat](https://www.youtube.com/watch?v=Yoo4GWiAx94)). The researchers went
 on to win a Nobel Prize for their experiments.{/sn}
 In software models, the filtering operation performed by
 simple cells is typically implemented as Fourier-domain
-multiplication with a bank of complex band-pass filters $G(s, o)$, where $s$ is
-the frequency scale and $o$ the orientation.{sn}[Gabor
-patches](https://en.wikipedia.org/wiki/Gabor_filter) are most
-commonly used, but many alternative models with better mathematical properties are
-available.{/sn} This set of convolutions turns the two-dimensional input image (width × height) into a
-four-dimensional tensor of complex numbers (width × height × spatial
-frequency scales × orientations), the magnitude and phase angle of
-which capture the activation of simple cells $S_\mathrm{V1}$ at every
-location:
-
-$$
-S_\mathrm{V1}(x, y, s, o) = \mathcal{F}^{-1}(\mathcal{F}(I(x, y)) \mathcal{F}(G(s, o))),
-$$
-
-{mn}<img src="img/complex_value.png">{/mn}
-
-where $\mathcal{F}$ is the Fourier transform. For instance, to retrieve
-wthe activation of representative simple cells at phases 0°, 90°,
-w180° and 270°, one ould half-wave-rectify as follows:
-
-$$
-\begin{aligned}
-S_{\mathrm{V1, 0\degree}}(x, y, s, o) &= |\mathrm{Re}(S_1(x, y, s, o)| \\
-S_{\mathrm{V1, 90\degree}}(x, y, s, o) &= |\mathrm{Im}(S_1(x, y, s, o)| \\
-S_{\mathrm{V1, 180\degree}}(x, y, s, o) &= |-\mathrm{Re}(S_1(x, y, s, o)| \\
-S_{\mathrm{V1, 270\degree}}(x, y, s, o) &= |-\mathrm{Im}(S_1(x, y, s, o)| \\
-\end{aligned}
-$$
-
-This operation yields responses like these:
+multiplication with a bank of complex band-pass filters, each of which is tuned
+to a particular orientation and spatial frequency. Given a dark vertical bar as
+visual input, sets of similarly-tuned V1 simple cells might respond as such:
 
 <img src="img/single_i_example.png" />
 
@@ -292,8 +273,8 @@ index](https://hal.archives-ouvertes.fr/hal-00660536/document)
 in response to their input as well.{/sn} Thanks to their phase
 invariance, complex cells can extract key structural information at
 the expense of colour and contrast data. They respond wherever the frequency scale and
-orientation matches their tuning. The following image shows complex-cell
-responses at different scales, summed across orientations:
+orientation matches their tuning. In the following picture, all complex cell responses of
+a given frequency scale are shown together, regardless of the orientation:
 
 <img src="img/single_i_complex_example.png" />
 
@@ -317,80 +298,15 @@ experience of vision and to the activity of higher-level brain regions.
 For reading (and thus letterfitting) purposes, however, we will focus on
 the responses of complex cells.
 
-Traditionally, complex cells were thought to sum the outputs of nearby simple
-cells of equal scale and orientation. This is now known to be a gross
-oversimplification. In software, a summation-like approach is nevertheless taken to
-approximate the output of complex cells $C_{\mathrm{V1}}$, namely a simple computation of the
-absolute magnitude of the complex tensor:
-
-$$
-C_\mathrm{V1}(x, y, s, o) = |S_\mathrm{V1}(x, y, s, o)|^2
-$$
-
-This is often called the *local energy*. The squaring operation shown
-here is often used in the literature to approximate the nonlinear
-behaviour of complex cells in particular.{mn}<img src="img/hra.png"
-alt="HRA"> Solid line: hyperbolic ratio curve, a.k.a. [Hill
-function](https://en.wikipedia.org/wiki/Hill_equation_(biochemistry))
-or Naka-Rushton function. Dotted line: monotonic polynomial (e.g.
-$x^2$).{/mn} Of course, this is a rather unrealistic (if practical)
-choice. In a real cells, the firing rate will level off after the input
-has been increased beyond some limit. A popular model for this is the
-hyperbolic ratio sigmoid
-
-$$y = \frac{fx^k}{\beta^k + x^k}$$
-
-The $f$ scales the curve vertically, $k$ makes the kink steeper, and
-$\beta$ shifts the threshold to the right. Consider how the numerator
-increases the firing rate, and the denominator decreases it. For
-relatively small values of $x$, $\beta^k$ dominates the denominator,
-yielding a scaled-down version of $fx^k$ (values of about 2 or 3
-are common for $k$, in agreement with the square often used). But
-once $x^k$ gets large enough, $\beta^k$ pales in comparison, and
-we are left approaching $f$.{sn}This specific activation function
-is effectively never used in deep learning, both for historical
-reasons and because [its asymptotic behaviour would slow down
-training](https://en.wikipedia.org/wiki/Vanishing_gradient_problem).{/sn}
-
-This formula is particularly relevant thanks to *lateral inhibition*,
-a common architectural pattern in the brain in which neurons within
-a cortical area suppress their neighbours in proportion to their own
-firing rate. Locally, this allows the most active neuron to suppress
-its neighbours more than those neighbours are able to suppress it in
-return. Lateral inhibition thus sharpens peaks and flattens valleys
-in the activity landscape; it is a simple and effective way to boost
-salient signals relative to the weaker ones that inevitably arise from the
-correlations between similarly tuned convolution filters. In V1,
-lateral inhibition thus sharpens the orientation and frequency-scale signals,
-while also normalizing local contrast.
-
-Because lateral inhibition is a recurrent process that takes time to
-reach a steady state, it is most accurately modelled using a system
-of coupled differential equations which describe the time dependence of each
-neuron's firing rate on its neighbours. Conveniently, however, the
-steady-state activations can also be approximated directly using our hyperbolic ratio
-model, by simply sneaking the neighbouring neurons' activities into the
-denominator:{sn}See [this analysis](https://arxiv.org/pdf/1906.08246.pdf) by
-Jesús Malo et al. to understand how this approximation works.{/sn}
-
-$$y_i = \frac{fx_i^k}{\beta^k + \sum_j w_j x_j^k}$$
-
-This approximation is called *divisive normalization*. One can find many
-variations on the above formula in the literature: extra constants,
-extra square roots in the denominator, extra rectifiers, etc.; but the
-core idea is always the same.
-
-This raises the challenge of determining the right values for $w_j$, i.e.
-modelling the inhibitive strengths of neighbourly connections. Researchers have
-collected formulas,{sn}In 2011, Tadamasa Sawada and Alexander
-Petrov compiled a [very long review](https://doi.org/10.1152/jn.00821.2016)
-of divisive normalization models of V1. To my knowledge, it is still the most
-comprehensive reference today.{/sn} but it is not clear that they capture all of
-the interactions there are. What's more, the last decade of research has
-revealed that some measured behaviours previously ascribed to lateral inhibition
-may instead be the result of feedback from higher-level areas. Nevertheless,
-divisive normalization models are ubiquitous and may be a key ingredient to
-letterfitting models.
+Neurons in V1 (and elsewhere in the cortex) use lateral connections to inhibit
+their neighbours. This is called *lateral inhibition*. Because the strength of
+the inhibition depends directly on the strength of the neuron's own activation,
+this setup helps the most active neuron to mute its neighbours. This sharpens
+the response landscape, which is necessary in practice considering that neurons
+tuned *almost* to the right orientation and frequency (but not quite) will still
+fire quite a bit, effectively adding noise to the signal. Lateral inhibition
+means that V1 neuron's firing rates take some time to stabilize, something that
+models may need to take into account.
 
 {mn}<img src="img/csf.png" alt="Contrast sensitivity function">Contrast
 sensitivity function. The vertical gradient in contrast is uniform
@@ -408,7 +324,8 @@ and Tjan (2009)](https://doi.org/10.1167/9.9.16), [Oruç and Landy
 (2006)](https://doi.org/10.1167/6.6.118), and many others.{/sn} This,
 of course, is a key reason why e.g. hairline type is difficult to read
 at smaller-than-huge sizes and a comparatively wide fit. The reader's
-contrast sensitivity function may in fact contribute to $w_j$; in other
+contrast sensitivity function may in fact contribute to the exact relative
+weighting of the laterally-inhibitive connections; in other
 words, mid-scale signals may outcompete fine-scale signals by default.
 Even lacking perfect information about such correlations, we can point
 to the contrast sensitivity function as the most basic biological *raison
@@ -421,14 +338,15 @@ signals are processed in subsequent areas.
 
 ## Area V2, Portilla-Simoncelli texture correlations, and crowding effects
 
-Area V1 deconstructed the incoming imagery into thousands of edge and line
+Area V1 deconstructs the incoming imagery into thousands of edge and line
 fragments. Area V2 helps find patterns in those signals, patterns that form the
 basis for the perceptual grouping effect we are interested in.
 
 Each neuron in V2 takes its input from a combinations of neurons in
 V1,{sn}Again, we will skip here a discussion of the various layers and
 interneurons of V2.{/sn} creating receptive fields that can be twice as
-large as those in V1. For each V2 neuron, the choices of V1 inputs are (nearly) endless, and
+large as those in V1. For each V2 neuron, the choices of V1 inputs are endless
+(within the constraints of approximate retinotopicity), and
 indeed, V2 contains a vast variety of cells representing all kinds
 of different correlations between V1 signals: correlations between
 V1 simple cells and complex cells, between V1 cells of different scales and
@@ -452,22 +370,24 @@ deep-learning equivalent nonlinearity $\mathrm{ReLU(x-1.0)}$.{/mn} <img
 src="img/v2_nonlinearity.png" alt="Nonlinear activation of V2 neurons
 enables computation of correlations">
 
-Unfortunately, we have no direct measurements of what each of these neurons respond to most
-strongly. However, we can glean some intuition from trained artificial image
-classification networks: by simply picking out some units in the early convolutional
-layers and iteratively generating input images that maximally excite them, we
-can visualize the variety of local correlations different V2 neurons detect:
+Unfortunately, we have no direct measurements of what each of these neurons
+respond to most strongly. However, pre-trained image classification networks
+contain units in their early convolutional layers that are, presumably, somewhat
+analog to V2 cells. By iteratively adjusting white noise until these units are
+maximally activated, we can estimate what kinds of correlations in the input
+they are tuned to:
 
 {mn}These images were adapted from an [interactive online
-article](https://doi.org/10.23915/distill.00024.002) by Chris Olah and his
+article](https://doi.org/10.23915/distill.00024) by Chris Olah and his
 colleagues at OpenAI, who have published lots of neat approaches to explain and
-interpret the inner workings of convolutional networks.{/mn}
+interpret the inner workings of convolutional networks. Note that in the human brain, colour
+information is not integrated quite like it is here.{/mn}
 <img src="img/v2_texture_neurons.png" alt="Some kernels from Inception V1"/>
 
 On their own, many of these correlations may appear to be meaningless. Together,
 however, they describe the local texture of an image. As it turns out, a mere
-few dozen of such correlations is sufficient to fool human texture perception:
-we can iteratively generate fake images, starting from white noise, that result
+few dozen of such correlations are enough to fool human texture perception:
+we can iteratively generate fake images, starting again from white noise, that result
 in the same combination of local averages of these presumed V2 responses as in
 the original image.{sn}The first iteration of this
 [idea](https://doi.org/10.1023/A:1026553619983) came about in 1999, long before
@@ -496,12 +416,11 @@ higher-level perceptions, even if the actual input signals are quite
 different.{sn}One could think of this as the bizarro-version of an [adversarial
 input](https://en.wikipedia.org/wiki/Adversarial_machine_learning).{/sn}
 
-That V2 neurons so effectively describe local image statistics presents
-us with a first opportunity to reify a heretofore vague concept into
-something concrete and computable: namely, that "rhythm" or
-"balance" between black and white translates to correlations between V1
-responses. And indeed, the uniformity of V2 statistics seems to be key to our perception of
-a texture as "even" or "continuous":
+That V2 neurons so effectively capture local image statistics presents us with a
+first opportunity to reify the heretofore vague concept of typographic "colour"
+into something concrete and computable: namely, local combinations of such
+(simulated) V2 responses. If these remain uniform across the whole page, the
+texture is perceived as even:
 
 {mn}Here, Javier Portilla and Eero Simoncelli demonstrated how a set of V2 statistics
 computed and averaged over an image of text could be used to extrapolate
@@ -514,16 +433,18 @@ results especially on natural scenes.{/mn} <img
 src="img/text_v2_texture.png" alt="Texture extension on image of text.
 From Portilla and Simoncelli, 2000.">
 
-We may be tempted to exploit this effect to build a simple letterfitting
-strategy in which we iteratively adjust pair distances within an
-image of text until a chosen set of V2 responses is nice and uniform
-across the entire image. And indeed, this would probably be the most
-effective and biologically faithful approach to achieve a perfectly even
-typographic "colour". Unfortunately, in shifting letters to optimize
-solely for overall colour, the algorithm would disfigure the *gestalten*
-of individual words, at times rendering them illegible. With proper
-letterfitting, there simply is no getting around understanding the
-grouping mechanisms that rule our perception of shapes.
+In a truly colour-based letterfitting strategy, which should be relatively easy
+to implement, we would iteratively adjust pair distances within an image of text
+until a chosen set of V2 responses is nice and uniform across the entire image.
+And indeed, this would probably be the most effective and biologically faithful
+approach to achieve a perfectly even texture. Unfortunately, in shifting letters
+to optimize solely for overall colour, the algorithm would disfigure the
+*gestalten* of individual words, at times even rendering them illegible.{sn}In
+the theoretical limit, a perfectly uniform texture determined by a fixed number
+of such correlations would need to be perfectly periodical, thereby constraining
+our test image, at best, to a set of repeating letters.{/sn} Fortunately, the
+texture of well-fitted text is typically (but not necessarily) *pretty* even
+across the page, but it does not make for a good optimization target.
 
 When V2 neurons detect texture-like correlations between neighbouring V1
 neurons, they tend to return inhibitive feedback signals, especially to the V1
@@ -541,15 +462,17 @@ regular strokes on a white background—perhaps a word on a page!
 <img src="img/surround_suppression.png" alt="surround suppression example" />
 
 This surround suppression therefore is a kind of early perceptual grouping
-mechanism.{sn}Another way to think of this, from the perspective of [predictive
+mechanism, enabled by correlation-detecting V2 neurons.{sn}Another way to think
+of this, from the perspective of [predictive
 coding](https://en.wikipedia.org/wiki/Predictive_coding), is as compression of
 redundant signals, as Laurence Aitchison and Máté Lengyel [have pointed
 out](https://dx.doi.org/10.1016%2Fj.conb.2017.08.010).{/sn} The strength of the
 segmentation certainly depends greatly on the scale, pattern, and contrast of
 the objects involved, so it is difficult to say to what degree it affects the
 perception of words. But inhibitive (as well as facilitatory) feedback is likely
-present between higher-level brain areas as well, and the corresponding dynamics are implicated in other grouping-related
-phenomena as well, such as *crowding*, which we will address later.
+present between higher-level brain areas as well, and the corresponding dynamics
+are implicated in other grouping-related phenomena as well, such as *crowding*,
+which we will address later.
 
 ## Contour integration and V1 feedback
 
@@ -569,14 +492,14 @@ and many other names in papers going back to the 1990s.{/mn} <img src="img/v2_co
 alt="Receptive fields of a V2 contour integration neuron">
 
 This allows these V2 cells to detect continous contours, even if these
-contours are curved or interrupted.{sn}Two studies showing this most clearly are by [Minggui Chen et al. in 2014](https://doi.org/10.1016/j.neuron.2014.03.023) and by [Rujia Chen et al. in 2017](https://doi.org/10.1016/j.neuron.2017.11.004).{/sn} Interrupted contours are a constant
+contours are curved or interrupted.{sn}Two studies showing this most clearly are by [Minggui Chen et al. from 2014](https://doi.org/10.1016/j.neuron.2014.03.023) and by [Rujia Chen et al. from 2017](https://doi.org/10.1016/j.neuron.2017.11.004).{/sn} Interrupted contours are a constant
 challenge to the vision system: the edges of an object can be
 occluded not only by other objects—think tree branches in front of a mountain—but also by the spider web of light-scattering
 nerve bundles and capillaries that carpet our retina.{sn}Not to mention our
 [blind spot](https://en.wikipedia.org/wiki/Blind_spot_(vision)).{/sn}
-Contour-integrating V2 cells help us perceive contours even where we cannot
-actually see them. (Of course, the same applies to texture integration across
-space.)
+Contour-integrating V2 cells thus help us perceive contours even where we cannot
+actually see them. Of course, the same principle applies to texture integration across
+space.
 
 Having thus detected a piece of contour, the V2 neuron
 now sends an amplifying signal to all of its V1 inputs, which
@@ -605,17 +528,56 @@ letter and word perception.
 
 ## V4 and higher-level areas
 
-The next area of the visual cortex, area V4,{sn}V4 is not the only
-area connected to V2, but this discussion is limited to the [ventral
-stream](https://en.wikipedia.org/wiki/Two-streams_hypothesis), i.e.
-parts of the visual system dedicated to object recognition. The dorsal
-stream, on the other hand, comprises areas concerned with keeping
-track of our environment and our position in it; it appears to be less
-relevant to letterfitting.{/sn} mirrors the architecture of V2 in that
-it performs a set of convolutions detecting correlations between its
-inputs. Arguably, V4 is just like V2, only with larger receptive fields.
+The next area of the visual cortex, area V4, mirrors the architecture of V2 in
+that it performs a set of convolutions detecting correlations between its
+inputs. It is reasonable to conceptualize V4 as V2, only with larger receptive
+fields. Its neurons respond, once again, to a large variety of spatial correlations in
+the input image, although these correlations can be more complex, looking
+perhaps more like this:
 
-Just as in V2, two categories of neurons are particularly noteworthy: texture
+{mn}Again, these images are taken from [Olah et al.,
+2020](https://doi.org/10.23915/distill.00024). The images give a good
+intuition for the higher complexity of the patterns detected in V4.{/mn}
+<img src="img/v4_texture_neurons.png" alt="higher-level receptive fields from InceptionNet">
+
+Once again, some neurons tend to be more tuned to textures while others
+detect straight or curved contour fragments, although there certainly is overlap
+between the two categories.{sn}As in the case in V4, at least in macaques, as shown by studies
+like [this one](https://doi.org/10.1523/JNEUROSCI.3073-18.2019) by Anitha
+Pasupathy and her collaborators.{/sn} Just as in V2, the contour detectors
+integrate smaller contour fragments across a larger region. However, the larger
+receptive fields of V4 allow for the target contours to be substantially offset
+from the center of the neuron's receptive field. As such, a neuron centered *on*
+the target object can detect parts of its contour:
+
+{mn}Note how all shapes have in common the convexity on the lower left.{/mn}
+<img src="img/v4_rf.png" alt="Receptive field and some example stimuli for a V4
+object-centered contour-detecting cell">
+
+## Perceptual grouping based on border ownership
+
+Consider that navigating our natural environment requires us to correctly
+identify three-dimensional objects in three-dimensional space. But the shape of
+these objects varies heavily depending on perspective—after all, we only see a
+two-dimensional projection of reality—and is available only as a collection of
+the abovementioned V4 contour fragments. What's more, the contour detectors will
+activate on *both sides* of each object:
+
+{mn}Two V4 contour detectors, tuned to the same eccentricity, angle, and
+curvature, activate in response to a dark blob shape. One of them (shown in red)
+is centered on the object as expected, the other is centered outside. Many
+(though not all) of these detectors are connected mainly to V1 complex cells, rendering
+them more responsive to the sheer presence of an edge than to its contrast polarity.{/mn}
+<img src="img/v4_rf_outside.png" alt="activation of V4 contour receptor on outside">
+
+How can we recognize a half-overlapped object, discount its perspective foreshortening and assign it a
+relative depth, going only by a population of V4 contour detectors, half of
+which are gratuitously detecting the objects' outsides? The solution lies in
+feedback loops that enable perceptual grouping.
+
+
+<!--
+two categories of neurons are particularly noteworthy: texture
 detectors and contour detectors.{sn}Our understanding of V4 is primarily owed to
 Anitha Pasupathy and her collaborators, who have been publishing
 results like [this one](https://doi.org/10.1152/jn.2001.86.5.2505),
@@ -626,82 +588,27 @@ decades.{/sn} Just as in V2, the contour detectors integrate smaller contour
 fragments across some region. However, the larger receptive fields of V4 allow
 for the target contours to be substantially offset from the neuron's receptive
 field center:
+-->
 
-{mn}Note how all shapes have in common the convexity on the lower left.{/mn}
-<img src="img/v4_rf.png" alt="Receptive field and some example stimuli for a V4
-object-centered contour-detecting cell">
+The first feedback loop connects V4 with a special class of V2 neurons called
+*border ownership cells* or B-cells. These B-cells, like the V2
+contour-integrating cells already discussed, detect the presence of edges based
+on the activity of V1 complex cells. While they are agnostic to the edge's
+contrast polarity, B-cells fire only if they are on one particular side of an
+object. For instance, the B-cell whose receptive field is marked in red below
+only detects edges on the *left side* of objects, as indicated here by the small
+protrusion pointing toward the right.{sn}Almost everything we know about border
+ownership networks is owed to Johns Hopkins researcher Rüdiger von der Heydt and
+his students.{/sn}
 
-This is significant in practice, because it allows for easy shape
-detection and, as we will see, perceptual grouping. For instance,
-consider how the following population of neurons might respond to the
-corners and sides of a large square. A higher-level square-detecting
-neuron, presumably located in the inferotemporal cortex, would be easily
-able to integrate all of these colocated responses to report a square
-shape:
-
-{mn}The receptive fields, shown as a dashed gray circle in the diagram above,
-are not shown here. Instead, the dotted red lines illustrate the radius of each receptive
-field.{/mn}
-<img src="img/v4_combo.png" alt="Detecting a square">
-
-Thanks to the robustness afforded by the integration mechanisms in V2, V4, and
-higher-level areas, we can now explain how we can simultaneously detect the presence of a square and
-yet not *see* it, in this classic optical illusion:{sn}This phenomenon of
-[illusory contours](https://en.wikipedia.org/wiki/Illusory_contours),
-popularized by [Gaetano Kanizsa](https://en.wikipedia.org/wiki/Gaetano_Kanizsa), has inspired dozens of studies.{/sn}
-
-<img src="img/kanisza.png" alt="Kanizsa square">
-
-Even though the sides of the square are only weakly detected, the sum
-total of activations is enough to allow us to perceive the presence of a
-square. Meanwhile, V1 detects no edges at the square's sides at all.
-
-## Grouping via border ownership
-
-Navigating our natural environment requires us to make sense of groups
-of contours as coherent objects in three-dimensional space, even though
-our visual system only has access to a two-dimensional projection.
-As the illusory square above demonstrates, our vision system manages
-to do this even if in the absence of binocular disparity cues, and
-despite interrupted contours and occluded objects. To accomplish this, V4 needs
-a mechanism to sift out the signals that, taken together, likely constitute a real object.
-
-For instance, the square not only excites contour fragment detectors centered
-inside of it (red), but also on the outside (blue):
-
-<img src="img/v4_outside.png" alt="V4 respones outside of the square">
-
-Once again, a feedback loop saves the day: the internal (red) neurons
-will almost immediately fire more rapidly, thanks to amplifying
-recurrent signals from the higher-level square detector. The external
-(blue) neurons do not constitute a coherent shape, therefore receive
-no such feedback and fire much more slowly as a result:
-
-<img src="img/v4_it_feedback.png" alt="Feedback between V4 and IT">
-
-This basic architectural pattern already explains quite well how contiguous, or
-nearly contiguous, objects rise to salience while other signals wane. But we
-have yet to discuss what happens when multiple objects get involved.
-
-Researchers have discovered that the above feedback loop extends
-downwards to a class of V2 neurons called *border ownership cells*
-or B-cells. B-cells, like the V2 contour integration cells already
-discussed, detect the presence of edges based on V1 complex cells. While
-they are agnostic to the edge's contrast polarity, B-cells fire only if
-they are on one particular side of an object. For instance, the B-cell
-whose receptive field is marked in red below only detects edges on the
-*left side* of objects, as indicated here by the small protrusion pointing
-toward the right.{sn}Almost everything we know about border ownership
-networks is owed to Johns Hopkins researcher Rüdiger von der Heydt and
-his students.{/sn} It responds to stimuli 1 and 2, but not 3 and 4:
-
+{mn}Here, the B-cell responds to stimuli 1 and 2, but not 3 and 4.{/mn}
 <img src="img/b_cell_1.png" alt="B cell illustration">
 
-This is remarkable. After all, the B-cell only sees an edge. It cannot know which part of the object it is
+This is remarkable. After all, the B-cell only sees a single edge. It cannot know which part of the object it is
 on; its receptive field is much too small. So its activity
 must be gated by a neuron which does: namely, one of our
-higher-level V4 neurons.{sn}Signals from other V2 neurons
-are unlikely, because horizontal connections conduct [too
+higher-level V4 neurons.{sn}Lateral inhibition from other V2 neurons
+cannot explain this behaviour, because horizontal connections conduct [too
 slowly](https://dx.doi.org/10.1152%2Fjn.00928.2010) to explain
 the lab-measured response times of B-cells.{/sn} The object owning the edge
 fragment could have any shape and size, so *all* active V4
@@ -716,23 +623,23 @@ retinotopy. For instance, consider a right-side B-cell (blue below)
 neighbouring our left-side B-cell. Both B-cells are engaged in
 feedback loops with V4 neurons while simultaneously inhibiting local
 competitors—i.e., each other—in proportion to their own activation
-strength (recall our discussion of divisive normalization as an approximation of
-lateral inhibition in V1):
+strength (recall our discussion of lateral inhibition in V1):
 
 <img src="img/bg_feedback_1.png" alt="B-cell feedback loop">
 
-But as we know, the internal V4 contour detector (red) is already firing
-more strongly than the external one (blue), thanks to its participation
-in a coherent object. This enhances the activity of the left-side (red)
-B-cell, which suppresses its competitor, which in turn further reduces
-the input to the external (blue) V4 cell. After some tens of milliseconds, the
-percept of the square as its own object is solidly established.
+If the interior (red) V4 cells now were to fire more strongly than the exterior (blue)
+ones, then the inward-pointing (red) B-cells would quickly inhibit the
+outward-pointing (blue) ones, firmly establishing that the border belongs to an object
+on the right. What would cause the interior (red) V4 cells to dominate?
 
+Research suggests that higher-level cells, perhaps in the posterior inferotemporal
+cortex, respond to combinations of V4 contour-detecting neurons centered on the
+same retinal location. Such cells effectively group together the borders owned
+by an object, and are therefore called G-cells.
+
+{mn}Here, the G-cell is shown as a blurred circle around a center. The blurred
+circle corresponds to the location of contours that this G-cell responds to.{/mn}
 <img src="img/bg_feedback_2.png" alt="B-cell feedback loop">
-
-Having introduced the concept of B-cells, we can now finally discuss what happens
-when multiple objects get involved—we are still talking about letterfitting,
-after all!
 
 Consider the following situation, and make a guess whether at the circled
 location, left-side or right-side B-cells would win out:
@@ -1091,6 +998,111 @@ hardware. We must therefore consider potential approximations to the model.
 Brief nod to existing solutions in the appendix, and how they happen to
 approximate (or not) some of the model characteristics discussed.
 </p>
+
+As explained above, V1 simple cells are typically modelled as responding
+linearly via a simple Fourier-domain multiplication with a bank of bandpass filters
+$G(s, o)$, where $s$ is
+the frequency scale and $o$ the orientation.{sn}[Gabor
+patches](https://en.wikipedia.org/wiki/Gabor_filter) are most
+commonly used, but many alternative models with better mathematical properties are
+available.{/sn} This set of convolutions turns the two-dimensional input image (width × height) into a
+four-dimensional tensor of complex numbers (width × height × spatial
+frequency scales × orientations), the magnitude and phase angle of
+which capture the activation of simple cells $S_\mathrm{V1}$ at every
+location:
+
+$$
+S_\mathrm{V1}(x, y, s, o) = \mathcal{F}^{-1}(\mathcal{F}(I(x, y)) \mathcal{F}(G(s, o))),
+$$
+
+{mn}<img src="img/complex_value.png">{/mn}
+
+where $\mathcal{F}$ is the Fourier transform. For instance, to retrieve
+wthe activation of representative simple cells at phases 0°, 90°,
+w180° and 270°, one ould half-wave-rectify as follows:
+
+$$
+\begin{aligned}
+S_{\mathrm{V1, 0\degree}}(x, y, s, o) &= |\mathrm{Re}(S_1(x, y, s, o)| \\
+S_{\mathrm{V1, 90\degree}}(x, y, s, o) &= |\mathrm{Im}(S_1(x, y, s, o)| \\
+S_{\mathrm{V1, 180\degree}}(x, y, s, o) &= |-\mathrm{Re}(S_1(x, y, s, o)| \\
+S_{\mathrm{V1, 270\degree}}(x, y, s, o) &= |-\mathrm{Im}(S_1(x, y, s, o)| \\
+\end{aligned}
+$$
+
+Traditionally, complex cells were thought to sum the outputs of nearby simple
+cells of equal scale and orientation. This is now known to be a gross
+oversimplification. In software, a summation-like approach is nevertheless taken to
+approximate the output of complex cells $C_{\mathrm{V1}}$, namely a simple computation of the
+absolute magnitude of the complex tensor:
+
+$$
+C_\mathrm{V1}(x, y, s, o) = |S_\mathrm{V1}(x, y, s, o)|^2
+$$
+
+This is often called the *local energy*. The squaring operation shown
+here is often used in the literature to approximate the nonlinear
+behaviour of complex cells in particular.{mn}<img src="img/hra.png"
+alt="HRA"> Solid line: hyperbolic ratio curve, a.k.a. [Hill
+function](https://en.wikipedia.org/wiki/Hill_equation_(biochemistry))
+or Naka-Rushton function. Dotted line: monotonic polynomial (e.g.
+$x^2$).{/mn} Of course, this is a rather unrealistic (if practical)
+choice. In a real cells, the firing rate will level off after the input
+has been increased beyond some limit. A popular model for this is the
+hyperbolic ratio sigmoid
+
+$$y = \frac{fx^k}{\beta^k + x^k}$$
+
+The $f$ scales the curve vertically, $k$ makes the kink steeper, and
+$\beta$ shifts the threshold to the right. Consider how the numerator
+increases the firing rate, and the denominator decreases it. For
+relatively small values of $x$, $\beta^k$ dominates the denominator,
+yielding a scaled-down version of $fx^k$ (values of about 2 or 3
+are common for $k$, in agreement with the square often used). But
+once $x^k$ gets large enough, $\beta^k$ pales in comparison, and
+we are left approaching $f$.{sn}This specific activation function
+is effectively never used in deep learning, both for historical
+reasons and because [its asymptotic behaviour would slow down
+training](https://en.wikipedia.org/wiki/Vanishing_gradient_problem).{/sn}
+
+This formula is particularly relevant thanks to *lateral inhibition*,
+a common architectural pattern in the brain in which neurons within
+a cortical area suppress their neighbours in proportion to their own
+firing rate. Locally, this allows the most active neuron to suppress
+its neighbours more than those neighbours are able to suppress it in
+return. Lateral inhibition thus sharpens peaks and flattens valleys
+in the activity landscape; it is a simple and effective way to boost
+salient signals relative to the weaker ones that inevitably arise from the
+correlations between similarly tuned convolution filters. In V1,
+lateral inhibition thus sharpens the orientation and frequency-scale signals,
+while also normalizing local contrast.
+
+Because lateral inhibition is a recurrent process that takes time to
+reach a steady state, it is most accurately modelled using a system
+of coupled differential equations which describe the time dependence of each
+neuron's firing rate on its neighbours. Conveniently, however, the
+steady-state activations can also be approximated directly using our hyperbolic ratio
+model, by simply sneaking the neighbouring neurons' activities into the
+denominator:{sn}See [this analysis](https://arxiv.org/pdf/1906.08246.pdf) by
+Jesús Malo et al. to understand how this approximation works.{/sn}
+
+$$y_i = \frac{fx_i^k}{\beta^k + \sum_j w_j x_j^k}$$
+
+This approximation is called *divisive normalization*. One can find many
+variations on the above formula in the literature: extra constants,
+extra square roots in the denominator, extra rectifiers, etc.; but the
+core idea is always the same.
+
+This raises the challenge of determining the right values for $w_j$, i.e.
+modelling the inhibitive strengths of neighbourly connections. Researchers have
+collected formulas,{sn}In 2011, Tadamasa Sawada and Alexander
+Petrov compiled a [very long review](https://doi.org/10.1152/jn.00821.2016)
+of divisive normalization models of V1. To my knowledge, it is still the most
+comprehensive reference today.{/sn} but it is not clear that they capture all of
+the interactions there are. What's more, the last decade of research has
+revealed that some measured behaviours previously ascribed to lateral inhibition
+may instead be the result of feedback from higher-level areas. If nothing else, $w_j$ is probably a convenient place for modellers to incorporate
+the effects of spatial frequency dependency (i.e. contrast sensitivity curves).
 
 <p class="missing">
 First option: use only difference in V1 complex cell activations, weigh based on
