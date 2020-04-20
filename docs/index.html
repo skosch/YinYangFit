@@ -181,16 +181,26 @@ forming a skeleton"></p>
 <p><img src="img/letter_weights.png" alt="A range of letter weights"></p>
 <p>The hairline letter is, arguably, too thin to allow readers to clearly perceive border ownership of the left and right side of each <nobr>stem.<input type="checkbox" id="sn-sidenote-51" class="margin-toggle"></nobr><label for="sn-sidenote-51" class="margin-toggle sidenote-number"></label><span class="sidenote">Of course this depends on the font size and the contrast sensitivity function, as discussed earlier.</span> Nevertheless, we can evidently recognize the letter, so it follows that thin lines must be able to excite fine-scale G-cells even if the ownership of sides is fuzzy. It is worth remembering also, at this point, that G-cells are merely an abstraction. It is quite conceivable that some of their biological equivalents are specialized not on ring-like shapes but thin, straight <nobr>contours.<input type="checkbox" id="sn-sidenote-52" class="margin-toggle"></nobr><label for="sn-sidenote-52" class="margin-toggle sidenote-number"></label><span class="sidenote">This was explored by Brian Hu et al. in a 2017 <a href="https://dx.doi.org/10.1007%2Fs10827-017-0659-3">simulation</a>.</span></p>
 <h2 id="attention-crowding-and-the-spread-of-activity">Attention, crowding, and the spread of activity</h2>
-<p>If medial-axis skeletons are the [raw preprocessed ingredient] of object perception, then</p>
-<ul>
-<li><p>Purpose of this section: to gain an appreciation for the conflict between wanting activity to spread across the whole word, but also not smush nearby letter’s stems together, thereby reducing their recognition.</p></li>
-<li><p>Skeletons are the fuel of object recognition.</p></li>
-</ul>
-<p>cooking -&gt; prepped ingredients machining -&gt; winemaking -&gt; grapes -&gt; must -&gt; wine bread -&gt; grain -&gt; flour -&gt; bread booze -&gt; grain -&gt; mash -&gt; distillation</p>
-<p>raw data -&gt; gets transformed -&gt; then properly recognized</p>
-<p>If letters and words are perceived based on their skeletons, and the main objective of letterfitting is to ensure reliable detection of both letters <em>and</em> words, then automating letterfitting requires us to predict how placing letters at some distance changes their skeletons relative to their individual skeletons. The goal is to maximize the perception of two letters as a single object (large-scale skeleton), while minimizing changes to the skeletons at finer, stem-size scales.</p>
-<p>We are going to explore how this might play out between particular letter pairs—but we first need to establish some intuition for the neural dynamics at play.</p>
 <!--
+If medial-axis skeletons are the [raw preprocessed ingredient] of object
+perception, then 
+
+- Purpose of this section: to gain an appreciation for the conflict between
+  wanting activity to spread across the whole word, but also not smush nearby
+  letter's stems together, thereby reducing their recognition.
+
+If letters and words are perceived based on their skeletons, and the
+main objective of letterfitting is to ensure reliable detection of
+both letters *and* words, then automating letterfitting requires us to
+predict how placing letters at some distance changes their skeletons
+relative to their individual skeletons. The goal is to maximize the
+perception of two letters as a single object (large-scale skeleton),
+while minimizing changes to the skeletons at finer, stem-size scales.
+
+We are going to explore how this might play out between
+particular letter pairs—but we first need to establish some intuition for the
+neural dynamics at play.
+
 A powerful arbiter of perceptual grouping, and key ingredient of
 reading, is *attention*. In a network ruled by feedback loops and
 lateral inhibition, attention is simply a bit of extra activity that

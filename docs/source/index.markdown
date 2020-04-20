@@ -747,23 +747,13 @@ et al. in a 2017 [simulation](https://dx.doi.org/10.1007%2Fs10827-017-0659-3).{/
 
 ## Attention, crowding, and the spread of activity
 
+<!--
 If medial-axis skeletons are the [raw preprocessed ingredient] of object
 perception, then 
 
 - Purpose of this section: to gain an appreciation for the conflict between
   wanting activity to spread across the whole word, but also not smush nearby
   letter's stems together, thereby reducing their recognition.
-
-- Skeletons are the fuel of object recognition.
-
-cooking -> prepped ingredients
-machining -> 
-winemaking -> grapes -> must -> wine
-bread -> grain -> flour -> bread
-booze -> grain -> mash -> distillation
-
-
-raw data -> gets transformed -> then properly recognized
 
 If letters and words are perceived based on their skeletons, and the
 main objective of letterfitting is to ensure reliable detection of
@@ -777,7 +767,6 @@ We are going to explore how this might play out between
 particular letter pairs—but we first need to establish some intuition for the
 neural dynamics at play.
 
-<!--
 A powerful arbiter of perceptual grouping, and key ingredient of
 reading, is *attention*. In a network ruled by feedback loops and
 lateral inhibition, attention is simply a bit of extra activity that
