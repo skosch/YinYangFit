@@ -641,65 +641,22 @@ by an object, and are therefore called G-cells.
 circle corresponds to the location of contours that this G-cell responds to.{/mn}
 <img src="img/bg_feedback_2.png" alt="B-cell feedback loop">
 
-Consider the following situation, and make a guess whether at the circled
-location, left-side or right-side B-cells would win out:
+Because the external (blue) B-cells and V4 contour signals do not combine to
+excite a higher-level G-cell, they do not receive positive feedback, and lateral
+competition (between B-cells, and likely also between V4 and G-cells) quickly silences them.
 
-<img src="img/gestalt_1.png" alt="Gestalt B-cell 1">
-
-Although *technically* the dark shape is a closed, contiguous shape and
-therefore on par with the light circle, it is intuitively obvious that
-the circle dominates, and even appears to lie above the black shape.
-As a result, we can confidently predict that humans will perceive the
-circled region as the left side of the circle, and not as the right side
-of the dark area. Why is that so?
-
-As it turns out, the vast majority (although not all) of the
-object-centered contour detectors in V4 are either straight or
-convex in shape, with various degrees of curvature. This has
-the profound consequence that convex shapes tend to outcompete
-concave shapes in our perception.
-
-In addition, overlapping objects create T-shaped junctions where their
-contours meet, as at the top and bottom of the light circle above. In
-such situations, lateral inhibition between V4 neurons tends to enhance
-the upper object's continuous contour, while suppressing the percept of the acute
-angle formed inside the overlapped contour. This interaction helps
-strengthen the impression that the light circle lies in the foreground.{sn}See
-[here](https://doi.org/10.1523/JNEUROSCI.4766-10.2011) for a painstaking study
-of these effects by Brittany Bushnell et al. from the Pasupathy lab.{/sn}
-
-Meanwhile, although the hypothetical square detector served us well in
-the examples above, we actually do not know the population of shape
-detectors in our inferotemporal cortex. In simulations of perceptual
-grouping, it is therefore practical not to think directly about V4
-contours and shape detectors. Instead, a popular approach is to
-work with a population of representative (if possibly fictitious)
-"grouping cells" or G-cells, each of which receives input from, and
-in turn feeds back to, a fuzzy annulus of inward-directed B-cells:{sn}The
-first to run a simulation of this idea in earnest were [Edward Craft et
+The exact receptive field of each G-cell is likely quite unique, but a popular
+approach is to assume that they are circular:{sn}The first to run a simulation of this idea in earnest were [Edward Craft et
 al.](https://doi.org/10.1152/jn.00203.2007) in 2011.{/sn}
 
 <img src="img/bg_rfs.png" alt="Receptive fields of G cells">
 
-Given that the V4 contour detectors chiefly pick up convex curvatures
-at some eccentricity, and circles are as convex as it gets, an this is
-really quite a reasonable model for whatever may truly be going on in
-our posterior inferotemporal areas.
-
-To return the square example, consider first a population of coarse-scale G-cells, each of which is connected to
-B-cells that make up a circle about the size of our square. Among such
-coarse-scale G-cells, only the one centered on the square would respond
-noticeably, as it receives input from B-cells on all four sides (red below):
+This means that the square in the example above would strongly activate a circular G-cell
+in the center, which takes input from V4 contours on all four sides of the
+square, and somewhat less strongly activate the circular G-cells along the
+square's diagonals, which take input from two sides of the square:
 
 <img src="img/g_responses.png" alt="Sample responses of some G cells">
-
-Finer-scale G-cells would barely respond in most places. They would
-receive a bit of input near the square's edges, but due to their
-nonlinear activation profile would only really light up inside the
-corners, where they receive inputs from B-cells on two sides (purple,
-blue). In addition, we may assume that G-cells compete via local
-inhibition, such that those cells receiving inputs from more (and from
-nearer) B-cells dominate.
 
 Once B-cells and G-cells have settled into an equilibrium, the locus
 of peak responses of G-cells across different scales neatly represents
@@ -709,148 +666,154 @@ the skeleton of the shape, shown on the right:{sn}The technical term for this fe
 <img src="img/g_responses_skeleton.png" alt="Sample responses of some G cells,
 forming a skeleton">
 
-Skeletonization is critical to object recognition, because it allows us to match
-on a shape's underlying geometric structure, instead of its exact contours.{sn}And indeed, IT neurons appear to respond to skeleton fragments, such that a
-small population of IT neurons suffices to uniquely identify 3D shapes, as
-Chia-Chun Hung and colleagues
-[demonstrated](https://doi.org/10.1016/j.neuron.2012.04.029) in Macaque
-monkeys.{/sn} Consider, for instance, our ability to recognize the following
-four styles of uppercase *E* with the same ease:
+This skeletonization step is critical to object recognition. It translates a
+shape's contour fragments into its underlying geometric structure in a way that
+is very robust to perspective distortions.{sn}And indeed, the inferotemporal
+neurons in macaque monkeys appear to respond to skeleton fragments, such that a
+small population of such neurons suffices to represent a variety of complicated
+3D shapes, as Chia-Chun Hung and colleagues have
+[demonstrated](https://doi.org/10.1016/j.neuron.2012.04.029).{/sn} Conveniently,
+this ability translates directly to letter recognition. Consider, for instance,
+our ability to recognize the following four styles of uppercase *E* with the
+same ease:
 
 {mn}Many different uppercase-E designs exist, but all of them share a
 relationship between the relative locations of large-scale G-cell peaks (within
-the counters) and smaller-scale peaks (at the terminals).{/mn}
+the counters) and smaller-scale peaks (at the terminals). Note that this
+illustration is tremendously simplified, as it does not take into account competition at the level of B-cells.{/mn}
 <img src="img/e_skeletons.png" alt="Some skeletons at different scales">
 
 Although the shared features of the skeletons (counters, stems, etc.) appear at
-different scales for different letter shapes, they are present in
-the same configuration for all of them. 
+different scales for different letter shapes, they are present in the same
+configuration for all of them. This is true even for letters that are outlined
+(last row), as V4 contour detector neurons respond primarily to the contour, not
+to the fill (or the absence of fill).
 
-This is true even for letters that are outlined (last row), as V4
-contour detector neurons respond primarily to the contour, not to the
-fill (or its absence). Still we can ask: when is a stroke perceived as a
-contour, and when does it turn into a shape of its own right, a shape that owns
-contours on either side? With letter weights ranging from hairline to
-ultra-heavy, this is a particularly salient question:
+When is a stroke perceived as a contour, and when does it turn into a shape of
+its own right, a shape that owns contours on either side? With letter weights
+ranging from hairline to ultra-heavy, this is a particularly salient question:
 
 <img src="img/letter_weights.png" alt="A range of letter weights">
 
 The hairline letter is, arguably, too thin to allow readers to clearly perceive
-border ownership of the left and right side of each stem.{sn}Of course this depends
-on the font size and the contrast sensitivity function, as discussed earlier.{/sn} Nevertheless, we can
-evidently recognize the letter, so it follows that thin lines must be able to excite
-fine-scale G-cells even if the ownership of sides is fuzzy. It is worth
-remembering also, at this point, that G-cells are merely an abstraction. It is
-quite conceivable that some of their biological equivalents are specialized not on
-ring-like shapes but thin, straight contours.{sn}This was explored by Brian Hu
-et al. in a 2017 [simulation](https://dx.doi.org/10.1007%2Fs10827-017-0659-3).{/sn} 
+border ownership of the left and right side of each stem.{sn}Of course this
+depends on the font size and the contrast sensitivity function, as discussed
+earlier.{/sn} Nevertheless, even fuzzy border-ownership signals should be enough
+to excite fine-scale G-cells. It is also conceivable that specialized G-cells
+exist which interact with collinear contour detectors.{sn}This was explored by
+Brian Hu et al. in a 2017
+[simulation](https://dx.doi.org/10.1007%2Fs10827-017-0659-3).{/sn} For the
+purposes of our model, however, such considerations are unlikely to be required.
+
+By the way: that G-cells are presumed to interact with circularly-arranged
+populations of contour detectors, thus skeletonizating shapes, aligns neatly
+with the Gestalt principle of convexity: after all, it is circular shapes that
+are most easily perceived as coherent objects, while more concave contours add
+visual complexity at the expense of *prägnanz*. Of course, the preference for
+convex shapes would not be possible if V4 contour detectors were not also
+overwhelmingly tuned for convex contour fragments.{sn}As we know they are, as demonstrated by studies like
+[this one](https://doi.org/10.1152/jn.2001.86.5.2505), [this
+one](https://doi.org/10.1152/jn.01265.2006), again by Anitha Pasupathy and
+colleagues.{/sn} Meanwhile, the Gestalt principle of proximity is explained by
+the fact that G-cells with smaller receptive fields tend to outcompete larger
+ones.
+
+Before we discuss how this perceptual grouping plays out across letter pairs and
+entire words, one more phenomenon should be mentioned for completeness' sake.
+Consider the following situation:
+
+<img src="img/gestalt_1.png" alt="Gestalt B-cell 1">
+
+Here, the circle is perceived to be in front of, and overlapping, the dark
+shape. We intuitively assume that the dark shape continues with a straight edge
+behind the circle, and also that it continues beyond the edges of the image, as
+if the scene were seen through a window.
+
+<img src="img/gestalt_2.png" alt="Gestalt B-cell 2">
+
+The T-junctions created by overlapping shapes activate three sets of convex
+contour detectors, illustrated here in red, blue, and green. Experiments suggest
+that between such configurations of contour detectors, it is the straight,
+continuous one (here in red) that inhibits the other two.{sn}See
+[here](https://doi.org/10.1523/JNEUROSCI.4766-10.2011) for a painstaking study
+of these effects by Brittany Bushnell et al. from the Pasupathy lab.{/sn} As a
+result, the border ownership at the T-section is assigned to the circle, while
+the contours of the dark shape disappear near the corners. A similar effect
+takes place at the edges of the scene. {mn}<img src="img/kanisza.png"
+alt="kanisza"><br/> Both effects combine in the classic
+[illusions](https://en.wikipedia.org/wiki/Illusory_contours) by Gaetano Kanizsa,
+in the square, which is evoked mainly through its skeleton at the corners,
+creates T-junctions with the flankers that are invisible yet strong enough to
+determine relative depth.{/mn} Now, contour-integrating cells in V2 and V4 are
+at liberty to connect the loose ends via a straight edge, in collaboration with
+G-cells that encode the likely skeleton of the dark shape. We thus perceive the
+dark shape as the corner of a rectangle of indeterminate size. In addition, the
+T-junctions contribute to the depth perception that layers the two objects—but
+this is less relevant to perceptual grouping.
 
 ## Attention, crowding, and the spread of activity
 
-<!--
-If medial-axis skeletons are the [raw preprocessed ingredient] of object
-perception, then 
+To complete the perceptual grouping process, the activity in the B-cells, V4 and
+G-cells must spread out across objects until it envelops the entire perceptual
+group. This happens naturally and quickly. For instance, neural activity will
+quickly spread along contours, thanks to the feedback connections from
+contour-integrating V2 and V4 neurons to their inputs, which then activate other
+contour integrators in turn, which feed back to other inputs, etc. 
 
-- Purpose of this section: to gain an appreciation for the conflict between
-  wanting activity to spread across the whole word, but also not smush nearby
-  letter's stems together, thereby reducing their recognition.
+For neural activity to spread out is healthy and useful. But we are interested
+only in one object, or in one perceptual group of objects, at a time. The
+challenge lies in containing the spread to the perceptual group of interest
+only. Naturally, the brain relies on inhibitive connections between neigbouring
+neurons to slow the spread of activity.
 
-If letters and words are perceived based on their skeletons, and the
-main objective of letterfitting is to ensure reliable detection of
-both letters *and* words, then automating letterfitting requires us to
-predict how placing letters at some distance changes their skeletons
-relative to their individual skeletons. The goal is to maximize the
-perception of two letters as a single object (large-scale skeleton),
-while minimizing changes to the skeletons at finer, stem-size scales.
+In letterfitting, the objective is for neural activity to spread from one letter
+to its neighbours both left and right. At this point, we can revisit the
+illustration from above and consider how "balance between letter pairs" is a
+question of perceptual grouping mediated by the spread of neural activity (and
+the inhibition of same):
 
-We are going to explore how this might play out between
-particular letter pairs—but we first need to establish some intuition for the
-neural dynamics at play.
+<img src="img/grouping_relativity.png" alt="Illustration of the importance of consistency of fit vs absolute distances.">
 
-A powerful arbiter of perceptual grouping, and key ingredient of
-reading, is *attention*. In a network ruled by feedback loops and
-lateral inhibition, attention is simply a bit of extra activity that
-quickly propagates upwards and downwards, strengthening the perception
-of a particular image feature while muting its surroundings.
-
-[image]
-
-In everyday parlance, "paying attention" implies looking straight at
-an object of interest, and intentionally{sn}By which I merely mean
-"triggered by frontal-lobe areas", without endorsing any Cartesian notions of
-dualism.{/sn} activating corresponding populations of neurons.
-But the more general, mechanistic understanding of attention—simply,
-as the amplification of activity in some parts of the network at the
-expense of others—includes paying attention to something in the corner
-of one's eye ("covert attention") and even attention that is involuntarily
-triggered by particular image features ("exogenous attention").
-
-In practice, attention relies on the bidirectionality of the
-feedback loops that connect shape detectors to V1 cells: the
-appropriate visual input excites the shape detector, but attending
-to (i.e., exciting) the shape detector also amplifies any active
-V1 cells that are connected to it. This allows us to "select" a
-feature corresponding to hundreds of V1 neurons by stimulating just
-a single high-level cell.{sn}For a simulation of how this might
-play out between G-cells and V1, take a look at Stefan Mihalaş et
-al.'s [2011 paper](https://doi.org/10.1073/pnas.1014655108).{/sn}
-The selected V1 and V2 neurons, of course, have connections to
-many brain regions besides V4, and all of them are indirectly
-affected by the initial attention.{sn}This had led cognitive
+A key concept in this context is *attention*. Given the ease with which neural
+activity spreads outwards via feedback and feedforward connections, any little
+bit of extra activity injected into the network will quickly result in extra
+activity in the whole nearby network. Of course, neural activity is constantly
+provided by the retina, and most of that activity comes from the fovea. But we
+can also pay attention, quite literally: by feeding top-down signals into a
+single G-cell, for example, we can amplify all associated contour detectors,
+B-cells and even V1 cells.{sn}For a simulation of how this might play out
+between G-cells and V1, take a look at Stefan Mihalaş et al.'s [2011
+paper](https://doi.org/10.1073/pnas.1014655108).{/sn} This can happen both
+consciously{sn}By which I merely mean "triggered by frontal-lobe areas", without
+endorsing any Cartesian notions of dualism.{/sn} and unconsciously, and top-down
+attention can be directed to populations of neurons encoding many different
+things. Attending to a high-level neuron representing a particular object, for
+instance, is a rapid way to light up said object in the input image.
+{sn}The attention-selected V1 and V2 neurons, of course, have connections to
+many brain regions besides V4. This had led cognitive
 scientists to call the early visual cortex a ["cognitive
 blackboard"](https://doi.org/10.1146/annurev-vision-111815-114443).{/sn}
 
-- When reading, we can focus our gaze on one word and pay covert attention to
-  other words.
-
-
-- 1. Different pieces of the image excite one another, thanks to feedback.
-- 2. Different pieces of the image also suppress one another, so that only a few things are active at once. In particular, texturally similar areas suppress their inputs.
-- 3. When something stands out from surrounding texture, it is therefore less suppressed, and automatically becomes the strongest neural population.
-     We might call this a salient feature, or a feature that exogenously commands attention.
-- 4. When we read, we need to perceive words as single units. The letter and word detector units in the visual word form area want to limit their input to one word at a time.
-- 5. The challenge is to inject attention in the network at about PIT or V4, and
-     have the activity spread sideways such that one word is selected, but have
-     the suppression work its magic such that not everything gets selected. The
-     brain is great at control theory and does that fine, but the job of a typographer is to make this as quick of a job as possible.
-
-Particularly well-researched is a phenomenon called *crowding*, in which
-activity spreads quickly and widely thanks to V2 and V4 cells responsive
-to texture-like correlations over large spatial distances. These cells,
-with their large receptive fields, are found particularly in the visual
-periphery, where the crowding effect is particularly strong. When
-crowding is strong, it is nearly impossible to attend to a location,
-as any activity is immediately absorbed by the neural populations
-representing texture, at the expense of local shape detectors. In the
-following illustration, it is very difficult to make out the uppercase V
-while focusing on the center cross, even though recognizing the left A, which
-is exactly the same distance away, is no problem:
+One situation in which this containment can fail is when texture detectors are
+recruited into the frenzy of activity, and these texture detectors then compete
+with smaller-scale feature detectors that we rely on for object identification.
+In the following illustration, it is very difficult to make out the uppercase V
+while focusing on the center cross, even though recognizing the left-hand A,
+which is exactly the same distance away, is no problem. Any attempts to attend
+to the V just reroutes more activity into the texture representation.
 
 <img src="img/crowding_example.png" alt="Example of crowding between letters">
 
-Text, of course, is inexorably texture-like,{sn}[And not by
-accident](https://en.wikipedia.org/wiki/Indo-European_vocabulary); both
-*text* and *texture* derive from Proto-Indo-European <em>\*teks–</em>,
-meaning "to weave".{/sn} so the excitation of texture detectors and any
-concomitant crowding are a fact of life. At first blush, crowded text is
-illegible text, and thus to be prevented if possible. The research literature
-offers suggestions: colouring the flanking letters, for instance, or putting
-lots of space between them.{mn}As a rule of thumb, the spacing needs to be at least half the eccentricity, i.e. to the distance from the fovea (see
-Herman Bouma's 1970 report ([DOI](https://doi.org/10.1038/226177a0))). This is
-roughly in line with the growth of receptive field diameters. But
-careful: despite large distances, any extended regularity in spacing will
-still trigger crowding, as Toni Sareela et al. [demonstrated in 2010](https://doi.org/10.1167/10.10.17).{/mn}
+This phenomenon, called *crowding*, has captured the fascination of reading researchers
+since the 1970s. The severity of crowding increases with the distance from the
+fovea, as the periphery contains more, and much larger, texture-detecting
+neurons.{sn}As a rule of thumb, the spacing needs to be at least half the eccentricity, i.e. to the distance from the fovea (see
+Herman Bouma's 1970 report ([DOI](https://doi.org/10.1038/226177a0))).{/sn}
+Crowding is also made worse by regularity in the spacing of the flanking
+objects;{sn}As [demonstrated in 2010](https://doi.org/10.1167/10.10.17) by Toni Sareela et al.{/sn} again, presumably, because periodicity strengthens texture perception.
 
-Instead I would like to suggest that peripheral crowding may actually
-work in our favour, as it limits the volume of letter-like signals
-impinging on our reading circuitry, thereby reducing the rate of misreadings.
-While 
-
-But crowding even happens in the fovea, depending on the shapes surrounding the
-target. The effect is much smaller, but still measurable. For instance, when
-given the task below, subjects make fewer mistakes on the left image:
-
-[image]
+<!--
+Although 
 
 - These kinds of experiments have made clear that crowding and grouping are really the
   same effect, and that they interact. For example, LAMINART study.
@@ -871,15 +834,6 @@ given the task below, subjects make fewer mistakes on the left image:
 
 Attention is important to word perception.
 -->
-<p class="missing">
-A feedback model of attentional effects in the visualcortex
-</p>
-
-<p class="missing">
-Review crowding and classic hypotheses of feature pooling and cortical
-magnification
-</p>
-
 <p class="missing">
 Review Herzog lab papers; effect of regularity on crowding (Sareela et al. 2010) and uncrowding via LAMINART grouping (Francis et al.)
 </p>
