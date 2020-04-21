@@ -189,59 +189,20 @@ alt="kanisza"><br/> Both effects combine in the classic <a href="https://en.wiki
 <p>A key concept in this context is <em>attention</em>. Given the ease with which neural activity spreads outwards via feedback and feedforward connections, any little bit of extra activity injected into the network will quickly result in extra activity in the whole nearby network. Of course, neural activity is constantly provided by the retina, and most of that activity comes from the fovea. But we can also pay attention, quite literally: by feeding top-down signals into a single G-cell, for example, we can amplify all associated contour detectors, B-cells and even V1 <nobr>cells.<input type="checkbox" id="sn-sidenote-55" class="margin-toggle"></nobr><label for="sn-sidenote-55" class="margin-toggle sidenote-number"></label><span class="sidenote">For a simulation of how this might play out between G-cells and V1, take a look at Stefan Mihalaş et al.’s <a href="https://doi.org/10.1073/pnas.1014655108">2011 paper</a>.</span> This can happen both <nobr>consciously<input type="checkbox" id="sn-sidenote-56" class="margin-toggle"></nobr><label for="sn-sidenote-56" class="margin-toggle sidenote-number"></label><span class="sidenote">By which I merely mean “triggered by frontal-lobe areas”, without endorsing any Cartesian notions of dualism.</span> and unconsciously, and top-down attention can be directed to populations of neurons encoding many different things. Attending to a high-level neuron representing a particular object, for instance, is a rapid way to light up said object in the input image. <nobr><input type="checkbox" id="sn-sidenote-57" class="margin-toggle"></nobr><label for="sn-sidenote-57" class="margin-toggle sidenote-number"></label><span class="sidenote">The attention-selected V1 and V2 neurons, of course, have connections to many brain regions besides V4. This had led cognitive scientists to call the early visual cortex a <a href="https://doi.org/10.1146/annurev-vision-111815-114443">“cognitive blackboard”</a>.</span></p>
 <p>One situation in which this containment can fail is when texture detectors are recruited into the frenzy of activity, and these texture detectors then compete with smaller-scale feature detectors that we rely on for object identification. In the following illustration, it is very difficult to make out the uppercase V while focusing on the center cross, even though recognizing the left-hand A, which is exactly the same distance away, is no problem. Any attempts to attend to the V just reroutes more activity into the texture representation.</p>
 <p><img src="img/crowding_example.png" alt="Example of crowding between letters"></p>
-<p>This phenomenon, called <em>crowding</em>, has captured the fascination of reading researchers since the 1970s. The severity of crowding increases with the distance from the fovea, as the periphery contains more, and much larger, texture-detecting <nobr>neurons.<input type="checkbox" id="sn-sidenote-58" class="margin-toggle"></nobr><label for="sn-sidenote-58" class="margin-toggle sidenote-number"></label><span class="sidenote">As a rule of thumb, the spacing needs to be at least half the eccentricity, i.e. to the distance from the fovea (see Herman Bouma’s 1970 report (<a href="https://doi.org/10.1038/226177a0">DOI</a>)).</span> Crowding is also made worse by regularity in the spacing of the flanking <nobr>objects;<input type="checkbox" id="sn-sidenote-59" class="margin-toggle"></nobr><label for="sn-sidenote-59" class="margin-toggle sidenote-number"></label><span class="sidenote">As <a href="https://doi.org/10.1167/10.10.17">demonstrated in 2010</a> by Toni Sareela et al.</span> again, presumably, because periodicity strengthens texture perception.</p>
-<!--
-Although 
-
-- These kinds of experiments have made clear that crowding and grouping are really the
-  same effect, and that they interact. For example, LAMINART study.
-
-- Ultimately, it's not something we need to directly worry about when letterfitting,
-  because we are dealing with pairs of letters at once, and we can assume that
-  our algorithm (like a human designer) will fit them in the fovea, without much
-  meddling from texture-detecting neurons.
-
-- The dynamics happen so fast, and timing matters, especially when reading fast. Looking at a word or pair is a very different
-  activity from reading (learning as a child) or reading (as an adult), and that
-  has to be taken into account.
-
-
-
-[The link](https://doi.org/10.1109/CIMSIVP.2011.5949241){pdf}https://hal.archives-ouvertes.fr/hal-00706798/file/miconi_t_11_106.pdf{/pdf}
-
-
-Attention is important to word perception.
--->
-<p class="missing">
-Review Herzog lab papers; effect of regularity on crowding (Sareela et al. 2010) and uncrowding via LAMINART grouping (Francis et al.)
-</p>
-<p class="missing">
-Offer intuition for perceptual grouping of words and crowding as related effects of lateral spread of neural activity.
-</p>
-<p class="missing">
-Review the concept of attention, and its ability to affect the spread (both facilitatory and laterally inhibitive, see e.g. Mihalas et al.)
-</p>
-<h2 id="from-perceptual-grouping-to-letterfitting">From perceptual grouping to letterfitting</h2>
-<p>The above model of our vision system’s perceptual grouping mechanisms finally allows us to make some predictions about typographic truths, and should ultimately allow us to build a robust, biologically plausible letterfitting tool.</p>
-<p class="missing">
-Competition between word-scale and stem-scale grouping cells
-</p>
-<p>Let’s see how our current understanding of perceptual grouping plays out in some axiomatic letter pairs:</p>
-<p><img src="img/benchmark_gaps.png" alt="Some benchmark letter pairs: nn, oo, nl,
-and IUL"></p>
-<p class="missing">
-Explain the asymptotic length-invariance of parallel stems
-</p>
-<p class="missing">
-Explain round-round interactions via weaker contour integration and less disruption of V4
-</p>
-<p class="missing">
-Explain IUL via balance between weaker horizontal contour integration and stronger inhibition from false inter-stem medial axis (b/c smaller radius).
-</p>
-<p class="missing">
-Illustrate effect of serifs, italics, x-height and weight
-</p>
-<h2 id="why-word-grouping-matters-models-of-reading">Why word grouping matters: models of reading</h2>
+<p>This phenomenon, called <em>crowding</em>, has captured the fascination of reading researchers since the 1970s. The severity of crowding increases with the distance from the fovea, as the periphery contains more, and much larger, texture-detecting <nobr>neurons.<input type="checkbox" id="sn-sidenote-58" class="margin-toggle"></nobr><label for="sn-sidenote-58" class="margin-toggle sidenote-number"></label><span class="sidenote">As a rule of thumb, the spacing needs to be at least half the eccentricity, i.e. to the distance from the fovea (see Herman Bouma’s <a href="https://doi.org/10.1038/226177a0">1970 report</a>).</span> Crowding is also made worse by regularity in the spacing of the flanking <nobr>objects;<input type="checkbox" id="sn-sidenote-59" class="margin-toggle"></nobr><label for="sn-sidenote-59" class="margin-toggle sidenote-number"></label><span class="sidenote">As <a href="https://doi.org/10.1167/10.10.17">demonstrated in 2010</a> by Toni Sareela et al.</span> again, presumably, because periodicity strengthens texture perception.</p>
+<p>That crowding and perceptual grouping are two sides of the same coin—namely, the spreading of activity across neural populations—is a surprisingly recent idea, but a very convincing <nobr>one.<input type="checkbox" id="sn-sidenote-60" class="margin-toggle"></nobr><label for="sn-sidenote-60" class="margin-toggle sidenote-number"></label><span class="sidenote">Michael Herzog’s group at EFPL were the first to strongly advocate for it; see <a href="https://dx.doi.org/10.1167%2F15.6.5">this review</a> for a great summary of the evidence.</span> Among the many computational models of crowding, only one reacts to most input images in the same way human subjects do: it is the model that simulates crowding as perceptual <nobr>grouping.<input type="checkbox" id="sn-sidenote-61" class="margin-toggle"></nobr><label for="sn-sidenote-61" class="margin-toggle sidenote-number"></label><span class="sidenote">See <a href="https://doi.org/10.1371/journal.pcbi.1006580">Doerig et al., 2019</a>, for a comparison of approaches, and <a href="http://dx.doi.org/10.1037/rev0000070">Francis et al., 2017</a> and <a href="https://doi.org/10.3389/fnbot.2019.00033">Bornet et al., 2019</a>, for the grouping-based model. Also check out <a href="https://doi.org/10.1101/747394">their attempt</a> to reproduce the effect in capsule networks.</span></p>
+<p>At this point, let’s recapitulate what happens to the image of letters on a page:</p>
+<ol type="1">
+<li><p>In a forward sweep from V1 to V4, edges and lines in V1 activate contour-integrating V2 neurons (mostly in the fovea and parafovea) and texture-detecting V2 neurons (mostly in the periphery). These, in turn, activate V4 neurons that detect more complex visual patterns, among them convex contour fragments.</p></li>
+<li><p>As these V4 signals begin to excite higher-level brain areas, feedback signals from V2 to V1 and from V4 to V2 begin to rapidly reinforce spatially integrated patterns (mainly contours).</p></li>
+<li><p>Surround-suppressive feedback mutes spatially redundant signals, allowing boundaries to pop out between textured surfaces even in the absence of strong contour signals.</p></li>
+<li><p>Lateral inhibition between neurons further prevents activity from spreading, as more active neurons can dampen their neighbours. Because signals travel more slowly through intracortical horizontal connections, lateral inhibition takes a bit longer to kick in fully.</p></li>
+<li><p>Top-down attention exerted on individual (or small populations of) high-level neurons shifts the dynamics of the entire network. A little bit of attention can go a long <nobr>way.<input type="checkbox" id="sn-sidenote-62" class="margin-toggle"></nobr><label for="sn-sidenote-62" class="margin-toggle sidenote-number"></label><span class="sidenote">Thomas Miconi and Rufin VanRullen <a href="https://doi.org/10.1109/CIMSIVP.2011.5949241">describe how</a> (<a href="https://hal.archives-ouvertes.fr/hal-00706798/file/miconi_t_11_106.pdf">PDF</a>) a little bit of extra activity can effectively shift the entire receptive field of a neuron. In Stefan Mihalaş et al.’s <a href="https://doi.org/10.1073/pnas.1014655108">2011 simulations</a>, referenced above, increasing G-cell activity by a mere 7% was enough to reproduce the effects seen in human subjects.</span></p></li>
+<li><p>As neural activity travels outwards along contours and textures, some regions (retinotopic, not cortical) are suddenly flooded with activity. This new activity, in turn, can command attention, via direct connection to higher-level <nobr>areas.<input type="checkbox" id="sn-sidenote-63" class="margin-toggle"></nobr><label for="sn-sidenote-63" class="margin-toggle sidenote-number"></label><span class="sidenote">The <a href="https://en.wikipedia.org/wiki/Frontal_eye_fields">frontal eye fields</a> seem to be one brain region involved in keeping track of visual attention, and in making saccades when necessary.</span></p></li>
+</ol>
+<p>If this understanding of perceptual grouping is correct, then the objective of letterfitting—or, at least, of the Gestalt-based variant—boils down to ensuring that neural activity can spread uniformly from a letter to both of its neighbours until it envelops the entire word, without coagulating into separate, smaller, more stable perceptual groups.</p>
+<h2 id="reading-in-the-brain-from-letter-skeletons-to-words">Reading in the brain: from letter skeletons to words</h2>
+<p>Before we explore in more detail how neural activity might bind letters into pairs and words, let’s briefly review how all of this fits in with recent models of <em>reading</em>—in other words: what happens after V4, and what does it tell us about the connection between letterfitting and legibility?</p>
 <!--
 So far, we have described some important neural dynamics of the visual cortex,
 between V1 and the early inferotemporal cortex. Experimental results have
@@ -275,21 +236,44 @@ however.{/sn}—all of these are instances of the problem
 of competitive perceptual grouping.
 -->
 <p class="missing">
-Describe the latest reading model (overlap-based n-gram hierarchy; Graigner, Gomez et al.); reference letter transposition studies.
+Describe reading models (overlap-based n-gram hierarchy; Graigner, Gomez et al., SERIOL2); letter transposition studies, Whitney et al.
 </p>
 <p class="missing">
 Comment on the role of word dividers/breaks, or the lack of them, in different languages; linguistic reasons for their necessity/absence.
+</p>
+<p class="missing">
+Explain relevance of bigram detectors to letterfitting, vs. word gestalten, esp. in the context of type design vs. skilled reading. Compare to non-Latin languages.
+</p>
+<h2 id="from-perceptual-grouping-to-letterfitting">From perceptual grouping to letterfitting</h2>
+<p>The above model of our vision system’s perceptual grouping mechanisms finally allows us to make some predictions about typographic truths, and should ultimately allow us to build a robust, biologically plausible letterfitting tool.</p>
+<p class="missing">
+Competition between word-scale and stem-scale grouping cells
+</p>
+<p>Let’s see how our current understanding of perceptual grouping plays out in some axiomatic letter pairs:</p>
+<p><img src="img/benchmark_gaps.png" alt="Some benchmark letter pairs: nn, oo, nl,
+and IUL"></p>
+<p class="missing">
+Explain the asymptotic length-invariance of parallel stems
+</p>
+<p class="missing">
+Explain round-round interactions via weaker contour integration and less disruption of V4
+</p>
+<p class="missing">
+Explain IUL via balance between weaker horizontal contour integration and stronger inhibition from false inter-stem medial axis (b/c smaller radius).
+</p>
+<p class="missing">
+Illustrate effect of serifs, italics, x-height and weight
 </p>
 <h2 id="building-practical-letterfitting-algorithms">Building practical letterfitting algorithms</h2>
 <p>Unfortunately, the dynamism of the scientific model(s) introduced thus far makes them unsuitable for use in practical letterfitting tools for type designers. Although it is relatively straightforward to set up systems of coupled differential equations representing individual neurons, integrating them at a sufficiently fine spatial resolution is immensely costly, and doing so over many iterations for each letter combination is outright infeasible, at least with consumer-grade hardware. We must therefore consider potential approximations to the model.</p>
 <p class="missing">
 Brief nod to existing solutions in the appendix, and how they happen to approximate (or not) some of the model characteristics discussed.
 </p>
-<p>As explained above, V1 simple cells are typically modelled as responding linearly via a simple Fourier-domain multiplication with a bank of bandpass filters <span class="math inline">G(s, o)</span>, where <span class="math inline">s</span> is the frequency scale and <span class="math inline">o</span> the <nobr>orientation.<input type="checkbox" id="sn-sidenote-60" class="margin-toggle"></nobr><label for="sn-sidenote-60" class="margin-toggle sidenote-number"></label><span class="sidenote"><a href="https://en.wikipedia.org/wiki/Gabor_filter">Gabor patches</a> are most commonly used, but many alternative models with better mathematical properties are available.</span> This set of convolutions turns the two-dimensional input image (width × height) into a four-dimensional tensor of complex numbers (width × height × spatial frequency scales × orientations), the magnitude and phase angle of which capture the activation of simple cells <span class="math inline">S_\mathrm{V1}</span> at every location:</p>
+<p>As explained above, V1 simple cells are typically modelled as responding linearly via a simple Fourier-domain multiplication with a bank of bandpass filters <span class="math inline">G(s, o)</span>, where <span class="math inline">s</span> is the frequency scale and <span class="math inline">o</span> the <nobr>orientation.<input type="checkbox" id="sn-sidenote-64" class="margin-toggle"></nobr><label for="sn-sidenote-64" class="margin-toggle sidenote-number"></label><span class="sidenote"><a href="https://en.wikipedia.org/wiki/Gabor_filter">Gabor patches</a> are most commonly used, but many alternative models with better mathematical properties are available.</span> This set of convolutions turns the two-dimensional input image (width × height) into a four-dimensional tensor of complex numbers (width × height × spatial frequency scales × orientations), the magnitude and phase angle of which capture the activation of simple cells <span class="math inline">S_\mathrm{V1}</span> at every location:</p>
 <p><span class="math display">
 S_\mathrm{V1}(x, y, s, o) = \mathcal{F}^{-1}(\mathcal{F}(I(x, y)) \mathcal{F}(G(s, o))),
 </span></p>
-<p><nobr><input type="checkbox" id="mn-marginnote-61" class="margin-toggle"></nobr><label for="mn-marginnote-61" class="margin-toggle"></label><span class="marginnote"><img src="img/complex_value.png"></span></p>
+<p><nobr><input type="checkbox" id="mn-marginnote-65" class="margin-toggle"></nobr><label for="mn-marginnote-65" class="margin-toggle"></label><span class="marginnote"><img src="img/complex_value.png"></span></p>
 <p>where <span class="math inline">\mathcal{F}</span> is the Fourier transform. For instance, to retrieve wthe activation of representative simple cells at phases 0°, 90°, w180° and 270°, one ould half-wave-rectify as follows:</p>
 <p><span class="math display">
 \begin{aligned}
@@ -303,15 +287,15 @@ S_{\mathrm{V1, 270\degree}}(x, y, s, o) &amp;= |-\mathrm{Im}(S_1(x, y, s, o)| \\
 <p><span class="math display">
 C_\mathrm{V1}(x, y, s, o) = |S_\mathrm{V1}(x, y, s, o)|^2
 </span></p>
-<p>This is often called the <em>local energy</em>. The squaring operation shown here is often used in the literature to approximate the nonlinear behaviour of complex cells in <nobr>particular.<input type="checkbox" id="mn-marginnote-62" class="margin-toggle"></nobr><label for="mn-marginnote-62" class="margin-toggle"></label><span class="marginnote"><img src="img/hra.png"
+<p>This is often called the <em>local energy</em>. The squaring operation shown here is often used in the literature to approximate the nonlinear behaviour of complex cells in <nobr>particular.<input type="checkbox" id="mn-marginnote-66" class="margin-toggle"></nobr><label for="mn-marginnote-66" class="margin-toggle"></label><span class="marginnote"><img src="img/hra.png"
 alt="HRA"> Solid line: hyperbolic ratio curve, a.k.a. <a href="https://en.wikipedia.org/wiki/Hill_equation_(biochemistry)">Hill function</a> or Naka-Rushton function. Dotted line: monotonic polynomial (e.g. <span class="math inline">x^2</span>).</span> Of course, this is a rather unrealistic (if practical) choice. In a real cells, the firing rate will level off after the input has been increased beyond some limit. A popular model for this is the hyperbolic ratio sigmoid</p>
 <p><span class="math display">y = \frac{fx^k}{\beta^k + x^k}</span></p>
-<p>The <span class="math inline">f</span> scales the curve vertically, <span class="math inline">k</span> makes the kink steeper, and <span class="math inline">\beta</span> shifts the threshold to the right. Consider how the numerator increases the firing rate, and the denominator decreases it. For relatively small values of <span class="math inline">x</span>, <span class="math inline">\beta^k</span> dominates the denominator, yielding a scaled-down version of <span class="math inline">fx^k</span> (values of about 2 or 3 are common for <span class="math inline">k</span>, in agreement with the square often used). But once <span class="math inline">x^k</span> gets large enough, <span class="math inline">\beta^k</span> pales in comparison, and we are left approaching <span class="math inline">f</span><nobr>.<input type="checkbox" id="sn-sidenote-63" class="margin-toggle"></nobr><label for="sn-sidenote-63" class="margin-toggle sidenote-number"></label><span class="sidenote">This specific activation function is effectively never used in deep learning, both for historical reasons and because <a href="https://en.wikipedia.org/wiki/Vanishing_gradient_problem">its asymptotic behaviour would slow down training</a>.</span></p>
+<p>The <span class="math inline">f</span> scales the curve vertically, <span class="math inline">k</span> makes the kink steeper, and <span class="math inline">\beta</span> shifts the threshold to the right. Consider how the numerator increases the firing rate, and the denominator decreases it. For relatively small values of <span class="math inline">x</span>, <span class="math inline">\beta^k</span> dominates the denominator, yielding a scaled-down version of <span class="math inline">fx^k</span> (values of about 2 or 3 are common for <span class="math inline">k</span>, in agreement with the square often used). But once <span class="math inline">x^k</span> gets large enough, <span class="math inline">\beta^k</span> pales in comparison, and we are left approaching <span class="math inline">f</span><nobr>.<input type="checkbox" id="sn-sidenote-67" class="margin-toggle"></nobr><label for="sn-sidenote-67" class="margin-toggle sidenote-number"></label><span class="sidenote">This specific activation function is effectively never used in deep learning, both for historical reasons and because <a href="https://en.wikipedia.org/wiki/Vanishing_gradient_problem">its asymptotic behaviour would slow down training</a>.</span></p>
 <p>This formula is particularly relevant thanks to <em>lateral inhibition</em>, a common architectural pattern in the brain in which neurons within a cortical area suppress their neighbours in proportion to their own firing rate. Locally, this allows the most active neuron to suppress its neighbours more than those neighbours are able to suppress it in return. Lateral inhibition thus sharpens peaks and flattens valleys in the activity landscape; it is a simple and effective way to boost salient signals relative to the weaker ones that inevitably arise from the correlations between similarly tuned convolution filters. In V1, lateral inhibition thus sharpens the orientation and frequency-scale signals, while also normalizing local contrast.</p>
-<p>Because lateral inhibition is a recurrent process that takes time to reach a steady state, it is most accurately modelled using a system of coupled differential equations which describe the time dependence of each neuron’s firing rate on its neighbours. Conveniently, however, the steady-state activations can also be approximated directly using our hyperbolic ratio model, by simply sneaking the neighbouring neurons’ activities into the <nobr>denominator:<input type="checkbox" id="sn-sidenote-64" class="margin-toggle"></nobr><label for="sn-sidenote-64" class="margin-toggle sidenote-number"></label><span class="sidenote">See <a href="https://arxiv.org/pdf/1906.08246.pdf">this analysis</a> by Jesús Malo et al. to understand how this approximation works.</span></p>
+<p>Because lateral inhibition is a recurrent process that takes time to reach a steady state, it is most accurately modelled using a system of coupled differential equations which describe the time dependence of each neuron’s firing rate on its neighbours. Conveniently, however, the steady-state activations can also be approximated directly using our hyperbolic ratio model, by simply sneaking the neighbouring neurons’ activities into the <nobr>denominator:<input type="checkbox" id="sn-sidenote-68" class="margin-toggle"></nobr><label for="sn-sidenote-68" class="margin-toggle sidenote-number"></label><span class="sidenote">See <a href="https://arxiv.org/pdf/1906.08246.pdf">this analysis</a> by Jesús Malo et al. to understand how this approximation works.</span></p>
 <p><span class="math display">y_i = \frac{fx_i^k}{\beta^k + \sum_j w_j x_j^k}</span></p>
 <p>This approximation is called <em>divisive normalization</em>. One can find many variations on the above formula in the literature: extra constants, extra square roots in the denominator, extra rectifiers, etc.; but the core idea is always the same.</p>
-<p>This raises the challenge of determining the right values for <span class="math inline">w_j</span>, i.e. modelling the inhibitive strengths of neighbourly connections. Researchers have collected <nobr>formulas,<input type="checkbox" id="sn-sidenote-65" class="margin-toggle"></nobr><label for="sn-sidenote-65" class="margin-toggle sidenote-number"></label><span class="sidenote">In 2011, Tadamasa Sawada and Alexander Petrov compiled a <a href="https://doi.org/10.1152/jn.00821.2016">very long review</a> of divisive normalization models of V1. To my knowledge, it is still the most comprehensive reference today.</span> but it is not clear that they capture all of the interactions there are. What’s more, the last decade of research has revealed that some measured behaviours previously ascribed to lateral inhibition may instead be the result of feedback from higher-level areas. If nothing else, <span class="math inline">w_j</span> is probably a convenient place for modellers to incorporate the effects of spatial frequency dependency (i.e. contrast sensitivity curves).</p>
+<p>This raises the challenge of determining the right values for <span class="math inline">w_j</span>, i.e. modelling the inhibitive strengths of neighbourly connections. Researchers have collected <nobr>formulas,<input type="checkbox" id="sn-sidenote-69" class="margin-toggle"></nobr><label for="sn-sidenote-69" class="margin-toggle sidenote-number"></label><span class="sidenote">In 2011, Tadamasa Sawada and Alexander Petrov compiled a <a href="https://doi.org/10.1152/jn.00821.2016">very long review</a> of divisive normalization models of V1. To my knowledge, it is still the most comprehensive reference today.</span> but it is not clear that they capture all of the interactions there are. What’s more, the last decade of research has revealed that some measured behaviours previously ascribed to lateral inhibition may instead be the result of feedback from higher-level areas. If nothing else, <span class="math inline">w_j</span> is probably a convenient place for modellers to incorporate the effects of spatial frequency dependency (i.e. contrast sensitivity curves).</p>
 <p class="missing">
 First option: use only difference in V1 complex cell activations, weigh based on orientation and size. Pair gains approximate word-scale grouping strength, pair losses approximate stem-scale losses. Does not consider contour pop-out or actual grouping dynamics; does quite poorly on uppercase letters. However, straightforward to train on existing fonts via backprop. Show some results.
 </p>

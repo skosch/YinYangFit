@@ -804,86 +804,83 @@ to the V just reroutes more activity into the texture representation.
 
 <img src="img/crowding_example.png" alt="Example of crowding between letters">
 
-This phenomenon, called *crowding*, has captured the fascination of reading researchers
-since the 1970s. The severity of crowding increases with the distance from the
-fovea, as the periphery contains more, and much larger, texture-detecting
-neurons.{sn}As a rule of thumb, the spacing needs to be at least half the eccentricity, i.e. to the distance from the fovea (see
-Herman Bouma's 1970 report ([DOI](https://doi.org/10.1038/226177a0))).{/sn}
-Crowding is also made worse by regularity in the spacing of the flanking
-objects;{sn}As [demonstrated in 2010](https://doi.org/10.1167/10.10.17) by Toni Sareela et al.{/sn} again, presumably, because periodicity strengthens texture perception.
+This phenomenon, called *crowding*, has captured the fascination of reading
+researchers since the 1970s. The severity of crowding increases with the
+distance from the fovea, as the periphery contains more, and much larger,
+texture-detecting neurons.{sn}As a rule of thumb, the spacing needs to be at
+least half the eccentricity, i.e. to the distance from the fovea (see Herman
+Bouma's [1970 report](https://doi.org/10.1038/226177a0)).{/sn} Crowding is
+also made worse by regularity in the spacing of the flanking objects;{sn}As
+[demonstrated in 2010](https://doi.org/10.1167/10.10.17) by Toni Sareela et
+al.{/sn} again, presumably, because periodicity strengthens texture perception.
 
-<!--
-Although 
+That crowding and perceptual grouping are two sides of the same coin—namely, the
+spreading of activity across neural populations—is a surprisingly recent idea,
+but a very convincing one.{sn}Michael Herzog's group at EFPL were the first to strongly
+advocate for it; see [this review](https://dx.doi.org/10.1167%2F15.6.5) for a
+great summary of the evidence.{/sn} Among the many computational models of crowding, only
+one reacts to most input images in the same way human subjects do: it is the
+model that simulates crowding as perceptual grouping.{sn}See
+[Doerig et al., 2019](https://doi.org/10.1371/journal.pcbi.1006580), for a comparison of approaches,
+and [Francis et al., 2017](http://dx.doi.org/10.1037/rev0000070) and [Bornet et
+al., 2019](https://doi.org/10.3389/fnbot.2019.00033), for the grouping-based model.
+Also check out [their attempt](https://doi.org/10.1101/747394) to reproduce the
+effect in capsule networks.{/sn}
 
-- These kinds of experiments have made clear that crowding and grouping are really the
-  same effect, and that they interact. For example, LAMINART study.
+At this point, let's recapitulate what happens to the image of letters on a
+page:
 
-- Ultimately, it's not something we need to directly worry about when letterfitting,
-  because we are dealing with pairs of letters at once, and we can assume that
-  our algorithm (like a human designer) will fit them in the fovea, without much
-  meddling from texture-detecting neurons.
+1. In a forward sweep from V1 to V4, edges and
+lines in V1 activate contour-integrating V2 neurons (mostly in the fovea and
+parafovea) and texture-detecting V2 neurons (mostly in the periphery). These, in
+turn, activate V4 neurons that detect more complex visual patterns, among them
+convex contour fragments.
 
-- The dynamics happen so fast, and timing matters, especially when reading fast. Looking at a word or pair is a very different
-  activity from reading (learning as a child) or reading (as an adult), and that
-  has to be taken into account.
+2. As these V4 signals begin to excite higher-level
+brain areas, feedback signals from V2 to V1 and from V4 to V2 begin to rapidly
+reinforce spatially integrated patterns (mainly contours).
 
+3. Surround-suppressive feedback mutes spatially redundant signals, allowing
+boundaries to pop out between textured surfaces even in the absence of strong
+contour signals.
 
+4. Lateral inhibition between neurons further prevents activity from spreading, 
+as more active neurons can dampen their neighbours. Because signals travel more
+slowly through intracortical horizontal connections, lateral inhibition takes a
+bit longer to kick in fully.
 
-[The link](https://doi.org/10.1109/CIMSIVP.2011.5949241){pdf}https://hal.archives-ouvertes.fr/hal-00706798/file/miconi_t_11_106.pdf{/pdf}
+5. Top-down attention exerted on individual (or small populations of) high-level
+   neurons shifts the dynamics of the entire network. A little bit of attention
+   can go a long way.{sn}Thomas Miconi and Rufin VanRullen [describe
+   how](https://doi.org/10.1109/CIMSIVP.2011.5949241)
+   ([PDF](https://hal.archives-ouvertes.fr/hal-00706798/file/miconi_t_11_106.pdf))
+   a little bit of extra activity can effectively shift the entire receptive field of
+   a neuron. In Stefan Mihalaş et al.'s [2011
+   simulations](https://doi.org/10.1073/pnas.1014655108), referenced above,
+   increasing G-cell activity by a mere 7% was enough to reproduce the effects
+   seen in human subjects.{/sn}
 
+6. As neural activity travels outwards along contours and textures, some regions (retinotopic,
+   not cortical) are suddenly flooded with activity. This new activity, in turn,
+   can command attention, via direct connection to higher-level areas.{sn}The
+   [frontal eye fields](https://en.wikipedia.org/wiki/Frontal_eye_fields) seem
+   to be one brain region involved in keeping track of visual attention, and in
+   making saccades when necessary.{/sn} 
+   
 
-Attention is important to word perception.
--->
-<p class="missing">
-Review Herzog lab papers; effect of regularity on crowding (Sareela et al. 2010) and uncrowding via LAMINART grouping (Francis et al.)
-</p>
+If this understanding of perceptual grouping is correct, then the objective of
+letterfitting—or, at least, of the Gestalt-based variant—boils down to ensuring
+that neural activity can spread uniformly from a letter to both of its
+neighbours until it envelops the entire word, without coagulating into separate,
+smaller, more stable perceptual groups.
 
-<p class="missing">
-Offer intuition for perceptual grouping of words and crowding as related effects
-of lateral spread of neural activity.
-</p>
+## Reading in the brain: from letter skeletons to words
 
-<p class="missing">
-Review the concept of attention, and its ability to affect the spread (both
-facilitatory and laterally inhibitive, see e.g. Mihalas et al.)
-</p>
+Before we explore in more detail how neural activity might bind letters into
+pairs and words, let's briefly review how all of this fits in with recent models
+of *reading*—in other words: what happens after V4, and what does it tell us
+about the connection between letterfitting and legibility?
 
-## From perceptual grouping to letterfitting 
-The above model of our vision system's perceptual grouping mechanisms finally
-allows us to make some predictions about typographic truths, and should
-ultimately allow us to build a robust, biologically plausible letterfitting
-tool.
-
-<p class="missing">
-Competition between word-scale and stem-scale grouping cells
-</p>
-
-Let's see how our current understanding of perceptual grouping plays out
-in some axiomatic letter pairs:
-
-<img src="img/benchmark_gaps.png" alt="Some benchmark letter pairs: nn, oo, nl,
-and IUL">
-
-<p class="missing">
-Explain the asymptotic length-invariance of parallel stems
-</p>
-
-<p class="missing">
-Explain round-round interactions via weaker contour integration and less
-disruption of V4
-</p>
-
-<p class="missing">
-Explain IUL via balance between weaker horizontal contour integration and
-stronger inhibition from false inter-stem medial axis (b/c smaller radius).
-</p>
-
-<p class="missing">
-Illustrate effect of serifs, italics, x-height and weight
-</p>
-
-
-## Why word grouping matters: models of reading
 <!--
 So far, we have described some important neural dynamics of the visual cortex,
 between V1 and the early inferotemporal cortex. Experimental results have
@@ -918,14 +915,57 @@ of competitive perceptual grouping.
 -->
 
 <p class="missing">
-Describe the latest reading model (overlap-based n-gram hierarchy; Graigner,
-Gomez et al.); reference letter transposition studies.
+Describe reading models (overlap-based n-gram hierarchy; Graigner,
+Gomez et al., SERIOL2); letter transposition studies, Whitney et al.
 </p>
 
 <p class="missing">
 Comment on the role of word dividers/breaks, or the lack of them, in different languages;
 linguistic reasons for their necessity/absence.
 </p>
+
+<p class="missing">
+Explain relevance of bigram detectors to letterfitting, vs. word gestalten, esp.
+in the context of type design vs. skilled reading. Compare to non-Latin languages.
+</p>
+
+## From perceptual grouping to letterfitting 
+
+
+
+The above model of our vision system's perceptual grouping mechanisms finally
+allows us to make some predictions about typographic truths, and should
+ultimately allow us to build a robust, biologically plausible letterfitting
+tool.
+
+<p class="missing">
+Competition between word-scale and stem-scale grouping cells
+</p>
+
+Let's see how our current understanding of perceptual grouping plays out
+in some axiomatic letter pairs:
+
+<img src="img/benchmark_gaps.png" alt="Some benchmark letter pairs: nn, oo, nl,
+and IUL">
+
+<p class="missing">
+Explain the asymptotic length-invariance of parallel stems
+</p>
+
+<p class="missing">
+Explain round-round interactions via weaker contour integration and less
+disruption of V4
+</p>
+
+<p class="missing">
+Explain IUL via balance between weaker horizontal contour integration and
+stronger inhibition from false inter-stem medial axis (b/c smaller radius).
+</p>
+
+<p class="missing">
+Illustrate effect of serifs, italics, x-height and weight
+</p>
+
 
 ## Building practical letterfitting algorithms
 
