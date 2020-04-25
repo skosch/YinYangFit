@@ -878,8 +878,184 @@ smaller, more stable perceptual groups.
 
 Before we explore in more detail how neural activity might bind letters into
 pairs and words, let's briefly review how all of this fits in with recent models
-of *reading*—in other words: what happens after V4, and what does it tell us
-about the connection between letterfitting and legibility?
+of *reading*. In other words: what happens after V4, and what does it tell us
+about how letterfitting influences legibility?
+
+Researchers broadly agree that reading is based on the same mechanisms as early
+vision: convolution and feedback. In a first step, neurons{sn}Or constellations of
+neurons, sometimes referred to as *nodes*, but here simply called
+*detectors*.{/sn} detect the presence of letters from the skeletons made up of
+V4 contour fragments. Then, higher-level neurons detect ordered combinations of
+these letters; next, combinations of combinations; and those eventually activate
+a population of candidate word detectors associated with said letter
+combinations.
+
+In the feedback stage, each word detector competes (via lateral inhibition) with
+the others and sends positive feedback back to the hierarchy of
+letter-combination detectors that activated it, which also compete. This results
+in a vigorous electrical back-and-forth for about a quarter of a second, until
+activity settles on the winning word detector. Because the word detectors are
+largely at the mercy of the brain's language circuitry that parses sentences
+based on grammar and semantic associations, the raw signal from the
+letter-combination detectors is easily overruled in our awareness.
+
+The archetypal letter-combination detector responds to ordered pairs of letters,
+often called "open bigrams" in the literature.{sn}Early open-bigram models were
+primitive and regularly maligned. Today, the idea is no longer under much dispute, in a
+win for its early champions like Jonathan Grainger and Carol Whitney.{/sn} Because letters can appear
+anywhere in the retina, and at any size, we must assume that *all* pairs present
+in a word will be detected: for instance, the word *cat* will trigger the
+detectors for *CA*, *AT*, and *CT*. Due to the inherent softness of the
+detectors' filter kernels,{sn}Of course, the "filter kernels" here refer to the
+distribution of synapses from input neurons, assumed to be decreasing with
+retinotopic distance.{/sn} the exact spatial position of the letters and bigrams
+is somewhat uncertain:{sn}One of the influential reading models featuring such
+uncertainty was the 2008 [overlap model](https://doi.org/10.1037/a0012667) by Gomez, Ratcliff, and Perea.{/sn}
+
+<img src="img/ld_lcd.png" alt="open bigram detection" />
+
+This uncertainty results in the (light, but nonzero) activation of reverse
+bigrams, which allows us to read wodrs wiht jmbuled ltetres,{sn}[Jumbled
+letters](https://en.wikipedia.org/wiki/Transposed_letter_effect) are a crowd
+favourite ever since the infamous [Cambridge
+email](http://www.mrc-cbu.cam.ac.uk/people/dennis.norris/personal/cambridgeemail/)
+meme. The strength of the effect appears to depend on many factors: the
+[relative position of the
+letter](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2662926/), [the jumbling
+distance](http://www.bcbl.eu/consolider/images/stories/publications/Pere
+a_etal_ExpPsy07.pdf), and on [your
+age](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6542500/) (curiously, it does
+not depend on whether you are a human [or a
+baboon](https://journals.sagepub.com/doi/abs/10.1177/0956797612474322)). English
+words are particularly forgiving to letter transpositions, while e.g. Semitic
+languages are much more sensitive to them, as [pointed
+out](https://dx.doi.org/10.1017%2FS0140525X11001841) by Israeli researcher Ram
+Frost.{/sn} even though we have no trouble distinguishing the letter order
+between *cat* and *act*. Such feats would be impossible without the dynamic
+interactions with a population of word detectors which, in turn, are gated by
+our language-comprehension networks.
+
+This neat hierarchy of *n*-gram detectors takes lots of reading practice to
+develop, but it is becoming increasingly clear that this is only one of many
+steps in the long and awkward process of reading acquisition.{sn}The summary
+given here is based primarily on a well-sourced [review
+paper](https://psyarxiv.com/g3n2m/download?format=pdf) by Carol Whitney and
+colleagues. Sadly, this was Carol's last paper; she died in late
+2019.{/sn} It appears that children first learn to recognize letters as
+individual objects, just as they learn to recognize chairs, spoons, and fire
+trucks. In particular, children develop letter representations in a brain area
+otherwise associated with small, graspable objects such as hand tools. Then,
+children learn that these letters, just as other objects and tools, are
+associated with sounds. Initially, the saccade distance is a single letter.
+After a few years, the grapheme-phoneme associations are strong enough that
+five-letter saccades are sufficient; within these five letters, the child
+quickly and covertly shifts attention from letter to letter. Remarkably, this
+requires the developing *n*-gram detectors to recognize letters that activate
+not simultaneously but in sequence.
+
+In experienced adult readers, the *n*-gram detectors appear to be directly
+connected to letter-shape detectors the visual cortex. The development of this
+shortcut is the final step of learning to read, and these letter-shape detectors
+are no longer associated with the conscious experience of e.g. handling a
+letter-shaped toy. We don't lose those original letter-representing neurons—but
+we don't make use of them when reading quickly. 
+
+The *n*-gram detectors are used to letters arriving in temporal sequence, and
+experiments suggest that even the "fast" adult letter detectors still activate
+the *n*-gram detectors in series, perhaps via lateral and feedback inhibition
+coupled with imperceptibly fast (≈16ms) gamma cycles.{sn}See e.g.
+[SERIOL2](https://files.eric.ed.gov/fulltext/ED543279.pdf) by Whitney and
+Marton, which cleverly tests this hypothesis on both left-to-right and
+right-to-left readers to confirm the model's assumptions about the effect of the
+lateralization of our reading circuitry to the left hemisphere.{/sn} Such a
+time-based encoding would also eliminate the need for an enormous number of
+retinotopic *n*-gram detectors.
+
+But whether or not the distance between letters is encoded temporally or
+spatially (i.e. via convolutional filtering), it seems clear that the activation
+of *n*-gram detectors depends directly on the physical distance between printed
+letters. In other words: we read best what we are used to; legibility is a
+question of conditioning. Of course, this seems disappointing. If conditioning
+is all that matters, why not simply copy the metrics from other fonts? How can
+we justify our tedious efforts to model neural Gestalt dynamics?
+
+The answer, of course, is that while *n*-gram detectors are conditioned purely
+on existing fonts, the design process of new fonts is not.{sn}Stylistic
+influences, yes, but no infinite regress.{/sn} As a result, the metrics of
+previous designs are not always applicable:
+
+{mn}In the Impact typeface (left), all letters have straight verticals, even
+those that are typically designed with round extrema (right). The letterfit must
+account for such design idiosyncrasies.{/mn}
+<img src="img/diff_font_styles.png" alt="diff font styles example" />
+
+Designers don't typically fit their fonts by running double-blind,
+randomly-controlled crossover trials to optimize reading speed and
+comprehension. In fact, they don't perceive their letters using their reading
+circuitry at all, but rather try their hardest to silence it in an attempt to
+rely purely on their more primal sense of "visual balance between pairs"—Gestalt
+grouping.{sn}In this pursuit, some even turn their letters upside down to
+fit.{/sn}
+
+This insistence on Gestalt perception has two explanations: for one, it is an
+indirect attempt to minimize outliers in the V2 statistics, which can draw
+attention{sn}And do so quite literally; high-salience features can exogenously
+capture attention by escaping surround suppression.{/sn} and distract from
+reading. But more importantly, it has to do with word coherence.
+
+In scripts that don't use word-dividing spaces,{sn}This applies to
+[Thai](https://en.wikipedia.org/wiki/Thai_script) and
+[Burmese](https://en.wikipedia.org/wiki/Burmese_alphabet), and is probably true
+more generally for [isolating
+languages](https://en.wikipedia.org/wiki/Isolating_language), i.e. those in
+which virtually every syllable maps directly onto a [free
+morpheme](https://en.wikipedia.org/wiki/Bound_and_free_morphemes). After all, in
+such grammars, word spaces aren't of much use anyway. Koreans sometimes omit
+word spaces in [Hangul](https://en.wikipedia.org/wiki/Hangul) in informal
+writing, as well.{/sn} we can describe letterfitting as the pursuit of a maximal
+data transmission rate. Trivially, smaller pair distances increase the data rate, while any reduction in
+letter identifiability—overlapping or excessively small letters, for
+instance—decreases it. Moreover, a tighter fit will activate more reverse
+bigrams, risking worse (or slower) word identification.
+
+In English, however, we have another letterfitting criterion: letters need to
+group together to form words.{sn}Of course, this is true for other [fusional
+languages](https://en.wikipedia.org/wiki/Fusional_language) as well.{/sn} Spaces
+help us perceive which morphemes belong together.
+
+<p class="missing">
+Explain word transposition effects, terminal-letter effects, and the
+implications for letterfitting.
+</p>
+
+<!--
+  On a related note, there is some fascinating research on how our brains [break
+  down
+  words](https://www.researchgate.net/profile/Elisabeth_Beyersmann/publication/316312318_Edge-Aligned_Embedded_Word_Activation_Initiates_Morpho-orthographic_Segmentation/links/5addab7ca6fdcc29358b9656/Edge-Aligned-Embedded-Word-Activation-Initiates-Morpho-orthographic-Segmentation.pdf)
+  into morpho-orthographic chunks during processing.{/sn}
+
+
+
+- furthermore, experiments suggest that we read multiple words at once. This
+  supersedes the long-held assumption that we read words one by one, by shifting
+  our eye and/or attention from one word to the next. Timing studies suggest
+  that multiple word detectors are activated at once, even though only one is
+  consciously processed at once.
+  
+- If bigram detectors are so flexible, and also attention is not limited to one
+  word at a time, then how does the brain keep words apart at all? In other
+  words, what prevents us from misreading "hello scarface" as "hell oscar face"?
+  It could be that the difference in the activation of the "lo" and "rf" vs "os"
+  suffice to explain it. But the fact that first and last letters are particularly important in
+  transposed-letter experiments suggests that letters at a word end are perhaps detected
+  by different detectors than those in the middle of a word, such that jumbling
+  a first letter is more akin to letter substitution than to letter transposition.
+  
+- On one hand, the existence of bigram detectors proves that letterfitting text
+  for legibility is a different exercise from letterfitting text for gestalt.
+  On the other hand, reading *also* depends on word division, which, if the
+  existence of terminal-letter-detectors is true, can yet again be viewed from a
+  Gestalt/skeleton angle. -->
 
 <!--
 So far, we have described some important neural dynamics of the visual cortex,
@@ -913,21 +1089,6 @@ compositional mechanisms described here likely transfer in principle,
 however.{/sn}—all of these are instances of the problem
 of competitive perceptual grouping.
 -->
-
-<p class="missing">
-Describe reading models (overlap-based n-gram hierarchy; Graigner,
-Gomez et al., SERIOL2); letter transposition studies, Whitney et al.
-</p>
-
-<p class="missing">
-Comment on the role of word dividers/breaks, or the lack of them, in different languages;
-linguistic reasons for their necessity/absence.
-</p>
-
-<p class="missing">
-Explain relevance of bigram detectors to letterfitting, vs. word gestalten, esp.
-in the context of type design vs. skilled reading. Compare to non-Latin languages.
-</p>
 
 ## From perceptual grouping to letterfitting 
 
