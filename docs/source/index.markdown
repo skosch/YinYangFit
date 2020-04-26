@@ -45,7 +45,7 @@ Nothing in this article should be construed as final. I welcome corrections!
 
 Letterfitting refers to the process of adjusting the distances between pairs of
 letters{sn}I use the word "letter" very liberally; the more general term is
-[glyph](https://en.wikipedia.org/wiki/Glyph).{/sn} during typeface design.
+[glyph](https://en.wikipedia.org/wiki/Glyph)<sup>W</sup>.{/sn} during typeface design.
 {mn}<img src="img/spacingkerning.png" alt="Spacing and kerning"><br> Red
 vertical bars show side bearings, blue vertical bar shows a negative kern.{/mn}
 It's often referred to as "spacing and kerning", because pair distances are the
@@ -93,8 +93,9 @@ dynamics of our vision system. That's what this article is about.
 
 In a way, it is surprising that type design and cognitive psychology are so
 divorced from one another.{sn}The studies that do exist are almost exclusively
-empirical (see e.g. the [review of legibility
-studies](https://www.sciencedirect.com/science/article/pii/S004269891930 1087)
+empirical (see e.g. the <nobr>[review of legibility
+studies](https://doi.org/10.1016/j.visres.2019.05.003)<span class="oa" title="Open
+Access"></span></nobr>
 compiled recently by type legend Charles Bigelow) but have no explanatory power.
 In fact, the typesetting of most preprints suggests that cognitive scientists
 are altogether unaware of typography as a discipline.{/sn} Computational models
@@ -136,18 +137,19 @@ circuitry, and not exclusive to reading. Researchers have known about them for a
 long time, too: psychologists over a century ago described our tendency to
 recognize the sum, not the parts, of arrangements of shapes:{mn}These are often
 listed as the [Gestalt laws of
-grouping](https://en.wikipedia.org/wiki/Principles_of_grouping), or the
+grouping](https://en.wikipedia.org/wiki/Principles_of_grouping)<sup>W</sup>, or the
 principle of
-[Prägnanz](https://en.wikipedia.org/wiki/Gestalt_psychology#Pr%C3%A4gnanz).
+[Prägnanz](https://en.wikipedia.org/wiki/Gestalt_psychology#Pr%C3%A4gnanz)<sup>W</sup>.
 Because these early Gestalt psychologists knew little about the brain's vision
 system, they hypothesized about their findings using sometimes abstruse
 metaphors drawn from electromagnetics, fluid mechanics, and even personality
 studies—in fact, their vocabulary of lights, shadows, and force fields closely
 matched that often employed to justify today's letterfitting heuristics. I recommend
 Johan Wagemans et al.'s fantastic two-part historical review of Gestalt
-psychology, published in 2012 ([part
-I](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3482144/), [part
-II](https://dx.doi.org/10.1037%2Fa0029334)).{/mn} <img
+psychology, published in 2012 (<nobr>[part
+I](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3482144/)<span class="oa" title="Open
+Access"></span></nobr>, [part
+II](https://dx.doi.org/10.1037%2Fa0029334)<sup>[PDF](http://gestaltrevision.be/pdfs/A%20century%20of%20Gestalt%20psychology%20in%20visual%20perception%20II.pdf)</sup>).{/mn} <img
 src="img/gestalt_laws.png" alt="Illustration of gestalt laws" />
 
 ### Legibility
@@ -184,14 +186,14 @@ involved are the same.
 {mn} All visual input activates several pieces of visual cortex before reaching
 dedicated object-detection circuitry such as the Visual Word Form Area (VWFA).
 We will discuss mainly V1, V2, and V4 (the so-called [ventral
-stream](https://en.wikipedia.org/wiki/Two-streams_hypothesis)); many other
-regions exist that are dedicated to visual tasks less relevant to reading, such
-as keeping track of moving objects. This big-picture view of reading was perhaps
-most clearly articulated in [this 2003
-article](https://doi.org/10.1016/S1364-6613(03)00134-7) by the prolific reading
-researchers McCandliss, Cohen and Dehaene. As we will discuss later, the VWFA is
-actually multiple areas.{/mn}
-<img src="img/vision_model.png" alt="Vision model">
+stream](https://en.wikipedia.org/wiki/Two-streams_hypothesis)<sup>W</sup>); many
+other regions exist that are dedicated to visual tasks less relevant to reading,
+such as keeping track of moving objects. This big-picture view of reading was
+perhaps most clearly articulated in [this 2003
+article](https://doi.org/10.1016/S1364-6613(03)00134-7)<sup>[PDF](http://ling.umd.edu/~ellenlau/courses/ling646/McCandliss_2003.pdf)</sup>
+by the prolific reading researchers McCandliss, Cohen and Dehaene. As we will
+discuss later, the VWFA is actually multiple areas.{/mn} <img
+src="img/vision_model.png" alt="Vision model">
 
 Many readers may have had some exposure, however superficial, to the concept of
 deep convolutional networks. It is tempting to conceptualize the
@@ -217,7 +219,7 @@ to the visual cortex at the very back of the head.{sn}For our
 computational purposes, we will ignore any image processing
 performed by the retina and thalamus, such as the luminance
 adaptation and pooling operations performed by [retinal ganglion
-cells](https://en.wikipedia.org/wiki/Retinal_ganglion_cell).{/sn}
+cells](https://en.wikipedia.org/wiki/Retinal_ganglion_cell)<sup>W</sup>.{/sn}
 
 {mn}Illustration adapted from Nicolas Henri Jacob (1781–1871), *Traité complet de l'anatomie de l'homme comprenant la médecine opératoire, par le docteur Bourgery*. Available in the [Anatomia Collection](https://anatomia.library.utoronto.ca/) of the Thomas Fisher Rare Book Library, University of Toronto.{/mn}
 <img src="img/vc_anatomy.png" alt="Anatomy; location of the visual cortex">
@@ -226,7 +228,7 @@ The first phalanx of cells—the primary visual cortex,
 or V1—performs what amounts to a band-filtered wavelet
 decomposition. Each neuron here is retinotopically{sn}That is,
 neurons are laid out to [roughly mirror the organization of the
-retina](https://en.wikipedia.org/wiki/Retinotopy), such that adjacent
+retina](https://en.wikipedia.org/wiki/Retinotopy)<sup>W</sup>, such that adjacent
 photoreceptors are connected to nearby neurons in the cortex.{/sn}
 connected directly to a small contiguous group of photoreceptors,
 its *receptive field* (RF),{sn}To be clear, the majority of neurons
@@ -270,11 +272,10 @@ others, and some may even respond equally to both lines and edges,
 as long as scale and orientation match their tuning. Those cells are
 called *complex cells*.{sn}Simple and complex cells lie along a spectrum
 of phase specificity, which is brilliantly explained by [this recent
-paper](https://www.biorxiv.org/content/biorxiv/early/2019/09/25/782151.f
-ull.pdf) by Korean researchers Gwangsu Kim, Jaeson Jang and
+paper](https://doi.org/10.1101/782151)<sup>[PDF](https://www.biorxiv.org/content/biorxiv/early/2019/09/25/782151.full.pdf)</sup> by Korean researchers Gwangsu Kim, Jaeson Jang and
 Se-Bum Paik. But it seems that there's even more to the
 story, as complex cells seem to [change their simpleness
-index](https://hal.archives-ouvertes.fr/hal-00660536/document)
+index](https://doi.org/10.1038/nn.2861)<sup>[PDF](https://hal.archives-ouvertes.fr/hal-00660536/document)</sup>
 in response to their input as well.{/sn} Thanks to their phase
 invariance, complex cells can extract key structural information at
 the expense of colour and contrast data. They respond wherever the frequency scale and
@@ -288,10 +289,9 @@ can read black-on-white just as well as white-on-black—suggesting
 that it is mainly complex cells that provide the relevant
 signals to higher-level brain areas.{sn}In practice, it is
 measurably easier to read dark text on light backgrounds. Not
-only do light backgrounds make the pupil contract, [creating a
-sharper image](http://dx.doi.org/10.1016/j.apergo.2016.11.001),
-but V1 outputs are also [stronger for darker
-colours](https:///doi.org/10.1523/JNEUROSCI.1991-09.2009), which may
+only do light backgrounds make the pupil contract, <nobr>[creating a
+sharper image](http://dx.doi.org/10.1016/j.apergo.2016.11.001)<sup>[PDF](http://jdobr.es/pdf/Dobres-etal-2017-Ambient.pdf)</sup></nobr>,
+but V1 outputs are also <nobr>[stronger for darker colours](https:///doi.org/10.1523/JNEUROSCI.1991-09.2009)<span class="oa" title="Open Access"></span></nobr>, which may
 contribute to shape perception in higher-level stages. Nevertheless, reading is
 primarily shape- and not colour-based.{/sn}
 
@@ -326,9 +326,11 @@ early during visual processing—setting aside the optical limitations
 of our eye—is our specific sensitivity to spatial frequencies. Humans
 respond particularly well to angular frequencies of about 2–5 cycles
 per degree, and unsurprisingly this translates to reading speed as well,
-*especially* under low-contrast conditions.{sn}See studies like [Chung
-and Tjan (2009)](https://doi.org/10.1167/9.9.16), [Oruç and Landy
-(2006)](https://doi.org/10.1167/6.6.118), and many others.{/sn} This,
+*especially* under low-contrast conditions.{sn}See studies like <nobr>[Chung
+and Tjan (2009)](https://doi.org/10.1167/9.9.16)<span class="oa" title="Open
+Access"></span></nobr>, <nobr>[Oruç and Landy
+(2009)](https://doi.org/10.1167/9.9.4)<span class="oa" title="Open
+Access"></span></nobr>, and many others.{/sn} This,
 of course, is a key reason why e.g. hairline type is difficult to read
 at smaller-than-huge sizes and a comparatively wide fit. The reader's
 contrast sensitivity function may in fact contribute to the exact relative
@@ -371,7 +373,7 @@ sufficiently active, summing to at least 1.5, thereby implementing correlation:
 {mn}Shown on the left is another hyperbolic ratio function.
 But even simple squaring nonlinearities would allow computing
 correlations; Anthony Movshon and Eero Simoncelli [call
-this](10.1101/sqb.2014.79.024844) the "cross term", referring to the
+this](https://doi.org/10.1101/sqb.2014.79.024844)<sup>[PDF](http://symposium.cshlp.org/content/early/2015/04/29/sqb.2014.79.024844.full.pdf)</sup> the "cross term", referring to the
 $ab$ in $(a+b)^2 = a^2 + 2ab + b^2$. Finally, the dashed line shows the
 deep-learning equivalent nonlinearity $\mathrm{ReLU(x-1.0)}$.{/mn} <img
 src="img/v2_nonlinearity.png" alt="Nonlinear activation of V2 neurons
@@ -385,8 +387,9 @@ analog to V2 cells. By iteratively adjusting white noise until these units are
 maximally activated, we can estimate what kinds of correlations in the input
 they are tuned to:
 
-{mn}These images were adapted from an [interactive online
-article](https://doi.org/10.23915/distill.00024) by Chris Olah and his
+{mn}These images were adapted from an <nobr>[interactive online
+article](https://doi.org/10.23915/distill.00024)<span class="oa" title="Open
+Access"></span></nobr> by Chris Olah and his
 colleagues at OpenAI, who have published lots of neat approaches to explain and
 interpret the inner workings of convolutional networks. Note that in the human brain, colour
 information is not integrated quite like it is here.{/mn}
@@ -398,7 +401,7 @@ few dozen of such correlations are enough to fool human texture perception:
 we can iteratively generate fake images, starting again from white noise, that result
 in the same combination of local averages of these presumed V2 responses as in
 the original image.{sn}The first iteration of this
-[idea](https://doi.org/10.1023/A:1026553619983) came about in 1999, long before
+<nobr>[idea](https://doi.org/10.1023/A:1026553619983)<sup>[PDF](https://www.cns.nyu.edu/pub/lcv/portilla99-reprint.pdf)</sup></nobr> came about in 1999, long before
 the heyday of convolutional deep nets, and is due to to Javier Portilla and Eero
 Simoncelli. Two decades later, these "Portilla-Simoncelli textures" have
 inspired countless psychological studies and attempts to refine the model.{/sn} If the local averaging takes place over a large area, as is
@@ -406,7 +409,7 @@ the case in the visual periphery, this can result in very distorted
 imagery that nonetheless appears uncannily real:
 
 {mn}The "image metamer" shown here was
-[generated](https://dx.doi.org/10.1038%2Fnn.2889) by Jeremy Freeman and Eero
+[generated](https://dx.doi.org/10.1038%2Fnn.2889)<sup>[PDF](https://www.cns.nyu.edu/pub/eero/freeman10-reprint.pdf)</sup> by Jeremy Freeman and Eero
 Simoncelli in 2011 based on the same principle of matching image statistics. As
 in the human brain, the authors averaged the statistics over a wider area in the
 periphery than in the fovea. When focusing strictly on the image center (best viewed
@@ -422,7 +425,7 @@ particular configurations of such V2 neurons, so synthesizing images
 which evoke similar V2 activations will also result in similar
 higher-level perceptions, even if the actual input signals are quite
 different.{sn}One could think of this as the bizarro-version of an [adversarial
-input](https://en.wikipedia.org/wiki/Adversarial_machine_learning).{/sn}
+input](https://en.wikipedia.org/wiki/Adversarial_machine_learning)<sup>W</sup>.{/sn}
 
 ### Texture statistics and letterfitting
 That V2 neurons so effectively capture local image statistics presents us with a
@@ -460,23 +463,29 @@ When V2 neurons detect texture-like correlations between neighbouring V1
 neurons, they tend to return inhibitive feedback signals, especially to the V1
 neurons in the center. This kind of "surround suppression", which acts in
 addition to the lateral inhibition between V1 cells discussed above, helps mute
-V1 activity inside similarly-textured areas.{sn}One way to explore potential
-neural architectures to accomplish this is via computational modelling; see e.g.
-experiments like [this one](https://dx.doi.org/10.1038%2Fnn.4128) by Ruben
-Coen-Cagli et al.{/sn} Because this mechanism *leasts* affects the boundaries
-between differently-textured surfaces, it allows us to perceive the outlines of
-textured objects even when those are weaker (in terms of raw V1 responses) than
-the textures themselves: think of a Zebra on the savanna, or of a cluster of
-regular strokes on a white background—perhaps a word on a page!
+V1 activity inside similarly-textured areas.{sn}Although we are mainly
+interested in suppressive feedback here, multiple mechanisms seem to be
+implicated in the modulation of visual signals; the 2019 <nobr>[EEG
+study](https://doi.org/10.1167/19.4.12)<span class="oa" title="Open
+Access"></span></nobr> by Schallmo et al. contains a comprehensive review. For
+attempts to reproduce the effect using computational modelling, see e.g. the
+work of Ruben Coen-Cagli et al.
+<nobr>[here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4624479/)<span
+class="oa" title="Open Access"></span></nobr>.{/sn} Because this mechanism
+*leasts* affects the boundaries between differently-textured surfaces, it allows
+us to perceive the outlines of textured objects even when those are weaker (in
+terms of raw V1 responses) than the textures themselves: think of a Zebra on the
+savanna, or of a cluster of regular strokes on a white background—perhaps a word
+on a page!
 
 <img src="img/surround_suppression.png" alt="surround suppression example" />
 
 This surround suppression therefore is a kind of early perceptual grouping
 mechanism, enabled by correlation-detecting V2 neurons.{sn}Another way to think
 of this, from the perspective of [predictive
-coding](https://en.wikipedia.org/wiki/Predictive_coding), is as compression of
-redundant signals, as Laurence Aitchison and Máté Lengyel [have pointed
-out](https://dx.doi.org/10.1016%2Fj.conb.2017.08.010).{/sn} The strength of the
+coding](https://en.wikipedia.org/wiki/Predictive_coding)<sup>W</sup>, is as compression of
+redundant signals, as <nobr>[pointed out](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5836998/)<span class="oa" title="Open
+Access"></span></nobr> by Laurence Aitchison and Máté Lengyel.{/sn} The strength of the
 segmentation certainly depends greatly on the scale, pattern, and contrast of
 the objects involved, so it is difficult to say to what degree it affects the
 perception of words. But inhibitive (as well as facilitatory) feedback is likely
@@ -520,11 +529,11 @@ and many other names in papers going back to the 1990s.{/mn} <img src="img/v2_co
 alt="Receptive fields of a V2 contour integration neuron">
 
 This allows these V2 cells to detect continous contours, even if these
-contours are curved or interrupted.{sn}Two studies showing this most clearly are by [Minggui Chen et al. from 2014](https://doi.org/10.1016/j.neuron.2014.03.023) and by [Rujia Chen et al. from 2017](https://doi.org/10.1016/j.neuron.2017.11.004).{/sn} Interrupted contours are a constant
+contours are curved or interrupted.{sn}Two studies showing this most clearly are by [Minggui Chen et al. from 2014](https://doi.org/10.1016/j.neuron.2014.03.023)<span class="oa" title="Open Access"></span> and by [Rujia Chen et al. from 2017](https://doi.org/10.1016/j.neuron.2017.11.004)<span class="oa" title="Open Access"></span>.{/sn} Interrupted contours are a constant
 challenge to the vision system: the edges of an object can be
 occluded not only by other objects—think tree branches in front of a mountain—but also by the spider web of light-scattering
 nerve bundles and capillaries that carpet our retina.{sn}Not to mention our
-[blind spot](https://en.wikipedia.org/wiki/Blind_spot_(vision)).{/sn}
+[blind spot](https://en.wikipedia.org/wiki/Blind_spot_(vision))<sup>W</sup>.{/sn}
 Contour-integrating V2 cells thus help us perceive contours even where we cannot
 actually see them. Of course, the same principle applies to texture integration across
 space.
@@ -537,11 +546,13 @@ this feedback only amplifies neurons that are already firing; it
 does not induce activity in other inputs (and may even suppress
 them).{sn}Physiologically, this kind of modulatory amplification may be
 related to increased spike synchrony between neurons, as explored in
-[this 2016 study](https://doi.org/10.1152/jn.01142.2015) by Wagatsuma et
+<nobr>[this 2016 study](https://doi.org/10.1152/jn.01142.2015)<span class="oa" title="Open
+Access"></span></nobr> by Wagatsuma et
 al.{/sn} {mn}<img src="img/contour_integration_example.png" alt="Contour
 integration example">Typical contour integration test image demonstrating
 contour pop-out. Adapted
-from [Roudaia et al.](https://doi.org/10.3389/fpsyg.2013.00356),
+from <nobr>[Roudaia et al.](https://doi.org/10.3389/fpsyg.2013.00356)<span class="oa" title="Open
+Access"></span></nobr>,
 2013.{/mn} Thanks to this feedback loop, contiguous contours pop out to
 us perceptually in a matter of milliseconds, while non-contour features
 (like the dot in the illustration below) do not:
@@ -563,15 +574,17 @@ fields. Its neurons respond, once again, to a large variety of spatial correlati
 the input image, although these correlations can be more complex, looking
 perhaps more like this:
 
-{mn}Again, these images are taken from [Olah et al.,
-2020](https://doi.org/10.23915/distill.00024). The images give a good
+{mn}Again, these images are taken from <nobr>[Olah et al.,
+2020](https://doi.org/10.23915/distill.00024)<span class="oa" title="Open
+Access"></span></nobr>. The images give a good
 intuition for the higher complexity of the patterns detected in V4.{/mn}
 <img src="img/v4_texture_neurons.png" alt="higher-level receptive fields from InceptionNet">
 
 Once again, some neurons tend to be more tuned to textures while others
 detect straight or curved contour fragments, although there certainly is overlap
 between the two categories.{sn}As in the case in V4, at least in macaques, as shown by studies
-like [this one](https://doi.org/10.1523/JNEUROSCI.3073-18.2019) by Anitha
+like <nobr>[this one](https://doi.org/10.1523/JNEUROSCI.3073-18.2019)<span class="oa" title="Open
+Access"></span></nobr> by Anitha
 Pasupathy and her collaborators.{/sn} Just as in V2, the contour detectors
 integrate smaller contour fragments across a larger region. However, the larger
 receptive fields of V4 allow for the target contours to be substantially offset
@@ -612,22 +625,23 @@ object. For instance, the B-cell whose receptive field is marked in red below
 only detects edges on the *left side* of objects, as indicated here by the small
 protrusion pointing toward the right.{sn}Almost everything we know about border
 ownership networks is owed to Johns Hopkins researcher Rüdiger von der Heydt and
-his students.{/sn}
+his students. His <nobr>[2015 review](https://doi.org/10.3389/fpsyg.2015.01695)<span class="oa" title="Open
+Access"></span></nobr> summarizes the key findings well.{/sn}
 
 {mn}Here, the B-cell responds to stimuli 1 and 2, but not 3 and 4.{/mn}
 <img src="img/b_cell_1.png" alt="B cell illustration">
 
-This is remarkable. After all, the B-cell only sees a single edge. It cannot know which part of the object it is
-on; its receptive field is much too small. So its activity
-must be gated by a neuron which does: namely, one of our
-higher-level V4 neurons.{sn}Lateral inhibition from other V2 neurons
-cannot explain this behaviour, because horizontal connections conduct [too
-slowly](https://dx.doi.org/10.1152%2Fjn.00928.2010) to explain
-the lab-measured response times of B-cells.{/sn} The object owning the edge
-fragment could have any shape and size, so *all* active V4
-neurons whose contour templates coincide with the edge fragment send
-amplifying signals to our B-cell. In turn, our B-cell directly contributes to their
-activation, establishing a positive feedback loop:
+This is remarkable. After all, the B-cell only sees a single edge. It cannot
+know which part of the object it is on; its receptive field is much too small.
+So its activity must be gated by a neuron which does: namely, one of our
+higher-level V4 neurons.{sn}Lateral inhibition from other V2 neurons cannot
+explain this behaviour, because horizontal connections conduct <nobr>[too
+slowly](https://dx.doi.org/10.1152%2Fjn.00928.2010)<span class="oa" title="Open
+Access"></span></nobr> to explain the lab-measured response times of
+B-cells.{/sn} The object owning the edge fragment could have any shape and size,
+so *all* active V4 neurons whose contour templates coincide with the edge
+fragment send amplifying signals to our B-cell. In turn, our B-cell directly
+contributes to their activation, establishing a positive feedback loop:
 
 <img src="img/bg_feedback_0.png" alt="B-cell feedback loop">
 
@@ -659,8 +673,9 @@ excite a higher-level G-cell, they do not receive positive feedback, and lateral
 competition (between B-cells, and likely also between V4 and G-cells) quickly silences them.
 
 The exact receptive field of each G-cell is likely quite unique, but a popular
-approach is to assume that they are circular:{sn}The first to run a simulation of this idea in earnest were [Edward Craft et
-al.](https://doi.org/10.1152/jn.00203.2007) in 2011.{/sn}
+approach is to assume that they are circular:{sn}The first to run a simulation of this idea in earnest were <nobr>[Edward Craft et
+al.](https://doi.org/10.1152/jn.00203.2007)<span class="oa" title="Open
+Access"></span></nobr> in 2011.{/sn}
 
 <img src="img/bg_rfs.png" alt="Receptive fields of G cells">
 
@@ -675,7 +690,7 @@ square's diagonals, which take input from two sides of the square:
 Once B-cells and G-cells have settled into an equilibrium, the locus
 of peak responses of G-cells across different scales neatly represents
 the skeleton of the shape, shown on the right:{sn}The technical term for this feat is
-[medial axis transform](https://en.wikipedia.org/wiki/Medial_axis).{/sn}
+[medial axis transform](https://en.wikipedia.org/wiki/Medial_axis)<sup>W</sup>.{/sn}
 
 <img src="img/g_responses_skeleton.png" alt="Sample responses of some G cells,
 forming a skeleton">
@@ -686,7 +701,8 @@ is very robust to perspective distortions.{sn}And indeed, the inferotemporal
 neurons in macaque monkeys appear to respond to skeleton fragments, such that a
 small population of such neurons suffices to represent a variety of complicated
 3D shapes, as Chia-Chun Hung and colleagues have
-[demonstrated](https://doi.org/10.1016/j.neuron.2012.04.029).{/sn} Conveniently,
+<nobr>[demonstrated](https://doi.org/10.1016/j.neuron.2012.04.029)<span class="oa" title="Open
+Access"></span></nobr>.{/sn} Conveniently,
 this ability translates directly to letter recognition. Consider, for instance,
 our ability to recognize the following four styles of uppercase *E* with the
 same ease:
@@ -716,7 +732,8 @@ earlier.{/sn} Nevertheless, even fuzzy border-ownership signals should be enough
 to excite fine-scale G-cells. It is also conceivable that specialized G-cells
 exist which interact with collinear contour detectors.{sn}This was explored by
 Brian Hu et al. in a 2017
-[simulation](https://dx.doi.org/10.1007%2Fs10827-017-0659-3).{/sn} For the
+<nobr>[simulation](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5693639/)<span class="oa" title="Open
+Access"></span></nobr>.{/sn} For the
 purposes of our model, however, such considerations are unlikely to be required.
 
 By the way: that G-cells are presumed to interact with circularly-arranged
@@ -726,8 +743,10 @@ are most easily perceived as coherent objects, while more concave contours add
 visual complexity at the expense of *prägnanz*. Of course, the preference for
 convex shapes would not be possible if V4 contour detectors were not also
 overwhelmingly tuned for convex contour fragments.{sn}As we know they are, as demonstrated by studies like
-[this one](https://doi.org/10.1152/jn.2001.86.5.2505), [this
-one](https://doi.org/10.1152/jn.01265.2006), again by Anitha Pasupathy and
+<nobr>[this one](https://doi.org/10.1152/jn.2001.86.5.2505)<span class="oa" title="Open
+Access"></span></nobr> and <nobr>[this
+one](https://doi.org/10.1152/jn.01265.2006)<span class="oa" title="Open
+Access"></span></nobr>, again by Anitha Pasupathy and
 colleagues.{/sn} Meanwhile, the Gestalt principle of proximity is explained by
 the fact that G-cells with smaller receptive fields tend to outcompete larger
 ones.
@@ -750,13 +769,14 @@ The T-junctions created by overlapping shapes activate three sets of convex
 contour detectors, illustrated here in red, blue, and green. Experiments suggest
 that between such configurations of contour detectors, it is the straight,
 continuous one (here in red) that inhibits the other two.{sn}See
-[here](https://doi.org/10.1523/JNEUROSCI.4766-10.2011) for a painstaking study
+<nobr>[here](https://doi.org/10.1523/JNEUROSCI.4766-10.2011)<span class="oa" title="Open
+Access"></span></nobr> for a painstaking study
 of these effects by Brittany Bushnell et al. from the Pasupathy lab.{/sn} As a
 result, the border ownership at the T-section is assigned to the circle, while
 the contours of the dark shape disappear near the corners. A similar effect
 takes place at the edges of the scene. {mn}<img src="img/kanisza.png"
 alt="kanisza"><br/> Both effects combine in the classic
-[illusions](https://en.wikipedia.org/wiki/Illusory_contours) by Gaetano Kanizsa,
+[illusions](https://en.wikipedia.org/wiki/Illusory_contours)<sup>W</sup> by Gaetano Kanizsa,
 in the square, which is evoked mainly through its skeleton at the corners,
 creates T-junctions with the flankers that are invisible yet strong enough to
 determine relative depth.{/mn} Now, contour-integrating cells in V2 and V4 are
@@ -798,8 +818,9 @@ provided by the retina, and most of that activity comes from the fovea. But we
 can also pay attention, quite literally: by feeding top-down signals into a
 single G-cell, for example, we can amplify all associated contour detectors,
 B-cells and even V1 cells.{sn}For a simulation of how this might play out
-between G-cells and V1, take a look at Stefan Mihalaş et al.'s [2011
-paper](https://doi.org/10.1073/pnas.1014655108).{/sn} This can happen both
+between G-cells and V1, take a look at Stefan Mihalaş et al.'s <nobr>[2011
+paper](https://doi.org/10.1073/pnas.1014655108)<span class="oa" title="Open
+Access"></span></nobr>.{/sn} This can happen both
 consciously{sn}By which I merely mean "triggered by frontal-lobe areas", without
 endorsing any Cartesian notions of dualism.{/sn} and unconsciously, and top-down
 attention can be directed to populations of neurons encoding many different
@@ -807,8 +828,9 @@ things. Attending to a high-level neuron representing a particular object, for
 instance, is a rapid way to light up said object in the input image.
 {sn}The attention-selected V1 and V2 neurons, of course, have connections to
 many brain regions besides V4. This had led cognitive
-scientists to call the early visual cortex a ["cognitive
-blackboard"](https://doi.org/10.1146/annurev-vision-111815-114443).{/sn}
+scientists to call the early visual cortex a <nobr>["cognitive
+blackboard"](https://doi.org/10.1146/annurev-vision-111815-114443)<span class="oa" title="Open
+Access"></span></nobr>.{/sn}
 
 ### Crowding and grouping
 One situation in which this containment can fail is when texture detectors are
@@ -828,20 +850,25 @@ texture-detecting neurons.{sn}As a rule of thumb, the spacing needs to be at
 least half the eccentricity, i.e. to the distance from the fovea (see Herman
 Bouma's [1970 report](https://doi.org/10.1038/226177a0)).{/sn} Crowding is
 also made worse by regularity in the spacing of the flanking objects;{sn}As
-[demonstrated in 2010](https://doi.org/10.1167/10.10.17) by Toni Sareela et
+<nobr>[demonstrated in 2010](https://doi.org/10.1167/10.10.17)<span class="oa" title="Open
+Access"></span></nobr> by Toni Sareela et
 al.{/sn} again, presumably, because periodicity strengthens texture perception.
 
 That crowding and perceptual grouping are two sides of the same coin—namely, the
 spreading of activity across neural populations—is a surprisingly recent idea,
 but a very convincing one.{sn}Michael Herzog's group at EFPL were the first to strongly
-advocate for it; see [this review](https://dx.doi.org/10.1167%2F15.6.5) for a
+advocate for it; see <nobr>[this review](https://dx.doi.org/10.1167%2F15.6.5)<span class="oa" title="Open
+Access"></span></nobr> for a
 great summary of the evidence.{/sn} Among the many computational models of crowding, only
 one reacts to most input images in the same way human subjects do: it is the
 model that simulates crowding as perceptual grouping.{sn}See
-[Doerig et al., 2019](https://doi.org/10.1371/journal.pcbi.1006580), for a comparison of approaches,
-and [Francis et al., 2017](http://dx.doi.org/10.1037/rev0000070) and [Bornet et
-al., 2019](https://doi.org/10.3389/fnbot.2019.00033), for the grouping-based model.
-Also check out [their attempt](https://doi.org/10.1101/747394) to reproduce the
+<nobr>[Doerig et al., 2019](https://doi.org/10.1371/journal.pcbi.1006580)<span class="oa" title="Open
+Access"></span></nobr>, for a comparison of approaches,
+and [Francis et al., 2017](http://dx.doi.org/10.1037/rev0000070)<sup>[PDF](https://whitneylab.berkeley.edu/PDFs/Francis_Manassi_2017.pdf)</sup> and <nobr>[Bornet et
+al., 2019](https://doi.org/10.3389/fnbot.2019.00033)<span class="oa" title="Open
+Access"></span></nobr>, for the grouping-based model.
+Also check out <nobr>[their attempt](https://doi.org/10.1101/747394)<span class="oa" title="Open
+Access"></span></nobr> to reproduce the
 effect in capsule networks.{/sn}
 
 ### Summary
@@ -870,18 +897,18 @@ bit longer to kick in fully.
 5. Top-down attention exerted on individual (or small populations of) high-level
    neurons shifts the dynamics of the entire network. A little bit of attention
    can go a long way.{sn}Thomas Miconi and Rufin VanRullen [describe
-   how](https://doi.org/10.1109/CIMSIVP.2011.5949241)
-   ([PDF](https://hal.archives-ouvertes.fr/hal-00706798/file/miconi_t_11_106.pdf))
+   how](https://doi.org/10.1109/CIMSIVP.2011.5949241)<sup>[PDF](https://hal.archives-ouvertes.fr/hal-00706798/file/miconi_t_11_106.pdf)</sup>
    a little bit of extra activity can effectively shift the entire receptive field of
-   a neuron. In Stefan Mihalaş et al.'s [2011
-   simulations](https://doi.org/10.1073/pnas.1014655108), referenced above,
+   a neuron. In Stefan Mihalaş et al.'s <nobr>[2011
+   simulations](https://doi.org/10.1073/pnas.1014655108)<span class="oa" title="Open
+Access"></span></nobr>, referenced above,
    increasing G-cell activity by a mere 7% was enough to reproduce the effects
    seen in human subjects.{/sn}
 
 6. As neural activity travels outwards along contours and textures, some regions (retinotopic,
    not cortical) are suddenly flooded with activity. This new activity, in turn,
    can command attention, via direct connection to higher-level areas.{sn}The
-   [frontal eye fields](https://en.wikipedia.org/wiki/Frontal_eye_fields) seem
+   [frontal eye fields](https://en.wikipedia.org/wiki/Frontal_eye_fields)<sup>W</sup> seem
    to be one brain region involved in keeping track of visual attention, and in
    making saccades when necessary.{/sn} 
    
@@ -929,26 +956,26 @@ detectors' filter kernels,{sn}Of course, the "filter kernels" here refer to the
 distribution of synapses from input neurons, assumed to be decreasing with
 retinotopic distance.{/sn} the exact spatial position of the letters and bigrams
 is somewhat uncertain:{sn}One of the influential reading models featuring such
-uncertainty was the 2008 [overlap model](https://doi.org/10.1037/a0012667) by Gomez, Ratcliff, and Perea.{/sn}
+uncertainty was the 2008 [overlap model](https://doi.org/10.1037/a0012667)<sup>[PDF](https://www.uv.es/~mperea/overlapPsychReview.pdf)</sup> by Gomez, Ratcliff, and Perea.{/sn}
 
 <img src="img/ld_lcd.png" alt="open bigram detection" />
 
 This uncertainty results in the (light, but nonzero) activation of reverse
 bigrams, which allows us to read wodrs wiht jmbuled ltetres,{sn}[Jumbled
-letters](https://en.wikipedia.org/wiki/Transposed_letter_effect) are a crowd
+letters](https://en.wikipedia.org/wiki/Transposed_letter_effect)<sup>W</sup> are a crowd
 favourite ever since the infamous [Cambridge
 email](http://www.mrc-cbu.cam.ac.uk/people/dennis.norris/personal/cambridgeemail/)
-meme. The strength of the effect appears to depend on many factors: the
+meme. The strength of the effect appears to depend on many factors, including the
 [relative position of the
-letter](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2662926/), [the jumbling
-distance](http://www.bcbl.eu/consolider/images/stories/publications/Pere
-a_etal_ExpPsy07.pdf), and on [your
-age](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6542500/) (curiously, it does
-not depend on whether you are a human [or a
-baboon](https://journals.sagepub.com/doi/abs/10.1177/0956797612474322)). English
+letter](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2662926/)<span class="oa" title="Open
+Access"></span> and on <nobr>[the reader's age](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6542500/)<span class="oa" title="Open
+Access"></span></nobr> (curiously, it does
+not depend on whether the reader is a human [or a
+baboon](https://journals.sagepub.com/doi/abs/10.1177/0956797612474322)<sup>[PDF](https://www.researchgate.net/profile/Johannes_Ziegler3/publication/237147842_Transposed-Letter_Effects_Reveal_Orthographic_Processing_in_Baboons/links/00b7d51c965f40f647000000/Transposed-Letter-Effects-Reveal-Orthographic-Processing-in-Baboons.pdf?origin=publication_detail)</sup>). English
 words are particularly forgiving to letter transpositions, while e.g. Semitic
-languages are much more sensitive to them, as [pointed
-out](https://dx.doi.org/10.1017%2FS0140525X11001841) by Israeli researcher Ram
+languages are much more sensitive to them, as <nobr>[pointed
+out](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3677812/)<span class="oa" title="Open
+Access"></span></nobr> by Israeli researcher Ram
 Frost.{/sn} even though we have no trouble distinguishing the letter order
 between *cat* and *act*. Such feats would be impossible without the dynamic
 interactions with a population of word detectors which, in turn, are gated by
@@ -959,7 +986,7 @@ This neat hierarchy of bigram detectors—and more generally, *n*-gram
 detectors—takes lots of reading practice to develop, but it is becoming
 increasingly clear that this is only one of many steps in the long and awkward
 process of reading acquisition.{sn}The summary given here is based primarily on
-a well-sourced [review paper](https://psyarxiv.com/g3n2m/download?format=pdf) by
+a well-sourced review preprint <sup>[PDF](https://psyarxiv.com/g3n2m/download?format=pdf)</sup> by
 Carol Whitney and colleagues. Sadly, this was Carol's last paper; she died in
 late 2019.{/sn} It appears that children first learn to recognize letters as
 individual objects, just as they learn to recognize chairs, spoons, and fire
@@ -1167,7 +1194,7 @@ As explained above, V1 simple cells are typically modelled as responding
 linearly via a simple Fourier-domain multiplication with a bank of bandpass filters
 $G(s, o)$, where $s$ is
 the frequency scale and $o$ the orientation.{sn}[Gabor
-patches](https://en.wikipedia.org/wiki/Gabor_filter) are most
+patches](https://en.wikipedia.org/wiki/Gabor_filter)<sup>W</sup> are most
 commonly used, but many alternative models with better mathematical properties are
 available.{/sn} This set of convolutions turns the two-dimensional input image (width × height) into a
 four-dimensional tensor of complex numbers (width × height × spatial
@@ -1208,7 +1235,7 @@ This is often called the *local energy*. The squaring operation shown
 here is often used in the literature to approximate the nonlinear
 behaviour of complex cells in particular.{mn}<img src="img/hra.png"
 alt="HRA"> Solid line: hyperbolic ratio curve, a.k.a. [Hill
-function](https://en.wikipedia.org/wiki/Hill_equation_(biochemistry))
+function](https://en.wikipedia.org/wiki/Hill_equation_(biochemistry)<sup>W</sup>)
 or Naka-Rushton function. Dotted line: monotonic polynomial (e.g.
 $x^2$).{/mn} Of course, this is a rather unrealistic (if practical)
 choice. In a real cells, the firing rate will level off after the input
@@ -1227,7 +1254,7 @@ once $x^k$ gets large enough, $\beta^k$ pales in comparison, and
 we are left approaching $f$.{sn}This specific activation function
 is effectively never used in deep learning, both for historical
 reasons and because [its asymptotic behaviour would slow down
-training](https://en.wikipedia.org/wiki/Vanishing_gradient_problem).{/sn}
+training](https://en.wikipedia.org/wiki/Vanishing_gradient_problem)<sup>W</sup>.{/sn}
 
 This formula is particularly relevant thanks to *lateral inhibition*,
 a common architectural pattern in the brain in which neurons within
@@ -1247,7 +1274,8 @@ of coupled differential equations which describe the time dependence of each
 neuron's firing rate on its neighbours. Conveniently, however, the
 steady-state activations can also be approximated directly using our hyperbolic ratio
 model, by simply sneaking the neighbouring neurons' activities into the
-denominator:{sn}See [this analysis](https://arxiv.org/pdf/1906.08246.pdf) by
+denominator:{sn}See <nobr>[this analysis](https://arxiv.org/pdf/1906.08246.pdf)<span class="oa" title="Open
+Access"></span></nobr> by
 Jesús Malo et al. to understand how this approximation works.{/sn}
 
 $$y_i = \frac{fx_i^k}{\beta^k + \sum_j w_j x_j^k}$$
@@ -1260,7 +1288,8 @@ core idea is always the same.
 This raises the challenge of determining the right values for $w_j$, i.e.
 modelling the inhibitive strengths of neighbourly connections. Researchers have
 collected formulas,{sn}In 2011, Tadamasa Sawada and Alexander
-Petrov compiled a [very long review](https://doi.org/10.1152/jn.00821.2016)
+Petrov compiled a <nobr>[very long review](https://doi.org/10.1152/jn.00821.2016)<span class="oa" title="Open
+Access"></span></nobr>
 of divisive normalization models of V1. To my knowledge, it is still the most
 comprehensive reference today.{/sn} but it is not clear that they capture all of
 the interactions there are. What's more, the last decade of research has
@@ -1312,7 +1341,7 @@ implementation](https://github.com/chemoelectric/sortsmill/blob/master/tools/spa
 of what amounts to basically the same idea. Adrian Frutiger, Walter Tracy and Miguel Sousa have
 devised similar systems, described in Fernando Mello's [MATD
 thesis](http://www.fermello.org/FernandoMello_essay.pdf).
-The legendary [Hz-Program](https://en.wikipedia.org/wiki/Hz-program) is also
+The legendary [Hz-Program](https://en.wikipedia.org/wiki/Hz-program)<sup>W</sup> is also
 included in this category, as its [patent application](https://worldwide.espacenet.com/publicationDetails/originalDocument?FT=D&date=19941019&DB=&locale=en_EP&CC=EP&NR=0466953B1&KC=B1&ND=1#)
 reveals that letter pair distances were simply stored in a hardcoded table.
 
@@ -1332,7 +1361,7 @@ wins in terms of performance-complexity ratio but it, too, struggles to fit
 certain letter pairs.
 
 **Other shape-based methods:** These include more exotic approaches, such as stonecarver [David
-Kindersley](https://en.wikipedia.org/wiki/David_Kindersley)'s "wedge method"
+Kindersley](https://en.wikipedia.org/wiki/David_Kindersley)'s<sup>W</sup> "wedge method"
 from the 1960s, which operated on letter area moments of inertia (and didn't
 really work), and [iKern](https://ikern.com/k1/), which produces great results
 but, just like Adobe's [Optical
@@ -1358,11 +1387,3 @@ letter, such that software can automatically find pair distances by simply
 abutting the bubbles. While this isn't technically a letterfitting heuristic at
 all, it's still worth mentioning as a neat idea that could perhaps save
 designers some time. Toshi Omagari has built a [Glyphs plugin](https://github.com/Tosche/BubbleKern).
-
-
-
-{sn}
-Isabel Gauthier et al.
-[font tuning](https://doi.org/10.1068%2Fp5313)<sup>[PDF](https://www.researchgate.net/profile/Alan_Wong2/publication/7081783_Font_tuning_associated_with_expertise_in_letter_perception/links/0fcfd5077a0eb38470000000.pdf)</sup>
-but probably simply has to do with texture in V2 and surround suppression.
-{/sn}
