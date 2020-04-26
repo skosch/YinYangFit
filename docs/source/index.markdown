@@ -55,7 +55,10 @@ letters{sn}I use the word "letter" very liberally; the more general term is
 vertical bars show side bearings, blue vertical bar shows a negative kern.{/mn}
 It's often referred to as "spacing and kerning", because pair distances are the
 sum of fixed amounts of space around every letter (so-called *side bearings*)
-and additional adjustment values for individual pairs (so-called *kerns*).
+and additional adjustment values for individual pairs (so-called
+*kerns*).{sn}Many existing heuristics try to either auto-space or
+auto-kern, which is doomed to fail. See the [appendix](#space_kern_lp) for the
+correct mathematical approach to split pair distances into side bearings and kerns.{/sn}
 Quality fonts often contain thousands of hand-kerned pairs that undergo weeks of
 testing and refinement, all by hand—because surprisingly, there still are no
 automated solutions that reliably do the job.{sn}And not for lack of trying:
@@ -1333,7 +1336,6 @@ integrate; backprop-fit against existing fonts. Show some results.
 </p>
 
 <a name="existing_tools"></a>
-
 <h2 class="appendix">Appendix: Existing letterfitting tools</h2>
 Most existing approaches operate either on the distance between stems, or on the
 area of the gap between them. Some are hybrids, more complex, or unpublished;
@@ -1401,3 +1403,36 @@ letter, such that software can automatically find pair distances by simply
 abutting the bubbles. While this isn't technically a letterfitting heuristic at
 all, it's still worth mentioning as a neat idea that could perhaps save
 designers some time. Toshi Omagari has built a [Glyphs plugin](https://github.com/Tosche/BubbleKern).
+
+<a name="space_kern_lp"></a>
+<h2 class="appendix">Appendix: Finding side bearings and kerns from pair distances</h2>
+Given a set of pair distances (measured as the horizontal component of the line
+between outline extrema) $d_{ij}$, where $i$ and $j$ index the left and right
+glyph from a set of glyphs $G$, we can find the optimal assignment of side
+bearings and kerning values via a simple linear programming model
+$$
+\begin{aligned}
+\mathrm{Min.}&\sum_{i\in G,j\in G} |k_{ij}|\\
+\mathrm{such\;that\;}&r_i + k_{ij} + l_j = d_{ij} \forall i \in G, j \in G,\\
+\end{aligned}
+$$
+where $l_i$ and $r_i$ are the left and right side bearings of glyph $i$, and
+$k_{ij}$ the kerning value required.
+
+Alternatively, a quadratic objective can be used instead of the sum of
+magnitudes,
+
+$$
+\begin{aligned}
+\mathrm{Min.}&\sum_{i\in G,j\in G} k_{ij}^2\\
+\mathrm{such\;that\;}&r_i + k_{ij} + l_j = d_{ij} \forall i \in G, j \in G;\\
+\end{aligned}
+$$
+
+different formulations will either minimize overall kerning (for best appearance
+with applications that do not support kerning, e.g. sprite-based rendering) or maximize the
+number of near-zero kerns that can then be eliminated entirely (minimizing file size).
+
+<p class="missing">
+More complex optimization models to implement efficient class kerning,  likely via constraint programming.
+</p>
