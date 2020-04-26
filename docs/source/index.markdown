@@ -1157,11 +1157,8 @@ alphabetic scripts, but also on the relative placement of strokes and/or
 radicals in Hangul and Hanzi.
 
 ## From perceptual grouping to letterfitting 
-
-The above model of our vision system's perceptual grouping mechanisms finally
-allows us to make some predictions about typographic truths, and should
-ultimately allow us to build a robust, biologically plausible letterfitting
-tool.
+Although texture perception and legibility considerations are important,
+let's explore on how perceptual grouping might play out in some real letter pairs.
 
 <p class="missing">
 Competition between word-scale and stem-scale grouping cells
@@ -1200,23 +1197,21 @@ Although it is relatively straightforward to set up systems of coupled different
 equations representing individual neurons, integrating them at a sufficiently
 fine spatial resolution is immensely costly, and doing so over many iterations for
 each letter combination is outright infeasible, at least with consumer-grade
-hardware. We must therefore consider potential approximations to the model.
+hardware. We therefore need to consider potential approximations.{sn}Of course,
+existing approaches *are* approximations (see the [appendix](#existing_tools) for an
+incomplete list).{/sn}
 
-<p class="missing">
-Brief nod to existing solutions in the appendix, and how they happen to
-approximate (or not) some of the model characteristics discussed.
-</p>
-
+### Modelling activations of V1 cells
 As explained above, V1 simple cells are typically modelled as responding
-linearly via a simple Fourier-domain multiplication with a bank of bandpass filters
-$G(s, o)$, where $s$ is
-the frequency scale and $o$ the orientation.{sn}[Gabor
+linearly via a simple Fourier-domain multiplication with a bank of bandpass
+filters $G(s, o)$, where $s$ is the frequency scale and $o$ the
+orientation.{sn}[Gabor
 patches](https://en.wikipedia.org/wiki/Gabor_filter)<sup>W</sup> are most
-commonly used, but many alternative models with better mathematical properties are
-available.{/sn} This set of convolutions turns the two-dimensional input image (width × height) into a
-four-dimensional tensor of complex numbers (width × height × spatial
-frequency scales × orientations), the magnitude and phase angle of
-which capture the activation of simple cells $S_\mathrm{V1}$ at every
+commonly used, but many alternative models with better mathematical properties
+are available.{/sn} This set of convolutions turns the two-dimensional input
+image (width × height) into a four-dimensional tensor of complex numbers (width
+× height × spatial frequency scales × orientations), the magnitude and phase
+angle of which capture the activation of simple cells $S_\mathrm{V1}$ at every
 location:
 
 $$
@@ -1250,14 +1245,81 @@ $$
 
 This is often called the *local energy*. The squaring operation shown
 here is often used in the literature to approximate the nonlinear
-behaviour of complex cells in particular.{mn}<img src="img/hra.png"
-alt="HRA"> Solid line: hyperbolic ratio curve, a.k.a. [Hill
+behaviour of complex cells in particular.
+
+### A simple pair-differential model of interference in V1
+Most existing letterfitting algorithms rely purely on geometric features in the
+spatial domain, ignoring interference effects in the frequency-domain that result
+from the band-pass filtering in V1.
+
+When two letters are far apart, i.e. farther apart than the diameter of the largest relevant
+V1 receptive fields, they do not interfere in V1.{sn}This ignores feedback effects from
+higher-level areas with larger effective receptive fields.{/sn} In other words: let the
+4D tensor of complex-valued simple-cell excitations $S_\mathrm{V1}$ due to the left
+letter be called $S_i$, and the one due to the right letter be $S_j$. When the letters
+are sufficiently separated, $S_i$ is not affected by the presence of the right
+letter, and vice versa.
+
+{mn}<img src="img/v1_interference_example.png" alt="V1 interference
+example">{/mn} Consider now a particular simple cell tuned to a light-dark-light
+pattern. The left letter is positioned such that its right-hand stem coincides
+with the "dark" region, activating the cell to some level $s_i$. We now move the
+right letter closer to the left. Eventually, its left stem will enter the cell's
+receptive field in the "light" region. Even though the letters are still a
+considerable distance apart, this will reduce the cell's activation to a level
+lower than $s_{ij}$. One way to think about this is that to our visual system,
+whether two letters are overlapping isn't a binary question; it rather depends
+on the spatial frequency in question.
+
+Conveniently, we get the magnitude of this reduction for free: because simple
+cells are assumed to be just as linear as the Fourier transform, $S_{ij} = S_i +
+S_j$, and any reductions correspond to phase cancellations between the
+complex-valued $S_i$ and $S_j$.
+
+This offers us a straightforward way to visualize how approaching letter shapes affect
+one another's perception in the visual cortex: we simply look at the changes to
+the local energy as a result of placing the two letters next to one another:
+
+<img src="img/simple_energy_model.png" alt="Simple energy model">
+
+Note that while the interference $|S_{ij}| - |S_i| - |S_j|$ is always
+destructive for simple cells,{sn}By a trivial triangle inequality.{/sn} squaring the magnitudes allows
+us to visualize both constructive and destructive interference at the level of
+complex cells. Generally, this results in stronger activations in the gap
+between letters and a weakening of the letter's edges:
+
+<img src="img/abstract.png">
+
+Granted, this alone does not a letterfitting algorithm make. But this very simple
+frequency-based representation already captures many of the geometric
+relationships that most existing letterfitting algorithms need to approximate
+via heuristics and epicycles.
+
+<p class="missing">
+Quickly compare to existing gap quadrature models.
+</p>
+
+<p class="missing">
+Comment on tuning parameters; pair gains approximate word-scale grouping strength, pair losses
+approximate stem-scale losses. Does not consider contour pop-out or actual
+grouping dynamics; does quite poorly on uppercase letters.
+</p>
+
+<p class="missing">
+Explain training this + simple spline or neural net on existing fonts via backprop for a
+first approximation. Show results.
+</p>
+
+### Modelling lateral inhibition via divisive normalization
+
+{mn}<img src="img/hra.png" alt="HRA"> Solid line: hyperbolic ratio curve, a.k.a.
+[Hill
 function](https://en.wikipedia.org/wiki/Hill_equation_(biochemistry)<sup>W</sup>)
-or Naka-Rushton function. Dotted line: monotonic polynomial (e.g.
-$x^2$).{/mn} Of course, this is a rather unrealistic (if practical)
-choice. In a real cells, the firing rate will level off after the input
-has been increased beyond some limit. A popular model for this is the
-hyperbolic ratio sigmoid
+or Naka-Rushton function. Dotted line: monotonic polynomial (e.g. $x^2$).{/mn}
+Of course, the squaring operation in the expression for complex cell activations
+is a rather unrealistic (if practical) choice. In a real cells, the firing rate
+will level off after the input has been increased beyond some limit. A popular
+model for this is the hyperbolic ratio sigmoid
 
 $$y = \frac{fx^k}{\beta^k + x^k}$$
 
@@ -1314,15 +1376,11 @@ revealed that some measured behaviours previously ascribed to lateral inhibition
 may instead be the result of feedback from higher-level areas. If nothing else, $w_j$ is probably a convenient place for modellers to incorporate
 the effects of spatial frequency dependency (i.e. contrast sensitivity curves).
 
-<p class="missing">
-First option: use only difference in V1 complex cell activations, weigh based on
-orientation and size. Pair gains approximate word-scale grouping strength, pair losses
-approximate stem-scale losses. Does not consider contour pop-out or actual
-grouping dynamics; does quite poorly on uppercase letters. However,
-straightforward to train on existing fonts via backprop. Show some results.
-</p>
+### Extending our model to incorporate more dynamics
 
-<img src="img/abstract.png">
+<p class="missing">
+Lots of work missing here ...
+</p>
 
 <p class="missing">
 Brief nod to residual nets, which effectively unroll the dynamics over a few fixed time steps. Also mention Ricky Chen's Neural ODE option.
@@ -1413,7 +1471,7 @@ bearings and kerning values via a simple linear programming model
 $$
 \begin{aligned}
 \mathrm{Min.}&\sum_{i\in G,j\in G} |k_{ij}|\\
-\mathrm{such\;that\;}&r_i + k_{ij} + l_j = d_{ij} \forall i \in G, j \in G,\\
+\mathrm{such\;that\;}&r_i + k_{ij} + l_j = d_{ij}\quad\forall i \in G, j \in G,\\
 \end{aligned}
 $$
 where $l_i$ and $r_i$ are the left and right side bearings of glyph $i$, and
@@ -1425,7 +1483,7 @@ magnitudes,
 $$
 \begin{aligned}
 \mathrm{Min.}&\sum_{i\in G,j\in G} k_{ij}^2\\
-\mathrm{such\;that\;}&r_i + k_{ij} + l_j = d_{ij} \forall i \in G, j \in G;\\
+\mathrm{such\;that\;}&r_i + k_{ij} + l_j = d_{ij}\quad\forall i \in G, j \in G;\\
 \end{aligned}
 $$
 
