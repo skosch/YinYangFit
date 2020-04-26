@@ -5,6 +5,11 @@
 
 <img src="img/abstract.png" alt="Abstract"/>
 
+<p class="missing">
+This article is only half done. Please free to follow the
+project on Github and check back later for more. Thanks :)
+</p>
+
 <h2 class="nonumber">Acknowledgements</h2>
 This research would not have been possible without funding from Google,
 for which I have Dave Crossland to thank in particular. I am grateful
