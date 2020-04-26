@@ -84,17 +84,23 @@ legibility and a perfectly even typographic colour. Does that story hold water?
 
 As it turns out, research suggests that colour, balance, and legibility have
 *different* neural correlates. They are often in rough agreement, but optimizing
-for one does not guarantee a good outcome for the others. Evenness of colour is
-a question of texture perception; quality of balance is a question of
-competitive inhibition between perceptual gestalt groups; and legibility is a
-question of the reliable detection of letters and n-grams from pre-processed
-visual features. On top of that, all of the above are affected differently by
-font size and colour contrast.
+for one does not guarantee a good outcome for the others.
 
-If we want to develop robust, universal automatic letterfitting <nobr>algorithms—</nobr>algorithms that
-work on both hairline slab serifs and broad-nib italics, on both captions and headline
-sizes, on both Latin and Hangul—then we need to build better intuitions for the neural
-dynamics of our vision system. That's what this article is about.
+<img src="img/introduction_overview.png" alt="Neural correlates of different
+typographic concepts">
+
+Evenness of colour is a question of texture perception; quality of balance is a
+question of competitive inhibition between perceptual gestalt groups; and
+legibility is a question of the reliable detection of letters and n-grams from
+pre-processed visual features. On top of that, all of the above are affected
+differently by font size and colour contrast.
+
+The letterfitting approaches available today, whether geometry- or ML-based,
+fail to capture this complexity. If we want to develop robust, universal
+automatic letterfitting algorithms—algorithms that work on both hairline slab
+serifs and broad-nib italics, on both captions and headline sizes, on both Latin
+and Hangul—then we need to build better intuitions for the neural dynamics of
+our vision system. That's what this article is about.
 
 In a way, it is surprising that type design and cognitive psychology are so
 divorced from one another.{sn}The studies that do exist are almost exclusively
@@ -111,7 +117,7 @@ to see much more cross-fertilization between the two fields in the future.
 
 ## A letterfitter's objectives 
 
-Before we dive into the science, let's review how the three ideas fit into
+Before we dive into the details, let's review how the three objectives fit into
 a broader cognitive science context.
 
 ### Typographic colour
@@ -134,13 +140,13 @@ fail: this we call poor balance.
 
 {mn}Here, the saturation of the coloured blobs indicates the intensity of
 grouping at different scales. Small perceptual groups tend to outcompete larger
-ones, so unless the grouping is balanced, the word will be fragmented. The poorly fitted word in the last column triggers the perception of two separate objects, namely the single letter c and a pair at.{/mn}
+ones, so unless the grouping is balanced, the word will be fragmented. The poorly fitted word in the last column triggers the perception of two separate objects, namely the single letter *c* and a pair *at*.{/mn}
 <img src="img/grouping_relativity.png" alt="Illustration of the importance of consistency of fit vs absolute distances.">
 
 Perceptual grouping networks are a very fundamental piece of our vision
 circuitry, and not exclusive to reading. Researchers have known about them for a
 long time, too: psychologists over a century ago described our tendency to
-recognize the sum, not the parts, of arrangements of shapes:{mn}These are often
+perceive the sum, not the parts, of certain arrangements of shapes:{mn}These are often
 listed as the [Gestalt laws of
 grouping](https://en.wikipedia.org/wiki/Principles_of_grouping)<sup>W</sup>, or the
 principle of
@@ -157,20 +163,23 @@ Access"></span></nobr>, [part
 II](https://dx.doi.org/10.1037%2Fa0029334)<sup>[PDF](http://gestaltrevision.be/pdfs/A%20century%20of%20Gestalt%20psychology%20in%20visual%20perception%20II.pdf)</sup>).{/mn} <img
 src="img/gestalt_laws.png" alt="Illustration of gestalt laws" />
 
+In order to quantify the strength of perceptual grouping between pairs, we need
+to understand why and how our visual system binds image fragments together.
+
 ### Legibility
-Children first learn to recognize individual letters as
-physical objects, then learn to associate these objects with sounds, then learn
-to reproduce the sounds letter by letter, and finally become skilled readers by
-developing neurons that detect, as a shortcut, combinations of letters directly.
-Each one of these developmental steps builds on the next by repurposing a
-different area of the brain. A type designer manipulating a letter shape will
-perceive it as a geometric object (like a child), but an adult reading the
-newspaper perceives combinations of letters in parallel (or almost in parallel)
-using entirely unrelated neural circuitry. These letter-combination-detecting
-neurons work best, of course, on letter pairs that resemble those seen in the
-past. It would be unwise to ignore this conditioning effect, but fortunately we can
-fit primarily for Gestalt and still achieve great legibility simply because
-other fonts were designed by humans, and therefore fit, by and large, for Gestalt as well.
+Vision and reading are not the same thing, and neither an even texture nor
+perfectly balanced pair grouping guarantees good legibility. So what should we
+optimize for?
+
+As we will see, reading is actually a collection of different modes of
+perception, each of which corresponds to a different stage of reading
+acquisition in childhood and to a different brain region. A type designer
+manipulating letter shapes is performing an entirely different mental task than
+someone reading text set in their font. In fact, it appears that most designers
+are not directly optimizing for legibility at all. This topic requires a
+discussion of the various letter- and word-classifying neural networks in our
+brain, of their strengths and weaknesses, and of the importance of word-dividing
+spaces in fusional languages like English.
 
 ## A brief tour through our visual system: area V1
 
