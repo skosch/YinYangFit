@@ -108,6 +108,7 @@ to see much more cross-fertilization between the two fields in the future.
 Before we dive into the science, let's review how the three ideas fit into
 a broader cognitive science context.
 
+### Typographic colour
 Typographic colour refers to the visual texture created by the ink on the page.
 Most obviously, a darker colour is the result of bolder, narrower, more
 tightly-fit type. But the line spacing contributes to a document's
@@ -119,7 +120,8 @@ gaps."{sn}Like horoscopes, these rules only work when they are formulated vaguel
 be useless.{/sn} As we will see later, these heuristics are actually a primitive version of the kind
 of spatial frequency correlations that form the basis of texture perception.
 
-Next, balance. The brain has a general tendency to group visual features into perceptually coherent objects.
+### Balance
+The brain has a general tendency to group visual features into perceptually coherent objects.
 Meanwhile, the typographer's job is to group letters into perceptually coherent words.
 When the letters are fitted poorly, the perceptual grouping into words will
 fail: this we call poor balance.
@@ -148,7 +150,8 @@ I](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3482144/), [part
 II](https://dx.doi.org/10.1037%2Fa0029334)).{/mn} <img
 src="img/gestalt_laws.png" alt="Illustration of gestalt laws" />
 
-Finally, legibility. Children first learn to recognize individual letters as
+### Legibility
+Children first learn to recognize individual letters as
 physical objects, then learn to associate these objects with sounds, then learn
 to reproduce the sounds letter by letter, and finally become skilled readers by
 developing neurons that detect, as a shortcut, combinations of letters directly.
@@ -207,6 +210,7 @@ goal is to gain an appreciation for our neural feedback loops.
 
 With that in mind, let's go on a brief tour through our visual system.
 
+### Edge and line detection by simple cells
 Sensory input from the eye travels up the optic nerve, through
 the lateral geniculate nucleus (LGN) on the brain's thalamus,
 to the visual cortex at the very back of the head.{sn}For our
@@ -260,6 +264,7 @@ visual input, sets of similarly-tuned V1 simple cells might respond as such:
 
 <img src="img/single_i_example.png" />
 
+### Complex cells
 As it turns out, some V1 neurons are less sensitive to phase than
 others, and some may even respond equally to both lines and edges,
 as long as scale and orientation match their tuning. Those cells are
@@ -298,6 +303,7 @@ experience of vision and to the activity of higher-level brain regions.
 For reading (and thus letterfitting) purposes, however, we will focus on
 the responses of complex cells.
 
+### Lateral inhibition
 Neurons in V1 (and elsewhere in the cortex) use lateral connections to inhibit
 their neighbours. This is called *lateral inhibition*. Because the strength of
 the inhibition depends directly on the strength of the neuron's own activation,
@@ -308,6 +314,7 @@ fire quite a bit, effectively adding noise to the signal. Lateral inhibition
 means that V1 neuron's firing rates take some time to stabilize, something that
 models may need to take into account.
 
+### Contrast sensitivity to spatial frequencies
 {mn}<img src="img/csf.png" alt="Contrast sensitivity function">Contrast
 sensitivity function. The vertical gradient in contrast is uniform
 across the image, but we most easily perceive the mid-frequency gratings
@@ -370,6 +377,7 @@ deep-learning equivalent nonlinearity $\mathrm{ReLU(x-1.0)}$.{/mn} <img
 src="img/v2_nonlinearity.png" alt="Nonlinear activation of V2 neurons
 enables computation of correlations">
 
+### Texture detection via V2 statistics
 Unfortunately, we have no direct measurements of what each of these neurons
 respond to most strongly. However, pre-trained image classification networks
 contain units in their early convolutional layers that are, presumably, somewhat
@@ -416,6 +424,7 @@ higher-level perceptions, even if the actual input signals are quite
 different.{sn}One could think of this as the bizarro-version of an [adversarial
 input](https://en.wikipedia.org/wiki/Adversarial_machine_learning).{/sn}
 
+### Texture statistics and letterfitting
 That V2 neurons so effectively capture local image statistics presents us with a
 first opportunity to reify the heretofore vague concept of typographic "colour"
 into something concrete and computable: namely, local combinations of such
@@ -442,10 +451,11 @@ to optimize solely for overall colour, the algorithm would disfigure the
 *gestalten* of individual words, at times even rendering them illegible.{sn}In
 the theoretical limit, a perfectly uniform texture determined by a fixed number
 of such correlations would need to be perfectly periodical, thereby constraining
-our test image, at best, to a set of repeating letters.{/sn} Fortunately, the
-texture of well-fitted text is typically (but not necessarily) *pretty* even
-across the page, but it does not make for a good optimization target.
+our test image, at best, to a set of repeating letters.{/sn} For that reason, it
+does not make for a good optimization target, even though the texture of
+well-fitted text is typically (but not necessarily) quite even across the page.
 
+### Surround suppression
 When V2 neurons detect texture-like correlations between neighbouring V1
 neurons, they tend to return inhibitive feedback signals, especially to the V1
 neurons in the center. This kind of "surround suppression", which acts in
@@ -474,7 +484,25 @@ present between higher-level brain areas as well, and the corresponding dynamics
 are implicated in other grouping-related phenomena as well, such as *crowding*,
 which we will address later.
 
-## Contour integration and V1 feedback
+Finally, it doesn't take a cognitive scientist to know that fonts designed based
+on consistent, repeating elements are easier to read.{sn}Still, they have
+studied it more thoroughly than one might expect; see <nobr>[this 2012
+review](https://doi.org/10.3758/s13414-011-0220-9)<span class="oa" title="Open
+Access"></span></nobr> by Thomas Sanocki and Mary Dyson.{/sn} This so-called
+"font tuning" has in the past been attributed to an unexplained ability of
+letter detectors (which we discuss below) to rapidly adjust their filter kernels
+to font designs. But of course, we here have a perfectly parsimonious
+explanation in V2 texture correlations: stylistic similarities between letters
+are simply redundancies in spatial statistics. Texture-detecting neurons absorb
+and suppress them, such that primarily the non-repeating features (i.e.,
+terminals and horizontals rather than stems and serifs) maintain enough salience
+to excite letter detectors in higher-level areas. In "frankenfonts", such
+suppression is impossible, resulting in more irrelevant visual data impinging on
+letter detectors, resulting in poorer letter classification performance. Perhaps
+future design tools could visualize this mechanism to help designers find
+inconsistencies in their fonts.
+
+### Contour integration and V1 feedback
 
 Not all V2 neurons respond to such peculiar V1 correlations, expressing elements of
 texture. Some pick up on signals with more human-interpretable salience, such as continuous
@@ -575,21 +603,6 @@ relative depth, going only by a population of V4 contour detectors, half of
 which are gratuitously detecting the objects' outsides? The solution lies in
 feedback loops that enable perceptual grouping.
 
-
-<!--
-two categories of neurons are particularly noteworthy: texture
-detectors and contour detectors.{sn}Our understanding of V4 is primarily owed to
-Anitha Pasupathy and her collaborators, who have been publishing
-results like [this one](https://doi.org/10.1152/jn.2001.86.5.2505),
-[this one](https://doi.org/10.1152/jn.01265.2006), [this
-one](https://doi.org/10.1523/JNEUROSCI.3073-18.2019) and [this
-one](https://www.nature.com/articles/s41467-017-02438-8) for nearly two
-decades.{/sn} Just as in V2, the contour detectors integrate smaller contour
-fragments across some region. However, the larger receptive fields of V4 allow
-for the target contours to be substantially offset from the neuron's receptive
-field center:
--->
-
 The first feedback loop connects V4 with a special class of V2 neurons called
 *border ownership cells* or B-cells. These B-cells, like the V2
 contour-integrating cells already discussed, detect the presence of edges based
@@ -658,6 +671,7 @@ square's diagonals, which take input from two sides of the square:
 
 <img src="img/g_responses.png" alt="Sample responses of some G cells">
 
+### G-cells skeletonize shapes
 Once B-cells and G-cells have settled into an equilibrium, the locus
 of peak responses of G-cells across different scales neatly represents
 the skeleton of the shape, shown on the right:{sn}The technical term for this feat is
@@ -718,6 +732,7 @@ colleagues.{/sn} Meanwhile, the Gestalt principle of proximity is explained by
 the fact that G-cells with smaller receptive fields tend to outcompete larger
 ones.
 
+### Competitive contour integration along T-junctions
 Before we discuss how this perceptual grouping plays out across letter pairs and
 entire words, one more phenomenon should be mentioned for completeness' sake.
 Consider the following situation:
@@ -774,6 +789,7 @@ the inhibition of same):
 
 <img src="img/grouping_relativity.png" alt="Illustration of the importance of consistency of fit vs absolute distances.">
 
+### Attention
 A key concept in this context is *attention*. Given the ease with which neural
 activity spreads outwards via feedback and feedforward connections, any little
 bit of extra activity injected into the network will quickly result in extra
@@ -794,6 +810,7 @@ many brain regions besides V4. This had led cognitive
 scientists to call the early visual cortex a ["cognitive
 blackboard"](https://doi.org/10.1146/annurev-vision-111815-114443).{/sn}
 
+### Crowding and grouping
 One situation in which this containment can fail is when texture detectors are
 recruited into the frenzy of activity, and these texture detectors then compete
 with smaller-scale feature detectors that we rely on for object identification.
@@ -827,6 +844,7 @@ al., 2019](https://doi.org/10.3389/fnbot.2019.00033), for the grouping-based mod
 Also check out [their attempt](https://doi.org/10.1101/747394) to reproduce the
 effect in capsule networks.{/sn}
 
+### Summary
 At this point, let's recapitulate what happens to the image of letters on a
 page:
 
@@ -899,6 +917,7 @@ largely at the mercy of the brain's language circuitry that parses sentences
 based on grammar and semantic associations, the raw signal from the
 letter-combination detectors is easily overruled in our awareness.
 
+### Robust interactivity via *n*-gram detectors
 The archetypal letter-combination detector responds to ordered pairs of letters,
 often called "open bigrams" in the literature.{sn}Early open-bigram models were
 primitive and regularly maligned. Today, the idea is no longer under much dispute, in a
@@ -935,13 +954,14 @@ between *cat* and *act*. Such feats would be impossible without the dynamic
 interactions with a population of word detectors which, in turn, are gated by
 our language-comprehension networks.
 
-This neat hierarchy of *n*-gram detectors takes lots of reading practice to
-develop, but it is becoming increasingly clear that this is only one of many
-steps in the long and awkward process of reading acquisition.{sn}The summary
-given here is based primarily on a well-sourced [review
-paper](https://psyarxiv.com/g3n2m/download?format=pdf) by Carol Whitney and
-colleagues. Sadly, this was Carol's last paper; she died in late
-2019.{/sn} It appears that children first learn to recognize letters as
+### Diversity of brain areas involved in reading acquisition
+This neat hierarchy of bigram detectors—and more generally, *n*-gram
+detectors—takes lots of reading practice to develop, but it is becoming
+increasingly clear that this is only one of many steps in the long and awkward
+process of reading acquisition.{sn}The summary given here is based primarily on
+a well-sourced [review paper](https://psyarxiv.com/g3n2m/download?format=pdf) by
+Carol Whitney and colleagues. Sadly, this was Carol's last paper; she died in
+late 2019.{/sn} It appears that children first learn to recognize letters as
 individual objects, just as they learn to recognize chairs, spoons, and fire
 trucks. In particular, children develop letter representations in a brain area
 otherwise associated with small, graspable objects such as hand tools. Then,
@@ -960,11 +980,12 @@ are no longer associated with the conscious experience of e.g. handling a
 letter-shaped toy. We don't lose those original letter-representing neurons—but
 we don't make use of them when reading quickly. 
 
+### Temporal vs. spatial encoding of *n*-gram sequences
 The *n*-gram detectors are used to letters arriving in temporal sequence, and
 experiments suggest that even the "fast" adult letter detectors still activate
 the *n*-gram detectors in series, perhaps via lateral and feedback inhibition
 coupled with imperceptibly fast (≈16ms) gamma cycles.{sn}See e.g.
-[SERIOL2](https://files.eric.ed.gov/fulltext/ED543279.pdf) by Whitney and
+SERIOL2<sup>[PDF](https://files.eric.ed.gov/fulltext/ED543279.pdf)</sup> by Whitney and
 Marton, which cleverly tests this hypothesis on both left-to-right and
 right-to-left readers to confirm the model's assumptions about the effect of the
 lateralization of our reading circuitry to the left hemisphere.{/sn} Such a
@@ -975,124 +996,123 @@ But whether or not the distance between letters is encoded temporally or
 spatially (i.e. via convolutional filtering), it seems clear that the activation
 of *n*-gram detectors depends directly on the physical distance between printed
 letters. In other words: we read best what we are used to; legibility is a
-question of conditioning. Of course, this seems disappointing. If conditioning
-is all that matters, why not simply copy the metrics from other fonts? How can
-we justify our tedious efforts to model neural Gestalt dynamics?
+question of conditioning.
 
-The answer, of course, is that while *n*-gram detectors are conditioned purely
-on existing fonts, the design process of new fonts is not.{sn}Stylistic
-influences, yes, but no infinite regress.{/sn} As a result, the metrics of
-previous designs are not always applicable:
+Of course, this seems disappointing. If conditioning is all that matters, why
+not simply copy the metrics from other fonts? How can we justify our tedious
+efforts to model neural Gestalt dynamics? The answer, of course, is that the
+tuning of *n*-gram detectors is only one of several factors in legibility, and
+by far the most forgiving one. Much more important are letter classification and
+word segmentation, both of which are questions of Gestalt.
 
-{mn}In the Impact typeface (left), all letters have straight verticals, even
-those that are typically designed with round extrema (right). The letterfit must
-account for such design idiosyncrasies.{/mn}
-<img src="img/diff_font_styles.png" alt="diff font styles example" />
+### Letter classification
+{mn}<img src="img/letter_features_bubbles.png" alt="Most salient letter features, as
+identified by Fiset et al.">{/mn}
+When letters are too tightly clustered, perhaps even overlapping, the performance of
+letter detectors will drop. This is not suprising; classic examples are *rn* or *nn* being
+misread as *m*. Recall that letter detectors detect correlations of V4 contour features, and
+each letter detector is particularly tuned to features that most reliably distinguish its
+target from other candidates.{sn}We can visualize the results of experimental studies like [Fiset et al.
+(2008)](https://doi.org/10.1111%2Fj.1467-9280.2008.02218.x)<sup>[PDF](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.507.4652&rep=rep1&type=pdf)</sup>
+(the source of the image above), [Fiset et al.
+(2009)](https://doi.org/10.1080/02643290802421160)<sup>[PDF](http://lpvs-uqo.ca/wp-content/uploads/2016/04/spatio_temporal_dynamics.pdf)</sup>
+and [Lanthier et
+al.](https://doi.org/10.3758/PBR.16.1.67)<sup>[PDF](https://link.springer.com/content/pdf/10.3758/PBR.16.1.67.pdf)</sup>
+to gain an intuition for the features individual letter detectors are most tuned to.
+{/sn} From a gestalt-optimization perspective, it is the objective of the
+letterfitting designer to maintain sufficient distance between letters such that
+their medial-axis skeletons do not interfere with each other, *particularly* the parts of
+the skeleton most relevant to classification. As we will discuss later, such
+interference takes place in spatial frequency channels in V1 even when the letters do not overlap.
 
-Designers don't typically fit their fonts by running double-blind,
-randomly-controlled crossover trials to optimize reading speed and
-comprehension. In fact, they don't perceive their letters using their reading
-circuitry at all, but rather try their hardest to silence it in an attempt to
-rely purely on their more primal sense of "visual balance between pairs"—Gestalt
-grouping.{sn}In this pursuit, some even turn their letters upside down to
-fit.{/sn}
+Ironically, interference between letters is actually rather negligible in grid-based
+approaches{sn}Such as LetterModel, kernagic, the Hz-Program, etc.{/sn} because
+their pre-tabulated pair distances are applied between outside extrema.
+Meanwhile, the reading-conditioned *n*-gram detectors that would give biological
+plausibility to these methods are convolutional in nature, anchoring their
+reference frames on the letter centroids instead.
 
-This insistence on Gestalt perception has two explanations: for one, it is an
-indirect attempt to minimize outliers in the V2 statistics, which can draw
-attention{sn}And do so quite literally; high-salience features can exogenously
-capture attention by escaping surround suppression.{/sn} and distract from
-reading. But more importantly, it has to do with word coherence.
-
-In scripts that don't use word-dividing spaces,{sn}This applies to
-[Thai](https://en.wikipedia.org/wiki/Thai_script) and
-[Burmese](https://en.wikipedia.org/wiki/Burmese_alphabet), and is probably true
+### Word segmentation
+Besides letter classification, legibility depends on successful word
+segmentation.{sn}Of course, some scripts don't use
+[word dividers](https://en.wikipedia.org/wiki/Word_divider)<sup>W</sup> at all.
+[Thai](https://en.wikipedia.org/wiki/Thai_script)<sup>W</sup> and
+[Burmese](https://en.wikipedia.org/wiki/Burmese_alphabet)<sup>W</sup> are in this category,
+and it is probably true
 more generally for [isolating
-languages](https://en.wikipedia.org/wiki/Isolating_language), i.e. those in
+languages](https://en.wikipedia.org/wiki/Isolating_language)<sup>W</sup>, i.e. those in
 which virtually every syllable maps directly onto a [free
-morpheme](https://en.wikipedia.org/wiki/Bound_and_free_morphemes). After all, in
+morpheme](https://en.wikipedia.org/wiki/Bound_and_free_morphemes)<sup>W</sup>. After all, in
 such grammars, word spaces aren't of much use anyway. Koreans sometimes omit
-word spaces in [Hangul](https://en.wikipedia.org/wiki/Hangul) in informal
-writing, as well.{/sn} we can describe letterfitting as the pursuit of a maximal
-data transmission rate. Trivially, smaller pair distances increase the data rate, while any reduction in
-letter identifiability—overlapping or excessively small letters, for
-instance—decreases it. Moreover, a tighter fit will activate more reverse
-bigrams, risking worse (or slower) word identification.
+word spaces in [Hangul](https://en.wikipedia.org/wiki/Hangul)<sup>W</sup> in informal
+writing, as well. In [fusional
+languages](https://en.wikipedia.org/wiki/Fusional_language)<sup>W</sup> like English,
+however, word segmentation is crucial.{/sn} Word segmentation, of course, is all about perceptual grouping.
 
-In English, however, we have another letterfitting criterion: letters need to
-group together to form words.{sn}Of course, this is true for other [fusional
-languages](https://en.wikipedia.org/wiki/Fusional_language) as well.{/sn} Spaces
-help us perceive which morphemes belong together.
+Our previous discussions might suggest that during reading, word segmentation
+happens as a result of attention spreading outwards to the word boundaries,
+thereby allowing us to select a single word at a time. However, experiments
+suggest that reality is not that simple. It appears that during fast reading,
+multiple words are perceived and processed at once.{sn}Credit for championing
+this idea goes mainly to Joshua Snell and his collaborators in Jonathan
+Grainger's research group. A key argument is the word transposition effect, in
+which word detectors are activated (nearly) in parallel, and our language
+comprehension networks pick out words in grammatical sequence: <nobr>*you that
+read wrong; you that read wrong, too.*</nobr> See
+<nobr>[here](http://dx.doi.org/10.1037/rev0000119)<span class="oa" title="Open
+Access"></span></nobr> for their model, and
+<nobr>[here](https://doi.org/10.1016/j.tics.2019.04.006)<span class="oa"
+title="Open Access"></span></nobr> for a recent review of experimental evidence.
+MRI studies by [Alex White et al.
+(2019)](https://doi.org/10.1016/j.tics.2019.07.001) appear to support this
+view.{/sn} This means that parallel *n*-gram detectors and multiple word
+candidates are activated in parallel, and could influence one another in the
+process. How, then, does the brain keep different words apart at all? For
+instance, what keeps us from reading *hello live* as *hell olive*? 
 
-<p class="missing">
-Explain word transposition effects, terminal-letter effects, and the
-implications for letterfitting.
-</p>
+One plausible explanation is that the activation of the *ol* bigram detector is
+a bit weaker in the first pair, whereas the *lo* bigram detector is weaker in
+the second. Given our ability to read jumbled letters, this may not seem like a
+reliable mechanism. But such ambiguous word pairings are extremely rare, and
+when they do occur, our grammar-based language circuitry would quickly resolve
+any ambiguity. If this is correct, then word segmentation is purely a result
+of neighbouring words not being able to co-activate *n*-gram detectors
+sufficiently to cause confusion. To prevent accidental word segmentation, a
+letterfitting model would need to contain the entire response curves of bigram
+detectors.
 
-<!--
-  On a related note, there is some fascinating research on how our brains [break
-  down
-  words](https://www.researchgate.net/profile/Elisabeth_Beyersmann/publication/316312318_Edge-Aligned_Embedded_Word_Activation_Initiates_Morpho-orthographic_Segmentation/links/5addab7ca6fdcc29358b9656/Edge-Aligned-Embedded-Word-Activation-Initiates-Morpho-orthographic-Segmentation.pdf)
-  into morpho-orthographic chunks during processing.{/sn}
+Another possible explanation may be that word-initial and word-final letters may
+be perceived as distinct from word-central letters. If that were true,
+transposing letters such that initial or final letters are jumbled out of place
+would effectively amount to letter substitution, rather than mere transposition.
+And indeed, *ujmlbde etxt* is much more difficult to decipher than *jmulebd txet*,
+although the number of transpositions is equal. 
+If this theory is correct,{sn}Of course, the two explanations are not mutually
+exclusive.{/sn} then we must model how an initial- or final-letter detector
+recognizes that the letter in question coincides with the beginning or end of a
+word. Because these letter detectors are fed directly by the skeletons derived
+from V4 contour fragments, we may assume that word endings are detected as V4
+contour fragments as well, which once again brings us back to our
+Gestalt-analysis approach.
 
+### Human designers fit letters based on gestalt grouping
+At this point, it is worth noting that type designers try hard *not* to engage
+their reading circuitry when fitting letters. Instead, they adjust letter pairs
+by staring straight at them, sometimes flipping them upside down to really see
+them "as they are".
 
-
-- furthermore, experiments suggest that we read multiple words at once. This
-  supersedes the long-held assumption that we read words one by one, by shifting
-  our eye and/or attention from one word to the next. Timing studies suggest
-  that multiple word detectors are activated at once, even though only one is
-  consciously processed at once.
-  
-- If bigram detectors are so flexible, and also attention is not limited to one
-  word at a time, then how does the brain keep words apart at all? In other
-  words, what prevents us from misreading "hello scarface" as "hell oscar face"?
-  It could be that the difference in the activation of the "lo" and "rf" vs "os"
-  suffice to explain it. But the fact that first and last letters are particularly important in
-  transposed-letter experiments suggests that letters at a word end are perhaps detected
-  by different detectors than those in the middle of a word, such that jumbling
-  a first letter is more akin to letter substitution than to letter transposition.
-  
-- On one hand, the existence of bigram detectors proves that letterfitting text
-  for legibility is a different exercise from letterfitting text for gestalt.
-  On the other hand, reading *also* depends on word division, which, if the
-  existence of terminal-letter-detectors is true, can yet again be viewed from a
-  Gestalt/skeleton angle. -->
-
-<!--
-So far, we have described some important neural dynamics of the visual cortex,
-between V1 and the early inferotemporal cortex. Experimental results have
-yielded rich hypotheses about the neural architecture of perceptual grouping,
-hypotheses that appear to explain many aspects of letterfitting practice.
-
-But the patterns of neural activity involved in reading don't stop at the edge
-of the visual cortex: about a quarter second after we first see a word, neurons
-in the so-called *visual word form area* (VWFA) in our left fusiform gyrus (see
-the anatomical illustration above) have settled the identity of the word.
-
-The above sketch of the influence of attention 
-
-Poor letterfitting can affect the performance of the VWFA beyond 
-
-The visual word form area contains neurons that identify letters
-and words. Letterfitting can affect the performance of these 
-
-Understanding how this detection works may help us augment our
-model to  aware of semantic issues that can affect design
-decisions. One common issue is confusability (e.g. between *rn*
-and *m*), but we can look beyond alphabetic letterfitting to the
-relative placement of accents, and even to the strokes and components
-of Hangul and Hanzi{sn}The recognition of Chinese
-characters takes place in the *right* fusiform gyrus (the VWFA is in the left), a region
-traditionally associated with face recognition (although [EEG
-readings suggest that face-recognition circuitry isn't directly
-involved](https://doi.org/10.1371/journal.pone.0041103)). The
-compositional mechanisms described here likely transfer in principle,
-however.{/sn}—all of these are instances of the problem
-of competitive perceptual grouping.
--->
+That human designers are so successful with such a purely gestalt-based approach
+is encouraging: it suggests that gestalt-based algorithms can be used widely,
+leading primarily to a perception of visual beauty (or perhaps the absence of
+visual distractions), and indirectly to good legibility.{sn}To achieve *optimal*
+legibility, designers would need to abandon their current approach and pursue
+legibility directly. Perhaps someday we'll see letterfitting based on
+double-blinded, randomly-controlled crossover trials of reading speed and
+comprehension.{/sn} It may well be that the approach works not only on
+alphabetic scripts, but also on the relative placement of strokes and/or
+radicals in Hangul and Hanzi.
 
 ## From perceptual grouping to letterfitting 
-
-
 
 The above model of our vision system's perceptual grouping mechanisms finally
 allows us to make some predictions about typographic truths, and should
@@ -1340,3 +1360,9 @@ all, it's still worth mentioning as a neat idea that could perhaps save
 designers some time. Toshi Omagari has built a [Glyphs plugin](https://github.com/Tosche/BubbleKern).
 
 
+
+{sn}
+Isabel Gauthier et al.
+[font tuning](https://doi.org/10.1068%2Fp5313)<sup>[PDF](https://www.researchgate.net/profile/Alan_Wong2/publication/7081783_Font_tuning_associated_with_expertise_in_letter_perception/links/0fcfd5077a0eb38470000000.pdf)</sup>
+but probably simply has to do with texture in V2 and surround suppression.
+{/sn}

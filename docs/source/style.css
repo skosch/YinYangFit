@@ -21,7 +21,7 @@ body {
     /*background-color: #fffff8;
     color: #111;*/
     max-width: 1400px;
-    counter-reset: sidenote-counter heading appendixheading;
+    counter-reset: sidenote-counter heading appendixheading subheading;
 
     /*font-family: "HK Grotesk", serif;*/
     /*letter-spacing: 0.01rem;*/
@@ -65,6 +65,7 @@ h2 {
     line-height: 1; 
     position: relative;
     width: 60%;
+    counter-reset: subheading;
 }
 
 h2.nonumber:before {
@@ -93,14 +94,28 @@ h2:not(.nonumber):not(.appendix):before {
     text-align: right;
 }
 
+h3.appendix:before {
+    content: counter(appendixheading, upper-alpha)"."counter(subheading)" ";
+    counter-increment: subheading;
+    position: relative;
+    left: -.6rem;
+    text-align: right;
+}
+
+h3:not(.nonumber):not(.appendix):before {
+    content: counter(heading)"."counter(subheading)" ";
+    counter-increment: subheading;
+    position: relative;
+    left: -.6rem;
+    text-align: right;
+}
 
 h3 {
-    font-style: italic;
-    font-weight: 400;
-    font-size: 1.7rem;
+    font-size: 1.4rem;
     margin-top: 2rem;
-    margin-bottom: 1.4rem;
     line-height: 1; 
+    font-family: "Space Grotesk";
+    text-indent: -2.2rem;
 }
 
 hr {
@@ -269,6 +284,11 @@ a:link, .tufte-underline, .hover-tufte-underline:hover {
     background-repeat: no-repeat, no-repeat, repeat-x;
     text-shadow: 0.03em 0 #fffff8, -0.03em 0 #fffff8, 0 0.03em #fffff8, 0 -0.03em #fffff8, 0.06em 0 #fffff8, -0.06em 0 #fffff8, 0.09em 0 #fffff8, -0.09em 0 #fffff8, 0.12em 0 #fffff8, -0.12em 0 #fffff8, 0.15em 0 #fffff8, -0.15em 0 #fffff8;
     background-position: 0% 93%, 100% 93%, 0% 93%; 
+}
+
+a:link > sup, .tufte-underline > sup, .hover-tufte-underline:hover > sup {
+    text-decoration: underline;
+    background: none;
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
@@ -576,4 +596,14 @@ label.margin-toggle:not(.sidenote-number) {
 
 .pdflink:before {
   content: "[PDF]";
+}
+
+.oa {
+    display: inline-block;
+    background-image: url("../img/oa.png");
+    width: 1rem;
+    height: 1rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin: 0 -2px -2px 2px;
 }
