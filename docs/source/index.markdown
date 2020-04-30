@@ -98,12 +98,14 @@ legibility is a question of the reliable detection of letters and n-grams from
 pre-processed visual features. On top of that, all of the above are affected
 differently by font size and colour contrast.
 
-The letterfitting approaches available today, whether geometry- or ML-based,
-fail to capture this complexity. If we want to develop robust, universal
-automatic letterfitting algorithms—algorithms that work on both hairline slab
-serifs and broad-nib italics, on both captions and headline sizes, on both Latin
-and Hangul—then we need to build better intuitions for the neural dynamics of
-our vision system. That's what this article is about.
+The premise behind today's letterfitting tools is that the gaps between letters
+can be measured and equalized. But human brains don't perceive gaps; they
+perceive shapes whose neural representations interact across space in particular
+ways. If we want to develop robust, universal automatic letterfitting
+algorithms—algorithms that work on both hairline slab serifs and broad-nib
+italics, on both captions and headline sizes, on both Latin and Hangul—then we
+need to build better intuitions for the neural dynamics of our vision system.
+That's what this article is about.
 
 In a way, it is surprising that type design and cognitive psychology are so
 divorced from one another.{sn}The studies that do exist are almost exclusively
@@ -745,13 +747,18 @@ ranging from hairline to ultra-heavy, this is a particularly salient question:
 The hairline letter is, arguably, too thin to allow readers to clearly perceive
 border ownership of the left and right side of each stem.{sn}Of course this
 depends on the font size and the contrast sensitivity function, as discussed
-earlier.{/sn} Nevertheless, even fuzzy border-ownership signals should be enough
-to excite fine-scale G-cells. It is also conceivable that specialized G-cells
-exist which interact with collinear contour detectors.{sn}This was explored by
-Brian Hu et al. in a 2017
-<nobr>[simulation](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5693639/)<span class="oa" title="Open
-Access"></span></nobr>.{/sn} For the
-purposes of our model, however, such considerations are unlikely to be required.
+earlier.{/sn} At this point, the concept of B-cells and G-cells breaks down;
+real neurons don't follow these neat abstractions. It is quite conceivable that
+specialized cells detect fine lines even in area V4 and beyond, blurring the
+line between contour- and skeleton-based representations.{sn}See e.g.
+<nobr>[this 2018 discovery](https://doi.org/10.1016/j.neuron.2018.03.009)<span
+class="oa" title="Open Access"></span></nobr> of acuity-preserving neural
+clustering by Yiliang Lu et al., and <nobr>[this 2017
+simulation](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5693639/)<span
+class="oa" title="Open Access"></span></nobr> of contour-dedicated G-cells by
+Brian Hu et al.{/sn} For the purposes of our model, however, such considerations
+are unlikely to be required; we will assume here that the idealized labour
+division between B- and G-cells is universal.
 
 By the way: that G-cells are presumed to interact with circularly-arranged
 populations of contour detectors, thus skeletonizating shapes, aligns neatly
@@ -759,7 +766,8 @@ with the Gestalt principle of convexity: after all, it is circular shapes that
 are most easily perceived as coherent objects, while more concave contours add
 visual complexity at the expense of *prägnanz*. Of course, the preference for
 convex shapes would not be possible if V4 contour detectors were not also
-overwhelmingly tuned for convex contour fragments.{sn}As we know they are, as demonstrated by studies like
+overwhelmingly tuned for convex contour fragments.{sn}As we know they are,
+thanks to studies like
 <nobr>[this one](https://doi.org/10.1152/jn.2001.86.5.2505)<span class="oa" title="Open
 Access"></span></nobr> and <nobr>[this
 one](https://doi.org/10.1152/jn.01265.2006)<span class="oa" title="Open
@@ -1139,6 +1147,11 @@ from V4 contour fragments, we may assume that word endings are detected as V4
 contour fragments as well, which once again brings us back to our
 Gestalt-analysis approach.
 
+<p class="missing">
+Still needs clearer explanation. How to justify we can deal with evenly tracked-out text, where spaces are a
+relative phenomenon?
+</p>
+
 ### Human designers fit letters based on gestalt grouping
 At this point, it is worth noting that type designers try hard *not* to engage
 their reading circuitry when fitting letters. Instead, they adjust letter pairs
@@ -1157,15 +1170,143 @@ alphabetic scripts, but also on the relative placement of strokes and/or
 radicals in Hangul and Hanzi.
 
 ## From perceptual grouping to letterfitting 
-Although texture perception and legibility considerations are important,
-let's explore on how perceptual grouping might play out in some real letter pairs.
+Given a pair of letters, our objective is to minimize the risk that a word boundary
+is perceived between them (by fitting them tightly), while preserving the
+identity of both letters (by not fitting them *too* tightly).
 
-<p class="missing">
-Competition between word-scale and stem-scale grouping cells
-</p>
+With B-cells and G-cells, which correspond to configurations of V2 and V4
+contour detectors, we now have the vocabulary to describe where and how this
+trade-off takes place as the two letters approach one another.
 
-Let's see how our current understanding of perceptual grouping plays out
-in some axiomatic letter pairs:
+### Losing a letter's skeleton
+At the scale of the stem thickness, each letter activates a
+population of G-cells corresponding to its medial axis skeleton. Primarily, it
+is the letter's ink that gets skeletonized; but in some situations, 
+counter-space features might be recruited as well:
+
+<img src="img/skeleton_example.png" alt="Skeletons">
+
+As noted, these skeletons stay relatively invariant across font styles, enabling
+letter-detecting neurons to function simply via spatial integration of
+particular skeleton features.{sn}Even serifs are simply small extensions of the
+skeletal structure that occurs naturally at corners, even in sans-serif
+designs.{/sn} Consider now that the skeletonization depends on the activity of
+B-cells, but B-cells depend on the activity of V1 complex cells, and those in
+turn are affected by the presence of neighbouring letters.
+
+{mn}<img src="img/v1_interference_example.png" alt="V1 interference
+example"><br>*Left:* A simple cell activates fully, thanks to the presence of
+the left letter's right stem. *Right:* Tigthening the pair places the
+neighbouring letter into the cell's receptive field, reducing its
+activation.{/mn} To illustrate this point, let's consider a simple cell tuned to
+a light-dark-light pattern. The left letter of a pair is positioned such that
+its right-hand stem coincides with the "dark" region, activating the cell. We
+now move the right letter closer to the left. Eventually, its left stem will
+enter the cell's receptive field in the "light" region. Even though the letters
+are still a considerable distance apart, this will reduce the cell's activation.
+One way to think about this is that to our visual system, whether two letters
+are overlapping isn't a binary question; it rather depends on the spatial
+frequency in question.
+
+Therefore, in locations where two letters approach very closely, only the
+finest-scale complex cell activations will stay intact. This grossly reduces the
+activation of B-cells and, in turn, of the G-cells that constitute the skeleton
+from them:
+
+{mn}Shown here is an extremely tightly fitted sans-serif, for effect. Serifs
+naturally enforce wider gaps.{/mn}
+<img src="img/skeleton_example_reduction.png" alt="skeletons">
+
+On top of that, G-cells located in the gap now absorb some activity as well.
+This creates ambiguity about the polarity of border ownership in the gap, and the
+associated inhibition further dampens the G-cells that make up the stems' skeletons.
+
+<img src="img/skeleton_example_reduction2.png" alt="skeletons">
+
+Note that there is also a set of larger G-cells centered on the gap,
+encompassing both letters. This is a classic example of perceptual grouping:
+activity corresponding to the left letter's outer edge will filter up to these
+larger G-cells, which will feed back to the right letter's outer edge. Attention
+can be deployed at different scales, allowing us to shift the polarity of
+B-cells to focus on the gap, on either letter, or on the pair as a whole.
+
+The complexity is quite impressive, and we have not yet taken into account
+amplifying effects from contour integration, both along the stems and across
+gaps, which in turn create illusory T-junctions, which lead to additional
+suppression, etc.
+
+Generally, and attentional effects notwithstanding, we need to worry about any
+effects that draw neural activity away from the letters' original skeletons. A
+computational model must therefore compare the skeletons of the standalone
+letters with the skeletons that remain once they are placed together. Different
+frequency scales should be weighted differently when the losses are tallied up,
+such that degraded stem skeletons are penalized more heavily than degraded
+serifs. In more advanced models, pre-trained letter classification networks
+could be used to determine the parts of the skeleton most relevant to
+distinguishing the letter in question,{sn}This would probably rely on some
+salience-mapping technique like [GradCAM](http://gradcam.cloudcv.org/).{/sn} and
+penalize losses to these parts most heavily.
+
+### Losing a word's edge
+While placing letters too close together puts their skeletons at risk, placing
+them too far apart can compromise the integrity of the word as a perceptual group.
+This effect is more difficult to model, because letterfitting algorithms deal
+with pairs of letters at a time, while words can consist of many, many letters
+at once.
+
+A wider-than-average gap in the middle of a word will stand out for multiple
+reasons. In long words, it will appear salient because it receives less surround
+suppression; it offers less opportunity for horizontal integration
+of letter contours along the baseline and x-height; and it evokes the
+activation of larger-scale V1 complex cells, translating to a stronger activation of
+(more, and larger-scale) B-cells. This, in turn, has a particularly noticeable
+effect on G-cells of x-height scale, or larger:
+
+{mn}G-cells of all scales will participate in the activity associated with the
+boundary created by the larger gap. Small G-cells involving the inner edge of
+the gap will activate quite strongly; this draws neural activity towards the gap
+as soon as attention lands near it. Larger G-cells are less active, simply
+because they do not receive enough input.{/mn}
+<img src="img/wordboundary_gcells.png" alt="g cells at a word boundary">
+
+In principle, this is a natural encoding of word boundaries: gaps that are
+wider than average will activate intra-word G-cells more strongly than smaller
+gaps. Attention-induced neural activity is therefore more likely to spread up to
+such gaps but no further.
+
+The shape of a gap's inner edge can contribute to this effect or weaken it.
+Round letters activate G-cells more strongly; *o*'s are so perfectly convex that
+even a small gap is sufficient for them to halt the spread of neural activity
+beyond it. In alignment with gestalt rules, an *o* is the perfect way to cap off
+a string of letters into a optimally rounded-off perceptual group. Type
+designers know that to prevent this from fragmenting a word, round letters need
+to be fitted more tightly than straight ones. 
+
+When two letters get closer to one another within a word, the risk of
+fragmentation at their gap drops thanks to the weakening of the V1 complex cells
+that indirectly enable the activation of large, fragmentation-inducing G-cells.
+In other words, the same mechanism is responsible for both the degradation of
+letter skeletons and for word fragmentation.{sn}We could of course think of word
+fragmentation as a degradation of the word skeleton.{/sn}
+
+An effective letterfitting algorithm would quantify this drop in fragmentation
+risk, subtract it from the penalty associated with skeleton loss, and
+iteratively search for the pair distance that minimizes the resulting total penalty.
+
+But letterfitting algorithms only see two letters at a time. This means that for
+some letters, the degree of inherent fragmentation risk appears much lower than
+it actually would be in the context of a word:
+
+<img src="img/wordboundary_letters.png" alt="effect of extra letters on g-cells
+at word boundary">
+
+Working with more than two letters doesn't solve the problem either: in an
+exotic font, letters could be arbitrarily thin or wide. Of course, we *know*
+from experience that the width of a letter should have little to no influence
+on its tendency to fragment a word, and so it is in the context of other
+letters; and yet modelling the pair is difficult.
+
+
 
 <img src="img/benchmark_gaps.png" alt="Some benchmark letter pairs: nn, oo, nl,
 and IUL">
@@ -1309,6 +1450,11 @@ grouping dynamics; does quite poorly on uppercase letters.
 Explain training this + simple spline or neural net on existing fonts via backprop for a
 first approximation. Show results.
 </p>
+
+
+
+
+
 
 ### Modelling lateral inhibition via divisive normalization
 
