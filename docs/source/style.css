@@ -62,7 +62,7 @@ h2 {
     margin-top: 2.1rem;
     margin-bottom: 0rem;
     font-size: 1.6rem;
-    line-height: 1; 
+    line-height: 1rem; 
     position: relative;
     width: 60%;
     counter-reset: subheading;
@@ -71,51 +71,41 @@ h2 {
 h2.nonumber:before {
     content: "";
     position: absolute;
-    width: 3rem;
-    left: -3rem;
-    text-align: right;
 }
 
 h2.appendix:before {
-    content: counter(appendixheading, upper-alpha)". ";
+    content: counter(appendixheading, upper-alpha)".";
     counter-increment: appendixheading;
     position: absolute;
-    width: 3rem;
-    left: -3rem;
-    text-align: right;
+    transform: translateX(calc(-100% - 1rem));
 }
 
 h2:not(.nonumber):not(.appendix):before {
-    content: counter(heading)". ";
+    content: counter(heading)".";
     counter-increment: heading;
     position: absolute;
-    width: 3rem;
-    left: -3rem;
-    text-align: right;
+    transform: translateX(calc(-100% - 1rem));
 }
 
 h3.appendix:before {
-    content: counter(appendixheading, upper-alpha)"."counter(subheading)" ";
+    content: counter(appendixheading, upper-alpha)"."counter(subheading);
     counter-increment: subheading;
-    position: relative;
-    left: -.6rem;
-    text-align: right;
+    position: absolute;
+    transform: translateX(calc(-100% - 1rem));
 }
 
 h3:not(.nonumber):not(.appendix):before {
-    content: counter(heading)"."counter(subheading)" ";
+    content: counter(heading)"."counter(subheading);
     counter-increment: subheading;
-    position: relative;
-    left: -.6rem;
-    text-align: right;
+    position: absolute;
+    transform: translateX(calc(-100% - 1rem));
 }
 
 h3 {
     font-size: 1.4rem;
-    margin-top: 2rem;
-    line-height: 1; 
+    margin-top: 2.1rem;
+    line-height: 1rem; 
     font-family: "Space Grotesk";
-    text-indent: -2.2rem;
 }
 
 hr {
@@ -347,7 +337,7 @@ label.margin-toggle {
 .sidenote:before {
     content: counter(sidenote-counter) " ";
     font-size: 1rem;
-    /*top: -0.5rem;*/ 
+    /*top: -0.5rem;*/
 }
 
 blockquote .sidenote,
