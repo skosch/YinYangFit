@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="420"
+   height="200"
+   viewBox="0 0 111.12499 52.91667"
+   version="1.1"
+   id="svg1228"
+   inkscape:version="0.92.5 (0.92.5+68)"
+   sodipodi:docname="symmetry.svg"
+   inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/symmetry.png"
+   inkscape:export-xdpi="199.95"
+   inkscape:export-ydpi="199.95">
+  <defs
+     id="defs1222">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient1809">
+      <stop
+         style="stop-color:#e35959;stop-opacity:1"
+         offset="0"
+         id="stop1805" />
+      <stop
+         id="stop3555"
+         offset="0.49999997"
+         style="stop-color:#7eb4d4;stop-opacity:1" />
+      <stop
+         style="stop-color:#9eaab0;stop-opacity:0.56317687"
+         offset="0.56867462"
+         id="stop3557" />
+      <stop
+         style="stop-color:#959595;stop-opacity:0.54151624"
+         offset="1"
+         id="stop1807" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1809"
+       id="linearGradient1811"
+       x1="116.39819"
+       y1="129.49324"
+       x2="75.005287"
+       y2="129.49324"
+       gradientUnits="userSpaceOnUse"
+       spreadMethod="reflect" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1809"
+       id="linearGradient3578"
+       gradientUnits="userSpaceOnUse"
+       x1="116.39819"
+       y1="129.49324"
+       x2="75.005287"
+       y2="129.49324"
+       spreadMethod="reflect" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1809"
+       id="linearGradient3580"
+       gradientUnits="userSpaceOnUse"
+       x1="116.39819"
+       y1="129.49324"
+       x2="75.005287"
+       y2="129.49324"
+       spreadMethod="reflect" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1809"
+       id="linearGradient3582"
+       gradientUnits="userSpaceOnUse"
+       x1="116.39819"
+       y1="129.49324"
+       x2="75.005287"
+       y2="129.49324"
+       spreadMethod="reflect" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="175.63826"
+     inkscape:cy="215.9102"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     units="px"
+     inkscape:window-width="2560"
+     inkscape:window-height="1401"
+     inkscape:window-x="0"
+     inkscape:window-y="19"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata1225">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-244.08331)">
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot1773"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#2e2e2e;fill-opacity:1;stroke:none"
+       transform="matrix(0.71376473,0,0,0.71376473,-51.488652,170.18603)"><flowRegion
+         id="flowRegion1775"
+         style="fill:#2e2e2e;fill-opacity:1"><rect
+           id="rect1777"
+           width="631.8504"
+           height="255.56859"
+           x="70.710678"
+           y="103.01515"
+           style="fill:#2e2e2e;fill-opacity:1" /></flowRegion><flowPara
+         id="flowPara1779"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Josefin Sans';-inkscape-font-specification:'Josefin Sans';fill:#2e2e2e;fill-opacity:1">HAI</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot1773-7"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:url(#linearGradient1811);fill-opacity:1;stroke:none"
+       transform="matrix(0.71376472,0,0,0.71376472,-51.488652,195.45698)"><flowRegion
+         id="flowRegion1775-3"
+         style="fill:url(#linearGradient3580);fill-opacity:1"><rect
+           id="rect1777-3"
+           width="631.8504"
+           height="255.56859"
+           x="70.710678"
+           y="103.01515"
+           style="fill:url(#linearGradient3578);fill-opacity:1" /></flowRegion><flowPara
+         id="flowPara1779-8"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Josefin Sans';-inkscape-font-specification:'Josefin Sans';fill:url(#linearGradient3582);fill-opacity:1">HAI</flowPara></flowRoot>  </g>
+</svg>

@@ -639,29 +639,36 @@ Access"></span></nobr>. The images give a good
 intuition for the higher complexity of the patterns detected in V4.{/mn}
 <img src="img/v4_texture_neurons.png" alt="higher-level receptive fields from InceptionNet">
 
-Once again, some neurons tend to be more tuned to textures while others
-detect straight or curved contour fragments, although there certainly is overlap
-between the two categories.{sn}As in the case in V4, at least in macaques, as shown by studies
-like <nobr>[this one](https://doi.org/10.1523/JNEUROSCI.3073-18.2019)<span class="oa" title="Open
-Access"></span></nobr> by Anitha
-Pasupathy and her collaborators.{/sn} Just as in V2, the contour detectors
-integrate smaller contour fragments across a larger region. However, the larger
-receptive fields of V4 allow for the target contours to be substantially offset
-from the center of the neuron's receptive field. As such, a neuron centered *on*
-the target object can detect parts of its contour:
+Once again, some neurons tend to be more tuned to textures while others detect
+straight or curved contour fragments, although there certainly is overlap
+between the two categories.{sn}Studies like <nobr>[this
+one](https://doi.org/10.1523/JNEUROSCI.3073-18.2019)<span class="oa" title="Open
+Access"></span></nobr> by Anitha Pasupathy and her collaborators clearly show
+this overlap within biological V4 populations, at least in the brains of their macaque monkey
+subjects.{/sn} Just as in V2, the contour detectors integrate smaller contour
+fragments across a larger region. However, the larger receptive fields of V4
+allow for the target contours to be substantially offset from the center of the
+neuron's receptive field. As such, V4 neurons centered on a target object can
+more easily detect parts of the object's contour:
 
-{mn}Note how all shapes have in common the convexity on the lower left.{/mn}
-<img src="img/v4_rf.png" alt="Receptive field and some example stimuli for a V4
-object-centered contour-detecting cell">
+{mn}Note how all shapes have the convexity on the lower left in common. The
+particular V4 neuron shown here responds to objects that are centered in its
+receptive field and which exhibit just such a convexity. Indirectly, this V4
+neuron detects correlations between a great number of complex cell responses in
+V1.{/mn} <img src="img/v4_rf.png" alt="Receptive field and some example stimuli
+for a V4 object-centered contour-detecting cell">
+
+V4 neurons, too, form feedback loops with their V2 inputs. V4 neurons, in turn,
+serve as input to higher-level brain areas that are more specialized for object detection.
 
 ## Perceptual grouping based on border ownership
 
 Consider that navigating our natural environment requires us to correctly
 identify three-dimensional objects in three-dimensional space. But the shape of
 these objects varies heavily depending on perspective—after all, we only see a
-two-dimensional projection of reality—and is available only as a collection of
+two-dimensional projection of reality—and is available to our brain only as a collection of
 the abovementioned V4 contour fragments. What's more, the contour detectors will
-activate on *both sides* of each object:
+activate on *both sides* of each object, like so:
 
 {mn}Two V4 contour detectors, tuned to the same eccentricity, angle, and
 curvature, activate in response to a dark blob shape. One of them (shown in red)
@@ -670,16 +677,16 @@ is centered on the object as expected, the other is centered outside. Many
 them more responsive to the sheer presence of an edge than to its contrast polarity.{/mn}
 <img src="img/v4_rf_outside.png" alt="activation of V4 contour receptor on outside">
 
-How can we recognize a half-overlapped object, discount its perspective foreshortening and assign it a
-relative depth, going only by a population of V4 contour detectors, half of
-which are gratuitously detecting the objects' outsides? The solution lies in
-feedback loops that enable perceptual grouping.
+How can we recognize a half-occluded object, discount its perspective foreshortening and assign it a
+relative depth, relying only on a population of V4 contour detectors, half of
+which are gratuitously detecting the objects' outsides? The solution lies in the
+key feedback loops that enable perceptual grouping.
 
 The first feedback loop connects V4 with a special class of V2 neurons called
 *border ownership cells* or B-cells. These B-cells, like the V2
 contour-integrating cells already discussed, detect the presence of edges based
-on the activity of V1 complex cells. While they are agnostic to the edge's
-contrast polarity, B-cells fire only if they are on one particular side of an
+on the activity of V1 complex cells. As expected, they are agnostic to the edge's
+contrast polarity. But surprisingly, B-cells fire only if they are centered on one particular side of an
 object. For instance, the B-cell whose receptive field is marked in red below
 only detects edges on the *left side* of objects, as indicated here by the small
 protrusion pointing toward the right.{sn}Almost everything we know about border
@@ -696,15 +703,16 @@ So its activity must be gated by a neuron which does: namely, one of our
 higher-level V4 neurons.{sn}Lateral inhibition from other V2 neurons cannot
 explain this behaviour, because horizontal connections conduct <nobr>[too
 slowly](https://dx.doi.org/10.1152%2Fjn.00928.2010)<span class="oa" title="Open
-Access"></span></nobr> to explain the lab-measured response times of
-B-cells.{/sn} The object owning the edge fragment could have any shape and size,
-so *all* active V4 neurons whose contour templates coincide with the edge
+Access"></span></nobr> to explain the lab-measured response times of B-cells, so
+dedicated connections to a particular V4 cell are the most plausible
+explanation.{/sn} The object owning the edge fragment could have any shape and
+size, so *all* active V4 neurons whose contour templates coincide with the edge
 fragment send amplifying signals to our B-cell. In turn, our B-cell directly
 contributes to their activation, establishing a positive feedback loop:
 
 <img src="img/bg_feedback_0.png" alt="B-cell feedback loop">
 
-There is an entire population of B-cells, distributed across V2's
+There is an entire population of such B-cells distributed across V2's
 retinotopy. For instance, consider a right-side B-cell (blue below)
 neighbouring our left-side B-cell. Both B-cells are engaged in
 feedback loops with V4 neurons while simultaneously inhibiting local
@@ -778,29 +786,28 @@ configuration for all of them. This is true even for letters that are outlined
 (last row), as V4 contour detector neurons respond primarily to the contour, not
 to the fill (or the absence of fill).
 
-When is a stroke perceived as a contour, and when does it turn into a shape of
-its own right, a shape that owns contours on either side? With letter weights
-ranging from hairline to ultra-heavy, this is a particularly salient question:
+We can push the G-cell model to its limits by looking at different font weights:
 
 <img src="img/letter_weights.png" alt="A range of letter weights">
 
-The hairline letter is, arguably, too thin to allow readers to clearly perceive
-border ownership of the left and right side of each stem.{sn}Of course this
-depends on the font size and the contrast sensitivity function, as discussed
-earlier.{/sn} At this point, the concept of B-cells and G-cells breaks down;
-real neurons don't follow these neat abstractions. It is quite conceivable that
-specialized cells detect fine lines even in area V4 and beyond, blurring the
-line between contour- and skeleton-based representations.{sn}See e.g.
-<nobr>[this 2018 discovery](https://doi.org/10.1016/j.neuron.2018.03.009)<span
-class="oa" title="Open Access"></span></nobr> of acuity-preserving neural
-clustering by Yiliang Lu et al., and <nobr>[this 2017
+Arguably, hairline letters are too thin to allow readers to clearly perceive
+border ownership of the left and right side of each stem (counter-centered
+G-cells could still be active).{sn}Of course this depends on the font size and
+the contrast sensitivity function, as discussed earlier.{/sn} It is quite
+possible that our brain solves this problem by dedicating specialized cells in
+V4 and beyond to detect elongated, fine lines,{sn}See e.g. <nobr>[this 2018
+discovery](https://doi.org/10.1016/j.neuron.2018.03.009)<span class="oa"
+title="Open Access"></span></nobr> of acuity-preserving neural clustering by
+Yiliang Lu et al.{/sn} complementing the skeleton-based representation.{sn}As in
+<nobr>[this 2017
 simulation](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5693639/)<span
-class="oa" title="Open Access"></span></nobr> of contour-dedicated G-cells by
-Brian Hu et al.{/sn} For the purposes of our model, however, such considerations
-are unlikely to be required; we will assume here that the idealized labour
-division between B- and G-cells is universal.
+class="oa" title="Open Access"></span></nobr> of contour G-cells by Brian Hu et
+al.{/sn} For the purposes of our letterfitting model, however, such
+considerations are unlikely to be required. Because the receptive fields of our
+model V4- and G-cells can be made arbitrarily small, we will assume here that
+the idealized labour division between B- and G-cells is universal.
 
-By the way: that G-cells are presumed to interact with circularly-arranged
+The fact that G-cells are presumed to interact with circularly-arranged
 populations of contour detectors, thus skeletonizating shapes, aligns neatly
 with the Gestalt principle of convexity: after all, it is circular shapes that
 are most easily perceived as coherent objects, while more concave contours add
@@ -852,28 +859,38 @@ T-junctions contribute to the depth perception that layers the two objects—but
 this is less relevant to perceptual grouping.
 
 ### Symmetry
+{mn}<img src="img/symmetry.png" alt="symmetry example"><br>Symmetry maximization
+may contribute to some letterfitting decisions. Even if not the entire triplet
+is symmetrical, local symmetry may be a factor in Gestalt perception.{/mn}
+*Symmetry* is one concept that often comes up in this context, perhaps mostly
+thanks to a popular letterfitting strategy that involves triplets of letters. In
+this strategy, triplets are chosen such that one pair has already been fitted
+and remains fixed, and the other is then adjusted to match. For many such
+triplets, it intuitively seems that the letterfitting decisions are driven by
+the perception of symmetry around the middle letter.
 
-A popular letterfitting strategy involves triplets of letters. One of the
-triplet's pairs has already been fitted and remains fixed, the other is adjusted
-to match. A tempting thought is that this amounts to optimization for bilateral symmetry
-centered roughly on the middle letter.
+Although the exact neural mechanisms for symmetry perception are still under
+much debate, the prevalent idea is that dedicated symmetry detectors in LOC
+respond to correlations between the object-centered eccentricities and
+curvatures signalled by V4 contour detectors, whether via positive feedback or
+via inhibition circuits, or perhaps both.{sn}The [2010
+model](https://doi.org/10.1167/10.1.9) by Frédéric Poirier and Hugh Wilson is
+quite representative of the literature, even though some of the details are
+perhaps questionable.{/sn} Needless to say, the axis of symmetry must coincide
+with medial axis skeletons; it seems very plausible that LOC's purpose of
+detecting correlations between V4 neurons would extend beyond G-cells to 
+symmetry detectors.
 
-The exact neural mechanisms for symmetry perception are still under much debate,
-but the prevalent idea is that dedicated symmetry neurons in LOC respond to
-correlations between the object-centered eccentricities and curvatures signaled
-by V4 contour detectors, whether via positive feedback or inhibition circuits
-(or perhaps both). Needless to say, axis of symmetry must coincide with medial
-axis skeletons, so this theory is closely related to the G-cell model. In
-reality, LOC most likely consists of a wide spectrum of 
+The triplet's fixed pair provides context that isn't available in pairwise
+fitting. That makes triplet-based fitting a great strategy for human designers.
+Unfortunately, symmetry detection requires more complicated models compared to
+the relatively simple ring-like structures corresponding to G-cells, and it is
+not quite clear how they would interact with activated G-cells. 
 
-{sn}See e.g. [Poirier and Wilson (2010)](https://doi.org/10.1167/10.1.9){/sn}
-
-
-
-
+For these reasons, we will stick to a simpler pairwise model for now.
+Nevertheless, symmetry detection could be explored in future models.
 
 ## Attention, crowding, and the spread of activity
-
 To complete the perceptual grouping process, the activity in the B-cells, V4 and
 G-cells must spread out across objects until it envelops the entire perceptual
 group. This happens naturally and quickly. For instance, neural activity will
