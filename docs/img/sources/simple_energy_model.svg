@@ -17,8 +17,8 @@
    inkscape:version="0.92.5 (0.92.5+68)"
    sodipodi:docname="simple_energy_model.svg"
    inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/simple_energy_model.png"
-   inkscape:export-xdpi="239.81"
-   inkscape:export-ydpi="239.81">
+   inkscape:export-xdpi="200"
+   inkscape:export-ydpi="200">
   <defs
      id="defs13280">
     <filter
@@ -875,8 +875,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
-     inkscape:cx="267.54063"
-     inkscape:cy="299.70395"
+     inkscape:cx="191.02759"
+     inkscape:cy="149.49404"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -1925,81 +1925,45 @@
        d="m 160.41805,34.749217 h 6.93818"
        id="path14869-8-8-6-9-3"
        inkscape:connector-curvature="0" />
+    <circle
+       style="opacity:1;fill:none;fill-opacity:0.93333333;stroke:#000000;stroke-width:0.32999504;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.93333333"
+       id="path14193-4-6-2-2"
+       cx="114.03073"
+       cy="16.880083"
+       r="3.2148948" />
     <g
-       id="g15136-7-7"
-       transform="matrix(1.3199801,0,0,1.3199801,-7.0823506,-66.072416)">
-      <g
-         style="stroke-width:0.37878788"
-         transform="matrix(0.66,0,0,0.66,55.269571,41.074553)"
-         id="g14208-4-8-8-1">
-        <circle
-           style="opacity:1;fill:none;fill-opacity:0.93333333;stroke:#000000;stroke-width:0.37878788;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.93333333"
-           id="path14193-4-6-2-2"
-           cx="55.279015"
-           cy="32.983631"
-           r="3.6902471" />
-        <g
-           aria-label="x²"
-           transform="matrix(0.09908736,0,0,0.09908736,33.659458,20.373704)"
-           style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:40px;line-height:1.25;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk Light';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:3.82276702"
-           id="flowRoot14195-8-6-9-3">
-          <path
-             d="m 199.85227,124.94379 7.36,9.68 -7.52,9.96 h 4.52 l 5.6,-7.6 h 0.4 l 5.6,7.6 h 4.56 l -7.56,-9.96 7.36,-9.68 h -4.44 l -5.52,7.4 h -0.4 l -5.48,-7.4 z"
-             style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk Medium';stroke-width:3.82276702"
-             id="path17574"
-             inkscape:connector-curvature="0" />
-          <path
-             d="m 230.76461,109.97534 c -4.17019,0 -7.14889,2.29131 -7.24055,6.32402 h 3.4828 c 0.0459,-2.24548 1.60392,-3.39114 3.71193,-3.39114 1.97053,0 3.34532,1.00818 3.34532,2.56627 0,1.64975 -1.37479,2.38297 -4.39933,3.11619 -4.26184,0.96235 -6.2782,2.97871 -6.2782,6.41568 v 1.60392 h 14.1145 v -2.93289 h -10.49422 c 0.22913,-1.32896 1.60392,-1.97053 4.3535,-2.61209 3.89523,-0.8707 6.23237,-2.19966 6.23237,-5.59081 0,-3.34532 -2.84123,-5.49915 -6.82812,-5.49915 z"
-             style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk Medium';stroke-width:3.82276726"
-             id="path17576"
-             inkscape:connector-curvature="0" />
-        </g>
-        <circle
-           style="opacity:1;fill:none;fill-opacity:0.93333333;stroke:#000000;stroke-width:0.37878788;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.93333333"
-           id="path14193-4-6-2-2-2"
-           cx="55.279015"
-           cy="60.409908"
-           r="3.6902471" />
-        <g
-           aria-label="x²"
-           transform="matrix(0.09908736,0,0,0.09908736,33.659456,47.79998)"
-           style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:40px;line-height:1.25;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk Light';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:3.82276702"
-           id="flowRoot14195-8-6-9-3-6">
-          <path
-             d="m 199.85227,124.94379 7.36,9.68 -7.52,9.96 h 4.52 l 5.6,-7.6 h 0.4 l 5.6,7.6 h 4.56 l -7.56,-9.96 7.36,-9.68 h -4.44 l -5.52,7.4 h -0.4 l -5.48,-7.4 z"
-             style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk Medium';stroke-width:3.82276702"
-             id="path17574-0"
-             inkscape:connector-curvature="0" />
-          <path
-             d="m 230.76461,109.97534 c -4.17019,0 -7.14889,2.29131 -7.24055,6.32402 h 3.4828 c 0.0459,-2.24548 1.60392,-3.39114 3.71193,-3.39114 1.97053,0 3.34532,1.00818 3.34532,2.56627 0,1.64975 -1.37479,2.38297 -4.39933,3.11619 -4.26184,0.96235 -6.2782,2.97871 -6.2782,6.41568 v 1.60392 h 14.1145 v -2.93289 h -10.49422 c 0.22913,-1.32896 1.60392,-1.97053 4.3535,-2.61209 3.89523,-0.8707 6.23237,-2.19966 6.23237,-5.59081 0,-3.34532 -2.84123,-5.49915 -6.82812,-5.49915 z"
-             style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk Medium';stroke-width:3.82276726"
-             id="path17576-7"
-             inkscape:connector-curvature="0" />
-        </g>
-        <circle
-           style="opacity:1;fill:none;fill-opacity:0.93333333;stroke:#000000;stroke-width:0.37878788;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.93333333"
-           id="path14193-4-6-2-2-2-3"
-           cx="55.279015"
-           cy="87.94677"
-           r="3.6902471" />
-        <g
-           aria-label="x²"
-           transform="matrix(0.09908736,0,0,0.09908736,33.659456,75.336837)"
-           style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:40px;line-height:1.25;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk Light';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:3.82276702"
-           id="flowRoot14195-8-6-9-3-6-7">
-          <path
-             d="m 199.85227,124.94379 7.36,9.68 -7.52,9.96 h 4.52 l 5.6,-7.6 h 0.4 l 5.6,7.6 h 4.56 l -7.56,-9.96 7.36,-9.68 h -4.44 l -5.52,7.4 h -0.4 l -5.48,-7.4 z"
-             style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk Medium';stroke-width:3.82276702"
-             id="path17574-0-1"
-             inkscape:connector-curvature="0" />
-          <path
-             d="m 230.76461,109.97534 c -4.17019,0 -7.14889,2.29131 -7.24055,6.32402 h 3.4828 c 0.0459,-2.24548 1.60392,-3.39114 3.71193,-3.39114 1.97053,0 3.34532,1.00818 3.34532,2.56627 0,1.64975 -1.37479,2.38297 -4.39933,3.11619 -4.26184,0.96235 -6.2782,2.97871 -6.2782,6.41568 v 1.60392 h 14.1145 v -2.93289 h -10.49422 c 0.22913,-1.32896 1.60392,-1.97053 4.3535,-2.61209 3.89523,-0.8707 6.23237,-2.19966 6.23237,-5.59081 0,-3.34532 -2.84123,-5.49915 -6.82812,-5.49915 z"
-             style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk Medium';stroke-width:3.82276726"
-             id="path17576-7-8"
-             inkscape:connector-curvature="0" />
-        </g>
-      </g>
+       aria-label="x²"
+       transform="matrix(0.08632361,0,0,0.08632361,95.196061,5.8944804)"
+       style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:40px;line-height:1.25;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk Light';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:3.82276702"
+       id="flowRoot14195-8-6-9-3">
+      <path
+         d="m 199.85227,124.94379 7.36,9.68 -7.52,9.96 h 4.52 l 5.6,-7.6 h 0.4 l 5.6,7.6 h 4.56 l -7.56,-9.96 7.36,-9.68 h -4.44 l -5.52,7.4 h -0.4 l -5.48,-7.4 z"
+         style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk Medium';stroke-width:3.82276702"
+         id="path17574"
+         inkscape:connector-curvature="0" />
     </g>
+    <circle
+       style="opacity:1;fill:none;fill-opacity:0.93333333;stroke:#000000;stroke-width:0.32999504;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.93333333"
+       id="path14193-4-6-2-2-2"
+       cx="114.03073"
+       cy="40.773495"
+       r="3.2148948" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path17574-0"
+       style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:40px;line-height:1.25;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk Medium';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.32999504"
+       d="m 112.44803,40.57349 0.63534,0.835613 -0.64915,0.859783 h 0.39018 l 0.48341,-0.656059 h 0.0345 l 0.48342,0.656059 h 0.39363 l -0.6526,-0.859783 0.63534,-0.835613 h -0.38328 l -0.47651,0.638795 h -0.0345 l -0.47305,-0.638795 z" />
+    <circle
+       style="opacity:1;fill:none;fill-opacity:0.93333333;stroke:#000000;stroke-width:0.32999504;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.93333333"
+       id="path14193-4-6-2-2-2-3"
+       cx="114.03073"
+       cy="64.763245"
+       r="3.2148948" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path17574-0-1"
+       style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:40px;line-height:1.25;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk Medium';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.32999504"
+       d="m 112.44803,64.563239 0.63534,0.835612 -0.64915,0.859783 h 0.39018 l 0.48341,-0.656059 h 0.0345 l 0.48342,0.656059 h 0.39363 l -0.6526,-0.859783 0.63534,-0.835612 h -0.38328 l -0.47651,0.638795 h -0.0345 l -0.47305,-0.638795 z" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.28781959;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 106.78063,40.802435 h 4.1509"
@@ -2015,5 +1979,41 @@
        d="m 106.78064,16.854225 h 4.12333"
        id="path14869-8-8-4-7-6"
        inkscape:connector-curvature="0" />
-  </g>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot31367"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.06884011,0,0,0.06884011,102.2139,18.791953)"><flowRegion
+         id="flowRegion31369"><rect
+           id="rect31371"
+           width="273.21429"
+           height="188.57143"
+           x="177.5"
+           y="-70.714287" /></flowRegion><flowPara
+         id="flowPara31373"
+         style="font-style:italic;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Roboto;-inkscape-font-specification:'Roboto Medium Italic'">η</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot31367-7"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.06884011,0,0,0.06884011,102.2139,42.651699)"><flowRegion
+         id="flowRegion31369-2"><rect
+           id="rect31371-2"
+           width="273.21429"
+           height="188.57143"
+           x="177.5"
+           y="-70.714287" /></flowRegion><flowPara
+         id="flowPara31373-9"
+         style="font-style:italic;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Roboto;-inkscape-font-specification:'Roboto Medium Italic'">η</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot31367-7-2"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.06884011,0,0,0.06884011,102.2139,66.653188)"><flowRegion
+         id="flowRegion31369-2-8"><rect
+           id="rect31371-2-1"
+           width="273.21429"
+           height="188.57143"
+           x="177.5"
+           y="-70.714287" /></flowRegion><flowPara
+         id="flowPara31373-9-2"
+         style="font-style:italic;font-variant:normal;font-weight:500;font-stretch:normal;font-family:Roboto;-inkscape-font-specification:'Roboto Medium Italic'">η</flowPara></flowRoot>  </g>
 </svg>

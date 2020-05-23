@@ -119,9 +119,9 @@ hr {
 }
 
 strong {
-    font-weight: 600;
+    font-weight: 700;
     opacity: 0.94;
-    font-style: italic;
+/*    font-style: italic;*/
 }
 
 p.subtitle {

@@ -740,7 +740,10 @@ excite a higher-level G-cell, they do not receive positive feedback, and lateral
 competition (between B-cells, and likely also between V4 and G-cells) quickly silences them.
 
 The exact receptive field of each G-cell is likely quite unique, but a popular
-approach is to assume that they are circular:{sn}The first to run a simulation of this idea in earnest were <nobr>[Edward Craft et
+approach is to assume that they are circular:{sn}Readers should keep in mind
+that *"all models are wrong, some are useful"* applies to this entire article,
+but to the concept of B-cells and G-cells in particular.<br/>The first to run a
+simulation of the G-cell idea in earnest were <nobr>[Edward Craft et
 al.](https://doi.org/10.1152/jn.00203.2007)<span class="oa" title="Open
 Access"></span></nobr> in 2011.{/sn}
 
@@ -1251,40 +1254,40 @@ Access"></span></nobr> for their model, and
 title="Open Access"></span></nobr> for a recent review of experimental evidence.
 MRI studies by [Alex White et al.
 (2019)](https://doi.org/10.1016/j.tics.2019.07.001) appear to support this
-view.{/sn} This means that parallel *n*-gram detectors and multiple word
-candidates are activated in parallel, and could influence one another in the
+view, even though the title of their article suggests otherwise.{/sn} This means that *n*-gram detectors and word
+candidates are activated by multiple words in parallel, and could influence one another in the
 process. How, then, does the brain keep different words apart at all? For
 instance, what keeps us from reading *hello live* as *hell olive*? 
 
 One plausible explanation is that the activation of the *ol* bigram detector is
 a bit weaker in the first pair, whereas the *lo* bigram detector is weaker in
 the second. Given our ability to read jumbled letters, this may not seem like a
-reliable mechanism. But such ambiguous word pairings are extremely rare, and
-when they do occur, our grammar-based language circuitry would quickly resolve
-any ambiguity. If this is correct, then word segmentation is purely a result
-of neighbouring words not being able to co-activate *n*-gram detectors
-sufficiently to cause confusion. To prevent accidental word segmentation, a
-letterfitting model would need to contain the entire response curves of bigram
-detectors.
+reliable mechanism. But such ambiguous word pairings are actually extremely
+rare, and when they do occur, our grammar-based language circuitry would quickly
+resolve any ambiguity. If this hypothesis is correct, then word segmentation is
+purely a result of neighbouring words not being able to co-activate *n*-gram
+detectors to a sufficient degree to cause any confusion. To prevent accidental
+word segmentation, a complete letterfitting model would then need to include a
+faithful model of the brain's bigram detectors.
 
-Another possible explanation may be that word-initial and word-final letters may
-be perceived as distinct from word-central letters. If that were true,
-transposing letters such that initial or final letters are jumbled out of place
-would effectively amount to letter substitution, rather than mere transposition.
-And indeed, *ujmlbde etxt* is much more difficult to decipher than *jmulebd txet*,
-although the number of transpositions is equal. 
-If this theory is correct,{sn}Of course, the two explanations are not mutually
-exclusive.{/sn} then we must model how an initial- or final-letter detector
-recognizes that the letter in question coincides with the beginning or end of a
-word. Because these letter detectors are fed directly by the skeletons derived
-from V4 contour fragments, we may assume that word endings are detected as V4
-contour fragments as well, which once again brings us back to our
-Gestalt-analysis approach.
-
-<p class="missing">
-Still needs clearer explanation. How to justify we can deal with evenly tracked-out text, where spaces are a
-relative phenomenon?
-</p>
+Another possible explanation might be that word-initial and word-final letters
+are truly perceived as distinct from word-central letters. If that is true,
+letter transpositions which jumble initial or final letters out of place would
+effectively amount to letter substitution, rather than mere transposition. And
+indeed, *ujmlbde etxt* is much more difficult to decipher than *jmulebd txet*,
+although the number of transpositions is equal. If this theory is correct,{sn}Of
+course, the two explanations are not mutually exclusive, but some studies (e.g.
+<nobr>[Fischer-Baum et al.,
+2011](https://doi.org/10.3758/s13423-011-0160-3)<span class="oa" title="Open
+Access"></span></nobr>) seem to suggest that initial and final letters could
+indeed be processed differently.{/sn} then we must model how an initial- or
+final-letter detector would know that the letter in question is, in fact, an
+initial or final letter. Because these letter detectors are fed directly by the
+skeletons derived from V4 contour fragments, we must assume that word endings are
+encoded as V4 contour fragments as well, albeit at a different spatial scale,
+which once again brings us back to our Gestalt-analysis approach.
+In other words: the word segmentation perspective suggests that grouping between letters
+directly counteracts the perception of a word break between them.
 
 ### Human designers fit letters based on gestalt grouping
 At this point, it is worth noting that type designers try hard *not* to engage
@@ -1304,35 +1307,30 @@ alphabetic scripts, but also on the relative placement of strokes and/or
 radicals in Hangul and Hanzi.
 
 ## From perceptual grouping to letterfitting 
-Given a pair of letters, our objective is to minimize the risk that a word boundary
-is perceived between them (by fitting them tightly), while preserving the
-identity of both letters (by not fitting them *too* tightly).
+We will now explore the delicate balance between grouping and skeleton degradation.
 
-With B-cells and G-cells, which correspond to configurations of V2 and V4
-contour detectors, we now have the vocabulary to describe where and how this
-trade-off takes place as the two letters approach one another.
-
-### Losing a letter's skeleton
+### Losing a letter's skeleton to interference
 At the scale of the stem thickness, each letter activates a
 population of G-cells corresponding to its medial axis skeleton. Primarily, it
 is the letter's ink that gets skeletonized; but in some situations, 
-counter-space features might be recruited as well:
+counter-space features could be recruited as well:
 
 <img src="img/skeleton_example.png" alt="Skeletons">
 
 As noted, these skeletons stay relatively invariant across font styles, enabling
 letter-detecting neurons to function simply via spatial integration of
-particular skeleton features.{sn}Even serifs are simply small extensions of the
-skeletal structure that occurs naturally at corners, even in sans-serif
-designs.{/sn} Consider now that the skeletonization depends on the activity of
-B-cells, but B-cells depend on the activity of V1 complex cells, and those in
-turn are affected by the presence of neighbouring letters.
+particular skeleton features.{sn}Note here that a medial axis skeleton always
+has "serifs" extending into corners, even in sans-serif fonts, so the perceptual
+difference between serif and sans-serifs is smaller than it might appear.{/sn}
+But successful skeletonization depends on the activity of B-cells; B-cells
+depend on the activity of V1 complex cells; and those in turn are affected by
+the presence of neighbouring letters.
 
 {mn}<img src="img/v1_interference_example.png" alt="V1 interference
 example"><br>*Left:* A simple cell activates fully, thanks to the presence of
 the left letter's right stem. *Right:* Tigthening the pair places the
 neighbouring letter into the cell's receptive field, reducing its
-activation.{/mn} To illustrate this point, let's consider a simple cell tuned to
+activation.{/mn} To illustrate this effect, let's consider a V1 simple cell tuned to
 a light-dark-light pattern. The left letter of a pair is positioned such that
 its right-hand stem coincides with the "dark" region, activating the cell. We
 now move the right letter closer to the left. Eventually, its left stem will
@@ -1343,12 +1341,12 @@ are overlapping isn't a binary question; it rather depends on the spatial
 frequency in question.
 
 Therefore, in locations where two letters approach very closely, only the
-finest-scale complex cell activations will stay intact. This grossly reduces the
+finest-scale complex cell activations will stay intact. This reduces the
 activation of B-cells and, in turn, of the G-cells that constitute the skeleton
 from them:
 
-{mn}Shown here is an extremely tightly fitted sans-serif, for effect. Serifs
-naturally enforce wider gaps.{/mn}
+{mn}Shown here is an extremely tightly fitted sans-serif, for effect, as serifs
+naturally enforce wider gaps. The weakened activation of B- and G-cells is shown here in lighter colours on the right.{/mn}
 <img src="img/skeleton_example_reduction.png" alt="skeletons">
 
 On top of that, G-cells located in the gap now absorb some activity as well.
@@ -1358,89 +1356,53 @@ associated inhibition further dampens the G-cells that make up the stems' skelet
 <img src="img/skeleton_example_reduction2.png" alt="skeletons">
 
 Note that there is also a set of larger G-cells centered on the gap,
-encompassing both letters. This is a classic example of perceptual grouping:
-activity corresponding to the left letter's outer edge will filter up to these
-larger G-cells, which will feed back to the right letter's outer edge. Attention
-can be deployed at different scales, allowing us to shift the polarity of
-B-cells to focus on the gap, on either letter, or on the pair as a whole.
+encompassing both letters, such that activity corresponding to the left letter's
+outer edge will filter up to these larger G-cells and then feed back to the
+right letter's outer edge.
 
-The complexity is quite impressive, and we have not yet taken into account
+Both of these facilitate perceptual grouping between the bars. In fact, we can
+deploy our attention at different scales: by focusing narrowly on the center, we
+can switch the ownership of the inner edges to the gap; but we can also choose
+to "see" a single, thick bar (which happens to have a stripe down the middle).
+The complexity is quite impressive, and we have not even taken into account
 amplifying effects from contour integration, both along the stems and across
 gaps, which in turn create illusory T-junctions, which lead to additional
 suppression, etc.
 
-Generally, and attentional effects notwithstanding, we need to worry about any
-effects that draw neural activity away from the letters' original skeletons. A
-computational model must therefore compare the skeletons of the standalone
-letters with the skeletons that remain once they are placed together. Different
-frequency scales should be weighted differently when the losses are tallied up,
-such that degraded stem skeletons are penalized more heavily than degraded
-serifs. In more advanced models, pre-trained letter classification networks
-could be used to determine the parts of the skeleton most relevant to
-distinguishing the letter in question,{sn}This would probably rely on some
-salience-mapping technique like [GradCAM](http://gradcam.cloudcv.org/).{/sn} and
-penalize losses to these parts most heavily.
+To fit a pair, **we need to estimate how much activity in both letters' original
+skeletons is lost when they are placed at some distance.** Different frequency
+scales should be weighted differently when the losses are tallied up, such that e.g.
+degraded stem skeletons are penalized more heavily than degraded serifs. In more
+advanced models, pre-trained letter classification networks could be used to
+determine the parts of the skeleton most relevant to distinguishing the letter
+in question,{sn}This would probably rely on some salience-mapping technique like
+[GradCAM](http://gradcam.cloudcv.org/).{/sn} and penalize losses to these parts
+most heavily. For now, we will only concern ourselves with illiterate,
+Gestalt-based models.
 
-### Losing a word's edge
-While placing letters too close together puts their skeletons at risk, placing
-them too far apart can compromise the integrity of the word as a perceptual group.
-This effect is more difficult to model, because letterfitting algorithms deal
-with pairs of letters at a time, while words can consist of many, many letters
-at once.
+### Challenges of grouping
+Conversely, to estimate the strength of grouping, **we need to estimate how much
+activity in both letter's original skeletons is gained,** and we will do this in the next section.
 
-A wider-than-average gap in the middle of a word will stand out for multiple
-reasons. In long words, it will appear salient because it receives less surround
-suppression; it offers less opportunity for horizontal integration
-of letter contours along the baseline and x-height; and it evokes the
-activation of larger-scale V1 complex cells, translating to a stronger activation of
-(more, and larger-scale) B-cells. This, in turn, has a particularly noticeable
-effect on G-cells of x-height scale, or larger:
+Letterfitting tools operate on isolated pairs, and one noteworthy issue is that
+such pairs tend to have some opportunities for perceptual grouping that don't
+exist in the context of words. In particular, grouping of the outsides is
+something that can easily happen in pairs, even though it rarely occurs in words due
+to the influences of neighbouring letters:
 
-{mn}G-cells of all scales will participate in the activity associated with the
-boundary created by the larger gap. Small G-cells involving the inner edge of
-the gap will activate quite strongly; this draws neural activity towards the gap
-as soon as attention lands near it. Larger G-cells are less active, simply
-because they do not receive enough input.{/mn}
-<img src="img/wordboundary_gcells.png" alt="g cells at a word boundary">
+<img src="img/grouping_word_context.png" alt="Grouping in the context of a word">
 
-In principle, this is a natural encoding of word boundaries: gaps that are
-wider than average will activate intra-word G-cells more strongly than smaller
-gaps. Attention-induced neural activity is therefore more likely to spread up to
-such gaps but no further.
+It is in our interest to ignore grouping effects that only occur in pairs,
+because their strength will depend on the letters' widths and therefore affect letters differently.
 
-The shape of a gap's inner edge can contribute to this effect or weaken it.
-Round letters activate G-cells more strongly; *o*'s are so perfectly convex that
-even a small gap is sufficient for them to halt the spread of neural activity
-beyond it. In alignment with gestalt rules, an *o* is the perfect way to cap off
-a string of letters into a optimally rounded-off perceptual group. Type
-designers know that to prevent this from fragmenting a word, round letters need
-to be fitted more tightly than straight ones. 
+Human designers sidestep this effect altogether by following simple rules: for
+instance, all straight-stemmed pairs like *ii*, *nl*, *mp* etc. are typically
+fitted to exactly the same distance. Ideally, our algorithmic solution won't
+need to fall back on such crude rules. In most cases, the effect is negligible,
+but we should nevertheless be aware of it (and prepared to consider solutions to minimize it).
 
-When two letters get closer to one another within a word, the risk of
-fragmentation at their gap drops thanks to the weakening of the V1 complex cells
-that indirectly enable the activation of large, fragmentation-inducing G-cells.
-In other words, the same mechanism is responsible for both the degradation of
-letter skeletons and for word fragmentation.{sn}We could of course think of word
-fragmentation as a degradation of the word skeleton.{/sn}
-
-An effective letterfitting algorithm would quantify this drop in fragmentation
-risk, subtract it from the penalty associated with skeleton loss, and
-iteratively search for the pair distance that minimizes the resulting total penalty.
-
-But letterfitting algorithms only see two letters at a time. This means that for
-some letters, the degree of inherent fragmentation risk appears much lower than
-it actually would be in the context of a word:
-
-<img src="img/wordboundary_letters.png" alt="effect of extra letters on g-cells
-at word boundary">
-
-Working with more than two letters doesn't solve the problem either: in an
-exotic font, letters could be arbitrarily thin or wide. Of course, we *know*
-from experience that the width of a letter should have little to no influence
-on its tendency to fragment a word, and so it is in the context of other
-letters; and yet modelling the pair is difficult.
-
-
+<!--
+### Balancing skeleton losses and grouping gains
 
 <img src="img/benchmark_gaps.png" alt="Some benchmark letter pairs: nn, oo, nl,
 and IUL">
@@ -1461,29 +1423,38 @@ stronger inhibition from false inter-stem medial axis (b/c smaller radius).
 
 <p class="missing">
 Illustrate effect of serifs, italics, x-height and weight
-</p>
+</p> -->
 
 
 ## Building practical letterfitting algorithms
-
-Unfortunately, the dynamism of the scientific model(s) introduced thus far makes
-them unsuitable for use in practical letterfitting tools for type designers.
-Although it is relatively straightforward to set up systems of coupled differential
-equations representing individual neurons, integrating them at a sufficiently
-fine spatial resolution is immensely costly, and doing so over many iterations for
-each letter combination is outright infeasible, at least with consumer-grade
-hardware. We therefore need to consider potential approximations.{sn}Of course,
-existing approaches *are* approximations (see the [appendix](#existing_tools) for an
-incomplete list).{/sn}
+Unfortunately, the dynamism of the model(s) introduced thus far makes them
+unsuitable for use in practical letterfitting tools for type designers. Although
+it is relatively straightforward to set up systems of coupled differential
+equations representing individual neurons, time-integrating them at a
+sufficiently fine spatial resolution is immensely costly, and doing so at many
+pair distances for each letter combination is outright infeasible, at least with
+consumer-grade hardware. We therefore need to consider potential
+approximations.{sn}Of course, existing letterfitting heuristics *are* such
+approximations, even though they don't know it (see the
+[appendix](#existing_tools) for an incomplete list).{/sn}
 
 ### Modelling activations of V1 cells
 As explained above, V1 simple cells are typically modelled as responding
 linearly via a simple Fourier-domain multiplication with a bank of bandpass
-filters $G(s, o)$, where $s$ is the frequency scale and $o$ the
-orientation.{sn}[Gabor
-patches](https://en.wikipedia.org/wiki/Gabor_filter)<sup>W</sup> are most
-commonly used, but many alternative models with better mathematical properties
-are available.{/sn} This set of convolutions turns the two-dimensional input
+filters <nobr>$G(s, o)$,</nobr> where $s$ is the frequency scale and $o$ the
+orientation.{sn}This is best known as [Gabor
+filtering](https://en.wikipedia.org/wiki/Gabor_filter)<sup>W</sup>, but Gabor
+filters are only one of many mathematical functions that happen to look like
+simple cell receptive fields. Many alternatives with better mathematical properties
+are available.{/sn} For instance, we might use derivative-of-Gaussians filters:
+$$
+G(s, o=0^{\circ}) = \frac{x e^{-\frac{x^2+y^2}{2s^2}}}{2\pi s^4} 
+  + \mathrm{i} \left[\frac{e^{-\frac{x^2+y^2}{2 s^2}}}{2\pi s^3} - \frac{x^2 e^{-\frac{x^2+y^2}{2 s^2}}}{2\pi s^5} \right],
+$$
+where the real and imaginary parts correspond to odd and even filters, respectively:
+<img src="img/filter_bank.png" alt="filter bank">
+
+This set of convolutions turns the two-dimensional input
 image (width × height) into a four-dimensional tensor of complex numbers (width
 × height × spatial frequency scales × orientations), the magnitude and phase
 angle of which capture the activation of simple cells $S_\mathrm{V1}$ at every
@@ -1497,7 +1468,7 @@ $$
 
 where $\mathcal{F}$ is the Fourier transform. For instance, to retrieve
 wthe activation of representative simple cells at phases 0°, 90°,
-w180° and 270°, one ould half-wave-rectify as follows:
+180° and 270°, one ould half-wave-rectify as follows:
 
 $$
 \begin{aligned}
@@ -1522,75 +1493,147 @@ This is often called the *local energy*. The squaring operation shown
 here is often used in the literature to approximate the nonlinear
 behaviour of complex cells in particular.
 
+{mn}Simulated complex cell responses for a lowercase *u*, at various scales and
+orientations. No squaring or other nonlinearity has been applied.{/mn} <img
+src="img/complex_activations_u.png" alt="Complex activations before
+nonlinearization, letter u">
+
 ### A simple pair-differential model of interference in V1
-Most existing letterfitting algorithms rely purely on geometric features in the
-spatial domain, ignoring interference effects in the frequency-domain that result
-from the band-pass filtering in V1.
+As discussed above, neighbouring letters can cause destructive interference in
+their respective complex cell responses. This happens when they are close enough
+together that the relevant V1 receptive fields captures both letters.
 
-When two letters are far apart, i.e. farther apart than the diameter of the largest relevant
-V1 receptive fields, they do not interfere in V1.{sn}This ignores feedback effects from
-higher-level areas with larger effective receptive fields.{/sn} In other words: let the
-4D tensor of complex-valued simple-cell excitations $S_\mathrm{V1}$ due to the left
-letter be called $S_i$, and the one due to the right letter be $S_j$. When the letters
-are sufficiently separated, $S_i$ is not affected by the presence of the right
-letter, and vice versa.
+In other words: let the 4D tensor of complex-valued simple-cell excitations
+$\mathbf{S}_\mathrm{V1}$ due to the left letter be called $\mathbf{S}_i$, and
+the one due to the right letter be $\mathbf{S}_j$. When both letters are placed
+at a distance $d$, we can simply overlay and add $\mathbf{S}_i$ onto
+$\mathbf{S}_j$, as in $\mathbf{S}_{ij}(d) = \mathbf{S}_i(d) + \mathbf{S}_j(d)$,
+because V1 simple cells are assumed to behave just as linearly as the Fourier
+transform. When the letters are sufficiently close together, however,
+opposite-phase signals interfere such that the complex cell responses
+$|\mathbf{S}_{ij}(d)|$ will be weaker than $|\mathbf{S}_i(d)| + |\mathbf{S}_j(d)|$.
 
-{mn}<img src="img/v1_interference_example.png" alt="V1 interference
-example">{/mn} Consider now a particular simple cell tuned to a light-dark-light
-pattern. The left letter is positioned such that its right-hand stem coincides
-with the "dark" region, activating the cell to some level $s_i$. We now move the
-right letter closer to the left. Eventually, its left stem will enter the cell's
-receptive field in the "light" region. Even though the letters are still a
-considerable distance apart, this will reduce the cell's activation to a level
-lower than $s_{ij}$. One way to think about this is that to our visual system,
-whether two letters are overlapping isn't a binary question; it rather depends
-on the spatial frequency in question.
-
-Conveniently, we get the magnitude of this reduction for free: because simple
-cells are assumed to be just as linear as the Fourier transform, $S_{ij} = S_i +
-S_j$, and any reductions correspond to phase cancellations between the
-complex-valued $S_i$ and $S_j$.
-
-This offers us a straightforward way to visualize how approaching letter shapes affect
-one another's perception in the visual cortex: we simply look at the changes to
-the local energy as a result of placing the two letters next to one another:
-
-<img src="img/simple_energy_model.png" alt="Simple energy model">
-
-Note that while the interference $|S_{ij}| - |S_i| - |S_j|$ is always
-destructive for simple cells,{sn}By a trivial triangle inequality.{/sn} squaring the magnitudes allows
-us to visualize both constructive and destructive interference at the level of
-complex cells. Generally, this results in stronger activations in the gap
-between letters and a weakening of the letter's edges:
+While $|\mathbf{S}_{ij}(d)| \leq |\mathbf{S}_i(d)| + |\mathbf{S}_j(d)|$ is always true,{sn}By the trivial triangle inequality that for any two complex
+numbers $a$ and $b$, $|a+b| \leq |a| + |b|$.{/sn} this relation does not hold after 
+applying nonlinear transformations. Specifically, consider that many models of complex
+cells use a squaring operation to approximate the cells' behaviour, and in
+general, $|\mathbf{S}_{ij}(d)|^2 \nleq |\mathbf{S}_i(d)|^2 + |\mathbf{S}_j(d)|^2$. Instead, the squaring tends to
+result in strengthened activations in the gap and a weakened letter edges,
+relative to the original responses, like so:
 
 <img src="img/abstract.png">
 
-Granted, this alone does not a letterfitting algorithm make. But this very simple
-frequency-based representation already captures many of the geometric
-relationships that most existing letterfitting algorithms need to approximate
-via heuristics and epicycles.
+This dead-simple, frequency-based representation already captures many of the
+geometric relationships that most existing letterfitting algorithms need to
+approximate via convoluted heuristics and epicycles.
+
+### Parameter-fitting a model based on V1 complex cells
+In fact, it is surprisingly effective to simply use the total pair gains (in the gap) as a
+proxy for grouping strength, and the total pair losses (along the letters' edges) as a
+proxy for skeleton losses, and then simply find the pair distance that equalizes the two.
+
+In its simplest incarnation, such a model uses two sets of parameters: a set of
+exponents $\boldsymbol{\eta}_{s,o}$ to take the place of the squaring operation
+used above, and a set of coefficients $\mathbf{w}^l_{s,o}$ and
+$\mathbf{w}^g_{s,o}$ to weight the contributions of pair losses and pair gains
+at different scales and orientations.
+
+<img src="img/simple_energy_model.png" alt="computational graph of a simple energy model">
+
+While end users of such a letterfitting tool would need to find pleasing values
+for $\boldsymbol{\eta}$ and $\mathbf{w}$ by trial and error, we can 
+reverse-engineer their values for existing, hand-fitted fonts.
+To automate this task, we can write up the above model in code and use an
+auto-backpropagating optimization library like TensorFlow to iteratively
+approximate good values. But what do the input and output look like?
+
+Our model produces positive and negative values, which stand in for grouping
+strength and skeleton degradation. We split up the negatives and positives, then
+weight and sum them separately:
+
+$$
+l(d) = \sum_{s,o} w^l_{s,o} \lfloor |\mathbf{S}_{i}(d)|^{\eta_{s,o}} + |\mathbf{S}_{j}(d)|^{\eta_{s,o}} - |\mathbf{S}_{ij}(d)|^{\eta_{s,o}} \rfloor^+\\
+g(d) = \sum_{s,o} w^l_{s,o} \lfloor -\left( |\mathbf{S}_{i}(d)|^{\eta_{s,o}} + |\mathbf{S}_{j}(d)|^{\eta_{s,o}} - |\mathbf{S}_{ij}(d)|^{\eta_{s,o}} \right) \rfloor^+,
+$$
+
+where $\lfloor x \rfloor^+$ represents linear rectification of $x$ (i.e., ReLU).
+
+Because our goal is to maximize $g(d)$ and to minimize $l(d)$, we can simply add
+up the weighted gains and losses to a total cost{sn}We'll use the term *cost*
+here, and reserve the *loss* for the aforementioned reduction in complex-cell
+signals due to interference.{/sn}
+
+{mn}<img src="img/cost_curve.png" alt="Cost curve"/><br/>The cost function has a
+minimum at the optimal distance $\hat{d}$. This works when the cost of skeleton
+losses rises more steeply than the reward (i.e. negative cost) for grouping. As
+expected, the total cost approaches zero with increasing distance, and becomes very large when the letters touch at $d=0$. Reviving an
+outmoded force-field metaphor, we might compare this curve to an
+[interatomic potential
+well](https://en.wikipedia.org/wiki/Interatomic_potential)<sup>W</sup>.{/mn}
+$$
+  c(d) = l(d) + g(d)
+$$
+
+which takes on its minimum value at the optimal distance $\hat{d}$:
+
+$$
+  \hat{d} = \underset{d}{\mathrm{arg\,min}}\enspace c(d).
+$$
+
+Note how this cost function is quite different than the mean-squared error we would expect to
+see in a regression model, i.e. in an attempt to directly predict from the pair
+image the deviation (in pixels) from the optimal pair distance. Although direct regression
+models may *seem* like an obvious choice for the problem of letterfitting, a
+pixel worth of error can have very different perceptual effects in different
+letter pairs—and the weights of such models cannot easily be understood and
+tweaked by human users.
+
+### Making backpropagation possible
+We need to address one more practical issue: our cost function $c(d)$ isn't
+differentiable with respect to the distance $d$, because $d$ is merely a
+parameter passed to the function that renders the images of the pair. However,
+we can construct a passable workaround by rendering not one, but three (or more)
+pair images at once, at distances $(\hat{d} -\Delta d)$, $\hat{d}$, and $(\hat{d} + \Delta d)$.
+We then instruct the optimizer to minimize the following instead:
+
+$$
+c' = \mathrm{max} \left[ c(\hat{d}) - c(\hat{d}-\Delta d), c(\hat{d}) - c(\hat{d}+\Delta d) \right]
+$$
+
+This rewards parameters for which the cost $c(d)$ is lowest at $d = \hat{d}$ for all pairs.
 
 <p class="missing">
-Quickly compare to existing gap quadrature models.
+Provide illustrations.
 </p>
+
+### Extending the model: G-cells
+Although fully dynamic models remain out of reach, we can approximate the real
+thing—in this case, G-cells—with an additional set of convolutions. We will
+ignore the mechanics of border ownership and simply look for convex patterns in
+the complex-cell responses.
+
+In order to give us the flexibility to weight orientations differently, we will
+break the annular filters into angular fragments. Separating angular and radial
+factors is a convenient way to do this, like so:
+
+$$
+\begin{aligned}
+R(s, w) &= e^{-\frac{(\sqrt{x^2+y^2}-s)^2}{2 w^2}}\\
+A(o) &= \frac{1}{2\pi I_0(\alpha)} e^{-\alpha \cos(\tan^{-1}(y^2/x^2) \{- \pi\} - \pi * o)},\\
+\end{aligned}
+$$
+
+where $I_0$ is the 0<sup>th</sup>-order modified Bessel function of the first kind, and $\alpha$ is the angular width of the fragment.
 
 <p class="missing">
-Comment on tuning parameters; pair gains approximate word-scale grouping strength, pair losses
-approximate stem-scale losses. Does not consider contour pop-out or actual
-grouping dynamics; does quite poorly on uppercase letters.
+Finish explanation, provide illustrations.
 </p>
-
-<p class="missing">
-Explain training this + simple spline or neural net on existing fonts via backprop for a
-first approximation. Show results.
-</p>
-
-
-
-
-
 
 ### Modelling lateral inhibition via divisive normalization
+
+<p class="missing">
+Connect with previous section, provide examples.
+</p>
 
 {mn}<img src="img/hra.png" alt="HRA"> Solid line: hyperbolic ratio curve, a.k.a.
 [Hill
@@ -1656,22 +1699,18 @@ revealed that some measured behaviours previously ascribed to lateral inhibition
 may instead be the result of feedback from higher-level areas. If nothing else, $w_j$ is probably a convenient place for modellers to incorporate
 the effects of spatial frequency dependency (i.e. contrast sensitivity curves).
 
-### Extending our model to incorporate more dynamics
+### Other options
 
 <p class="missing">
-Lots of work missing here ...
+Mention residual nets, which effectively unroll the dynamics over a few fixed time steps. Also mention Ricky Chen's Neural ODE option.
 </p>
 
-<p class="missing">
-Brief nod to residual nets, which effectively unroll the dynamics over a few fixed time steps. Also mention Ricky Chen's Neural ODE option.
-</p>
+## Results
 
 <p class="missing">
-Potentially feasible: one forward sweep; V1 → V1 DivN → V2 →
-contour integration DivN → grouping via fuzzy circular G cells → feedback to V2
-B → update G cells. Take difference between pair and letters; weight and
-integrate; backprop-fit against existing fonts. Show some results.
+Show comparisons between different models and how they perform in different situations. Compare with original metrics.
 </p>
+
 
 <a name="existing_tools"></a>
 <h2 class="appendix">Appendix: Existing letterfitting tools</h2>
