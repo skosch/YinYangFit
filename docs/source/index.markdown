@@ -1433,22 +1433,64 @@ it is relatively straightforward to set up systems of coupled differential
 equations representing individual neurons, time-integrating them at a
 sufficiently fine spatial resolution is immensely costly, and doing so at many
 pair distances for each letter combination is outright infeasible, at least with
-consumer-grade hardware. We therefore need to consider potential
-approximations.{sn}Of course, existing letterfitting heuristics *are* such
-approximations, even though they don't know it (see the
-[appendix](#existing_tools) for an incomplete list).{/sn}
+consumer-grade hardware.{sn}The most promising approach would be backpropagation
+combined with an adaptive ODE solver, as in [this much-celebrated
+demonstration](https://arxiv.org/pdf/1806.07366.pdf) by Ricky Chen and his
+colleagues.{/sn} We therefore need to consider potential approximations.{sn}Of
+course, existing letterfitting heuristics *are* such approximations, even though
+they don't know it (see the [appendix](#existing_tools) for an incomplete
+list).{/sn}
+
+{mn}<img src="img/cost_curve.png" alt="Cost curve"/><br/>The cost function has a
+minimum at the optimal distance $\hat{d}$. This works when the cost of skeleton
+losses rises more steeply than the reward (i.e. negative cost) for grouping. As
+expected, the total cost approaches zero with increasing distance, and becomes
+very large when the letters touch at $d=0$. Reviving an outmoded force-field
+metaphor, we might compare this curve to an [interatomic potential
+well](https://en.wikipedia.org/wiki/Interatomic_potential)<sup>W</sup>.{/mn} The
+central idea is that the optimal distance $\hat{d}$ corresponds to the best trade-off
+between skeleton degradation and perceptual grouping. We reward the
+former, penalize the latter, and expect the minimum of the total to coincide
+with the optimal distance.
+
+As we now understand, skeleton degradation is the *loss* in G-cell activations
+that occurs when we juxtapose two letters. To compute this loss, we compare the
+G-cell responses to the letter pair at distance $d$, viz. $G_{lr}(d)$, with the
+sum of the responses to either letter when placed alone in the same position,
+$G_l(d) + G_r(d)$. The loss is thus 
+
+$$ \lfloor (G_l(d) + G_r(d)) - G_{lr}(d)\rfloor ^+,$$
+
+where $\lfloor x \rfloor ^+$ represents ReLU, i.e.
+$\mathrm{max}(x, 0)$. Two major contributors to this loss are destructive
+interference in V1 and border-ownership competition in V2.{sn}Of course, a
+number of other suppressive and facilitative feedback mechanisms are involved,
+but ignored here to keep the model manageable.{/sn}
+
+Perceptual grouping, on the other hand, corresponds to the *gain* in G-cell
+activations due to the juxtaposition:{sn}To be exact, such gains occur
+independently in areas V2 and V4 as well, but we can indirectly capture most of these
+upstream effects by measuring the G-cells.{/sn} 
+$$
+\lfloor G_{lr}(d) - (G_l(d) + G_r(d)) \rfloor ^+.
+$$
+Responsible for this gain is the nonlinear behaviour of the modelled G-cells.
+
+In order to model G-cell activations, we need to approximate the activations of
+V1 complex cells and of B-cells. There are many ways to do so; what follows is
+but one approach.
 
 ### Modelling activations of V1 cells
 As explained above, V1 simple cells are typically modelled as responding
-linearly via a simple Fourier-domain multiplication with a bank of bandpass
-filters <nobr>$G(s, o)$,</nobr> where $s$ is the frequency scale and $o$ the
-orientation.{sn}This is best known as [Gabor
-filtering](https://en.wikipedia.org/wiki/Gabor_filter)<sup>W</sup>, but Gabor
-filters are only one of many mathematical functions that happen to look like
-simple cell receptive fields. Many alternatives with better mathematical properties
-are available.{/sn} For instance, we might use derivative-of-Gaussians filters:
-$$
-G(s, o=0^{\circ}) = \frac{x e^{-\frac{x^2+y^2}{2s^2}}}{2\pi s^4} 
+linearly. Their responses can be approximated via convolution with a bank of
+bandpass filters <nobr>$G(s, o)$</nobr> representing their receptive fields,
+where $s$ is the frequency scale and $o$ the orientation.{sn}This is best known
+as [Gabor filtering](https://en.wikipedia.org/wiki/Gabor_filter)<sup>W</sup>,
+but Gabor filters are only one of many mathematical functions that happen to
+look like simple cell receptive fields. Many alternatives with better
+mathematical properties are available.{/sn} For instance, we might use
+derivative-of-Gaussians filters: $$ G(s, o=0^{\circ}) = \frac{x
+e^{-\frac{x^2+y^2}{2s^2}}}{2\pi s^4}
   + \mathrm{i} \left[\frac{e^{-\frac{x^2+y^2}{2 s^2}}}{2\pi s^3} - \frac{x^2 e^{-\frac{x^2+y^2}{2 s^2}}}{2\pi s^5} \right],
 $$
 where the real and imaginary parts correspond to odd and even filters, respectively:
@@ -1464,12 +1506,15 @@ $$
 S_\mathrm{V1}(x, y, s, o) = \mathcal{F}^{-1}(\mathcal{F}(I(x, y)) \mathcal{F}(G(s, o))),
 $$
 
+where $\mathcal{F}$ is the Fourier transform.{sn}The discrete Fourier transform
+is a good choice when filters are large, but requires generous zero-padding to
+prevent wrapping. In implementations relying on small inputs and/or filters
+(e.g. dilated filters, downsampled G-cell layers, etc.), direct convolution may
+be advantageous.{/sn} For instance, to retrieve wthe activation of
+representative simple cells at phases 0°, 90°, 180° and 270°, one ould
+half-wave-rectify as follows:
+
 {mn}<img src="img/complex_value.png">{/mn}
-
-where $\mathcal{F}$ is the Fourier transform. For instance, to retrieve
-wthe activation of representative simple cells at phases 0°, 90°,
-180° and 270°, one ould half-wave-rectify as follows:
-
 $$
 \begin{aligned}
 S_{\mathrm{V1, 0\degree}}(x, y, s, o) &= |\mathrm{Re}(S_1(x, y, s, o)| \\
@@ -1498,83 +1543,61 @@ orientations. No squaring or other nonlinearity has been applied.{/mn} <img
 src="img/complex_activations_u.png" alt="Complex activations before
 nonlinearization, letter u">
 
-### A simple pair-differential model of interference in V1
+### Destructive interference in V1
 As discussed above, neighbouring letters can cause destructive interference in
 their respective complex cell responses. This happens when they are close enough
 together that the relevant V1 receptive fields captures both letters.
 
-In other words: let the 4D tensor of complex-valued simple-cell excitations
-$\mathbf{S}_\mathrm{V1}$ due to the left letter be called $\mathbf{S}_i$, and
-the one due to the right letter be $\mathbf{S}_j$. When both letters are placed
-at a distance $d$, we can simply overlay and add $\mathbf{S}_i$ onto
-$\mathbf{S}_j$, as in $\mathbf{S}_{ij}(d) = \mathbf{S}_i(d) + \mathbf{S}_j(d)$,
-because V1 simple cells are assumed to behave just as linearly as the Fourier
-transform. When the letters are sufficiently close together, however,
-opposite-phase signals interfere such that the complex cell responses
-$|\mathbf{S}_{ij}(d)|$ will be weaker than $|\mathbf{S}_i(d)| + |\mathbf{S}_j(d)|$.
+This destructive interference naturally takes place in our model as well:
+whenever two complex numbers are added, the resulting magnitude can never exceed
+the sum of the original magnitudes. In fact, wherever the two inputs are not
+exactly in phase, the opposite components cancel and the resulting magnitude is
+reduced.
 
-While $|\mathbf{S}_{ij}(d)| \leq |\mathbf{S}_i(d)| + |\mathbf{S}_j(d)|$ is always true,{sn}By the trivial triangle inequality that for any two complex
-numbers $a$ and $b$, $|a+b| \leq |a| + |b|$.{/sn} this relation does not hold after 
-applying nonlinear transformations. Specifically, consider that many models of complex
-cells use a squaring operation to approximate the cells' behaviour, and in
-general, $|\mathbf{S}_{ij}(d)|^2 \nleq |\mathbf{S}_i(d)|^2 + |\mathbf{S}_j(d)|^2$. Instead, the squaring tends to
-result in strengthened activations in the gap and a weakened letter edges,
-relative to the original responses, like so:
+However, this is not necessarily true when the V1 complex cells behave
+nonlinearly, as in the squared local-energy model above. Such nonlinearities can
+sometimes lead to gains in the activation, even despite the destructive
+interference, especially in the gap:
 
 <img src="img/abstract.png">
 
-This dead-simple, frequency-based representation already captures many of the
-geometric relationships that most existing letterfitting algorithms need to
-approximate via convoluted heuristics and epicycles.
+{mn}<img src="img/hra.png" alt="HRA"> Solid line: hyperbolic ratio curve, a.k.a.
+[Hill function](https://en.wikipedia.org/wiki/Hill_equation_(biochemistry)<sup>W</sup>)
+or Naka-Rushton function. Dotted line: monotonic polynomial (e.g. $x^2$).{/mn}
 
-### Parameter-fitting a model based on V1 complex cells
-In fact, it is surprisingly effective to simply use the total pair gains (in the gap) as a
-proxy for grouping strength, and the total pair losses (along the letters' edges) as a
-proxy for skeleton losses, and then simply find the pair distance that equalizes the two.
+Of course, the squaring operation in the expression for complex cell activations
+is a rather unrealistic (if practical) choice. In a real cells, the firing rate
+will level off after the input has been increased beyond some limit. A popular
+model for this is the hyperbolic ratio sigmoid
 
-In its simplest incarnation, such a model uses two sets of parameters: a set of
-exponents $\boldsymbol{\eta}_{s,o}$ to take the place of the squaring operation
-used above, and a set of coefficients $\mathbf{w}^l_{s,o}$ and
-$\mathbf{w}^g_{s,o}$ to weight the contributions of pair losses and pair gains
-at different scales and orientations.
+$$y = \frac{x^k}{\beta^k + x^k}$$
+
+The $k$ makes the kink steeper and $\beta$ shifts the threshold to the right.
+Unless an additional factor is introduced, the quotient approaches 1 for large
+values of $x$. Consider how the numerator increases the firing rate, and the
+denominator decreases it.{sn}This specific activation function is effectively
+never used in deep learning, both for historical reasons and because [its
+asymptotic behaviour would slow down
+training](https://en.wikipedia.org/wiki/Vanishing_gradient_problem)<sup>W</sup>.{/sn}
+
+We will apply this activation function to the V1 complex cell output, using the
+matrices $\boldsymbol{k}_{s,o}$ and $\boldsymbol{\beta}_{s,o}$ as coefficients.
+
+Even using this simple model, the appearance of losses and gains is already quite encouraging:
 
 <img src="img/simple_energy_model.png" alt="computational graph of a simple energy model">
 
-While end users of such a letterfitting tool would need to find pleasing values
-for $\boldsymbol{\eta}$ and $\mathbf{w}$ by trial and error, we can 
-reverse-engineer their values for existing, hand-fitted fonts.
-To automate this task, we can write up the above model in code and use an
-auto-backpropagating optimization library like TensorFlow to iteratively
-approximate good values. But what do the input and output look like?
+### Backpropagation
 
-Our model produces positive and negative values, which stand in for grouping
-strength and skeleton degradation. We split up the negatives and positives, then
-weight and sum them separately:
+### Parameter-fitting via backpropagation
+We define our total cost $c$ at a distance $d$ as the sum of the penalties
+associated with losses, $l(d)$, and the rewards associated with gains, $g(d)$:
 
 $$
-l(d) = \sum_{s,o} w^l_{s,o} \lfloor |\mathbf{S}_{i}(d)|^{\eta_{s,o}} + |\mathbf{S}_{j}(d)|^{\eta_{s,o}} - |\mathbf{S}_{ij}(d)|^{\eta_{s,o}} \rfloor^+\\
-g(d) = \sum_{s,o} w^l_{s,o} \lfloor -\left( |\mathbf{S}_{i}(d)|^{\eta_{s,o}} + |\mathbf{S}_{j}(d)|^{\eta_{s,o}} - |\mathbf{S}_{ij}(d)|^{\eta_{s,o}} \right) \rfloor^+,
+  c(d) = l(d) + g(d).
 $$
 
-where $\lfloor x \rfloor^+$ represents linear rectification of $x$ (i.e., ReLU).
-
-Because our goal is to maximize $g(d)$ and to minimize $l(d)$, we can simply add
-up the weighted gains and losses to a total cost{sn}We'll use the term *cost*
-here, and reserve the *loss* for the aforementioned reduction in complex-cell
-signals due to interference.{/sn}
-
-{mn}<img src="img/cost_curve.png" alt="Cost curve"/><br/>The cost function has a
-minimum at the optimal distance $\hat{d}$. This works when the cost of skeleton
-losses rises more steeply than the reward (i.e. negative cost) for grouping. As
-expected, the total cost approaches zero with increasing distance, and becomes very large when the letters touch at $d=0$. Reviving an
-outmoded force-field metaphor, we might compare this curve to an
-[interatomic potential
-well](https://en.wikipedia.org/wiki/Interatomic_potential)<sup>W</sup>.{/mn}
-$$
-  c(d) = l(d) + g(d)
-$$
-
-which takes on its minimum value at the optimal distance $\hat{d}$:
+This cost $c(d)$ should take on its minimum value at the optimal distance $\hat{d}$:
 
 $$
   \hat{d} = \underset{d}{\mathrm{arg\,min}}\enspace c(d).
@@ -1588,10 +1611,9 @@ pixel worth of error can have very different perceptual effects in different
 letter pairs—and the weights of such models cannot easily be understood and
 tweaked by human users.
 
-### Making backpropagation possible
-We need to address one more practical issue: our cost function $c(d)$ isn't
+Here, we need to address one practical issue: our cost function $c(d)$ isn't
 differentiable with respect to the distance $d$, because $d$ is merely a
-parameter passed to the function that renders the images of the pair. However,
+parameter—an integer number of pixels, really—passed to the function that renders the images of the pair. However,
 we can construct a passable workaround by rendering not one, but three (or more)
 pair images at once, at distances $(\hat{d} -\Delta d)$, $\hat{d}$, and $(\hat{d} + \Delta d)$.
 We then instruct the optimizer to minimize the following instead:
@@ -1606,59 +1628,71 @@ This rewards parameters for which the cost $c(d)$ is lowest at $d = \hat{d}$ for
 Provide illustrations.
 </p>
 
-### Extending the model: G-cells
-Although fully dynamic models remain out of reach, we can approximate the real
-thing—in this case, G-cells—with an additional set of convolutions. We will
-ignore the mechanics of border ownership and simply look for convex patterns in
-the complex-cell responses.
+### Measuring G-cell activations
+Having calculated the V1 complex cell responses, we can next estimate the magnitude of local
+B-cells. Just like complex cells, B-cells come in scales and orientations.
+However, the number of orientations is doubled, because there are two opposite
+B-cell orientations for each axis (whereas in V1, 0° and 180° are identical).
 
-In order to give us the flexibility to weight orientations differently, we will
-break the annular filters into angular fragments. Separating angular and radial
+At first, we have no information about border ownership, so opposite-orientation
+B-cells are assumed to have equal-strength activations:
+
+$$
+B(x,y,s,p) = C_\mathrm{V1}(x,y,s,o)
+$$
+
+where $p = (p+180^\circ) = o$.
+
+We then convolve this with circular contour fragments, similar to what V4 receptive fields look like.
+
+Separating angular and radial
 factors is a convenient way to do this, like so:
 
 $$
 \begin{aligned}
-R(s, w) &= e^{-\frac{(\sqrt{x^2+y^2}-s)^2}{2 w^2}}\\
-A(o) &= \frac{1}{2\pi I_0(\alpha)} e^{-\alpha \cos(\tan^{-1}(y^2/x^2) \{- \pi\} - \pi * o)},\\
+R(c, w) &= e^{-\frac{(\sqrt{x^2+y^2}-c)^2}{2 w^2}}\\
+A(o) &= \frac{1}{2\pi I_0(\alpha)} e^{-\alpha \cos(\tan^{-1}(y^2/x^2) \{- \pi\} - \pi o)},\\
 \end{aligned}
 $$
 
 where $I_0$ is the 0<sup>th</sup>-order modified Bessel function of the first kind, and $\alpha$ is the angular width of the fragment.
 
+Each convolution draws from a set of B-cells, the scale of which is always smaller. This yields a set of responses
+
+$$
+L(x, y, o, c)
+$$
+
+To assemble this set of V4 contour fragments into a single G-cell response, we
+assume a weight matrix. We also have a nonlinearity. We then perform the
+convolution in reverse. Deconvolution via division in frequency domain is
+typically a noisy process; but fortunately, our V4 contour fragment filters come
+in pairs, so we just convolve again with the same set of filters, but rotated by
+180.
+
+This tells us where B-cells need to be strengthened (via modulation). We perform
+this modulation multiplicatively, then perform local divisive normalization
+within the modulated $B$.
+
+Finally, we convolve to find $G$ again.
+
 <p class="missing">
-Finish explanation, provide illustrations.
+Improve explanation, provide illustrations.
+</p>
+
+### Modulatory feedback to B-cells
+
+<p class="missing">
+Explain nonlinear activation of G-cells, deconvolution and modulation of B-cells
+</p>
+
+<p class="missing">
+Explain the need for lateral inhibition between competing B-cells via divisive normalization
 </p>
 
 ### Modelling lateral inhibition via divisive normalization
 
-<p class="missing">
-Connect with previous section, provide examples.
-</p>
-
-{mn}<img src="img/hra.png" alt="HRA"> Solid line: hyperbolic ratio curve, a.k.a.
-[Hill
-function](https://en.wikipedia.org/wiki/Hill_equation_(biochemistry)<sup>W</sup>)
-or Naka-Rushton function. Dotted line: monotonic polynomial (e.g. $x^2$).{/mn}
-Of course, the squaring operation in the expression for complex cell activations
-is a rather unrealistic (if practical) choice. In a real cells, the firing rate
-will level off after the input has been increased beyond some limit. A popular
-model for this is the hyperbolic ratio sigmoid
-
-$$y = \frac{fx^k}{\beta^k + x^k}$$
-
-The $f$ scales the curve vertically, $k$ makes the kink steeper, and
-$\beta$ shifts the threshold to the right. Consider how the numerator
-increases the firing rate, and the denominator decreases it. For
-relatively small values of $x$, $\beta^k$ dominates the denominator,
-yielding a scaled-down version of $fx^k$ (values of about 2 or 3
-are common for $k$, in agreement with the square often used). But
-once $x^k$ gets large enough, $\beta^k$ pales in comparison, and
-we are left approaching $f$.{sn}This specific activation function
-is effectively never used in deep learning, both for historical
-reasons and because [its asymptotic behaviour would slow down
-training](https://en.wikipedia.org/wiki/Vanishing_gradient_problem)<sup>W</sup>.{/sn}
-
-This formula is particularly relevant thanks to *lateral inhibition*,
+The hyperbolic-ratio activation function is particularly relevant thanks to *lateral inhibition*,
 a common architectural pattern in the brain in which neurons within
 a cortical area suppress their neighbours in proportion to their own
 firing rate. Locally, this allows the most active neuron to suppress
@@ -1699,11 +1733,16 @@ revealed that some measured behaviours previously ascribed to lateral inhibition
 may instead be the result of feedback from higher-level areas. If nothing else, $w_j$ is probably a convenient place for modellers to incorporate
 the effects of spatial frequency dependency (i.e. contrast sensitivity curves).
 
-### Other options
+### Final activation of G-cells
 
 <p class="missing">
-Mention residual nets, which effectively unroll the dynamics over a few fixed time steps. Also mention Ricky Chen's Neural ODE option.
+G-cells activate via normalized B-cells.
 </p>
+
+<p class="missing">
+Loss from V1 interference vs. loss from lateral inhibition in V2
+</p>
+
 
 ## Results
 
@@ -1711,6 +1750,15 @@ Mention residual nets, which effectively unroll the dynamics over a few fixed ti
 Show comparisons between different models and how they perform in different situations. Compare with original metrics.
 </p>
 
+## Concepts for future design tools
+
+<p class="missing">
+Explain how parametric, purely medial-axis based design done right (TM) could perhaps deliver on Metafont's promise in the age of variable fonts. Show illustrations.
+</p>
+
+<p class="missing">
+Portilla-Simoncelli texture analysis, suppressive feedback models, and saliency analysis against letter-recognition networks can help highlight problem areas to designers.
+</p>
 
 <a name="existing_tools"></a>
 <h2 class="appendix">Appendix: Existing letterfitting tools</h2>
