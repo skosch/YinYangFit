@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   sodipodi:docname="model_sequence_v1.svg"
+   inkscape:version="1.0 (1.0+r73+1)"
+   id="svg10639"
+   version="1.1"
+   viewBox="0 0 111.125 26.458334"
+   height="100"
+   width="420">
+  <defs
+     id="defs10633">
+    <filter
+       height="1.6"
+       y="-0.30000001"
+       width="1.6"
+       x="-0.30000001"
+       id="filter1432-1-5-5"
+       style="color-interpolation-filters:sRGB"
+       inkscape:collect="always">
+      <feGaussianBlur
+         id="feGaussianBlur1434-2-6-8"
+         stdDeviation="1.9607514"
+         inkscape:collect="always" />
+    </filter>
+    <filter
+       height="1.484273"
+       y="-0.24213643"
+       width="1.7293266"
+       x="-0.36466333"
+       id="filter1261-7-9-3-6"
+       style="color-interpolation-filters:sRGB"
+       inkscape:collect="always">
+      <feGaussianBlur
+         id="feGaussianBlur1263-0-3-1-4"
+         stdDeviation="1.6853045"
+         inkscape:collect="always" />
+    </filter>
+    <filter
+       height="1.484273"
+       y="-0.24213643"
+       width="1.7293266"
+       x="-0.36466333"
+       id="filter1261-6-9-7-2-2"
+       style="color-interpolation-filters:sRGB"
+       inkscape:collect="always">
+      <feGaussianBlur
+         id="feGaussianBlur1263-2-3-4-2-4"
+         stdDeviation="1.6853045"
+         inkscape:collect="always" />
+    </filter>
+    <filter
+       height="1.484273"
+       y="-0.24213643"
+       width="1.7293266"
+       x="-0.36466333"
+       id="filter1261-5-6-5-9-4"
+       style="color-interpolation-filters:sRGB"
+       inkscape:collect="always">
+      <feGaussianBlur
+         id="feGaussianBlur1263-3-0-2-5-4"
+         stdDeviation="1.6853045"
+         inkscape:collect="always" />
+    </filter>
+    <rect
+       x="-6.9758506"
+       y="215.1655"
+       width="29.625687"
+       height="27.325594"
+       id="rect3941" />
+    <rect
+       x="-6.9758506"
+       y="215.1655"
+       width="29.625687"
+       height="27.325594"
+       id="rect11225" />
+  </defs>
+  <sodipodi:namedview
+     inkscape:window-maximized="1"
+     inkscape:window-y="19"
+     inkscape:window-x="0"
+     inkscape:window-height="1401"
+     inkscape:window-width="2560"
+     units="px"
+     showgrid="false"
+     inkscape:document-rotation="0"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="mm"
+     inkscape:cy="127.84197"
+     inkscape:cx="196.60201"
+     inkscape:zoom="2.8"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base" />
+  <metadata
+     id="metadata10636">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Layer 1">
+    <g
+       id="g3904"
+       transform="translate(-2.501055,-222.85908)"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200">
+      <g
+         id="g3895">
+        <g
+           transform="matrix(0.83338675,0,0,0.84878243,-69.442036,188.24712)"
+           id="g21896"
+           style="stroke-width:1.83509">
+          <circle
+             style="opacity:1;fill:#919191;fill-opacity:1;stroke:none;stroke-width:1.22757;stroke-opacity:1;filter:url(#filter1432-1-5-5)"
+             id="path1318-2-9-8"
+             cx="61.326637"
+             cy="32.32217"
+             r="7.8430057"
+             transform="matrix(0.27714623,0.28223535,-0.27714623,0.28223535,105.48348,22.509064)" />
+          <ellipse
+             style="opacity:1;fill:#fcfcfc;fill-opacity:1;stroke-width:2.92233;filter:url(#filter1261-7-9-3-6)"
+             id="path815-6-20-4-8"
+             cx="27.595577"
+             cy="30.732733"
+             rx="5.5458426"
+             ry="8.3521729"
+             transform="matrix(0.09294256,0.09464923,-0.14582654,0.14850429,114.22095,40.524005)" />
+          <ellipse
+             style="opacity:1;fill:#fcfcfc;fill-opacity:1;stroke-width:2.92233;filter:url(#filter1261-6-9-7-2-2)"
+             id="path815-9-1-6-8-5"
+             cx="27.595577"
+             cy="30.732733"
+             rx="5.5458426"
+             ry="8.3521729"
+             transform="matrix(0.09294257,0.09464923,-0.14582653,0.14850428,116.72197,43.070948)" />
+          <ellipse
+             style="opacity:1;fill:#353535;fill-opacity:1;stroke:none;stroke-width:2.00502;stroke-opacity:1;filter:url(#filter1261-5-6-5-9-4)"
+             id="path815-5-8-8-9-4"
+             cx="27.595577"
+             cy="30.732733"
+             rx="5.5458426"
+             ry="8.3521729"
+             transform="matrix(0.12424948,0.12653102,-0.23172432,0.23597937,117.2474,38.229331)" />
+        </g>
+        <rect
+           ry="0.7907511"
+           y="224.73915"
+           x="20.078743"
+           height="10.15811"
+           width="10.15811"
+           id="rect44087-70"
+           style="opacity:1;fill:none;fill-opacity:1;stroke:#2e2e2e;stroke-width:0.529167;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      </g>
+    </g>
+    <circle
+       style="fill:none;fill-opacity:1;stroke:#2e2e2e;stroke-width:0.529167;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path3906"
+       cx="22.664606"
+       cy="19.538073"
+       r="2.657608"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot44089-2-9"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#2e2e2e;fill-opacity:1;stroke:none;stroke-width:0.666755;stroke-miterlimit:4;stroke-dasharray:none"
+       transform="matrix(0.39744703,0,0,0.39744703,-55.64019,-31.575406)"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200"><flowRegion
+         id="flowRegion44091-9-3"
+         style="fill:#2e2e2e;fill-opacity:1;stroke-width:0.666755;stroke-miterlimit:4;stroke-dasharray:none"><rect
+           id="rect44093-1-6"
+           width="463.66"
+           height="250.51784"
+           x="192.93913"
+           y="101.00505"
+           style="fill:#2e2e2e;fill-opacity:1;stroke-width:0.66675551;stroke-miterlimit:4;stroke-dasharray:none;" /></flowRegion><flowPara
+         id="flowPara44095-2-0"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk';fill:#2e2e2e;fill-opacity:1;stroke-width:0.666755;stroke-miterlimit:4;stroke-dasharray:none">*</flowPara></flowRoot>
+    <text
+       xml:space="preserve"
+       id="text3939"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;shape-inside:url(#rect3941);fill:#2e2e2e;fill-opacity:1;stroke:none;"
+       transform="translate(10.0241,-202.78854)"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200"><tspan
+         x="-6.9765625"
+         y="224.52976"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:GaramondNo8;-inkscape-font-specification:GaramondNo8;fill:#2e2e2e;fill-opacity:1">a</tspan></tspan></text>
+    <path
+       d="m 17.664802,17.649518 -0.37279,0.37278 1.06209,1.06209 0.211021,0.14771 -0.02101,0.0633 -3.425628,-0.0211 v 0.52753 h 3.165378 l 0.260228,-0.0211 0.02109,0.0633 -0.211011,0.1477 -1.062088,1.06209 0.37279,0.3728 1.666989,-1.67404 v -0.42905 z"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;line-height:1.25;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk';letter-spacing:0px;word-spacing:0px;fill:#2e2e2e;fill-opacity:1;stroke:none;stroke-width:0.264999;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path1921-0-9-5-1-0"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccccccccccc"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+    <path
+       sodipodi:nodetypes="cccccccccccccccc"
+       inkscape:connector-curvature="0"
+       id="path1921-0-9-5-1-0-6"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;line-height:1.25;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk';letter-spacing:0px;word-spacing:0px;fill:#2e2e2e;fill-opacity:1;stroke:none;stroke-width:0.264999;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 28.084293,17.649518 -0.37279,0.37278 1.062091,1.06209 0.211021,0.14771 -0.02101,0.0633 -3.425628,-0.0211 v 0.52753 h 3.165378 l 0.260229,-0.0211 0.02109,0.0633 -0.211011,0.1477 -1.062087,1.06209 0.37279,0.3728 1.666988,-1.67404 v -0.42905 z"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+    <path
+       sodipodi:nodetypes="cccccccccccccccc"
+       inkscape:connector-curvature="0"
+       id="path1921-0-9-5-1-0-8"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;line-height:1.25;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk';letter-spacing:0px;word-spacing:0px;fill:#2e2e2e;fill-opacity:1;stroke:none;stroke-width:0.264999;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 24.553155,14.654038 -0.37278,-0.37279 -1.06209,1.06209 -0.14771,0.21102 -0.0633,-0.021 0.0211,-3.42563 h -0.52753 v 3.16538 l 0.0211,0.26023 -0.0633,0.0211 -0.1477,-0.21101 -1.06209,-1.06209 -0.3728,0.37279 1.67404,1.66699 h 0.42905 z"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#2e2e2e;stroke-width:0.529167;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect44087"
+       width="10.15811"
+       height="10.15811"
+       x="30.480459"
+       y="14.49953"
+       ry="0.7907511"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot44089"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#2e2e2e;fill-opacity:1;stroke:none"
+       transform="matrix(0.26458333,0,0,0.26458333,-17.500876,-15.028006)"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200"><flowRegion
+         id="flowRegion44091"
+         style="fill:#2e2e2e;fill-opacity:1"><rect
+           id="rect44093"
+           width="463.66"
+           height="250.51784"
+           x="192.93913"
+           y="101.00505"
+           style="fill:#2e2e2e;fill-opacity:1" /></flowRegion><flowPara
+         id="flowPara44095"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk';fill:#2e2e2e;fill-opacity:1">V1</flowPara></flowRoot>
+    <circle
+       r="2.657608"
+       cy="19.538073"
+       cx="58.829777"
+       id="path3906-6"
+       style="fill:none;fill-opacity:1;stroke:#2e2e2e;stroke-width:0.529167;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+    <path
+       sodipodi:nodetypes="cssc"
+       id="path4696"
+       d="m 57.32852,20.513658 c 0.709022,0.0138 0.95935,-0.32764 1.158099,-0.73055 0.21567,-0.43723 0.359776,-0.78753 0.838002,-1.02905 0.479703,-0.24226 0.989896,-0.21077 0.989896,-0.21077"
+       style="fill:none;stroke:#2e2e2e;stroke-width:0.529167;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+    <path
+       sodipodi:nodetypes="cccccccccccccccc"
+       inkscape:connector-curvature="0"
+       id="path1921-0-9-5-1-0-0"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;line-height:1.25;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk';letter-spacing:0px;word-spacing:0px;fill:#2e2e2e;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       d="m 43.37495,17.649518 -0.37279,0.37278 1.062091,1.06209 0.211021,0.14771 -0.02101,0.0633 -3.425627,-0.0211 v 0.52753 h 3.165377 l 0.260229,-0.0211 0.02109,0.0633 -0.211011,0.1477 -1.062087,1.06209 0.37279,0.3728 1.666988,-1.67404 v -0.42905 z"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+    <rect
+       ry="0.7907511"
+       y="14.459033"
+       x="0.70581901"
+       height="10.15811"
+       width="14.297441"
+       id="rect44087-6"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#2e2e2e;stroke-width:0.529167;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+    <path
+       d="m 53.741582,17.649518 -0.37279,0.37278 1.06209,1.06209 0.211021,0.14771 -0.02101,0.0633 -3.425626,-0.0211 v 0.52753 h 3.165377 l 0.260228,-0.0211 0.02109,0.0633 -0.211011,0.1477 -1.062088,1.06209 0.37279,0.3728 1.666989,-1.67404 v -0.42905 z"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;line-height:1.25;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk';letter-spacing:0px;word-spacing:0px;fill:#2e2e2e;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       id="path1921-0-9-5-1-0-0-0"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccccccccccc"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+    <circle
+       style="fill:none;fill-opacity:1;stroke:#2e2e2e;stroke-width:0.529167;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path3906-6-5"
+       cx="48.324226"
+       cy="19.538073"
+       r="2.657608"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+    <path
+       style="fill:none;stroke:#2e2e2e;stroke-width:0.529167;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 46.613501,18.873548 1.667517,1.66751 1.66283,-1.66283"
+       id="path10439"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
+  </g>
+</svg>

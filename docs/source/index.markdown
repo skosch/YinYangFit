@@ -1441,17 +1441,19 @@ course, existing letterfitting heuristics *are* such approximations, even though
 they don't know it (see the [appendix](#existing_tools) for an incomplete
 list).{/sn}
 
-{mn}<img src="img/cost_curve.png" alt="Cost curve"/><br/>The cost function has a
+The central idea is that the optimal distance $\hat{d}$ corresponds to the best
+trade-off between skeleton degradation and perceptual grouping. We penalize the former with values $p$,
+reward the latter with values $r$, and expect the
+minimum of the total to coincide with the optimal distance:
+
+{mn}The cost function has a
 minimum at the optimal distance $\hat{d}$. This works when the cost of skeleton
 losses rises more steeply than the reward (i.e. negative cost) for grouping. As
 expected, the total cost approaches zero with increasing distance, and becomes
 very large when the letters touch at $d=0$. Reviving an outmoded force-field
 metaphor, we might compare this curve to an [interatomic potential
-well](https://en.wikipedia.org/wiki/Interatomic_potential)<sup>W</sup>.{/mn} The
-central idea is that the optimal distance $\hat{d}$ corresponds to the best trade-off
-between skeleton degradation and perceptual grouping. We reward the
-former, penalize the latter, and expect the minimum of the total to coincide
-with the optimal distance.
+well](https://en.wikipedia.org/wiki/Interatomic_potential)<sup>W</sup>.{/mn}
+<img src="img/model_gains_losses.png" alt="computational graph leading to the final cost curve">
 
 As we now understand, skeleton degradation is the *loss* in G-cell activations
 that occurs when we juxtapose two letters. To compute this loss, we compare the
@@ -1476,20 +1478,28 @@ $$
 $$
 Responsible for this gain is the nonlinear behaviour of the modelled G-cells.
 
-In order to model G-cell activations, we need to approximate the activations of
-V1 complex cells and of B-cells. There are many ways to do so; what follows is
-but one approach.
+There are many ways to estimate $G(d)$ for some input image, and the following model is but one option:
+
+<img src="img/model_sequence.png" alt="Computational graph of the model">
+
+We will discuss the sequency of computations in the next sections.
 
 ### Modelling activations of V1 cells
+{mn}
+<img src="img/model_sequence_v1.png" alt="V1 convolution">
+{/mn}
+
 As explained above, V1 simple cells are typically modelled as responding
 linearly. Their responses can be approximated via convolution with a bank of
-bandpass filters <nobr>$G(s, o)$</nobr> representing their receptive fields,
-where $s$ is the frequency scale and $o$ the orientation.{sn}This is best known
+bandpass filters <nobr>$G(s, \gamma)$</nobr> representing their receptive fields,
+where $s$ is the frequency scale and $\gamma$ the orientation.{sn}This is best known
 as [Gabor filtering](https://en.wikipedia.org/wiki/Gabor_filter)<sup>W</sup>,
 but Gabor filters are only one of many mathematical functions that happen to
 look like simple cell receptive fields. Many alternatives with better
-mathematical properties are available.{/sn} For instance, we might use
-derivative-of-Gaussians filters: $$ G(s, o=0^{\circ}) = \frac{x
+mathematical properties are available.{/sn}
+
+For instance, we might use
+derivative-of-Gaussians filters: $$ G(s, \gamma=0^{\circ}) = \frac{x
 e^{-\frac{x^2+y^2}{2s^2}}}{2\pi s^4}
   + \mathrm{i} \left[\frac{e^{-\frac{x^2+y^2}{2 s^2}}}{2\pi s^3} - \frac{x^2 e^{-\frac{x^2+y^2}{2 s^2}}}{2\pi s^5} \right],
 $$
@@ -1531,16 +1541,14 @@ approximate the output of complex cells $C_{\mathrm{V1}}$, namely a simple compu
 absolute magnitude of the complex tensor:
 
 $$
-C_\mathrm{V1}(x, y, s, o) = |S_\mathrm{V1}(x, y, s, o)|^2
+C_\mathrm{V1}(x, y, s, o) = |S_\mathrm{V1}(x, y, s, o)|
 $$
 
-This is often called the *local energy*. The squaring operation shown
-here is often used in the literature to approximate the nonlinear
-behaviour of complex cells in particular.
+This is often called the *local energy*:{sn}Or the local energy's square root, depending on the author.{/sn}
 
 {mn}Simulated complex cell responses for a lowercase *u*, at various scales and
-orientations. No squaring or other nonlinearity has been applied.{/mn} <img
-src="img/complex_activations_u.png" alt="Complex activations before
+orientations. No squaring or other nonlinearity has been applied.{/mn}
+<img src="img/complex_activations_u.png" alt="Complex activations before
 nonlinearization, letter u">
 
 ### Destructive interference in V1
@@ -1555,9 +1563,8 @@ exactly in phase, the opposite components cancel and the resulting magnitude is
 reduced.
 
 However, this is not necessarily true when the V1 complex cells behave
-nonlinearly, as in the squared local-energy model above. Such nonlinearities can
-sometimes lead to gains in the activation, even despite the destructive
-interference, especially in the gap:
+nonlinearly. Such nonlinearities can sometimes lead to gains in the activation,
+even despite the destructive interference, especially in the gap:
 
 <img src="img/abstract.png">
 
@@ -1565,10 +1572,10 @@ interference, especially in the gap:
 [Hill function](https://en.wikipedia.org/wiki/Hill_equation_(biochemistry)<sup>W</sup>)
 or Naka-Rushton function. Dotted line: monotonic polynomial (e.g. $x^2$).{/mn}
 
-Of course, the squaring operation in the expression for complex cell activations
-is a rather unrealistic (if practical) choice. In a real cells, the firing rate
-will level off after the input has been increased beyond some limit. A popular
-model for this is the hyperbolic ratio sigmoid
+While complex cells are often modelled with a parabolic activation function
+(like $y=ax^2$), this is a rather unrealistic choice. In a real cells, the
+firing rate will level off after the input has been increased beyond some limit.
+A popular model for this behaviour is the hyperbolic ratio sigmoid
 
 $$y = \frac{x^k}{\beta^k + x^k}$$
 
@@ -1581,11 +1588,7 @@ asymptotic behaviour would slow down
 training](https://en.wikipedia.org/wiki/Vanishing_gradient_problem)<sup>W</sup>.{/sn}
 
 We will apply this activation function to the V1 complex cell output, using the
-matrices $\boldsymbol{k}_{s,o}$ and $\boldsymbol{\beta}_{s,o}$ as coefficients.
-
-Even using this simple model, the appearance of losses and gains is already quite encouraging:
-
-<img src="img/simple_energy_model.png" alt="computational graph of a simple energy model">
+matrices $\boldsymbol{k}_{s,\gamma}$ and $\boldsymbol{\beta}_{s,\gamma}$ as coefficients.
 
 ### Backpropagation
 
