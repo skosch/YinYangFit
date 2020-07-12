@@ -3,6 +3,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+import gputools
+
 class FilterBank:
     def __init__(self, n_scales, n_orientations, box_height, box_width, skip_scales, display_filters=False):
         self.box_height = box_height
@@ -87,9 +89,30 @@ class FilterBank:
                             [int(np.ceil(self.box_height / 2)), int(self.box_height / 2)],
                             [int(np.ceil(self.box_width / 2)), int(self.box_width / 2)]])
 
-        input_in_freqdomain = np.fft.fft2(padded_input + 1j * np.zeros_like(padded_input))
+        padded_input = np.tile(padded_input, [1, 1, self.n_scales, self.n_orientations, 1, 1])
 
-        padded_result = (np.fft.ifft2(input_in_freqdomain * self.filter_bank[None, None, :, :, :, :]))
+        padded_input_ocl = gputools.OCLArray.from_array(np.fft.ifftshift(padded_input, (-2, -1)).astype(np.complex64))
+
+        #print("PADDED INPUT COL SIZE", padded_input_ocl.get().shape)
+
+        # TODO MAKE GPU PLAN FIRST, and reuse it
+        # TODO Make the broadcasting more efficient
+        # TODO Reuse the filter bank across multiple letters.
+        gputools.fft(padded_input_ocl, axes=(-2, -1), inplace=True)
+        
+        filter_bank_ocl_fft = gputools.OCLArray.from_array(self.filter_bank[None, None, :, :, :, :])
+
+        #print("FILTER BANK ", filter_bank_ocl_fft.get().shape)
+
+        padded_input_ocl *= filter_bank_ocl_fft
+
+        gputools.fft(padded_input_ocl, axes=(-2, -1), inplace=True, inverse=True)
+
+        padded_result = np.fft.fftshift(padded_input_ocl.get())
+        
+        #input_in_freqdomain = np.fft.fft2(padded_input + 1j * np.zeros_like(padded_input))
+
+        #padded_result = (np.fft.ifft2(input_in_freqdomain * self.filter_bank[None, None, :, :, :, :]))
 
         if len(input_image.shape) == 2:
             presult = np.fft.fftshift(padded_result[0, 0, :, :, :, :], axes=[2, 3])

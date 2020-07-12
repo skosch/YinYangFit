@@ -1,0 +1,827 @@
+@import url("common.css");
+
+body {
+    min-height: 100vh;
+    font-family: var(--sans-font);
+}
+
+header {
+    display: flex;
+}
+
+.cover {
+    display: flex;
+    background: var(--matte-gray);
+}
+.cover h1 {
+    font-size: 2.5em;
+    margin: -.25em 0 1em 0;
+}
+
+header .toc {
+    z-index: 100;
+}
+
+.subheader {
+    color: var(--light-brown);
+    font-weight: 600;
+}
+
+p {
+    font-family: var(--serif-font);
+    font-size: 1.2em;
+    line-height: 133%;
+}
+
+.cta-q {
+    font-family: var(--serif-font);
+    font-weight: bold;
+    font-style: italic;
+    color: var(--primary-red);
+    font-size: 2.5em;
+    line-height: 100%;
+    margin-bottom: 0;
+}
+
+.toc-grid {
+    display: flex;
+    flex-wrap: wrap;
+    counter-reset: heading;
+}
+
+.toc-group {
+    margin-right: 2rem;
+}
+
+.toc-row {
+    margin: 0 -1rem 1rem -1rem;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.toc-row a {
+    flex: 0 0;
+    width: 9rem;
+    margin: 0 1rem;
+    display: inline-block;
+    display: inline-block;
+    text-decoration: none;
+    color: var(--dark-brown);
+}
+
+.toc-row img {
+    height: 6rem;
+    width: 9rem;
+    background: var(--matte-gray);
+    color: var(--light-brown);
+    display: inline-block;
+}
+
+.toc h1, nav h1 {
+    color: var(--medium-brown);
+    font-size: 1em;
+    margin: 1rem 0 0 0;
+    opacity: 0.6;
+}
+
+.toc h2 {
+    font-size: 1em;
+    font-weight: 500;
+}
+
+.toc h2:before {
+    content: counter(heading)". ";
+    opacity: 0.6;
+    counter-increment: heading;
+}
+
+.byline {
+    color: var(--light-brown);
+}
+
+main {
+    display: flex;
+    background: var(--matte-gray);
+}
+
+nav {
+    background: var(--matte-gray);
+}
+
+nav.top {
+
+}
+
+@media screen and (min-width: 960px){
+    header {
+        flex-direction: row;
+    }
+    .cover {
+        flex: 0 0 20vw;
+        position: relative;
+        box-shadow: -8px 0px 8px -8px rgba(0, 0, 0, 0.15) inset;
+        flex-direction: column;
+        align-items: end;
+        background: linear-gradient(#4b6773 0%, #dbd5d0 18%, var(--matte-gray) 70%);
+        overflow: hidden;
+    }
+    .cover h1 {
+        text-align: right;
+        color: white;
+        margin: 2rem;
+    }
+    .cover img {
+        max-width: 16rem;
+        margin: 2rem;
+    }
+    .cover .spacer {
+        flex: 1 0;
+    }
+    .cover .subheader {
+        display: none;
+    }
+    .cover .byline {
+        align-self: end;
+        margin: 2rem;
+    }
+    .toc {
+        /*flex: 0 0 80vw;*/
+    }
+    .toc > * {
+        margin-left: 8rem;
+    }
+    .toc p, .toc .toc-grid {
+        max-width: 960px;
+    }
+    .toc .subheader {
+        margin-top: 3rem;
+        display: block;
+    }
+    article {
+        /*flex: 0 0 80vw;*/
+    }
+}
+
+@media screen and (max-width: 960px){
+    header {
+        flex-direction: column;
+    }
+    .cover {
+        padding: 1rem;
+    }
+    .cover .subheader {
+        display: block;
+    }
+    .cover img {
+        max-height: 9rem;
+    }
+    .toc {
+        padding: 1rem;
+    }
+    .toc .subheader {
+        display: none;
+    }
+    nav.side {
+        display: none;
+    }
+    article {
+        flex: 1 1;
+    }
+}
+
+
+@charset "UTF-8";
+@import "./fonts/stylesheet.css";
+
+article {
+    font-family: var(--serif-font);
+    counter-reset: sidenote-counter heading appendixheading subheading;
+    font-size: 1.8rem;
+    line-height: 1.65em;
+    color: var(--dark-brown);
+    -webkit-font-feature-settings: 'kern' 1;
+    -moz-font-feature-settings: 'kern' 1;
+    -o-font-feature-settings: 'kern' 1;
+    background: white;
+    padding: 1rem 4rem 5rem 8rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* This is inserted by Pandoc and I don't know how to get rid of it, so we'll just hide it here */
+article header {
+    display: none;
+}
+
+article > p {
+    max-width: 960px;
+}
+
+nav {
+    background: var(--matte-gray);
+}
+nav.side {
+    counter-reset: heading;
+    flex: 0 0 20vw;
+    box-shadow: -8px 0px 8px -8px rgba(0, 0, 0, 0.15) inset;
+}
+nav.side .sticky {
+    position: sticky;
+    top: 0;
+    padding: 1rem 2rem;
+    overflow: auto;
+    max-height: 100vh;
+}
+
+nav.side h1 {
+    color: var(--light-brown);
+    font-size: 1em;
+    margin: 2rem 0 0rem 0;
+    opacity: 0.6;
+}
+nav.side a {
+    text-decoration: none;
+}
+nav.side ul {
+    list-style-type: none;
+    padding: 0;
+    font-size: 1em;
+    font-weight: 500;
+    margin-top: 0.5rem;
+}
+nav.side li {
+    margin-top: 0;
+}
+nav.side a:before {
+    content: counter(heading)". ";
+    counter-increment: heading;
+    color: var(--light-brown);
+    opacity: 0.6;
+}
+
+nav.top, nav.bottom {
+
+}
+
+article h1, article h2, article h3,
+article h4, article h5, article h6 {
+    -webkit-font-feature-settings: 'dlig' 1, 'liga' 1, 'lnum' 1, 'kern' 1;
+    -moz-font-feature-settings: 'dlig' 1, 'liga' 1, 'lnum' 1, 'kern' 1;
+    -o-font-feature-settings: 'dlig' 1, 'liga' 1, 'lnum' 1, 'kern' 1;
+    color: #2E2E2E;
+    line-height: 1.15em;
+    margin: 0 0 0.4em 0;
+    text-rendering: geometricPrecision;
+    font-family: var(--sans-font);
+}
+
+article h1 {
+    font-weight: 400;
+    margin-top: 4rem;
+    margin-bottom: 1.5rem;
+    font-size: 3.2rem;
+    line-height: 1;
+}
+
+article h2 {
+    font-style: normal;
+    font-weight: bold;
+    margin-top: 2.1rem;
+    margin-bottom: 0rem;
+    font-size: 1.6rem;
+    line-height: 1rem;
+    position: relative;
+    width: 60%;
+    counter-reset: subheading;
+}
+
+article h2.nonumber:before {
+    content: "";
+    position: absolute;
+}
+
+article h2.appendix:before {
+    content: counter(appendixheading, upper-alpha)".";
+    counter-increment: appendixheading;
+    position: absolute;
+    transform: translateX(calc(-100% - 1rem));
+}
+
+article h2:not(.nonumber):not(.appendix):before {
+    content: counter(heading)".";
+    counter-increment: heading;
+    position: absolute;
+    transform: translateX(calc(-100% - 1rem));
+}
+
+article h3.appendix:before {
+    content: counter(appendixheading, upper-alpha)"."counter(subheading);
+    counter-increment: subheading;
+    position: absolute;
+    transform: translateX(calc(-100% - 1rem));
+}
+
+article h3:not(.nonumber):not(.appendix):before {
+    content: counter(heading)"."counter(subheading);
+    counter-increment: subheading;
+    position: absolute;
+    transform: translateX(calc(-100% - 1rem));
+}
+
+article h3 {
+    font-size: 1.4rem;
+    margin-top: 2.1rem;
+    line-height: 1rem;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    width: 55%;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
+}
+
+strong {
+    font-weight: 700;
+    opacity: 0.94;
+/*    font-style: italic;*/
+}
+
+article p.subtitle {
+    font-style: italic;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+    display: block;
+    line-height: 1;
+}
+
+.danger {
+    color: red;
+}
+
+section {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+p,
+ol,
+ul {
+    font-size: 1.7rem;
+    line-height: 2rem;
+    hanging-punctuation: first last;
+
+    /*-webkit-font-feature-settings: 'liga' 1, 'onum' 1, 'kern' 1, 'salt';
+    -moz-font-feature-settings: 'liga' 1, 'onum' 1, 'kern' 1, 'salt';
+    -o-font-feature-settings: 'liga' 1, 'onum' 1, 'kern' 1, 'salt';*/
+}
+
+.katex {
+    font-size: 1em !important;
+}
+
+p {
+    margin-top: 0.7rem;
+    margin-bottom: 1.0rem;
+    padding-right: 0;
+    vertical-align: baseline;
+}
+
+/* Chapter Epigraphs */
+div.epigraph {
+    margin: 5em 0;
+}
+
+div.epigraph > blockquote {
+    margin-top: 3em;
+    margin-bottom: 3em;
+}
+
+div.epigraph > blockquote,
+div.epigraph > blockquote > p {
+    font-style: italic;
+}
+
+div.epigraph > blockquote > footer {
+    font-style: normal;
+}
+
+div.epigraph > blockquote > footer > cite {
+    font-style: italic;
+}
+/* end chapter epigraphs styles */
+
+blockquote {
+    font-size: 1.4rem;
+}
+
+blockquote p {
+    width: 55%;
+    margin-right: 40px;
+}
+
+blockquote footer {
+    width: 55%;
+    font-size: 1.1rem;
+    text-align: right;
+}
+
+article > p,
+article > footer,
+article > table {
+    width: 60%;
+}
+
+/* 50 + 5 == 55, to be the same width as paragraph */
+article > ol,
+article > ul {
+    width: 57.5%;
+    -webkit-padding-start: 5%;
+}
+
+li:not(:first-child) {
+    margin-top: 0.25rem;
+}
+
+figure {
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+    max-width: 55%;
+    -webkit-margin-start: 0;
+    -webkit-margin-end: 0;
+    margin: 0 0 3em 0;
+}
+
+figcaption {
+    float: right;
+    clear: right;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    vertical-align: baseline;
+    position: relative;
+    max-width: 40%;
+}
+
+figure.fullwidth figcaption {
+    margin-right: 24%;
+}
+
+/* Links: replicate underline that clears descenders */
+a:link,
+a:visited {
+    color: inherit;
+}
+
+.no-tufte-underline:link {
+    background: unset;
+    text-shadow: unset;
+}
+
+article a:link, .tufte-underline, .hover-tufte-underline:hover {
+    text-decoration: none;
+    background: -webkit-linear-gradient(#fffff8, #fffff8), -webkit-linear-gradient(#fffff8, #fffff8), -webkit-linear-gradient(currentColor, currentColor);
+    background: linear-gradient(#fffff8, #fffff8), linear-gradient(#fffff8, #fffff8), linear-gradient(currentColor, currentColor);
+    -webkit-background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
+    -moz-background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
+    background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
+    background-repeat: no-repeat, no-repeat, repeat-x;
+    text-shadow: 0.03em 0 #fffff8, -0.03em 0 #fffff8, 0 0.03em #fffff8, 0 -0.03em #fffff8, 0.06em 0 #fffff8, -0.06em 0 #fffff8, 0.09em 0 #fffff8, -0.09em 0 #fffff8, 0.12em 0 #fffff8, -0.12em 0 #fffff8, 0.15em 0 #fffff8, -0.15em 0 #fffff8;
+    background-position: 0% 93%, 100% 93%, 0% 93%;
+}
+
+a:link > sup, .tufte-underline > sup, .hover-tufte-underline:hover > sup {
+    text-decoration: underline;
+    background: none;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    a:link, .tufte-underline, .hover-tufte-underline:hover {
+        /*background-position-y: 87%, 87%, 87%;*/
+    }
+}
+
+a:link::selection,
+a:link::-moz-selection {
+    text-shadow: 0.03em 0 #b4d5fe, -0.03em 0 #b4d5fe, 0 0.03em #b4d5fe, 0 -0.03em #b4d5fe, 0.06em 0 #b4d5fe, -0.06em 0 #b4d5fe, 0.09em 0 #b4d5fe, -0.09em 0 #b4d5fe, 0.12em 0 #b4d5fe, -0.12em 0 #b4d5fe, 0.15em 0 #b4d5fe, -0.15em 0 #b4d5fe;
+    background: #b4d5fe;
+}
+
+/* Sidenotes, margin notes, figures, captions */
+img {
+    max-width: 100%;
+}
+
+.sidenote,
+.marginnote {
+    float: right;
+    clear: right;
+    margin-right: -60%;
+    width: 50%;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    line-height: 1.3;
+    vertical-align: baseline;
+    position: relative;
+}
+
+.sidenote-number {
+    counter-increment: sidenote-counter;
+}
+
+.sidenote-number:after,
+.sidenote:before {
+/*    position: relative;*/
+}
+.sidenote:before {
+  vertical-align: super;
+}
+label.margin-toggle {
+  transform: translateY(-0.5rem);
+}
+
+.sidenote-number:after {
+    content: counter(sidenote-counter);
+    font-size: 1.3rem;
+    /*top: -0.5rem;*/
+    left: 0.1rem;
+}
+
+.sidenote:before {
+    content: counter(sidenote-counter) " ";
+    font-size: 1rem;
+    /*top: -0.5rem;*/
+}
+
+blockquote .sidenote,
+blockquote .marginnote {
+    margin-right: -82%;
+    min-width: 59%;
+    text-align: left;
+}
+
+div.fullwidth,
+table.fullwidth {
+    width: 100%;
+}
+
+div.table-wrapper {
+    overflow-x: auto;
+    font-family: "Trebuchet MS", "Gill Sans", "Gill Sans MT", sans-serif;
+}
+
+.sans {
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
+    letter-spacing: .03em;
+}
+
+code, pre > code {
+    font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font-size: 1.0rem;
+    line-height: 1.42;
+    -webkit-text-size-adjust: 100%; /* Prevent adjustments of font size after orientation changes in iOS. See https://github.com/edwardtufte/tufte-css/issues/81#issuecomment-261953409 */
+}
+
+.sans > code {
+    font-size: 1.2rem;
+}
+
+h1 > code,
+h2 > code,
+h3 > code {
+    font-size: 0.80em;
+}
+
+.marginnote > code,
+.sidenote > code {
+    font-size: 1rem;
+}
+
+pre > code {
+    font-size: 0.9rem;
+    width: 52.5%;
+    margin-left: 2.5%;
+    overflow-x: auto;
+    display: block;
+}
+
+pre.fullwidth > code {
+    width: 90%;
+}
+
+.fullwidth {
+    max-width: 90%;
+    clear:both;
+}
+
+aside.sidenote, aside.marginnote {
+  display: inline;
+}
+
+span.newthought {
+    font-variant: small-caps;
+    font-size: 1.2em;
+}
+
+input.margin-toggle {
+    display: none;
+}
+
+label.sidenote-number {
+  display: inline-block;
+  line-height: 100%;
+}
+
+label.margin-toggle:not(.sidenote-number) {
+    display: none;
+}
+
+.iframe-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    padding-top: 25px;
+    height: 0;
+}
+
+.iframe-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+@media (max-width: 960px) {
+    article {
+        width: 84%;
+        padding-left: 8%;
+        padding-right: 8%;
+    }
+
+    article > p,
+    article > footer,
+    article > table {
+      width: 100%;
+    }
+
+    h2 {
+        width: 100%;
+    }
+
+    /* 50 + 5 == 55, to be the same width as paragraph */
+    article > ol,
+    article > ul {
+      width: 95%;
+      -webkit-padding-start: 5%;
+    }
+
+    hr,
+    section > p,
+    section > footer,
+    section > table {
+      width: 100%;
+    }
+
+    pre > code {
+      width: 97%;
+    }
+
+    section > ol {
+        width: 90%;
+    }
+
+    section > ul {
+        width: 90%;
+    }
+
+    figure {
+        max-width: 90%;
+    }
+
+    figcaption,
+    figure.fullwidth figcaption {
+        margin-right: 0%;
+        max-width: none;
+    }
+
+    blockquote {
+        margin-left: 1.5em;
+        margin-right: 0em;
+    }
+
+    blockquote p,
+    blockquote footer {
+        width: 100%;
+    }
+
+    label.margin-toggle {
+      background: #dedcdc;
+      padding: 1pt 5pt;
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: 68%;
+      letter-spacing: 1pt;
+      color: #3c3c3c;
+      border-radius: 2pt;
+    }
+    label.margin-toggle:not(.sidenote-number) {
+      display: inline;
+      /* display: block !important;*/
+      white-space: nowrap;
+      width: max-content;
+    }
+    label.margin-toggle.sidenote-number {
+
+    }
+    .margin-toggle:checked + label.margin-toggle:not(.sidenote-number):before {
+      content: "Hide image";
+    }
+    .margin-toggle:not(:checked) + label.margin-toggle:not(.sidenote-number):before {
+      content: "Show image";
+    }
+
+    .sidenote,
+    .marginnote {
+        display: none;
+    }
+
+    .margin-toggle:checked ~ .sidenote,
+    .margin-toggle:checked ~ .marginnote {
+        display: block;
+        float: left;
+        left: 1rem;
+        clear: both;
+        width: 95%;
+        margin: 1rem 2.5%;
+        vertical-align: baseline;
+        position: relative;
+    }
+
+    label {
+        cursor: pointer;
+    }
+
+    div.table-wrapper,
+    table {
+        width: 85%;
+    }
+
+    img {
+        width: 100%;
+    }
+
+}
+
+.missing {
+    padding: 1rem 1.5rem;
+    background: #f0b8ab;
+    border-radius: 3px;
+}
+
+.missing:before {
+      content: "TODO";
+      margin-right: 1rem;
+      letter-spacing: 2px;
+      font-family: var(--sans-font);
+      font-size: 70%;
+    }
+
+.katex {
+  line-height: auto !important;
+}
+
+.pdflink {
+  font-size: 88%;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.pdflink:before {
+  content: "[PDF]";
+}
+
+.oa {
+    display: inline-block;
+    background-image: url("../img/oa.png");
+    width: 1rem;
+    height: 1rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin: 0 -2px -2px 2px;
+}
+
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}

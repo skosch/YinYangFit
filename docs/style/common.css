@@ -1,0 +1,23 @@
+/*@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=Crimson+Pro:ital@0;1&display=swap');
+/*@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&family=Josefin+Sans:wght@700&display=swap');*/
+
+:root {
+  --primary-red: #bd3b3b;
+  --secondary-blue: #467a9c;
+  --dark-brown: #262320;
+  --medium-brown: #504242;
+  --light-brown: #6b5e5e;
+  --matte-gray: #f5f5f2; /* e8e7e4 */
+  --serif-font: "CrimsonProS", "Meta Serif", Plantin, Georgia, serif;
+  --sans-font: "IBM Plex Sans", -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue", sans-serif;
+  --mono-font: "IBM Plex Mono", -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue", sans-serif;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    font-variant-ligatures: common-ligatures;
+    font-feature-settings: "liga" 0;
+    text-rendering: geometricPrecision;
+}

@@ -23,9 +23,11 @@ class Controls extends PureComponent<
   IControlsProps & (typeof controlsActions)
   > {
     public render() {
-
       return (
         <div id="controls">
+          <h2>Area V1, nonlinearization</h2>
+          
+
           <div className="spliners">
             <CanvasSpliner
               csPoints={this.props.controls.factorPoints}

@@ -1,0 +1,34 @@
+to: html5
+from: markdown
+
+include-before-body:
+- source/toc_nav_before.html
+
+include-after-body:
+- source/toc_nav_after.html
+
+html-math-method:
+  method: katex
+
+css:
+- style/index.css
+
+metadata:
+  author:
+  - Sebastian Kosch
+  title: YinYangFit
+
+self-contained: false
+standalone: false
+
+input-files:
+- source/frontmatter.markdown
+- source/introduction.markdown
+- source/early_vision.markdown
+- source/gestalt_dynamics.markdown
+- source/reading_models.markdown
+- source/algorithms.markdown
+- source/future_directions.markdown
+
+filters:
+- source/marginnote.lua

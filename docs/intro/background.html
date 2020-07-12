@@ -1,0 +1,69 @@
+<!doctype html>
+<html class="no-js" lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Background – YinYangFit</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.js"></script>
+    <script>document.addEventListener("DOMContentLoaded", function () {
+    var mathElements = document.getElementsByClassName("math");
+    for (var i = 0; i < mathElements.length; i++) {
+        var texText = mathElements[i].firstChild;
+        if (mathElements[i].tagName == "SPAN") {
+        katex.render(texText.data, mathElements[i], {
+        displayMode: mathElements[i].classList.contains('display'),
+        throwOnError: false,
+        fleqn: false
+        });
+    }}});
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" />
+    <!--[if lt IE 9]>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+    <![endif]-->
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="stylesheet" type="text/css" href="../style/page.css">
+  </head>
+  <body>
+    <nav class="side">
+      <a href="../index.html">YinYangFit</a>
+    </nav>
+    <nav class="top">
+      Back to contents ...  ← Previous | Background | Next →
+    </nav>
+<article>
+<h2 class="nonumber">
+Target audience
+</h2>
+<p>Designers and developers with an interest in neuroaesthetics.</p>
+<h2 class="nonumber">
+Epistemic status: provisional
+</h2>
+<p>This article is based on a survey of hundreds of peer-reviewed articles, and in line with mainstream ideas in vision and neuroscience research. It is the product of many months of work and countless revisions. That said, even the in-vivo evidence for the suggested models is often indirect or circumstantial. Nothing in this article should be construed as final. I welcome corrections!</p>
+<h2 id="introduction">Introduction</h2>
+<p>Letterfitting refers to the process of adjusting the distances between pairs of <nobr>letters<input type="checkbox" id="sn-sidenote-1" class="margin-toggle"></nobr><label for="sn-sidenote-1" class="margin-toggle sidenote-number"></label><span class="sidenote">I use the word “letter” very liberally; the more general term is <a href="https://en.wikipedia.org/wiki/Glyph">glyph</a><sup>W</sup>.</span> during typeface design. <nobr><input type="checkbox" id="mn-marginnote-2" class="margin-toggle"></nobr><label for="mn-marginnote-2" class="margin-toggle"></label><span class="marginnote"><img src="img/spacingkerning.png" alt="Spacing and kerning"><br> Red vertical bars show side bearings, blue vertical bar shows a negative kern.</span> It’s often referred to as “spacing and kerning”, because pair distances are the sum of fixed amounts of space around every letter (so-called <em>side bearings</em>) and additional adjustment values for individual pairs (so-called <em>kerns</em><nobr>).<input type="checkbox" id="sn-sidenote-3" class="margin-toggle"></nobr><label for="sn-sidenote-3" class="margin-toggle sidenote-number"></label><span class="sidenote">Many existing heuristics try to either auto-space or auto-kern, which is doomed to fail. See the <a href="#space_kern_lp">appendix</a> for the correct mathematical approach to split pair distances into side bearings and kerns.</span> Quality fonts often contain thousands of hand-kerned pairs that undergo weeks of testing and refinement, all by hand—because surprisingly, there still are no automated solutions that reliably do the <nobr>job.<input type="checkbox" id="sn-sidenote-4" class="margin-toggle"></nobr><label for="sn-sidenote-4" class="margin-toggle sidenote-number"></label><span class="sidenote">And not for lack of trying: many approaches exist, the most popular of which are listed in the <a href="#existing_tools">appendix</a> below.</span></p>
+<p>The heart of the problem: typographers can’t even agree what letterfitting <em>does</em><nobr>.<input type="checkbox" id="sn-sidenote-5" class="margin-toggle"></nobr><label for="sn-sidenote-5" class="margin-toggle sidenote-number"></label><span class="sidenote">As Bertrand Russell put it, “<em>everything is vague to a degree you do not realize till you have tried to make it precise.</em>”</span> Some say that it’s about achieving a certain <em>balance</em> between letter pairs, the judgment of which is to spring from the designer’s personal aesthetic <nobr>intuition.<input type="checkbox" id="sn-sidenote-6" class="margin-toggle"></nobr><label for="sn-sidenote-6" class="margin-toggle sidenote-number"></label><span class="sidenote">It goes without saying that as for the design decisions of professional typographers, <em>non disputandum est</em>. This is the premise behind the venerable <a href="https://type.method.ac/">kern game</a>.</span> Others say that the goal is to produce an “even colour”, i.e. a printed page with a uniform texture and without noticeable blobs of black or white. Yet others have <nobr>insinuated<input type="checkbox" id="sn-sidenote-7" class="margin-toggle"></nobr><label for="sn-sidenote-7" class="margin-toggle sidenote-number"></label><span class="sidenote">First and foremost Frank Blokland, who in his <a href="https://www.lettermodel.org/">PhD thesis</a> investigated how practical considerations in the Renaissance printing trade may have led to a standardization of font metrics.</span> that the distances between letter stems are really quite arbitrary, and that we are simply conditioned by existing fonts to (prefer to) read letters at particular pair distances.</p>
+<p>All three of the above descriptions seem to point to the same story: that skilled designers achieve a pleasing visual balance between letter pairs because they have honed their perception through the careful study of existing fonts. Coincidentally, perfectly balanced letter pairs also happen to result in perfect legibility and a perfectly even typographic colour. Does that story hold water?</p>
+<p>As it turns out, research suggests that colour, balance, and legibility have <em>different</em> neural correlates.</p>
+<p><img src="img/introduction_overview.png" alt="Neural correlates of different
+typographic concepts"></p>
+<p>Evenness of colour is a question of texture perception; quality of balance is a question of competitive inhibition between perceptual gestalt groups; and legibility is a question of the reliable detection of letters and n-grams from pre-processed visual features. Although the three are often in rough agreement, optimizing for one does not guarantee a perfect outcome for the others.</p>
+<p>The premise behind the letterfitting tools that exist today is that the gaps between letters can be measured and equalized. But human brains don’t perceive gaps; they perceive shapes whose neural representations interact across space in particular ways. If we want to develop robust, universal automatic letterfitting algorithms—algorithms that work on both hairline slab serifs and broad-nib italics, on both captions and headline sizes, on both Latin and Hangul—then we need to build better intuitions for the neural dynamics of our vision system. That’s what this article is about.</p>
+<p>In a way, it is surprising that type design and cognitive psychology are so divorced from one <nobr>another.<input type="checkbox" id="sn-sidenote-8" class="margin-toggle"></nobr><label for="sn-sidenote-8" class="margin-toggle sidenote-number"></label><span class="sidenote">The studies that do exist are almost exclusively empirical (see e.g. the <nobr><a href="https://doi.org/10.1016/j.visres.2019.05.003">review of legibility studies</a><span class="oa" title="Open Access"></span></nobr> compiled recently by type legend Charles Bigelow) but have no explanatory power. In fact, the typesetting of most preprints suggests that cognitive scientists are altogether unaware of typography as a discipline.</span> Scientists who need cheap, reliable, machine-readable ground-truth data to validate their computational models of vision and reading should take a closer look at existing fonts. Conversely, type designers could massively benefit from tools that emulate aspects of human vision. I hope to see much more cross-fertilization between the two fields in the future.</p>
+<h2 id="a-letterfitters-objectives">A letterfitter’s objectives</h2>
+<p>Before we dive into the details, let’s put the three letterfitting objectives fit into a broader cognitive science context.</p>
+<h3 id="typographic-colour">Typographic colour</h3>
+<p>Typographic colour refers to the visual texture created by the ink on the page. Most obviously, a darker colour is the result of bolder, narrower, more tightly-fit type. But the line spacing contributes to a document’s characteristic texture as well, and so does the angle of the letters (i.e. upright vs. italic) and, ultimately, even the design of the individual letters.</p>
+<p>Some design teachers like to give colour-based letterfitting prescriptions, like “match the black and the white” or “equalize the negative space in the counters with the negative space in the gaps.”<nobr><input type="checkbox" id="sn-sidenote-9" class="margin-toggle"></nobr><label for="sn-sidenote-9" class="margin-toggle sidenote-number"></label><span class="sidenote">Like horoscopes, these rules only work when they are formulated vaguely enough to be useless.</span> As we will see later, these heuristics are actually primitive descriptions of the kind of spatial frequency correlations that form the basis of neural texture perception.</p>
+<h3 id="balance">Balance</h3>
+<p>The brain has a general tendency to group visual features into perceptually coherent objects. Meanwhile, the typographer’s job is to group letters into perceptually coherent words. When the letters are fitted poorly, the perceptual grouping into words will fail: this we call poor balance.</p>
+<p><nobr><input type="checkbox" id="mn-marginnote-10" class="margin-toggle"></nobr><label for="mn-marginnote-10" class="margin-toggle"></label><span class="marginnote">Here, the saturation of the coloured blobs indicates the intensity of grouping at different scales. Small perceptual groups tend to outcompete larger ones, so unless the grouping is balanced, the word will be fragmented. The poorly fitted word in the last column triggers the perception of two separate objects, namely the single letter <em>c</em> and a pair <em>at</em>.</span> <img src="img/grouping_relativity.png" alt="Illustration of the importance of consistency of fit vs absolute distances."></p>
+<p>Perceptual grouping networks are a very fundamental piece of our vision circuitry, and not exclusive to reading. Their behaviour is often described by so-called <em>Gestalt laws</em><nobr>,<input type="checkbox" id="sn-sidenote-11" class="margin-toggle"></nobr><label for="sn-sidenote-11" class="margin-toggle sidenote-number"></label><span class="sidenote">“Gestalt”, with a hard <em>G</em>, is German for “shape” or “form”. The <a href="https://en.wikipedia.org/wiki/Principles_of_grouping">Gestalt laws</a><sup>W</sup> are also known as the principle of <a href="https://en.wikipedia.org/wiki/Gestalt_psychology#Pr%C3%A4gnanz">Prägnanz</a><sup>W</sup>.</span> which posit that whenever visual signals appear in tightly clustered, connected, or convex arrangements, we tend to perceive them as unitary objects:</p>
+<p><img src="img/gestalt_laws.png" alt="Illustration of gestalt laws" /></p>
+<p>In order to quantify the strength of perceptual grouping between letter pairs, we need to understand why and how our visual system binds image fragments together.</p>
+<p>Psychologists have known about these rules for a over a <nobr>century.<input type="checkbox" id="sn-sidenote-12" class="margin-toggle"></nobr><label for="sn-sidenote-12" class="margin-toggle sidenote-number"></label><span class="sidenote">The pioneers of Gestalt psychology in the first half of the 20<sup>th</sup> century knew almost nothing about the brain’s vision system, so they naturally fell back on metaphors drawn from electromagnetics and fluid mechanics. Today, brain scientists have moved on, but typographers and visual artists still talk about lights, shadows, bubbles, and force fields. <br/>I recommend Johan Wagemans et al.’s fantastic two-part historical review of Gestalt psychology, published in 2012 (<nobr><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3482144/">part I</a><span class="oa" title="Open Access"></span></nobr>, <a href="https://dx.doi.org/10.1037%2Fa0029334">part II</a><sup><a href="http://gestaltrevision.be/pdfs/A%20century%20of%20Gestalt%20psychology%20in%20visual%20perception%20II.pdf">PDF</a></sup>).</span> Only in the last two decades have scientists made some headway on teasing apart the responsible neural circuits, which we will discuss in detail below.</p>
+</article>
+  </body>
+</html>

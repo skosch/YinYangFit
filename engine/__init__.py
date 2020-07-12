@@ -1,34 +1,34 @@
-#!/usr/bin/env python
+"""
+This module contains the class "Engine", which contains the most important functions.
+"""
 
-import argparse
+import os
+import io
+
+
+#import matplotlib as mpl
+#import matplotlib.pyplot as plt
+import base64
+import numpy as np
+
+#import pyopencl as cl
+
+from tqdm import tqdm
 
 from .font_loader import load_font
 from .filter_bank import FilterBank
 from .util import relu
 
-import time
-import os
-import io
 script_dir = os.path.dirname(os.path.abspath(__file__))
-
-from tqdm import tqdm
-
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-import numpy as np
-import base64
-
-import pyopencl as cl
-
 kernels_file_path = os.path.join(script_dir, "kernels.cl")
 print("Loading OpenCL kernel file at", kernels_file_path)
 
-all_lc_glyphs = "abcdefghijklmnopqrstuvwxyz"
-all_uc_glyphs = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-all_glyphs = all_lc_glyphs + all_uc_glyphs
+ALL_LC_GLYPHS = "abcdefghijklmnopqrstuvwxyz"
+ALL_UC_GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+ALL_GLYPHS = ALL_LC_GLYPHS + ALL_UC_GLYPHS
 
 class Engine:
-    def __init__(self, file_name, size_factor=0.9, n_scales=14, n_orientations=4, glyphset=all_glyphs):
+    def __init__(self, file_name, size_factor=0.9, n_scales=14, n_orientations=4, glyphset=ALL_GLYPHS):
         self.single_glyph_widths = {}
         self.single_glyph_images = {}
         self.convolved_glyph_images = {}
@@ -58,6 +58,7 @@ class Engine:
             self.single_glyph_widths[g] = rg.ink_width
             self.single_glyph_images[g] = rg.as_matrix(normalize=True).with_padding_to_constant_box_width(self.box_width)
             self.convolved_glyph_images[g] = self.filter_bank.convolve(self.single_glyph_images[g]).astype(np.complex64)
+
         print("Filter bank loaded and glyphs convolved.")
 
     def font_info(self):
@@ -109,12 +110,13 @@ class Engine:
         return binary_as_string
 
     def set_up_gpu_processor_kernel(self):
-        self.ctx = cl.create_some_context(False)      # Create a context with your device
+        #self.ctx = cl.create_some_context(False)      # Create a context with your device
         #now create a command queue in the context
-        self.queue = cl.CommandQueue(self.ctx)
-        print("Compiling GPU kernel ...")
-        self.vp = cl.Program(self.ctx, open(kernels_file_path).read()).build()
-        print("Compiled:", self.vp)
+        #self.queue = cl.CommandQueue(self.ctx)
+        #print("Compiling GPU kernel ...")
+        #self.vp = cl.Program(self.ctx, open(kernels_file_path).read()).build()
+        #print("Compiled:", self.vp)
+        pass
 
 
     def create_pair_image_distances(self, lc, rc, distances):
@@ -128,59 +130,75 @@ class Engine:
         return left_shifts, right_shifts
 
     def render_penalty_fields(self, lc, rc, params, distances):
-        # Renders the penalty field for a certain set of sizes and orientations (or all), and returns the diffs
-        # TODO: get distances from params
         current_scales = np.array(params.get("currentScales", np.arange(self.n_scales)))
         n_current_scales = len(current_scales)
         current_orientations = np.array(params.get("currentOrientations", np.arange(self.n_orientations)))
         n_current_orientations = len(current_orientations)
 
-        sc_lg = self.convolved_glyph_images[lc][current_scales[:, None], current_orientations[None, :], :, :].reshape([n_current_scales, n_current_orientations, self.box_height * self.box_width])
-        sc_rg = self.convolved_glyph_images[rc][current_scales[:, None], current_orientations[None, :], :, :].reshape([n_current_scales, n_current_orientations, self.box_height * self.box_width])
-        shifts_l, shifts_r = self.create_pair_image_distances(lc, rc, distances)
+        return np.zeros((n_current_scales, n_current_orientations, self.box_height, self.box_width, len(distances)))
+        
 
-        sc_lg_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=sc_lg)
-        sc_rg_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=sc_rg)
-        shifts_l_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=shifts_l)
-        shifts_r_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=shifts_r)
-        letter_tuning_function_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['ltf'][current_scales[:, None], current_orientations[None, :]])
-        vertical_gap_tuning_function_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['vgtf'][current_scales[:, None], current_orientations[None, :]])
-        horizontal_gap_tuning_function_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['hgtf'][current_scales[:, None], current_orientations[None, :]])
-        beta_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['beta'][current_scales[:, None], current_orientations[None, :]])
-
-        #gap_weights_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['gap_weights'][current_scales[:, None], current_orientations[None, :]])
-        blur_weights_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['blur_weights'][current_scales[:, None], current_orientations[None, :]])
-        blur_weight_exps_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['blur_weight_exps'][current_scales[:, None], current_orientations[None, :]])
-
-        # create output buffer
-        diffs = np.ones((n_current_scales, n_current_orientations, self.box_height * self.box_width * len(distances)), dtype=np.float32)
-        diff_dest_dev = cl.Buffer(self.ctx, cl.mem_flags.WRITE_ONLY, diffs.nbytes)
-
-        self.vp.penalty_parallel(self.queue, diffs.shape, None,
-                                 diff_dest_dev,
-                                 np.int32(n_current_scales),
-                                 np.int32(n_current_orientations),
-                                 np.int32(self.box_height),
-                                 np.int32(self.box_width),
-                                 np.int32(len(distances)),
-                                 sc_lg_dev,
-                                 sc_rg_dev,
-                                 shifts_l_dev,
-                                 shifts_r_dev,
-                                 letter_tuning_function_dev,
-                                 vertical_gap_tuning_function_dev,
-                                 horizontal_gap_tuning_function_dev,
-                                 beta_dev,
-                                 np.float32(params['exponent']),
-        #                         gap_weights_dev,
-                                 blur_weights_dev,
-                                 blur_weight_exps_dev)
-
-        # Get result back
-        cl.enqueue_copy(self.queue, diffs, diff_dest_dev)
-        penalty_field = np.reshape(diffs, (n_current_scales, n_current_orientations, self.box_height, self.box_width, len(distances))).astype(np.float32)
-
-        return penalty_field
+#    def render_penalty_fields_old(self, lc, rc, params, distances):
+#        # Renders the penalty field for a certain set of sizes and orientations (or all), and returns the diffs
+#        # TODO: get distances from params
+#        current_scales = np.array(params.get("currentScales", np.arange(self.n_scales)))
+#        n_current_scales = len(current_scales)
+#        current_orientations = np.array(params.get("currentOrientations", np.arange(self.n_orientations)))
+#        n_current_orientations = len(current_orientations)
+#
+#        sc_lg = self.convolved_glyph_images[lc][current_scales[:, None], current_orientations[None, :], :, :].reshape([n_current_scales, n_current_orientations, self.box_height * self.box_width])
+#        sc_rg = self.convolved_glyph_images[rc][current_scales[:, None], current_orientations[None, :], :, :].reshape([n_current_scales, n_current_orientations, self.box_height * self.box_width])
+#        shifts_l, shifts_r = self.create_pair_image_distances(lc, rc, distances)
+#
+#        # On the GPU, we want to perform the V1/V4 analysis for multiple distances in parallel. 
+#
+#        # Copy over the input images
+#        sc_lg_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=sc_lg)
+#        sc_rg_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=sc_rg)
+#        shifts_l_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=shifts_l)
+#        shifts_r_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=shifts_r)
+#
+#        # Copy over the parameters
+#        edge_loss_weights_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['edge_loss_weights'][current_scales[:, None], current_orientations[None, :]])
+#        gap_gain_weights_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['gap_gain_weights'][current_scales[:, None], current_orientations[None, :]])
+#        v1_beta_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['v1_beta'][current_scales[:, None], current_orientations[None, :]])
+#        v1_exponents_dev = cl.Buffer(self.ctx, cl.mem_flags.READ_ONLY | cl.mem_flags.COPY_HOST_PTR, hostbuf=params['v1_exponents'][current_scales[:, None], current_orientations[None, :]])
+#
+#        # create output buffer
+#        diffs = np.ones((n_current_scales, n_current_orientations, self.box_height * self.box_width * len(distances)), dtype=np.float32)
+#        diff_dest_dev = cl.Buffer(self.ctx, cl.mem_flags.WRITE_ONLY, diffs.nbytes)
+#
+#        self.vp.penalty_parallel(self.queue, diffs.shape, None,
+#                                 diff_dest_dev,
+#                                 np.int32(n_current_scales),
+#                                 np.int32(n_current_orientations),
+#                                 np.int32(self.box_height),
+#                                 np.int32(self.box_width),
+#                                 np.int32(len(distances)),
+#                                 sc_lg_dev,
+#                                 sc_rg_dev,
+#                                 shifts_l_dev,
+#                                 shifts_r_dev,
+#
+#                                 edge_loss_weights_dev,
+#                                 gap_gain_weights_dev,
+#                                 v1_beta_dev,
+#                                 v1_exponent_dev,
+#
+#                                 letter_tuning_function_dev,
+#                                 vertical_gap_tuning_function_dev,
+#                                 horizontal_gap_tuning_function_dev,
+#                                 beta_dev,
+#                                 np.float32(params['exponent']),
+#        #                         gap_weights_dev,
+#                                 blur_weights_dev,
+#                                 blur_weight_exps_dev)
+#
+#        # Get result back
+#        cl.enqueue_copy(self.queue, diffs, diff_dest_dev)
+#        penalty_field = np.reshape(diffs, (n_current_scales, n_current_orientations, self.box_height, self.box_width, len(distances))).astype(np.float32)
+#
+#        return penalty_field
 
     def get_penalty_fields_subset(self, params):
         # Generate the fields for just a single distance, and a subset of sizes and orientations.
@@ -254,12 +272,12 @@ class Engine:
                 #    plt.plot(np.sum(np_penalty_fields[si, :, :, :], (0, 1, 2)), linestyle='dotted')
                 #plt.show()
 
+                lowest_penalty_total = 1e10
                 for ii in range(len(distances) - 1):
-                    if (((totals[ii]) < 0 and (totals[ii + 1]) >= 0) or
-                        ((totals[ii]) > 0 and (totals[ii + 1]) <= 0)):
-                        print("Best distance is", distances[ii])
+                    if (totals[ii] < lowest_penalty_total):
+                        lowest_penalty_total = totals[ii]
                         best_distance_index = ii
-                        break
+                    break
 
                 #best_distance_index = np.argmin(np.abs(np.sum(np_penalty_fields, (0, 1, 2, 3))))
 
@@ -273,16 +291,8 @@ class Engine:
         return bytes_writer.getvalue()
 
     def prepare_params(self, params):
-        params['ltf'] = np.array(params['ltf']) #np.tile(np.array(params['ltf'])[:, None].astype(np.float32), [1, self.n_orientations])
-        params['vgtf'] = np.array(params['vgtf']) #np.tile(np.array(params['ltf'])[:, None].astype(np.float32), [1, self.n_orientations])
-        params['hgtf'] = np.array(params['hgtf']) #np.tile(np.array(params['ltf'])[:, None].astype(np.float32), [1, self.n_orientations])
-        params['factor'][:, 1:] = 0.
-        # We want to convert x to 1/x
-        params['beta'] = np.tile(np.array(params['beta'])[:, None].astype(np.float32), [1, self.n_orientations])
-        params['gap_weights'] = np.tile(np.array(params['gapWeights'])[:, None].astype(np.float32), [1, self.n_orientations])
-        params['blur_weights'] = np.tile(np.array(params['blurWeights'])[:, None].astype(np.float32), [1, self.n_orientations])
-        params['blur_weight_exps'] = np.tile(np.array(params['blurWeightExps'])[:, None].astype(np.float32), [1, self.n_orientations])
-        #params['gap_weights_sq'] = np.array(params['gap_weights_sq'])[:, None].astype(np.float32)
-        #params['blur_weights_sq'] = np.array(params['blur_weights_sq'])[:, None].astype(np.float32)
+        # Parameters for V1 HRA
+        params['v1_k'] = np.tile(np.array(params['v1_k'])[:, None].astype(np.float32), [1, self.n_orientations])
+        params['v1_b'] = np.tile(np.array(params['v1_b'])[:, None].astype(np.float32), [1, self.n_orientations])
         return params
 

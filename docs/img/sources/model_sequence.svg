@@ -131,9 +131,9 @@
      showgrid="false"
      inkscape:current-layer="layer1"
      inkscape:document-units="mm"
-     inkscape:cy="74.491312"
-     inkscape:cx="122.7681"
-     inkscape:zoom="11.2"
+     inkscape:cy="69.216972"
+     inkscape:cx="268.26011"
+     inkscape:zoom="2.8"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -278,6 +278,9 @@
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk';fill:#2e2e2e;fill-opacity:1"
          id="flowPara44095-8-9-3">V4''</flowPara></flowRoot>
     <g
+       inkscape:export-ydpi="200"
+       inkscape:export-xdpi="200"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
        transform="translate(2.6485072,27.042946)"
        id="g3904">
       <g
@@ -329,12 +332,18 @@
       </g>
     </g>
     <circle
+       inkscape:export-ydpi="200"
+       inkscape:export-xdpi="200"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
        r="2.657608"
        cy="269.44009"
        cx="27.814167"
        id="path3906"
        style="fill:none;fill-opacity:1;stroke:#2e2e2e;stroke-width:0.529167;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <flowRoot
+       inkscape:export-ydpi="200"
+       inkscape:export-xdpi="200"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
        transform="matrix(0.39744703,0,0,0.39744703,-50.490629,218.32662)"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#2e2e2e;fill-opacity:1;stroke:none;stroke-width:0.66675551;stroke-miterlimit:4;stroke-dasharray:none;"
        id="flowRoot44089-2-9"
@@ -350,6 +359,9 @@
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk';fill:#2e2e2e;fill-opacity:1;stroke-width:0.66675551;stroke-miterlimit:4;stroke-dasharray:none;"
          id="flowPara44095-2-0">*</flowPara></flowRoot>
     <text
+       inkscape:export-ydpi="200"
+       inkscape:export-xdpi="200"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
        transform="translate(15.173663,47.113486)"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;white-space:pre;shape-inside:url(#rect3941);fill:#2e2e2e;fill-opacity:1;stroke:none;"
        id="text3939"
@@ -358,24 +370,36 @@
          y="224.52976"><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:GaramondNo8;-inkscape-font-specification:GaramondNo8;fill:#2e2e2e;fill-opacity:1">a</tspan></tspan></text>
     <path
+       inkscape:export-ydpi="200"
+       inkscape:export-xdpi="200"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
        sodipodi:nodetypes="cccccccccccccccc"
        inkscape:connector-curvature="0"
        id="path1921-0-9-5-1-0"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;line-height:1.25;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk';letter-spacing:0px;word-spacing:0px;fill:#2e2e2e;fill-opacity:1;stroke:none;stroke-width:0.265;stroke-miterlimit:4;stroke-dasharray:none"
        d="m 22.814364,267.55154 -0.37279,0.37278 1.06209,1.06209 0.211021,0.14771 -0.02101,0.0633 -3.425628,-0.0211 v 0.52753 h 3.165378 l 0.260228,-0.0211 0.02109,0.0633 -0.211011,0.1477 -1.062088,1.06209 0.37279,0.3728 1.666989,-1.67404 v -0.42905 z" />
     <path
+       inkscape:export-ydpi="200"
+       inkscape:export-xdpi="200"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
        d="m 33.233856,267.55154 -0.37279,0.37278 1.06209,1.06209 0.211021,0.14771 -0.02101,0.0633 -3.425628,-0.0211 v 0.52753 h 3.165378 l 0.260228,-0.0211 0.02109,0.0633 -0.211011,0.1477 -1.062088,1.06209 0.37279,0.3728 1.666989,-1.67404 v -0.42905 z"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;line-height:1.25;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk';letter-spacing:0px;word-spacing:0px;fill:#2e2e2e;fill-opacity:1;stroke:none;stroke-width:0.265;stroke-miterlimit:4;stroke-dasharray:none"
        id="path1921-0-9-5-1-0-6"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccccccccccccccc" />
     <path
+       inkscape:export-ydpi="200"
+       inkscape:export-xdpi="200"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
        d="m 29.702717,264.55606 -0.37278,-0.37279 -1.06209,1.06209 -0.14771,0.21102 -0.0633,-0.021 0.0211,-3.42563 h -0.52753 v 3.16538 l 0.0211,0.26023 -0.0633,0.0211 -0.1477,-0.21101 -1.06209,-1.06209 -0.3728,0.37279 1.67404,1.66699 h 0.42905 z"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;line-height:1.25;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk';letter-spacing:0px;word-spacing:0px;fill:#2e2e2e;fill-opacity:1;stroke:none;stroke-width:0.265;stroke-miterlimit:4;stroke-dasharray:none"
        id="path1921-0-9-5-1-0-8"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccccccccccccccc" />
     <rect
+       inkscape:export-ydpi="200"
+       inkscape:export-xdpi="200"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
        ry="0.7907511"
        y="264.40155"
        x="35.63002"
@@ -384,6 +408,9 @@
        id="rect44087"
        style="fill:none;fill-opacity:1;stroke:#2e2e2e;stroke-width:0.529167;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <flowRoot
+       inkscape:export-ydpi="200"
+       inkscape:export-xdpi="200"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
        transform="matrix(0.26458333,0,0,0.26458333,-12.351313,234.87402)"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#2e2e2e;fill-opacity:1;stroke:none"
        id="flowRoot44089"
@@ -404,12 +431,18 @@
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;line-height:1.25;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk';letter-spacing:0px;word-spacing:0px;fill:#2e2e2e;fill-opacity:1;stroke:none;stroke-width:0.264583"
        id="path1921-0-9-5-1-0-6-7" />
     <circle
+       inkscape:export-ydpi="200"
+       inkscape:export-xdpi="200"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
        style="fill:none;fill-opacity:1;stroke:#2e2e2e;stroke-width:0.529167;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="path3906-6"
        cx="63.979336"
        cy="269.44009"
        r="2.657608" />
     <path
+       inkscape:export-ydpi="200"
+       inkscape:export-xdpi="200"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
        style="fill:none;stroke:#2e2e2e;stroke-width:0.529167;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 62.478081,270.41568 c 0.709024,0.0138 0.959351,-0.32764 1.158099,-0.73055 0.21567,-0.43723 0.359776,-0.78753 0.838004,-1.02905 0.479701,-0.24226 0.989894,-0.21077 0.989894,-0.21077"
        id="path4696"
@@ -420,6 +453,9 @@
        d="m 78.831665,293.59739 c 0.709024,0.0138 0.959351,-0.32764 1.158099,-0.73055 0.21567,-0.43723 0.359776,-0.78753 0.838004,-1.02905 0.479701,-0.24226 0.989894,-0.21077 0.989894,-0.21077"
        style="fill:none;stroke:#2e2e2e;stroke-width:0.529167;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     <path
+       inkscape:export-ydpi="200"
+       inkscape:export-xdpi="200"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
        d="m 48.524513,267.55154 -0.37279,0.37278 1.06209,1.06209 0.211021,0.14771 -0.02101,0.0633 -3.425628,-0.0211 v 0.52753 h 3.165378 l 0.260228,-0.0211 0.02109,0.0633 -0.211011,0.1477 -1.062088,1.06209 0.37279,0.3728 1.666989,-1.67404 v -0.42905 z"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;line-height:1.25;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk';letter-spacing:0px;word-spacing:0px;fill:#2e2e2e;fill-opacity:1;stroke:none;stroke-width:0.264583"
        id="path1921-0-9-5-1-0-0"
@@ -1140,6 +1176,9 @@
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;line-height:1.25;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk';letter-spacing:0px;word-spacing:0px;fill:#2e2e2e;fill-opacity:1;stroke:none;stroke-width:0.264583"
        d="m 144.50655,303.43938 -0.37279,0.37278 1.06209,1.06209 0.21103,0.14771 -0.021,0.0633 -3.42563,-0.0211 v 0.52753 h 3.16538 l 0.26022,-0.0211 0.0211,0.0633 -0.21101,0.1477 -1.06209,1.06209 0.37279,0.3728 1.66699,-1.67404 v -0.42905 z" />
     <rect
+       inkscape:export-ydpi="200"
+       inkscape:export-xdpi="200"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
        style="opacity:1;fill:none;fill-opacity:1;stroke:#2e2e2e;stroke-width:0.529167;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect44087-6"
        width="14.297441"
@@ -1148,18 +1187,27 @@
        y="264.36105"
        ry="0.7907511" />
     <path
+       inkscape:export-ydpi="200"
+       inkscape:export-xdpi="200"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
        sodipodi:nodetypes="cccccccccccccccc"
        inkscape:connector-curvature="0"
        id="path1921-0-9-5-1-0-0-0"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;line-height:1.25;font-family:'Space Grotesk';-inkscape-font-specification:'Space Grotesk';letter-spacing:0px;word-spacing:0px;fill:#2e2e2e;fill-opacity:1;stroke:none;stroke-width:0.264583"
        d="m 58.891145,267.55154 -0.37279,0.37278 1.06209,1.06209 0.211021,0.14771 -0.02101,0.0633 -3.425628,-0.0211 v 0.52753 h 3.165378 l 0.260228,-0.0211 0.02109,0.0633 -0.211011,0.1477 -1.062088,1.06209 0.37279,0.3728 1.666989,-1.67404 v -0.42905 z" />
     <circle
+       inkscape:export-ydpi="200"
+       inkscape:export-xdpi="200"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
        r="2.657608"
        cy="269.44009"
        cx="53.473785"
        id="path3906-6-5"
        style="fill:none;fill-opacity:1;stroke:#2e2e2e;stroke-width:0.529167;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <path
+       inkscape:export-ydpi="200"
+       inkscape:export-xdpi="200"
+       inkscape:export-filename="/home/sebastian/projects/YinYangFit/docs/img/model_sequence_v1.png"
        id="path10439"
        d="m 51.763063,268.77557 1.667518,1.66751 1.66283,-1.66283"
        style="fill:none;stroke:#2e2e2e;stroke-width:0.529167;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />

@@ -32,14 +32,12 @@ __kernel void penalty_parallel(__global float *dest, // [n_scales, n_orientation
                                __global cfloat_t *sc_rg, // [n_scales, n_orientations, box_height * box_width]
                                __constant int *shifts_l, // [n_distances]
                                __constant int *shifts_r, // [n_distances]
-                               __global float *letter_tuning_function, // [n_scales, n_orientations]
-                               __global float *vertical_gap_tuning_function, // [n_scales, n_orientations]
-                               __global float *horizontal_gap_tuning_function, // [n_scales, n_orientations]
-                               __global float *beta, // [n_scales, n_orientations]
-                               float exponent,
-//                               __global float *gap_weights, // [n_scales, n_orientations]
-                               __global float *blur_weight_exps, // [n_scales, n_orientations]
-                               __global float *blur_weights) // [n_scales, n_orientations]
+                               __global float *edge_loss_weights, // [n_scales, n_orientations]
+                               __global float *gap_gain_weights, // [n_scales, n_orientations]
+                               __global float *v1_beta, // [n_scales, n_orientations]
+                               __global float *v1_exponent)//,
+                               //__global float *blur_weight_exps, // [n_scales, n_orientations]
+                               //__global float *blur_weights) // [n_scales, n_orientations]
   {
 
   // sc_lg and sc_rg are reshaped to [n_scales, n_orientations, box_height * box_width * n_distances].
@@ -88,22 +86,26 @@ __kernel void penalty_parallel(__global float *dest, // [n_scales, n_orientation
   // Now for the sum of the two values: (vp = value of pair)
   cfloat_t vp = cfloat_add(vl, vr);
 
+  // Now scale the diffs
+  int soi = si * n_orientations + oi;
+
   // Now compute the exponentiated values
-  float evp = half_powr(cfloat_abs_squared(vp), exponent/2.);
-  float evl = half_powr(cfloat_abs_squared(vl), exponent/2.);
-  float evr = half_powr(cfloat_abs_squared(vr), exponent/2.);
+  float le = v1_exponent[soi]; // local value for exponent
+  float lb = v1_beta[soi];
+
+  float evp = half_powr(cfloat_abs_squared(vp), le/2.);
+  float evl = half_powr(cfloat_abs_squared(vl), le/2.);
+  float evr = half_powr(cfloat_abs_squared(vr), le/2.);
 
   // Now perform the orientation inhibition (TODO)
   float diff = (evp - evl - evr);
 
-  // Now scale the diffs
-  int soi = si * n_orientations + oi;
 
   float gap_gain = diff > 0.0 ? diff : 0.0;
   float edge_loss = diff < 0.0 ? diff : 0.0;
 
-  float edge_loss_scaled = letter_tuning_function[soi] * edge_loss + horizontal_gap_tuning_function[soi] * gap_gain;
-  float gap_gain_scaled = vertical_gap_tuning_function[soi] * gap_gain;
+  float edge_loss_scaled = edge_loss_weights[soi] * edge_loss;
+  float gap_gain_scaled = gap_gain_weights[soi] * gap_gain;
 
   dest[gi] = gap_gain_scaled - edge_loss_scaled;
 }
