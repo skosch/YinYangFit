@@ -1,5 +1,36 @@
 @import url("common.css");
 
+@font-face {
+  font-family: 'CrimsonProS';
+  src: url('./crimsonpros/crimsonpros-bold-webfont.woff2') format('woff2'),
+  url('./crimsonpros/crimsonpros-bold-webfont.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+
+}
+@font-face {
+  font-family: 'CrimsonProS';
+  src: url('./crimsonpros/crimsonpros-regular-webfont.woff2') format('woff2'),
+  url('./crimsonpros/crimsonpros-regular-webfont.woff') format('woff');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'CrimsonProS';
+  src: url('./crimsonpros/crimsonpros-italic-webfont.woff2') format('woff2'),
+  url('./crimsonpros/crimsonpros-italic-webfont.woff') format('woff');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'CrimsonProS';
+  src: url('./crimsonpros/crimsonpros-bolditalic-webfont.woff2') format('woff2'),
+  url('./crimsonpros/crimsonpros-bolditalic-webfont.woff') format('woff');
+  font-weight: 700;
+  font-style: italic;
+}
+
 body {
     min-height: 100vh;
     font-family: var(--sans-font);
@@ -825,3 +856,5 @@ span.underline{text-decoration: underline;}
 div.column{display: inline-block; vertical-align: top; width: 50%;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
+
+
