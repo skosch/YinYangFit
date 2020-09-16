@@ -17,6 +17,7 @@ from tqdm import tqdm
 
 from .font_loader import load_font
 from .filter_bank import FilterBank
+from .radial_filter import RadialFilter
 from .util import relu
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -25,13 +26,16 @@ print("Loading OpenCL kernel file at", kernels_file_path)
 
 ALL_LC_GLYPHS = "abcdefghijklmnopqrstuvwxyz"
 ALL_UC_GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-ALL_GLYPHS = ALL_LC_GLYPHS + ALL_UC_GLYPHS
+ALL_GLYPHS = ALL_LC_GLYPHS #+ ALL_UC_GLYPHS
+
 
 class Engine:
-    def __init__(self, file_name, size_factor=0.9, n_scales=14, n_orientations=4, glyphset=ALL_GLYPHS):
+    def __init__(self, file_name, size_factor=0.6, n_scales=5, n_orientations=4, glyphset=ALL_GLYPHS):
         self.single_glyph_widths = {}
         self.single_glyph_images = {}
         self.convolved_glyph_images = {}
+        self.glyph_distance_images = {}
+        self.glyph_fullness_images = {}
         self.set_up_gpu_processor_kernel()
 
         self.load_font_file(file_name, size_factor)
@@ -49,6 +53,8 @@ class Engine:
 
     def load_filter_bank_and_convolve_glyphs(self, n_scales, n_orientations, glyphset):
         self.filter_bank = FilterBank(n_scales, n_orientations, self.box_height, self.box_width, 0, display_filters=False)
+        self.radial_filter = RadialFilter(n_scales, n_orientations, 2., 3., 2*self.box_height, 2*self.box_width)
+
         self.glyphset = glyphset
         self.n_scales = n_scales
         self.n_orientations = n_orientations
@@ -58,6 +64,10 @@ class Engine:
             self.single_glyph_widths[g] = rg.ink_width
             self.single_glyph_images[g] = rg.as_matrix(normalize=True).with_padding_to_constant_box_width(self.box_width)
             self.convolved_glyph_images[g] = self.filter_bank.convolve(self.single_glyph_images[g]).astype(np.complex64)
+
+            (distance, fullness) = self.radial_filter.convolve(self.convolved_glyph_images[g])
+            self.glyph_distance_images[g] = distance
+            self.glyph_fullness_images[g] = fullness
 
         print("Filter bank loaded and glyphs convolved.")
 
@@ -86,6 +96,7 @@ class Engine:
             "italic_angle": self.f.italic_angle,
             "glyph_images": self.get_glyph_images(self.glyphset)
         }
+        print("Font info returned.")
         return font_info
 
 
@@ -134,6 +145,7 @@ class Engine:
         n_current_scales = len(current_scales)
         current_orientations = np.array(params.get("currentOrientations", np.arange(self.n_orientations)))
         n_current_orientations = len(current_orientations)
+
 
         return np.zeros((n_current_scales, n_current_orientations, self.box_height, self.box_width, len(distances)))
         
@@ -221,7 +233,7 @@ class Engine:
             rc = text[i + 1]
             if (lc + rc) not in rendered_pairs:
                 rendered_pairs[(lc + rc)] = True
-                dist= np.array([params['currentDistances'][lc + rc]]).astype(np.int32) + self.f.minimum_ink_distance(lc, rc)
+                dist = np.array([params['currentDistances'][lc + rc]]).astype(np.int32) + self.f.minimum_ink_distance(lc, rc)
                 np_penalty_fields = self.render_penalty_fields(lc, rc, params, dist)
 
                 bytes_writer.write(lc.encode("utf-16")) # utf-16 means always use 4 bytes (2 for BOM, then 2 for the character)
@@ -237,6 +249,8 @@ class Engine:
         # Generate the fields for a whole set of distances, then find the best distance, and return it all.
         distances = (np.arange(-1, 40, 2)).astype(np.int32) # TODO: get from params
         params = self.prepare_params(params)
+
+        print("Getting best distances and full penalty fields for", params)
 
         rendered_fields = {}
 
@@ -292,7 +306,7 @@ class Engine:
 
     def prepare_params(self, params):
         # Parameters for V1 HRA
-        params['v1_k'] = np.tile(np.array(params['v1_k'])[:, None].astype(np.float32), [1, self.n_orientations])
-        params['v1_b'] = np.tile(np.array(params['v1_b'])[:, None].astype(np.float32), [1, self.n_orientations])
+        params['v1_k'] = np.zeros((1, self.n_orientations)) #np.tile(np.array(params['v1_k'])[:, None].astype(np.float32), [1, self.n_orientations])
+        params['v1_b'] = np.zeros((1, self.n_orientations)) #np.tile(np.array(params['v1_b'])[:, None].astype(np.float32), [1, self.n_orientations])
         return params
 

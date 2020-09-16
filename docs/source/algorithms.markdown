@@ -1,60 +1,126 @@
-## Filtering
-Unfortunately, the dynamism of the model(s) introduced thus far makes them
-unsuitable for use in practical letterfitting tools for type designers. Although
-it is relatively straightforward to set up systems of coupled differential
-equations representing individual neurons, time-integrating them at a
-sufficiently fine spatial resolution is immensely costly, and doing so at many
-pair distances for each letter combination is outright infeasible, at least with
-consumer-grade hardware.{sn}The most promising approach would be backpropagation
-combined with an adaptive ODE solver, as in [this much-celebrated
-demonstration](https://arxiv.org/pdf/1806.07366.pdf) by Ricky Chen and his
-colleagues.{/sn} We therefore need to consider potential approximations.{sn}Of
-course, existing letterfitting heuristics *are* such approximations, even though
-they don't know it (see the [appendix](#existing_tools) for an incomplete
-list).{/sn}
+<a name="models-and-cost-functions"></a>
 
-The central idea is that the optimal distance $\hat{d}$ corresponds to the best
-trade-off between skeleton degradation and perceptual grouping. We penalize the former with values $p$,
-reward the latter with values $r$, and expect the
-minimum of the total to coincide with the optimal distance:
+## Models and cost functions
+In order to automate letterfitting, we need to distill each letter pair's image
+down to a single number:
 
-{mn}The cost function has a
-minimum at the optimal distance $\hat{d}$. This works when the cost of skeleton
-losses rises more steeply than the reward (i.e. negative cost) for grouping. As
-expected, the total cost approaches zero with increasing distance, and becomes
-very large when the letters touch at $d=0$. Reviving an outmoded force-field
-metaphor, we might compare this curve to an [interatomic potential
-well](https://en.wikipedia.org/wiki/Interatomic_potential)<sup>W</sup>.{/mn}
-<img src="img/model_gains_losses.png" alt="computational graph leading to the final cost curve">
+<img src="img/model_strategy.png" alt="model strategy">
 
-As we now understand, skeleton degradation is the *loss* in G-cell activations
-that occurs when we juxtapose two letters. To compute this loss, we compare the
-G-cell responses to the letter pair at distance $d$, viz. $G_{lr}(d)$, with the
-sum of the responses to either letter when placed alone in the same position,
-$G_l(d) + G_r(d)$. The loss is thus 
+This number is a penalty, i.e. a measure of *badness* of fit, and our strategy
+is then to minimize each pair's penalty by iteratively adjusting the pair's distance.
 
-$$ \lfloor (G_l(d) + G_r(d)) - G_{lr}(d)\rfloor ^+,$$
+{mn}
+<img src="img/cost_functions.png" alt="Cost functions">
+{/mn}
+This approach works regardless of what we are optimizing for: whether
+we are modelling legibility, texture uniformity, or grouping strength, the optimal
+letter distance $\hat{d}$ will be neither too narrow nor too wide, minimizing
+the penalty value our model produces.
 
-where $\lfloor x \rfloor ^+$ represents ReLU, i.e.
-$\mathrm{max}(x, 0)$. Two major contributors to this loss are destructive
-interference in V1 and border-ownership competition in V2.{sn}Of course, a
-number of other suppressive and facilitative feedback mechanisms are involved,
-but ignored here to keep the model manageable.{/sn}
+What choices do we have for the computational model? And how can we design the
+cost function that aggregates our simulated, high-dimensional model output into
+a single penalty value? The aim of this section is to provide a collection of
+computational building blocks, rather than prescribe a particular technique.
 
-Perceptual grouping, on the other hand, corresponds to the *gain* in G-cell
-activations due to the juxtaposition:{sn}To be exact, such gains occur
-independently in areas V2 and V4 as well, but we can indirectly capture most of these
-upstream effects by measuring the G-cells.{/sn} 
-$$
-\lfloor G_{lr}(d) - (G_l(d) + G_r(d)) \rfloor ^+.
-$$
-Responsible for this gain is the nonlinear behaviour of the modelled G-cells.
+### Designing a computational model
 
-There are many ways to estimate $G(d)$ for some input image, and the following model is but one option:
+The architecture of our computational model will depend heavily on what we are
+optimizing for. Roughly speaking, we have three options: 
 
-<img src="img/model_sequence.png" alt="Computational graph of the model">
+1. Fully dynamic: we simulate a large population of individual neurons by
+   setting up an enormous system of coupled differential equations to express
+   their interactions, and numerically integrating those over time. This is
+   relatively easy to do in theory,{sn}And has been done at toy-model scale,
+   e.g. by von der Heydt's students and others.{/sn} but prohibitively expensive
+   computationally in practice, especially on consumer-grade hardware.{sn}The
+   most promising approach would perhaps be backpropagation combined with an
+   adaptive ODE solver, as in [this much-celebrated
+   demonstration](https://arxiv.org/pdf/1806.07366.pdf) by Ricky Chen and his
+   colleagues.{/sn}
+ 
+ 2. Deep convolution: we simulate the output of discrete populations (such as
+    "V1 complex cells" or "G-cells") by applying a sequence of
+    convolutions,{sn}Performed typically via discrete Fourier transforms
+    and not, as in traditional convnets, via small kernels, because we do not
+    downsample the images.{/sn} as
+    well as linear (weighting) and non-linear (rectification) operations. We can
+    further incorporate feedback cycles (unrolled over time) and competition via
+    divisive normalization. 
+    When such models grow sufficiently complex, they can
+    produce great results—but they also require substantial computational
+    resources and their large parameter space can be unwieldy in
+    practice. Here is an example of one such an architecture:
+    <img src="img/model_sequence.png" alt="Computational graph of the model">
+    
+ 3. Direct approximation: depending on the quantity we are interested in, we may
+    be able to devise very efficient approximations, at the expense of accuracy
+    and biological plausibility.{sn}This, of course, is precisely what
+    [existing heuristics](#prior-art) attempt to do.{/sn}
+    
+In practice, we should resist the urge to over-engineer the model.{sn}Ask me how
+I know.{/sn} The best choice is likely a combination of convolution approaches
+(to model early layers, particularly V1) and direct approximations (to model
+grouping based on letter gap geometry).
 
-We will discuss the sequency of computations in the next sections.
+### Isolating pairing effects 
+Models of perceptions, when shown the image of a letter pair, cannot tell that
+it is the gap we are interested in, rather than features of the letters
+themselves. Depending on the model formulation, it is therefore important to
+subtract or divide away (or otherwise eliminate) activity signals that result
+from each individual letter, rather than from the particular pairing in question.
+
+<p class="missing">
+Illustrate this; explain need for nonlinearity; explain complexity benefit of
+models that precompute "fields" for each letter.
+</p>
+    
+### Designing a cost function
+Arguably, the greater challenge lies in aggregating the simulated activity into
+a single penalty value. This can take multiple steps:
+
+1. Over the model's various output dimensions (e.g. spatial frequency scales, orientations, grouping strength
+increases, grouping strength decreases, etc.).
+
+2. Over the spatial dimensions.
+
+In some cases, our goal may be to equalize a quantity (e.g. the grouping
+strength) across all pairs, in which case the penalty value is not the aggregate
+itself but rather its deviation from some target.{sn}And the square of that, typically.{/sn}
+
+The penalty can express many different things, for instance:
+
+1. (Grouping strength) The square of the deviation of the pair's grouping strength from some target value.
+2. (Grouping strength/legibility hybrid) The square of the pair's difference between grouping strength (gain) and
+   skeleton degradation (loss).
+3. (Texture uniformity) The square of the variance in the texture model's
+   output, contributed by the pair.
+4. (Legibility, via pre-trained reading model) The pair's cross-entropy loss on
+   a pre-trained pair classification model.
+
+Even though these quantities are very different in how they are computed and
+what they mean, (except #4?), they have one thing in common: we cannot compute
+them by simply summing over the image. This becomes immediately obvious when we
+consider two examples, *mm* and *ll*:
+
+<p class="missing">
+Illustration
+</p>
+
+In any standard typeface, these two pairs have exactly the same distance.
+But because *ll* has ascenders, its gap is almost twice as large as that of
+*mm*. Conversely, because *mm* has extra stems, there is potential for
+additional interaction (e.g. large-scale grouping) that is lacking in *ll*, at
+least in the isolated-pair setting we are considering here.{sn}And from a
+neuronal perspective, *summing* over an image is a completely implausible
+operation, anyway.{/sn}
+
+What other options are there for aggregation?
+
+<p class="missing">
+Explain mean, max, softmax, and local max (i.e. blurmax). Consider neuronal
+parallels of various quantities.
+</p>
+
 
 ### Modelling activations of V1 cells
 {mn}
@@ -308,15 +374,43 @@ revealed that some measured behaviours previously ascribed to lateral inhibition
 may instead be the result of feedback from higher-level areas. If nothing else, $w_j$ is probably a convenient place for modellers to incorporate
 the effects of spatial frequency dependency (i.e. contrast sensitivity curves).
 
-### Final activation of G-cells
+<a name="direct-approximate-grouping"></a>
 
+## A direct-approximation model of local grouping
+
+We can directly approximate the activity of G-cells (and also their collinear
+equivalent) using the following model.
+
+1. Take the V1 complex cell responses across various scales and orientations.
+2. Sum over scales, according to the desired contrast sensitivity function.
+3. Create two sets of orientation-masked filters. The two sets are the angular filter
+   set (see above) multipled by the following two radial kernels:
+
+   $$
+   f_1 = \frac{1}{r^k}\\
+   f_2 = \frac{1}{r^{k+1}},
+   $$
+
+   where $r = \sqrt{x^2 + y^2}$ and $k \approx 2$.
+4. Convolve each letter's scale-summed V1C tensors $T$ with these two filter sets, and
+5. use the result to compute an approximate oriented distance field, as well as an
+   oriented arc strength, as follows:
+   
+   $$ 
+   d = \frac{T * f_1}{T * f_2}\\
+   k = (T * f_1) \odot d^{k+1}
+   $$
+   
+6. For each pair, overlay the two fields $d_L, d_R$ and $k_L, k_R$ and use the
+   following four quantities to estimate local grouping strengths: $|d_L - d_R|$
+   (zero in the center of the gap, nonzero elsewhere), $k_L k_R$ (local G-cell
+   input), $d_L + d_R$ (local G-cell scale), $(o_L, o_R)$ orientation angle pair.
+   
+   
 <p class="missing">
-G-cells activate via normalized B-cells.
+Explain and illustrate the model, and derive the math. Explain the computational benefits.
 </p>
 
-<p class="missing">
-Loss from V1 interference vs. loss from lateral inhibition in V2
-</p>
 
 <a name="spacing-kerning"></a>
 

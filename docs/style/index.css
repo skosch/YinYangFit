@@ -237,6 +237,7 @@ article {
     padding: 1rem 4rem 5rem 8rem;
     margin-left: auto;
     margin-right: auto;
+    width: 100%;
 }
 
 /* This is inserted by Pandoc and I don't know how to get rid of it, so we'll just hide it here */
@@ -470,8 +471,9 @@ article > table {
 /* 50 + 5 == 55, to be the same width as paragraph */
 article > ol,
 article > ul {
-    width: 57.5%;
-    -webkit-padding-start: 5%;
+    width: 60%;
+    max-width: 960px;
+    box-sizing: border-box;
 }
 
 li:not(:first-child) {

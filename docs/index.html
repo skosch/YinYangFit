@@ -42,7 +42,7 @@
       <div class="spacer"></div>
       <div class="byline">
         <p>YinYangFit is an independent research & development project, funded by Google.</p>
-        <p>To contribute, please get in touch via <a href="https://github.com/skosch/YinYangFit">Github</a> or contact <a href="https://www.aldusleaf.org">me</a> via email.</p>
+        <p>This is a work in progress and your contributions are welcomed! Get in touch via <a href="https://github.com/skosch/YinYangFit">Github</a> or contact <a href="https://www.aldusleaf.org">me</a> via email.</p>
       </div>
     </div>
     <div class="toc">
@@ -126,9 +126,9 @@
       <div class="toc-group">
       <h1>Letterfitting algorithms in practice</h1>
       <section class="toc-row">
-        <a href="">
-          <img src="" alt="Filtering and normalization">
-          <h2>Filtering and normalization</h2>
+        <a href="#models-and-cost-functions">
+          <img src="" alt="Models and cost functions">
+          <h2>Models and cost functions</h2>
         </a>
         <a href="">
           <img src="" alt="Grouping models">
@@ -193,7 +193,7 @@
         </ul>
         <h1>Letterfitting algorithms in practice</h1>
         <ul>
-          <li><a href="#V1">Filtering and normalization</a></li>
+          <li><a href="#models-and-cost-functions">Models and cost functions</a></li>
           <li><a href="#V1">Grouping models</a></li>
           <li><a href="#V1">Reading models</a></li>
           <li><a href="#spacing-kerning">Deriving spacing and kerning</a></li>
@@ -520,22 +520,52 @@ Access"></span></nobr>) seem to suggest that initial and final letters could ind
 <h3 id="human-designers-fit-letters-based-on-gestalt-grouping">Human designers fit letters based on gestalt grouping</h3>
 <p>At this point, it is worth noting that type designers try hard <em>not</em> to engage their reading circuitry when fitting letters. Instead, they adjust letter pairs by staring straight at them, sometimes flipping them upside down to really see them “as they are”.</p>
 <p>That human designers are so successful with such a purely gestalt-based approach is encouraging: it suggests that gestalt-based algorithms can be used widely, leading primarily to a perception of visual beauty (or perhaps the absence of visual distractions), and indirectly to good legibility.<input type="checkbox" id="sn-sidenote-93" class="margin-toggle"><label for="sn-sidenote-93" class="margin-toggle sidenote-number"></label><span class="sidenote">To achieve <em>optimal</em> legibility, designers would need to abandon their current approach and pursue legibility directly. Perhaps someday we’ll see letterfitting based on double-blinded, randomly-controlled crossover trials of reading speed and comprehension.</span> It may well be that the approach works not only on alphabetic scripts, but also on the relative placement of strokes and/or radicals in Hangul and Hanzi.</p>
-<h2 id="filtering">Filtering</h2>
-<p>Unfortunately, the dynamism of the model(s) introduced thus far makes them unsuitable for use in practical letterfitting tools for type designers. Although it is relatively straightforward to set up systems of coupled differential equations representing individual neurons, time-integrating them at a sufficiently fine spatial resolution is immensely costly, and doing so at many pair distances for each letter combination is outright infeasible, at least with consumer-grade hardware.<input type="checkbox" id="sn-sidenote-94" class="margin-toggle"><label for="sn-sidenote-94" class="margin-toggle sidenote-number"></label><span class="sidenote">The most promising approach would be backpropagation combined with an adaptive ODE solver, as in <a href="https://arxiv.org/pdf/1806.07366.pdf">this much-celebrated demonstration</a> by Ricky Chen and his colleagues.</span> We therefore need to consider potential approximations.<input type="checkbox" id="sn-sidenote-95" class="margin-toggle"><label for="sn-sidenote-95" class="margin-toggle sidenote-number"></label><span class="sidenote">Of course, existing letterfitting heuristics <em>are</em> such approximations, even though they don’t know it (see the <a href="#existing_tools">appendix</a> for an incomplete list).</span></p>
-<p>The central idea is that the optimal distance <span class="math inline">\hat{d}</span> corresponds to the best trade-off between skeleton degradation and perceptual grouping. We penalize the former with values <span class="math inline">p</span>, reward the latter with values <span class="math inline">r</span>, and expect the minimum of the total to coincide with the optimal distance:</p>
-<p><input type="checkbox" id="mn-marginnote-96" class="margin-toggle"><label for="mn-marginnote-96" class="margin-toggle"></label><span class="marginnote">The cost function has a minimum at the optimal distance <span class="math inline">\hat{d}</span>. This works when the cost of skeleton losses rises more steeply than the reward (i.e. negative cost) for grouping. As expected, the total cost approaches zero with increasing distance, and becomes very large when the letters touch at <span class="math inline">d=0</span>. Reviving an outmoded force-field metaphor, we might compare this curve to an <a href="https://en.wikipedia.org/wiki/Interatomic_potential">interatomic potential well</a><sup>W</sup>.</span> <img src="img/model_gains_losses.png" alt="computational graph leading to the final cost curve"></p>
-<p>As we now understand, skeleton degradation is the <em>loss</em> in G-cell activations that occurs when we juxtapose two letters. To compute this loss, we compare the G-cell responses to the letter pair at distance <span class="math inline">d</span>, viz. <span class="math inline">G_{lr}(d)</span>, with the sum of the responses to either letter when placed alone in the same position, <span class="math inline">G_l(d) + G_r(d)</span>. The loss is thus</p>
-<p><span class="math display"> \lfloor (G_l(d) + G_r(d)) - G_{lr}(d)\rfloor ^+,</span></p>
-<p>where <span class="math inline">\lfloor x \rfloor ^+</span> represents ReLU, i.e. <span class="math inline">\mathrm{max}(x, 0)</span>. Two major contributors to this loss are destructive interference in V1 and border-ownership competition in V2.<input type="checkbox" id="sn-sidenote-97" class="margin-toggle"><label for="sn-sidenote-97" class="margin-toggle sidenote-number"></label><span class="sidenote">Of course, a number of other suppressive and facilitative feedback mechanisms are involved, but ignored here to keep the model manageable.</span></p>
-<p>Perceptual grouping, on the other hand, corresponds to the <em>gain</em> in G-cell activations due to the juxtaposition:<input type="checkbox" id="sn-sidenote-98" class="margin-toggle"><label for="sn-sidenote-98" class="margin-toggle sidenote-number"></label><span class="sidenote">To be exact, such gains occur independently in areas V2 and V4 as well, but we can indirectly capture most of these upstream effects by measuring the G-cells.</span> <span class="math display">
-\lfloor G_{lr}(d) - (G_l(d) + G_r(d)) \rfloor ^+.
-</span> Responsible for this gain is the nonlinear behaviour of the modelled G-cells.</p>
-<p>There are many ways to estimate <span class="math inline">G(d)</span> for some input image, and the following model is but one option:</p>
-<p><img src="img/model_sequence.png" alt="Computational graph of the model"></p>
-<p>We will discuss the sequency of computations in the next sections.</p>
+<p><a name="models-and-cost-functions"></a></p>
+<h2 id="models-and-cost-functions">Models and cost functions</h2>
+<p>In order to automate letterfitting, we need to distill each letter pair’s image down to a single number:</p>
+<p><img src="img/model_strategy.png" alt="model strategy"></p>
+<p>This number is a penalty, i.e. a measure of <em>badness</em> of fit, and our strategy is then to minimize each pair’s penalty by iteratively adjusting the pair’s distance.</p>
+<p><input type="checkbox" id="mn-marginnote-94" class="margin-toggle"><label for="mn-marginnote-94" class="margin-toggle"></label><span class="marginnote"> <img src="img/cost_functions.png" alt="Cost functions"> </span> This approach works regardless of what we are optimizing for: whether we are modelling legibility, texture uniformity, or grouping strength, the optimal letter distance <span class="math inline">\hat{d}</span> will be neither too narrow nor too wide, minimizing the penalty value our model produces.</p>
+<p>What choices do we have for the computational model? And how can we design the cost function that aggregates our simulated, high-dimensional model output into a single penalty value? The aim of this section is to provide a collection of computational building blocks, rather than prescribe a particular technique.</p>
+<h3 id="designing-a-computational-model">Designing a computational model</h3>
+<p>The architecture of our computational model will depend heavily on what we are optimizing for. Roughly speaking, we have three options:</p>
+<ol type="1">
+<li><p>Fully dynamic: we simulate a large population of individual neurons by setting up an enormous system of coupled differential equations to express their interactions, and numerically integrating those over time. This is relatively easy to do in theory,<input type="checkbox" id="sn-sidenote-95" class="margin-toggle"><label for="sn-sidenote-95" class="margin-toggle sidenote-number"></label><span class="sidenote">And has been done at toy-model scale, e.g. by von der Heydt’s students and others.</span> but prohibitively expensive computationally in practice, especially on consumer-grade hardware.<input type="checkbox" id="sn-sidenote-96" class="margin-toggle"><label for="sn-sidenote-96" class="margin-toggle sidenote-number"></label><span class="sidenote">The most promising approach would perhaps be backpropagation combined with an adaptive ODE solver, as in <a href="https://arxiv.org/pdf/1806.07366.pdf">this much-celebrated demonstration</a> by Ricky Chen and his colleagues.</span></p></li>
+<li><p>Deep convolution: we simulate the output of discrete populations (such as “V1 complex cells” or “G-cells”) by applying a sequence of convolutions,<input type="checkbox" id="sn-sidenote-97" class="margin-toggle"><label for="sn-sidenote-97" class="margin-toggle sidenote-number"></label><span class="sidenote">Performed typically via discrete Fourier transforms and not, as in traditional convnets, via small kernels, because we do not downsample the images.</span> as well as linear (weighting) and non-linear (rectification) operations. We can further incorporate feedback cycles (unrolled over time) and competition via divisive normalization. When such models grow sufficiently complex, they can produce great results—but they also require substantial computational resources and their large parameter space can be unwieldy in practice. Here is an example of one such an architecture: <img src="img/model_sequence.png" alt="Computational graph of the model"></p></li>
+<li><p>Direct approximation: depending on the quantity we are interested in, we may be able to devise very efficient approximations, at the expense of accuracy and biological plausibility.<input type="checkbox" id="sn-sidenote-98" class="margin-toggle"><label for="sn-sidenote-98" class="margin-toggle sidenote-number"></label><span class="sidenote">This, of course, is precisely what <a href="#prior-art">existing heuristics</a> attempt to do.</span></p></li>
+</ol>
+<p>In practice, we should resist the urge to over-engineer the model.<input type="checkbox" id="sn-sidenote-99" class="margin-toggle"><label for="sn-sidenote-99" class="margin-toggle sidenote-number"></label><span class="sidenote">Ask me how I know.</span> The best choice is likely a combination of convolution approaches (to model early layers, particularly V1) and direct approximations (to model grouping based on letter gap geometry).</p>
+<h3 id="isolating-pairing-effects">Isolating pairing effects</h3>
+<p>Models of perceptions, when shown the image of a letter pair, cannot tell that it is the gap we are interested in, rather than features of the letters themselves. Depending on the model formulation, it is therefore important to subtract or divide away (or otherwise eliminate) activity signals that result from each individual letter, rather than from the particular pairing in question.</p>
+<p class="missing">
+Illustrate this; explain need for nonlinearity; explain complexity benefit of models that precompute “fields” for each letter.
+</p>
+<h3 id="designing-a-cost-function">Designing a cost function</h3>
+<p>Arguably, the greater challenge lies in aggregating the simulated activity into a single penalty value. This can take multiple steps:</p>
+<ol type="1">
+<li><p>Over the model’s various output dimensions (e.g. spatial frequency scales, orientations, grouping strength increases, grouping strength decreases, etc.).</p></li>
+<li><p>Over the spatial dimensions.</p></li>
+</ol>
+<p>In some cases, our goal may be to equalize a quantity (e.g. the grouping strength) across all pairs, in which case the penalty value is not the aggregate itself but rather its deviation from some target.<input type="checkbox" id="sn-sidenote-100" class="margin-toggle"><label for="sn-sidenote-100" class="margin-toggle sidenote-number"></label><span class="sidenote">And the square of that, typically.</span></p>
+<p>The penalty can express many different things, for instance:</p>
+<ol type="1">
+<li>(Grouping strength) The square of the deviation of the pair’s grouping strength from some target value.</li>
+<li>(Grouping strength/legibility hybrid) The square of the pair’s difference between grouping strength (gain) and skeleton degradation (loss).</li>
+<li>(Texture uniformity) The square of the variance in the texture model’s output, contributed by the pair.</li>
+<li>(Legibility, via pre-trained reading model) The pair’s cross-entropy loss on a pre-trained pair classification model.</li>
+</ol>
+<p>Even though these quantities are very different in how they are computed and what they mean, (except #4?), they have one thing in common: we cannot compute them by simply summing over the image. This becomes immediately obvious when we consider two examples, <em>mm</em> and <em>ll</em>:</p>
+<p class="missing">
+Illustration
+</p>
+<p>In any standard typeface, these two pairs have exactly the same distance. But because <em>ll</em> has ascenders, its gap is almost twice as large as that of <em>mm</em>. Conversely, because <em>mm</em> has extra stems, there is potential for additional interaction (e.g. large-scale grouping) that is lacking in <em>ll</em>, at least in the isolated-pair setting we are considering here.<input type="checkbox" id="sn-sidenote-101" class="margin-toggle"><label for="sn-sidenote-101" class="margin-toggle sidenote-number"></label><span class="sidenote">And from a neuronal perspective, <em>summing</em> over an image is a completely implausible operation, anyway.</span></p>
+<p>What other options are there for aggregation?</p>
+<p class="missing">
+Explain mean, max, softmax, and local max (i.e. blurmax). Consider neuronal parallels of various quantities.
+</p>
 <h3 id="modelling-activations-of-v1-cells">Modelling activations of V1 cells</h3>
-<p><input type="checkbox" id="mn-marginnote-99" class="margin-toggle"><label for="mn-marginnote-99" class="margin-toggle"></label><span class="marginnote"> <img src="img/model_sequence_v1.png" alt="V1 convolution"> </span></p>
-<p>As explained above, V1 simple cells are typically modelled as responding linearly. Their responses can be approximated via convolution with a bank of bandpass filters <nobr><span class="math inline">G(s, \gamma)</span></nobr> representing their receptive fields, where <span class="math inline">s</span> is the frequency scale and <span class="math inline">\gamma</span> the orientation.<input type="checkbox" id="sn-sidenote-100" class="margin-toggle"><label for="sn-sidenote-100" class="margin-toggle sidenote-number"></label><span class="sidenote">This is best known as <a href="https://en.wikipedia.org/wiki/Gabor_filter">Gabor filtering</a><sup>W</sup>, but Gabor filters are only one of many mathematical functions that happen to look like simple cell receptive fields. Many alternatives with better mathematical properties are available.</span></p>
+<p><input type="checkbox" id="mn-marginnote-102" class="margin-toggle"><label for="mn-marginnote-102" class="margin-toggle"></label><span class="marginnote"> <img src="img/model_sequence_v1.png" alt="V1 convolution"> </span></p>
+<p>As explained above, V1 simple cells are typically modelled as responding linearly. Their responses can be approximated via convolution with a bank of bandpass filters <nobr><span class="math inline">G(s, \gamma)</span></nobr> representing their receptive fields, where <span class="math inline">s</span> is the frequency scale and <span class="math inline">\gamma</span> the orientation.<input type="checkbox" id="sn-sidenote-103" class="margin-toggle"><label for="sn-sidenote-103" class="margin-toggle sidenote-number"></label><span class="sidenote">This is best known as <a href="https://en.wikipedia.org/wiki/Gabor_filter">Gabor filtering</a><sup>W</sup>, but Gabor filters are only one of many mathematical functions that happen to look like simple cell receptive fields. Many alternatives with better mathematical properties are available.</span></p>
 <p>For instance, we might use derivative-of-Gaussians filters: <span class="math display"> G(s, \gamma=0^{\circ}) = \frac{x
 e^{-\frac{x^2+y^2}{2s^2}}}{2\pi s^4}
   + \mathrm{i} \left[\frac{e^{-\frac{x^2+y^2}{2 s^2}}}{2\pi s^3} - \frac{x^2 e^{-\frac{x^2+y^2}{2 s^2}}}{2\pi s^5} \right],
@@ -544,8 +574,8 @@ e^{-\frac{x^2+y^2}{2s^2}}}{2\pi s^4}
 <p><span class="math display">
 S_\mathrm{V1}(x, y, s, o) = \mathcal{F}^{-1}(\mathcal{F}(I(x, y)) \mathcal{F}(G(s, o))),
 </span></p>
-<p>where <span class="math inline">\mathcal{F}</span> is the Fourier transform.<input type="checkbox" id="sn-sidenote-101" class="margin-toggle"><label for="sn-sidenote-101" class="margin-toggle sidenote-number"></label><span class="sidenote">The discrete Fourier transform is a good choice when filters are large, but requires generous zero-padding to prevent wrapping. In implementations relying on small inputs and/or filters (e.g. dilated filters, downsampled G-cell layers, etc.), direct convolution may be advantageous.</span> For instance, to retrieve wthe activation of representative simple cells at phases 0°, 90°, 180° and 270°, one ould half-wave-rectify as follows:</p>
-<p><input type="checkbox" id="mn-marginnote-102" class="margin-toggle"><label for="mn-marginnote-102" class="margin-toggle"></label><span class="marginnote"><img src="img/complex_value.png"></span> <span class="math display">
+<p>where <span class="math inline">\mathcal{F}</span> is the Fourier transform.<input type="checkbox" id="sn-sidenote-104" class="margin-toggle"><label for="sn-sidenote-104" class="margin-toggle sidenote-number"></label><span class="sidenote">The discrete Fourier transform is a good choice when filters are large, but requires generous zero-padding to prevent wrapping. In implementations relying on small inputs and/or filters (e.g. dilated filters, downsampled G-cell layers, etc.), direct convolution may be advantageous.</span> For instance, to retrieve wthe activation of representative simple cells at phases 0°, 90°, 180° and 270°, one ould half-wave-rectify as follows:</p>
+<p><input type="checkbox" id="mn-marginnote-105" class="margin-toggle"><label for="mn-marginnote-105" class="margin-toggle"></label><span class="marginnote"><img src="img/complex_value.png"></span> <span class="math display">
 \begin{aligned}
 S_{\mathrm{V1, 0\degree}}(x, y, s, o) &amp;= |\mathrm{Re}(S_1(x, y, s, o)| \\
 S_{\mathrm{V1, 90\degree}}(x, y, s, o) &amp;= |\mathrm{Im}(S_1(x, y, s, o)| \\
@@ -557,18 +587,18 @@ S_{\mathrm{V1, 270\degree}}(x, y, s, o) &amp;= |-\mathrm{Im}(S_1(x, y, s, o)| \\
 <p><span class="math display">
 C_\mathrm{V1}(x, y, s, o) = |S_\mathrm{V1}(x, y, s, o)|
 </span></p>
-<p>This is often called the <em>local energy</em>:<input type="checkbox" id="sn-sidenote-103" class="margin-toggle"><label for="sn-sidenote-103" class="margin-toggle sidenote-number"></label><span class="sidenote">Or the local energy’s square root, depending on the author.</span></p>
-<p><input type="checkbox" id="mn-marginnote-104" class="margin-toggle"><label for="mn-marginnote-104" class="margin-toggle"></label><span class="marginnote">Simulated complex cell responses for a lowercase <em>u</em>, at various scales and orientations. No squaring or other nonlinearity has been applied.</span> <img src="img/complex_activations_u.png" alt="Complex activations before
+<p>This is often called the <em>local energy</em>:<input type="checkbox" id="sn-sidenote-106" class="margin-toggle"><label for="sn-sidenote-106" class="margin-toggle sidenote-number"></label><span class="sidenote">Or the local energy’s square root, depending on the author.</span></p>
+<p><input type="checkbox" id="mn-marginnote-107" class="margin-toggle"><label for="mn-marginnote-107" class="margin-toggle"></label><span class="marginnote">Simulated complex cell responses for a lowercase <em>u</em>, at various scales and orientations. No squaring or other nonlinearity has been applied.</span> <img src="img/complex_activations_u.png" alt="Complex activations before
 nonlinearization, letter u"></p>
 <h3 id="destructive-interference-in-v1">Destructive interference in V1</h3>
 <p>As discussed above, neighbouring letters can cause destructive interference in their respective complex cell responses. This happens when they are close enough together that the relevant V1 receptive fields captures both letters.</p>
 <p>This destructive interference naturally takes place in our model as well: whenever two complex numbers are added, the resulting magnitude can never exceed the sum of the original magnitudes. In fact, wherever the two inputs are not exactly in phase, the opposite components cancel and the resulting magnitude is reduced.</p>
 <p>However, this is not necessarily true when the V1 complex cells behave nonlinearly. Such nonlinearities can sometimes lead to gains in the activation, even despite the destructive interference, especially in the gap:</p>
 <p><img src="img/abstract.png"></p>
-<p><input type="checkbox" id="mn-marginnote-105" class="margin-toggle"><label for="mn-marginnote-105" class="margin-toggle"></label><span class="marginnote"><img src="img/hra.png" alt="HRA"> Solid line: hyperbolic ratio curve, a.k.a. <a href="https://en.wikipedia.org/wiki/Hill_equation_(biochemistry)%3Csup%3EW%3C/sup%3E">Hill function</a> or Naka-Rushton function. Dotted line: monotonic polynomial (e.g. <span class="math inline">x^2</span>).</span></p>
+<p><input type="checkbox" id="mn-marginnote-108" class="margin-toggle"><label for="mn-marginnote-108" class="margin-toggle"></label><span class="marginnote"><img src="img/hra.png" alt="HRA"> Solid line: hyperbolic ratio curve, a.k.a. <a href="https://en.wikipedia.org/wiki/Hill_equation_(biochemistry)%3Csup%3EW%3C/sup%3E">Hill function</a> or Naka-Rushton function. Dotted line: monotonic polynomial (e.g. <span class="math inline">x^2</span>).</span></p>
 <p>While complex cells are often modelled with a parabolic activation function (like <span class="math inline">y=ax^2</span>), this is a rather unrealistic choice. In a real cells, the firing rate will level off after the input has been increased beyond some limit. A popular model for this behaviour is the hyperbolic ratio sigmoid</p>
 <p><span class="math display">y = \frac{x^k}{\beta^k + x^k}</span></p>
-<p>The <span class="math inline">k</span> makes the kink steeper and <span class="math inline">\beta</span> shifts the threshold to the right. Unless an additional factor is introduced, the quotient approaches 1 for large values of <span class="math inline">x</span>. Consider how the numerator increases the firing rate, and the denominator decreases it.<input type="checkbox" id="sn-sidenote-106" class="margin-toggle"><label for="sn-sidenote-106" class="margin-toggle sidenote-number"></label><span class="sidenote">This specific activation function is effectively never used in deep learning, both for historical reasons and because <a href="https://en.wikipedia.org/wiki/Vanishing_gradient_problem">its asymptotic behaviour would slow down training</a><sup>W</sup>.</span></p>
+<p>The <span class="math inline">k</span> makes the kink steeper and <span class="math inline">\beta</span> shifts the threshold to the right. Unless an additional factor is introduced, the quotient approaches 1 for large values of <span class="math inline">x</span>. Consider how the numerator increases the firing rate, and the denominator decreases it.<input type="checkbox" id="sn-sidenote-109" class="margin-toggle"><label for="sn-sidenote-109" class="margin-toggle sidenote-number"></label><span class="sidenote">This specific activation function is effectively never used in deep learning, both for historical reasons and because <a href="https://en.wikipedia.org/wiki/Vanishing_gradient_problem">its asymptotic behaviour would slow down training</a><sup>W</sup>.</span></p>
 <p>We will apply this activation function to the V1 complex cell output, using the matrices <span class="math inline">\boldsymbol{k}_{s,\gamma}</span> and <span class="math inline">\boldsymbol{\beta}_{s,\gamma}</span> as coefficients.</p>
 <h3 id="measuring-g-cell-activations">Measuring G-cell activations</h3>
 <p>Having calculated the V1 complex cell responses, we can next estimate the magnitude of local B-cells. Just like complex cells, B-cells come in scales and orientations. However, the number of orientations is doubled, because there are two opposite B-cell orientations for each axis (whereas in V1, 0° and 180° are identical).</p>
@@ -623,18 +653,34 @@ Explain the need for lateral inhibition between competing B-cells via divisive n
 </p>
 <h3 id="modelling-lateral-inhibition-via-divisive-normalization">Modelling lateral inhibition via divisive normalization</h3>
 <p>The hyperbolic-ratio activation function is particularly relevant thanks to <em>lateral inhibition</em>, a common architectural pattern in the brain in which neurons within a cortical area suppress their neighbours in proportion to their own firing rate. Locally, this allows the most active neuron to suppress its neighbours more than those neighbours are able to suppress it in return. Lateral inhibition thus sharpens peaks and flattens valleys in the activity landscape; it is a simple and effective way to boost salient signals relative to the weaker ones that inevitably arise from the correlations between similarly tuned convolution filters. In V1, lateral inhibition thus sharpens the orientation and frequency-scale signals, while also normalizing local contrast.</p>
-<p>Because lateral inhibition is a recurrent process that takes time to reach a steady state, it is most accurately modelled using a system of coupled differential equations which describe the time dependence of each neuron’s firing rate on its neighbours. Conveniently, however, the steady-state activations can also be approximated directly using our hyperbolic ratio model, by simply sneaking the neighbouring neurons’ activities into the denominator:<input type="checkbox" id="sn-sidenote-107" class="margin-toggle"><label for="sn-sidenote-107" class="margin-toggle sidenote-number"></label><span class="sidenote">See <nobr><a href="https://arxiv.org/pdf/1906.08246.pdf">this analysis</a><span class="oa" title="Open
+<p>Because lateral inhibition is a recurrent process that takes time to reach a steady state, it is most accurately modelled using a system of coupled differential equations which describe the time dependence of each neuron’s firing rate on its neighbours. Conveniently, however, the steady-state activations can also be approximated directly using our hyperbolic ratio model, by simply sneaking the neighbouring neurons’ activities into the denominator:<input type="checkbox" id="sn-sidenote-110" class="margin-toggle"><label for="sn-sidenote-110" class="margin-toggle sidenote-number"></label><span class="sidenote">See <nobr><a href="https://arxiv.org/pdf/1906.08246.pdf">this analysis</a><span class="oa" title="Open
 Access"></span></nobr> by Jesús Malo et al. to understand how this approximation works.</span></p>
 <p><span class="math display">y_i = \frac{fx_i^k}{\beta^k + \sum_j w_j x_j^k}</span></p>
 <p>This approximation is called <em>divisive normalization</em>. One can find many variations on the above formula in the literature: extra constants, extra square roots in the denominator, extra rectifiers, etc.; but the core idea is always the same.</p>
-<p>This raises the challenge of determining the right values for <span class="math inline">w_j</span>, i.e. modelling the inhibitive strengths of neighbourly connections. Researchers have collected formulas,<input type="checkbox" id="sn-sidenote-108" class="margin-toggle"><label for="sn-sidenote-108" class="margin-toggle sidenote-number"></label><span class="sidenote">In 2011, Tadamasa Sawada and Alexander Petrov compiled a <nobr><a href="https://doi.org/10.1152/jn.00821.2016">very long review</a><span class="oa" title="Open
+<p>This raises the challenge of determining the right values for <span class="math inline">w_j</span>, i.e. modelling the inhibitive strengths of neighbourly connections. Researchers have collected formulas,<input type="checkbox" id="sn-sidenote-111" class="margin-toggle"><label for="sn-sidenote-111" class="margin-toggle sidenote-number"></label><span class="sidenote">In 2011, Tadamasa Sawada and Alexander Petrov compiled a <nobr><a href="https://doi.org/10.1152/jn.00821.2016">very long review</a><span class="oa" title="Open
 Access"></span></nobr> of divisive normalization models of V1. To my knowledge, it is still the most comprehensive reference today.</span> but it is not clear that they capture all of the interactions there are. What’s more, the last decade of research has revealed that some measured behaviours previously ascribed to lateral inhibition may instead be the result of feedback from higher-level areas. If nothing else, <span class="math inline">w_j</span> is probably a convenient place for modellers to incorporate the effects of spatial frequency dependency (i.e. contrast sensitivity curves).</p>
-<h3 id="final-activation-of-g-cells">Final activation of G-cells</h3>
+<p><a name="direct-approximate-grouping"></a></p>
+<h2 id="a-direct-approximation-model-of-local-grouping">A direct-approximation model of local grouping</h2>
+<p>We can directly approximate the activity of G-cells (and also their collinear equivalent) using the following model.</p>
+<ol type="1">
+<li><p>Take the V1 complex cell responses across various scales and orientations.</p></li>
+<li><p>Sum over scales, according to the desired contrast sensitivity function.</p></li>
+<li><p>Create two sets of orientation-masked filters. The two sets are the angular filter set (see above) multipled by the following two radial kernels:</p>
+<p><span class="math display">
+f_1 = \frac{1}{r^k}\\
+f_2 = \frac{1}{r^{k+1}},
+</span></p>
+<p>where <span class="math inline">r = \sqrt{x^2 + y^2}</span> and <span class="math inline">k \approx 2</span>.</p></li>
+<li><p>Convolve each letter’s scale-summed V1C tensors <span class="math inline">T</span> with these two filter sets, and</p></li>
+<li><p>use the result to compute an approximate oriented distance field, as well as an oriented arc strength, as follows:</p>
+<p><span class="math display"> 
+d = \frac{T * f_1}{T * f_2}\\
+k = (T * f_1) \odot d^{k+1}
+</span></p></li>
+<li><p>For each pair, overlay the two fields <span class="math inline">d_L, d_R</span> and <span class="math inline">k_L, k_R</span> and use the following four quantities to estimate local grouping strengths: <span class="math inline">|d_L - d_R|</span> (zero in the center of the gap, nonzero elsewhere), <span class="math inline">k_L k_R</span> (local G-cell input), <span class="math inline">d_L + d_R</span> (local G-cell scale), <span class="math inline">(o_L, o_R)</span> orientation angle pair.</p></li>
+</ol>
 <p class="missing">
-G-cells activate via normalized B-cells.
-</p>
-<p class="missing">
-Loss from V1 interference vs. loss from lateral inhibition in V2
+Explain and illustrate the model, and derive the math. Explain the computational benefits.
 </p>
 <p><a name="spacing-kerning"></a></p>
 <h2 id="deriving-spacing-and-kerning-values">Deriving spacing and kerning values</h2>

@@ -218,7 +218,7 @@ article > table {
 article > ol,
 article > ul {
     width: 57.5%;
-    -webkit-padding-start: 5%; 
+    box-sizing: border-box;
 }
 
 li:not(:first-child) {
@@ -460,7 +460,8 @@ label.margin-toggle:not(.sidenote-number) {
     article > ol,
     article > ul {
       width: 95%;
-      -webkit-padding-start: 5%; 
+      -webkit-padding-start: 5%;
+      box-sizing: border-box;
     }
 
     hr,
