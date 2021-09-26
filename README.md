@@ -15,3 +15,5 @@ FLASK_APP=app.py FLASK_ENV=development FLASK_DEBUG=1 flask run
 # in web/static/js
 yarn run watch
 ```
+
+![delta-g](docs/phase_delta_g.png?raw=true)
