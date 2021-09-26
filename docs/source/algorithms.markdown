@@ -35,7 +35,8 @@ optimizing for. Roughly speaking, we have three options:
    computationally in practice, especially on consumer-grade hardware.{sn}The
    most promising approach would perhaps be backpropagation combined with an
    adaptive ODE solver, as in [this much-celebrated
-   demonstration](https://arxiv.org/pdf/1806.07366.pdf) by Ricky Chen and his
+   demonstration](https://arxiv.org/pdf/1806.07366.pdf)<span class="oa" title="Open
+Access"></span> by Ricky Chen and his
    colleagues.{/sn}
  
  2. Deep convolution: we simulate the output of discrete populations (such as
@@ -227,6 +228,50 @@ training](https://en.wikipedia.org/wiki/Vanishing_gradient_problem)<sup>W</sup>.
 
 We will apply this activation function to the V1 complex cell output, using the
 matrices $\boldsymbol{k}_{s,\gamma}$ and $\boldsymbol{\beta}_{s,\gamma}$ as coefficients.
+
+### Approximating G-cell activations with distance transforms
+<p class="missing">
+Explain the motivation for this approach
+</p>
+
+If we assume that only one G-cell can be active at once at each location, then we can simplify our approach by pre-computing two values at each location around every letter: the scale of that G-cell, and its activation. Then, when two letters are juxtaposed at some distance, we can look for locations where the scales match, and add up the activations there.
+
+This approach is a gross oversimplification of the real dynamics, of course. It requires us to assume that smaller-scale G-cells always outcompete larger-scale ones, and that the complex interactions between two letters can be reduced to simple addition. But these approximations are easy to understand and, most importantly, fast to compute even without expensive hardware.
+
+In order to estimate the right scale, we look for the closest distance to the letter (ideally after applying the V1 filter):
+
+The Euclidean distance transform{sn}[Distance transforms](https://en.wikipedia.org/wiki/Distance_transform)<sup>W</sup> are a standard tool of image morphology, and several algorithms exist to compute them efficiently.{/sn} offers a fast an easy way to compute such distances, but it has two serious shortcomings. The first problem is that unlike a G-cell, it is inherently limited to the single closest point on the letter. But the activation of a G-cell depends on how many other points on the letter are located at a similar distance. 
+
+<p class="missing">
+Illustration
+</p>
+
+The other, related problem is that the EDT does not care about the orientation of features, but G-cells (or rather, the B-cells that feed into them) very much do:
+
+<p class="missing">
+Illustration
+</p>
+
+Let's consider, therefore, an alternative approach based on an anisotropic variant of the Euclidean distance transform, in which the distance grows at the usual rate only along a particular direction.{sn}It turns out that the [algorithm by Pedro Felzenszwalb and Daniel Huttenlocher](http://dx.doi.org/10.4086/toc.2012.v008a019)<span class="oa" title="Open
+Access"></span> can be modified to accomplish this. To my knowledge, this has not been attempted before, but I have created a [C extension for Numpy](https://github.com/skosch/anisotropic-distance-transform) that implements this.{/sn} We can apply this anisotropic distance transform $A$ along an array of evenly spaced angles $\alpha$, using each time the appropiately oriented V1 output:
+
+
+We can then use the angle $\theta$ of the distance transform's gradient,
+$$
+\theta = \mathrm{arctan}\left( \frac{ \frac{\partial A(\alpha_i)}{\partial y} }{  \frac{\partial A(\alpha_i)}{\partial x}} \right),
+$$
+to mask each of these maps to the angle of interest. A good choice is the von-Mises distribution
+$$
+\frac{e^{\kappa \cos(\theta - \alpha_i)}}{2 \pi I_0(\kappa)}.
+$$
+If we plot the oriented distance maps as contour fields, with the angle masks in red, we get:
+
+<p class="missing">
+Illustration
+</p>
+
+We can now use this to assemble a better estimate of the local G-cell scale and activation. {sn}Note that we could choose to store all $n_o$ distance maps and masks for each letter, and later deal with $n_o^2$ combinations of them for each letter pair. Here, we choose to prioritize computational efficiency over accuracy.{/sn} The simplest way to do so would be to take a weighted average of all 
+
 
 ### Measuring G-cell activations
 Having calculated the V1 complex cell responses, we can next estimate the magnitude of local
