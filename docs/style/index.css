@@ -34,6 +34,7 @@
 body {
     min-height: 100vh;
     font-family: var(--sans-font);
+    counter-set: tocheading 0 heading 0 subheading 0;
 }
 
 header {
@@ -121,9 +122,9 @@ p {
 }
 
 .toc h2:before {
-    content: counter(heading)". ";
+    content: counter(tocheading)". ";
     opacity: 0.6;
-    counter-increment: heading;
+    counter-increment: tocheading;
 }
 
 .byline {
@@ -226,7 +227,7 @@ nav.top {
 
 article {
     font-family: var(--serif-font);
-    counter-reset: sidenote-counter heading appendixheading subheading;
+    counter-set: sidenote-counter 0 heading 0 appendixheading 0 subheading 0;
     font-size: 1.8rem;
     line-height: 1.65em;
     color: var(--dark-brown);

@@ -1,5 +1,5 @@
 <h2 class="nonumber">Acknowledgements</h2>
-This research would not have been possible without funding from Google,
+This research would not be possible without funding from Google,
 for which I have Dave Crossland to thank in particular. I am grateful
 also to Simon Cozens and others for many valuable discussions.
 
@@ -15,9 +15,11 @@ that can be fitted to to existing, hand-fitted fonts using backpropagation.
 <h2 class="nonumber">Target audience</h2> 
 Designers and developers with an interest in neuroaesthetics.
 
-<h2 class="nonumber">Epistemic status: provisional</h2> 
+<h2 class="nonumber">Epistemic status: provisional, in-progress work</h2> 
 This article is based on a survey of hundreds of peer-reviewed articles, 
 and in line with mainstream ideas in vision and neuroscience research. It is the
-product of many months of work and countless revisions. That said, even the
-in-vivo evidence for the suggested models is often indirect or circumstantial.
-Nothing in this article should be construed as final. I welcome corrections!  
+product of many months of work and countless revisions. That said, the
+in-vivo evidence for the suggested models is often indirect or circumstantial,
+and subject to frequent and often surprising updates – in this field,
+five years are an eternity. Therefore, nothing in this article should be construed as
+final, and I welcome corrections!

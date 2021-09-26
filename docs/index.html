@@ -40,10 +40,6 @@
       <img src="img/vc_anatomy_single.png">
       <span class="subheader">Letterfitting & type design tools inspired by computational neuroscience</span>
       <div class="spacer"></div>
-      <div class="byline">
-        <p>YinYangFit is an independent research & development project, funded by Google.</p>
-        <p>This is a work in progress and your contributions are welcomed! Get in touch via <a href="https://github.com/skosch/YinYangFit">Github</a> or contact <a href="https://www.aldusleaf.org">me</a> via email.</p>
-      </div>
     </div>
     <div class="toc">
       <span class="subheader">Letterfitting & type design tools inspired by computational neuroscience</span>
@@ -54,7 +50,11 @@
         look like <em>to humans,</em> and help you make optimizations accordingly.
         But how will that work?
       </p>
-      <div class="toc-grid">
+      <p style="font-style: italic; opacity: 0.65;">YinYangFit is an independent research & development project, funded in part by Google.</p>
+      <div style="padding: 1rem 2rem; background: #f0dcab; margin-top: 3rem;">
+        <p>This is a work in progress and your contributions are welcomed! Get in touch via <a href="https://github.com/skosch/YinYangFit">Github</a> or contact <a href="https://www.aldusleaf.org">me</a> via email.</p>
+      </div>
+      <div class="toc-grid" style="display: none;">
       <div class="toc-group">
       <h1>Introduction</h1>
       <section class="toc-row">
@@ -110,6 +110,10 @@
           <img src="" alt="Grouping and attention">
           <h2>Attention and crowding</h2>
         </a>
+        <a href="#perceptual-grouping-letterfitting">
+          <img src="" alt="Grouping and attention">
+          <h2>From perceptual grouping to letterfitting</h2>
+        </a>
       </section>
       </div>
 
@@ -130,13 +134,9 @@
           <img src="" alt="Models and cost functions">
           <h2>Models and cost functions</h2>
         </a>
-        <a href="">
+        <a href="#direct-approximate-grouping">
           <img src="" alt="Grouping models">
-          <h2>Grouping models</h2>
-        </a>
-        <a href="">
-          <img src="" alt="Reading models">
-          <h2>Reading models</h2>
+          <h2>A direct-approximation model of local grouping</h2>
         </a>
         <a href="#spacing-kerning">
           <img src="" alt="Spacing and kerning">
@@ -146,17 +146,17 @@
       </div>
 
       <div class="toc-group">
-      <h1>Future directions</h1>
+      <h1>Future directions (coming soon)</h1>
       <section class="toc-row">
-        <a href="">
+        <a>
           <img src="" alt="Filtering and normalization">
           <h2>Texture encoding</h2>
         </a>
-        <a href="">
+        <a>
           <img src="" alt="Grouping models">
           <h2>Skeleton design</h2>
         </a>
-        <a href="">
+        <a>
           <img src="" alt="Reading models">
           <h2>Variable fonts and personalized typography</h2>
         </a>
@@ -186,6 +186,7 @@
         <ul>
           <li><a href="#grouping-border-ownership">Grouping and border ownership</a></li>
           <li><a href="#attention-crowding">Attention and crowding</a></li>
+          <li><a href="#perceptual-grouping-letterfitting">From perceptual grouping to letterfitting</a></li>
         </ul>
         <h1>Reading in the brain</h1>
         <ul>
@@ -194,15 +195,14 @@
         <h1>Letterfitting algorithms in practice</h1>
         <ul>
           <li><a href="#models-and-cost-functions">Models and cost functions</a></li>
-          <li><a href="#V1">Grouping models</a></li>
-          <li><a href="#V1">Reading models</a></li>
+          <li><a href="#direct-approximate-grouping">A direct-approximation model of local grouping</a></li>
           <li><a href="#spacing-kerning">Deriving spacing and kerning</a></li>
         </ul>
-        <h1>Future directions</h1>
-        <ul>
-          <li><a href="#V1">Texture encoding</a></li>
-          <li><a href="#V1">Skeleton design</a></li>
-          <li><a href="#V1">Personalized typography</a></li>
+        <h1>Future directions (coming soon)</h1>
+        <ul style="opacity: 0.3">
+          <li><a>Texture encoding</a></li>
+          <li><a>Skeleton design</a></li>
+          <li><a>Personalized typography</a></li>
         </ul>
         </div>
       </nav>
@@ -214,7 +214,7 @@
 <h2 class="nonumber">
 Acknowledgements
 </h2>
-<p>This research would not have been possible without funding from Google, for which I have Dave Crossland to thank in particular. I am grateful also to Simon Cozens and others for many valuable discussions.</p>
+<p>This research would not be possible without funding from Google, for which I have Dave Crossland to thank in particular. I am grateful also to Simon Cozens and others for many valuable discussions.</p>
 <h2 class="nonumber">
 Abstract
 </h2>
@@ -224,9 +224,9 @@ Target audience
 </h2>
 <p>Designers and developers with an interest in neuroaesthetics.</p>
 <h2 class="nonumber">
-Epistemic status: provisional
+Epistemic status: provisional, in-progress work
 </h2>
-<p>This article is based on a survey of hundreds of peer-reviewed articles, and in line with mainstream ideas in vision and neuroscience research. It is the product of many months of work and countless revisions. That said, even the in-vivo evidence for the suggested models is often indirect or circumstantial. Nothing in this article should be construed as final. I welcome corrections!</p>
+<p>This article is based on a survey of hundreds of peer-reviewed articles, and in line with mainstream ideas in vision and neuroscience research. It is the product of many months of work and countless revisions. That said, the in-vivo evidence for the suggested models is often indirect or circumstantial, and subject to frequent and often surprising updates – in this field, five years are an eternity. Therefore, nothing in this article should be construed as final, and I welcome corrections!</p>
 <h2 id="text-samples">Text samples</h2>
 <p class="missing">
 Render text samples
@@ -445,6 +445,7 @@ Access"></span></nobr>, referenced above, increasing G-cell activity by a mere 7
 <li><p>As neural activity travels outwards along contours and textures, some regions (retinotopic, not cortical) are suddenly flooded with activity. This new activity, in turn, can command attention, via direct connection to higher-level areas.<input type="checkbox" id="sn-sidenote-74" class="margin-toggle"><label for="sn-sidenote-74" class="margin-toggle sidenote-number"></label><span class="sidenote">The <a href="https://en.wikipedia.org/wiki/Frontal_eye_fields">frontal eye fields</a><sup>W</sup> seem to be one brain region involved in keeping track of visual attention, and in making saccades when necessary.</span></p></li>
 </ol>
 <p>If this understanding of perceptual grouping is correct, then Gestalt-based letterfitting boils down to ensuring that all letter pairs strike the same balance between two opposing requirements: the gap must be narrow enough to facilitate grouping, and wide enough to prevent visual degradation of the letters’ skeletons.</p>
+<p><a name="perceptual-grouping-letterfitting"></a></p>
 <h2 id="from-perceptual-grouping-to-letterfitting">From perceptual grouping to letterfitting</h2>
 <p>We will now explore the delicate balance between grouping and skeleton degradation.</p>
 <h3 id="losing-a-letters-skeleton-to-interference">Losing a letter’s skeleton to interference</h3>
@@ -618,11 +619,15 @@ Illustration
 </p>
 <p>Let’s consider, therefore, an alternative approach based on an anisotropic variant of the Euclidean distance transform, in which the distance grows at the usual rate only along a particular direction.<input type="checkbox" id="sn-sidenote-111" class="margin-toggle"><label for="sn-sidenote-111" class="margin-toggle sidenote-number"></label><span class="sidenote">It turns out that the <a href="http://dx.doi.org/10.4086/toc.2012.v008a019">algorithm by Pedro Felzenszwalb and Daniel Huttenlocher</a><span class="oa" title="Open
 Access"></span> can be modified to accomplish this. To my knowledge, this has not been attempted before, but I have created a <a href="https://github.com/skosch/anisotropic-distance-transform">C extension for Numpy</a> that implements this.</span> We can apply this anisotropic distance transform <span class="math inline">A</span> along an array of evenly spaced angles <span class="math inline">\alpha</span>, using each time the appropiately oriented V1 output:</p>
-<p>We can then use the angle <span class="math inline">\theta</span> of the distance transform’s gradient to mask each of these maps to the angle of interest. A good choice is the von-Mises distribution,</p>
-<p><span class="math display">
-\theta = \mathrm{arctan}\left( \frac{ \frac{\partial A(\alpha_i)}{\partial y} }{  \frac{\partial A(\alpha_i)}{\partial x}} \right) \\
-m_i = \frac{e^{\kappa \cos(\theta - \alpha_i)}}{2 \pi I_0(\kappa)}.
-</span></p>
+<p>We can then use the angle <span class="math inline">\theta</span> of the distance transform’s gradient, <span class="math display">
+\theta = \mathrm{arctan}\left( \frac{ \frac{\partial A(\alpha_i)}{\partial y} }{  \frac{\partial A(\alpha_i)}{\partial x}} \right),
+</span> to mask each of these maps to the angle of interest. A good choice is the von-Mises distribution <span class="math display">
+\frac{e^{\kappa \cos(\theta - \alpha_i)}}{2 \pi I_0(\kappa)}.
+</span> If we plot the oriented distance maps as contour fields, with the angle masks in red, we get:</p>
+<p class="missing">
+Illustration
+</p>
+<p>We can now use this to assemble a better estimate of the local G-cell scale and activation. <input type="checkbox" id="sn-sidenote-112" class="margin-toggle"><label for="sn-sidenote-112" class="margin-toggle sidenote-number"></label><span class="sidenote">Note that we could choose to store all <span class="math inline">n_o</span> distance maps and masks for each letter, and later deal with <span class="math inline">n_o^2</span> combinations of them for each letter pair. Here, we choose to prioritize computational efficiency over accuracy.</span> The simplest way to do so would be to take a weighted average of all</p>
 <h3 id="measuring-g-cell-activations">Measuring G-cell activations</h3>
 <p>Having calculated the V1 complex cell responses, we can next estimate the magnitude of local B-cells. Just like complex cells, B-cells come in scales and orientations. However, the number of orientations is doubled, because there are two opposite B-cell orientations for each axis (whereas in V1, 0° and 180° are identical).</p>
 <p>At first, we have no information about border ownership, so opposite-orientation B-cells are assumed to have equal-strength activations:</p>
@@ -676,11 +681,11 @@ Explain the need for lateral inhibition between competing B-cells via divisive n
 </p>
 <h3 id="modelling-lateral-inhibition-via-divisive-normalization">Modelling lateral inhibition via divisive normalization</h3>
 <p>The hyperbolic-ratio activation function is particularly relevant thanks to <em>lateral inhibition</em>, a common architectural pattern in the brain in which neurons within a cortical area suppress their neighbours in proportion to their own firing rate. Locally, this allows the most active neuron to suppress its neighbours more than those neighbours are able to suppress it in return. Lateral inhibition thus sharpens peaks and flattens valleys in the activity landscape; it is a simple and effective way to boost salient signals relative to the weaker ones that inevitably arise from the correlations between similarly tuned convolution filters. In V1, lateral inhibition thus sharpens the orientation and frequency-scale signals, while also normalizing local contrast.</p>
-<p>Because lateral inhibition is a recurrent process that takes time to reach a steady state, it is most accurately modelled using a system of coupled differential equations which describe the time dependence of each neuron’s firing rate on its neighbours. Conveniently, however, the steady-state activations can also be approximated directly using our hyperbolic ratio model, by simply sneaking the neighbouring neurons’ activities into the denominator:<input type="checkbox" id="sn-sidenote-112" class="margin-toggle"><label for="sn-sidenote-112" class="margin-toggle sidenote-number"></label><span class="sidenote">See <nobr><a href="https://arxiv.org/pdf/1906.08246.pdf">this analysis</a><span class="oa" title="Open
+<p>Because lateral inhibition is a recurrent process that takes time to reach a steady state, it is most accurately modelled using a system of coupled differential equations which describe the time dependence of each neuron’s firing rate on its neighbours. Conveniently, however, the steady-state activations can also be approximated directly using our hyperbolic ratio model, by simply sneaking the neighbouring neurons’ activities into the denominator:<input type="checkbox" id="sn-sidenote-113" class="margin-toggle"><label for="sn-sidenote-113" class="margin-toggle sidenote-number"></label><span class="sidenote">See <nobr><a href="https://arxiv.org/pdf/1906.08246.pdf">this analysis</a><span class="oa" title="Open
 Access"></span></nobr> by Jesús Malo et al. to understand how this approximation works.</span></p>
 <p><span class="math display">y_i = \frac{fx_i^k}{\beta^k + \sum_j w_j x_j^k}</span></p>
 <p>This approximation is called <em>divisive normalization</em>. One can find many variations on the above formula in the literature: extra constants, extra square roots in the denominator, extra rectifiers, etc.; but the core idea is always the same.</p>
-<p>This raises the challenge of determining the right values for <span class="math inline">w_j</span>, i.e. modelling the inhibitive strengths of neighbourly connections. Researchers have collected formulas,<input type="checkbox" id="sn-sidenote-113" class="margin-toggle"><label for="sn-sidenote-113" class="margin-toggle sidenote-number"></label><span class="sidenote">In 2011, Tadamasa Sawada and Alexander Petrov compiled a <nobr><a href="https://doi.org/10.1152/jn.00821.2016">very long review</a><span class="oa" title="Open
+<p>This raises the challenge of determining the right values for <span class="math inline">w_j</span>, i.e. modelling the inhibitive strengths of neighbourly connections. Researchers have collected formulas,<input type="checkbox" id="sn-sidenote-114" class="margin-toggle"><label for="sn-sidenote-114" class="margin-toggle sidenote-number"></label><span class="sidenote">In 2011, Tadamasa Sawada and Alexander Petrov compiled a <nobr><a href="https://doi.org/10.1152/jn.00821.2016">very long review</a><span class="oa" title="Open
 Access"></span></nobr> of divisive normalization models of V1. To my knowledge, it is still the most comprehensive reference today.</span> but it is not clear that they capture all of the interactions there are. What’s more, the last decade of research has revealed that some measured behaviours previously ascribed to lateral inhibition may instead be the result of feedback from higher-level areas. If nothing else, <span class="math inline">w_j</span> is probably a convenient place for modellers to incorporate the effects of spatial frequency dependency (i.e. contrast sensitivity curves).</p>
 <p><a name="direct-approximate-grouping"></a></p>
 <h2 id="a-direct-approximation-model-of-local-grouping">A direct-approximation model of local grouping</h2>

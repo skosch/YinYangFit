@@ -406,6 +406,7 @@ letterfitting boils down to ensuring that all letter pairs strike the same
 balance between two opposing requirements: the gap must be narrow enough to facilitate
 grouping, and wide enough to prevent visual degradation of the letters' skeletons.
 
+<a name="perceptual-grouping-letterfitting"></a>
 
 ## From perceptual grouping to letterfitting 
 We will now explore the delicate balance between grouping and skeleton degradation.
